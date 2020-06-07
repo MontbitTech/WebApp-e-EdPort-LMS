@@ -1,0 +1,81 @@
+.login-100vh{min-height:95vh}
+.login-wrapper{
+  position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-repeat: no-repeat!important;
+  background-position: center!important;
+  background-size: cover!important;
+  background-attachment: fixed;
+}
+.login-box{
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 10px 30px 10px 30px;
+  width: 100%;
+  max-width: 420px;
+  background: rgba(255,255,255,0.9);
+  box-shadow: 0px 8px 12px rgba(0,0,0,0.6);
+  border-radius: 4px;
+  border-bottom: 4px solid #1c3c63;
+  margin: 15px 0;
+}
+.loginbox-section .form-group{margin-bottom: 15px}
+.loginbox-section input {
+  height: 50px;
+  font-size: 18px;
+  font-weight: 600;
+  background: #fff;
+  border-width: 2px;
+  border-radius: 3px;
+  box-shadow: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.loginbox-section input:focus{
+  box-shadow: none;
+  border-color: #1c3c63;
+  box-shadow: 0 0 0 .2rem rgba(28,60,99,.25);
+}
+.loginbox-section label {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+}
+.btn-primary{
+  height: 50px;
+  background-color: #1c3c63;
+  border-color: #1c3c63;
+  font-weight: 600;
+}
+.logo-box{
+  padding: 15px 0px;
+  margin-bottom: 15px;
+}
+.logo-box img{
+  width: 100%;
+  max-width: 220px;
+  height: auto;
+}
+.fade:not(.show) {
+  opacity: 0.5;
+  transition: opacity .1s linear;
+}
+.btn-link{font-weight: 600; padding-left: 0; padding-right: 0; opacity: 0.8;}
+.btn-link:hover{opacity: 1}
+
+
+.has-error{
+  color: red;
+  font-weight: normal;
+  text-align: left;
+  font-size: 14px;
+}
+.has-error .help-block{
+  padding-left: 14px;
+}
+.has-error strong{
+  font-weight: normal;
+}
