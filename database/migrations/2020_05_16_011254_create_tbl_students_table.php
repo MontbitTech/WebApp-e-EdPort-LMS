@@ -11,16 +11,17 @@ class createTblStudentsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up ()
     {
         Schema::create('tbl_students', function (Blueprint $table) {
-            			$table->increments("id");
-			$table->string("name",100);
-			$table->integer("class_id");
-			$table->string("email",100)->nullable();
-			$table->string("phone",20)->nullable();
-			$table->string("notify",10)->nullable();
+            $table->increments("id");
+            $table->string("name", 100);
+            $table->integer("class_id");
+            $table->string("email", 100)->nullable();
+            $table->string("phone", 20)->nullable();
+            $table->string("notify", 10)->nullable();
 
+            $table->timestamps();
         });
     }
 
@@ -29,7 +30,7 @@ class createTblStudentsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down ()
     {
         Schema::dropIfExists('tbl_students');
     }

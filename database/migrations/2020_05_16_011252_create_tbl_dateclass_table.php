@@ -14,7 +14,7 @@ class createTblDateclassTable extends Migration
     public function up()
     {
         Schema::create('tbl_dateclass', function (Blueprint $table) {
-            			$table->increments("id");
+            $table->increments("id");
 			$table->integer("class_id");
 			$table->integer("subject_id");
 			$table->integer("teacher_id");
@@ -27,13 +27,12 @@ class createTblDateclassTable extends Migration
 			$table->string("ass_live_url",255)->nullable();
 			$table->string("quiz_link",255)->nullable();
 			$table->boolean("is_past");
-			$table->timestamp("created_at")->nullable();
-			$table->timestamp("updated_at")->nullable();
 			$table->string("class_student_msg",255)->nullable();
 			$table->string("class_description",255)->nullable();
 			$table->string("g_meet_url",255)->nullable();
 			$table->string("recording_url",255)->nullable();
 
+			$table->timestamps();
         });
     }
 

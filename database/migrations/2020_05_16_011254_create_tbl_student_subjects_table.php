@@ -11,14 +11,13 @@ class createTblStudentSubjectsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up ()
     {
         Schema::create('tbl_student_subjects', function (Blueprint $table) {
-            			$table->increments("id");
-			$table->string("subject_name",255);
-			$table->timestamp("created_at")->nullable();
-			$table->timestamp("updated_at")->nullable();
+            $table->increments("id");
+            $table->string("subject_name", 255);
 
+            $table->timestamps();
         });
     }
 
@@ -27,7 +26,7 @@ class createTblStudentSubjectsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down ()
     {
         Schema::dropIfExists('tbl_student_subjects');
     }

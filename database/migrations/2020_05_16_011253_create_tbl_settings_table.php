@@ -11,13 +11,14 @@ class createTblSettingsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up ()
     {
         Schema::create('tbl_settings', function (Blueprint $table) {
-            			$table->increments("id");
-			$table->string("item",100);
-			$table->string("value",4000)->nullable();
+            $table->increments("id");
+            $table->string("item", 100);
+            $table->string("value", 4000)->nullable();
 
+            $table->timestamps();
         });
     }
 
@@ -26,7 +27,7 @@ class createTblSettingsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down ()
     {
         Schema::dropIfExists('tbl_settings');
     }
