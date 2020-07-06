@@ -224,7 +224,7 @@ class CustomHelper
 	
 	public static function onGoingClasses()
 	{
-		$s = \DB::select("SELECT d.class_date,  d.from_timing , d.to_timing, d.g_meet_url, s.subject_name,  t.name, c.class_name, c.section_name
+		$s = \DB::select("SELECT d.class_date,  d.from_timing , d.to_timing, t.g_meet_url, s.subject_name,  t.name, c.class_name, c.section_name
 							FROM tbl_dateclass d, tbl_techers t, tbl_student_subjects s, tbl_student_classes c
 							where d.class_date = CURDATE()
 							and d.subject_id = s.id

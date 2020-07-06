@@ -110,7 +110,7 @@ class TeacherLoginController extends Controller
 					$responce = CommonHelper::acceptClassInvitation($token,$code); // access Google api craete Cource
 					if($responce){
 									$obj = InvitationClass::find($accept_id);
-									$obj->g_code = '';
+									//$obj->g_code = '';
 									$obj->is_accept = 1;
 									$obj->save();
 									//echo json_encode(array('status'=>'success','message'=> "Invitation Accepted."));
@@ -146,7 +146,8 @@ class TeacherLoginController extends Controller
 													$query->where('class_date','=',$currentDay);
 												}) */
 												->Where('class_date','<',$currentDay)
-												->orderBy('from_timing','asc')
+												->orderBy('class_date','desc')
+												->orderBy('from_timing','desc')
 												->limit(20)
 												->get();
 		

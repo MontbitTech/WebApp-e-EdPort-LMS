@@ -158,6 +158,7 @@ $cls = 0;
 						
 						//dd($topics);
 						//App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
+						$x =  $t->cmsLink;
 					  ?>
 					  
 					  <div class="select-topicbox">
@@ -173,14 +174,24 @@ $cls = 0;
 						</select>
 						
 						 <?php
-                      $display_style = 'display: none;';
-                     $cms_link = '';
+                      $cms_link = '';
+					  if(strlen($x) > 0)
+					  {
+						  $display_style = 'display: block;';
+						  $cms_link = $x->link;
+					  }
+					  else
+						  $display_style = 'display: none;';
+					  
+                     
                       if($t->topic_id != ''){
                         //  $display_style = 'display: block;';
                         }
                        if($t->cmsLink){
 						 // $cms_link = $t->cmsLink->link;
 					  }
+					  
+
                     ?>
                   
                     <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
