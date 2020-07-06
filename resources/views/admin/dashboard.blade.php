@@ -112,12 +112,9 @@
 						  <td>{{$ongoing->subject_name}}</td>
 						  <td>{{date('H:i',strtotime($ongoing->from_timing)) . "-" . date('H:i',strtotime($ongoing->to_timing)) }}</td>
 						  <td>
-						  @if($ongoing->g_meet_url)
+							@if($ongoing->g_meet_url)
 								<a href="{{$ongoing->g_meet_url}}" target="_blank">Join Link</a>
-							@else
-								<a href="javascript:void(0)" >Join Link</a>
 							@endif
-						
 						  </td>
 						</tr>
 					@endforeach

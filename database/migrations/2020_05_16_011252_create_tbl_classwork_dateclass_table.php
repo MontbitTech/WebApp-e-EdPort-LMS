@@ -11,13 +11,14 @@ class createTblClassworkDateclassTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up ()
     {
         Schema::create('tbl_classwork_dateclass', function (Blueprint $table) {
-            			$table->increments("id");
-			$table->integer("dateclass_id");
-			$table->integer("classwork_id");
+            $table->increments("id");
+            $table->integer("dateclass_id");
+            $table->integer("classwork_id");
 
+            $table->timestamps();
         });
     }
 
@@ -26,7 +27,7 @@ class createTblClassworkDateclassTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down ()
     {
         Schema::dropIfExists('tbl_classwork_dateclass');
     }

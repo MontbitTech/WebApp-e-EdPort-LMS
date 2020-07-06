@@ -11,16 +11,17 @@ class createTblCmslinksTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up ()
     {
         Schema::create('tbl_cmslinks', function (Blueprint $table) {
-            			$table->increments("id");
-			$table->string("class",10)->nullable();
-			$table->integer("subject")->nullable();
-			$table->string("topic",100)->nullable();
-			$table->string("link",1000)->nullable();
-			$table->string("assignment_link",255)->nullable();
+            $table->increments("id");
+            $table->string("class", 10)->nullable();
+            $table->integer("subject")->nullable();
+            $table->string("topic", 100)->nullable();
+            $table->string("link", 1000)->nullable();
+            $table->string("assignment_link", 255)->nullable();
 
+            $table->timestamps();
         });
     }
 
@@ -29,7 +30,7 @@ class createTblCmslinksTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down ()
     {
         Schema::dropIfExists('tbl_cmslinks');
     }

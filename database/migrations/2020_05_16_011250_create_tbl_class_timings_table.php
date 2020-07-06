@@ -11,20 +11,18 @@ class createTblClassTimingsTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up ()
     {
         Schema::create('tbl_class_timings', function (Blueprint $table) {
-            			$table->increments("id");
-			$table->integer("class_id");
-			$table->integer("subject_id");
-			$table->integer("teacher_id");
-			$table->char("class_day");
-			$table->time("from_timing");
-			$table->time("to_timing");
-			$table->boolean("is_lunch")->nullable();
-			$table->timestamp("created_at")->nullable();
-			$table->timestamp("updated_at")->nullable();
-
+            $table->increments("id");
+            $table->integer("class_id");
+            $table->integer("subject_id");
+            $table->integer("teacher_id");
+            $table->char("class_day");
+            $table->time("from_timing");
+            $table->time("to_timing");
+            $table->boolean("is_lunch")->nullable();
+            $table->timestamps();
         });
     }
 
@@ -33,7 +31,7 @@ class createTblClassTimingsTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down ()
     {
         Schema::dropIfExists('tbl_class_timings');
     }

@@ -155,14 +155,13 @@ class TeacherClassController extends Controller
         $to_time = date("H:i:s",strtotime($to_time));
 		$class_day = date("l",strtotime($request->class_date));
         $class_id = $request->class_id;
-      
+		
+    
 	   $request->validate([ 
 				'class_date' => 'required',
 				'start_time' => 'required',
 				'end_time' => 'required',
 				'notify_stdMessage' => 'required|max:255',
-				
-             
             ],[
 			
 				'class_date.required' => 'Class date required',
@@ -172,9 +171,11 @@ class TeacherClassController extends Controller
 				//'notify_stdMessage.regex' => 'Notify Student Message must be letters and numbers.',
 				
 			]);
+			
+		$dtime = (strtotime($to_time) - strtotime($from_time))/60; // find time difference , it can't be -ive
 		
-	  
-	  
+		if($dtime <= 0)
+			return back()->with('error',"Class end-time can't be before/equal to class start-time.");
 	  
 		$class_student_msg = isset($request->notify_stdMessage)?$request->notify_stdMessage:'';
      	/* $class_liveurl = isset($request->join_liveUrl)?$request->join_liveUrl:'';
@@ -306,14 +307,12 @@ class TeacherClassController extends Controller
 		
 		 $request->validate([ 
 				'edit_notify_stdMessage' => 'required|max:255',
-				'edit_description' => 'required|max:255|regex:/^[a-zA-Z0-9 ]*$/',
+				'edit_description' => 'required|max:255',
              
             ],[
 				'edit_notify_stdMessage.required'=>'Notify Message required.',
 				//'edit_notify_stdMessage.regex'=>'Notify Message must be letters and numbers.',
-				'edit_description.required'=>'The Description required.',
-				'edit_description.regex'=>'The Description must be letters and numbers.',
-				
+				'edit_description.required'=>'The Description required.',				
 			]);
 		
 		
@@ -348,12 +347,11 @@ class TeacherClassController extends Controller
         $dateClass_id = $request->dateClass_id;
 		
 		$validator = Validator::make($request->all(), [
-				'description' => 'required|max:100|regex:/^[a-zA-Z0-9 ]*$/',
+				'description' => 'required|max:100',
 				'rec_url' => 'required',
              
             ],[
 				'description.required'=>'The Description required.',
-				'description.regex'=>'Description must be letters and numbers.',
 				'rec_url.required'=>'Recording URL required.',
 			]);
 		

@@ -11,13 +11,13 @@ class createTblClassesTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up ()
     {
         Schema::create('tbl_classes', function (Blueprint $table) {
-            			$table->increments("id");
-			$table->string("class_name",100);
-			$table->string("section_name",100);
-
+            $table->increments("id");
+            $table->string("class_name", 100);
+            $table->string("section_name", 100);
+            $table->timestamps();
         });
     }
 
@@ -26,7 +26,7 @@ class createTblClassesTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down ()
     {
         Schema::dropIfExists('tbl_classes');
     }

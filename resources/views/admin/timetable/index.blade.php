@@ -2,6 +2,15 @@
 
 @section('content')
 
+@php
+
+$class=$ar["class"];
+$section=$ar["sname"];
+$tname=$ar["tname"];
+$subn=$ar["subname"];
+$timing=$ar["timing"];
+
+@endphp	
 <section class="main-section">
   <div class="container-fluid">
     <div class="row justify-content-center">
@@ -92,7 +101,124 @@
 </div>
 </section>
 
+<div class="modal fade" id="classdeletModal" data-backdrop="static" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-light d-flex align-items-center">
+        <h5 class="modal-title font-weight-bold">Update Timetable</h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <svg class="icon"><use xlink:href="{{asset('images')}}/icons.svg#icon_times2"></use></svg>
+        </button>
+      </div> 
+      <div class="modal-body pt-6">
+	  
+        <form action="{{route('timetable.edit')}}" method="POST">
+		@csrf
+		
+		<input type="hidden" name="tid" id="tid" />
+          <div class="form-group text-center">
+		  <label class="text-danger">*Note : This is permanent change in Timetable</label>
+			<table class='table text-left'>
+				<tr><th>Teacher</th><td><label id='tname'></label></td>	
+					<td><input type="radio" name="radio" id="tradio" value="tch" checked /></td>		
+					<td>
+						<select id="sel_teacher" name="sel_teacher" class="form-control form-control-sm" required >
+							<option value=''>Select Teacher</option>
+							@if(count($tname)>0)
+								@foreach($tname as $tn)
+									<option value='{{$tn->id}}'>{{$tn->name}}</option>
+								@endforeach
+							@endif
+						</select>
+					</td>
+				</tr>
+				<tr><th>Subject </th><td><label id='subject_name'></label></td>	
+					<td><input type="radio" name="radio" id="sradio" value="sub"/></td>
+					<td>
+						<select id="sel_subject" name="sel_subject" class="form-control form-control-sm" disabled required >
+							<option value=''>Select Subject</option>
+							@if(count($subn)>0)
+								@foreach($subn as $sn)
+									<option value='{{$sn->id}}'>{{$sn->subject_name}}</option>
+								@endforeach
+							@endif
+						</select>
+					</td>
+				</tr>
+			<!--		<tr><td>		  <input type="radio" name="temp" id="temp"> Temporary allocation</td>
+						<td colspan=2><input type="radio" name="temp" id="perm"> Permanent allocation</td>-->
+				</tr>
+			</table>
+						
+			
+          </div>
+          <div class="form-group text-center">
+            <button type="submit" class="btn btn-danger px-4">
+              Submit
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
+    function editTimetable(id, day)
+	{
+		//var myday = Object.keys(day)[0];
+		//var f = day.details.split('/');
+		//alert(day.details);
+		
+		 
+	}
+	
+	$("input[type='radio']").on("click",function(){
+		var option = this.value;
+		if(option == "sub")
+		{
+			$("#sel_subject").attr('disabled',false);
+			$("#sel_teacher").attr('disabled',true);
+		}
+		else
+		{
+			$("#sel_subject").attr('disabled',true);
+			$("#sel_teacher").attr('disabled',false);
+		}
+		
+		
+	});
+	
+	$(document).on('click', '[data-deleteModal]', function()
+	{ 
+		var tid = $(this).data('id');
+		var tname = $(this).data('tname');
+		var sname = $(this).data('subject_name');
+		//var tclass = $(this).data('class_day');
+		//var timing = $(this).data('timing');
+		
+		var tn=document.getElementById('tname');
+		var sn=document.getElementById('subject_name');
+		//var cd=document.getElementById('class_day');
+		//var tm=document.getElementById('timing');
+		var td=document.getElementById('tid');
+		 
+		td.value = tid;
+		tn.innerHTML = tname;
+		sn.innerHTML =  sname;
+		//cd.innerHTML =  tclass;
+		//tm.innerHTML =  timing;
+		
+	/*	$("#tid").text(tid);
+		$("#tn").text(tname);
+		$("#sn").text(sname);
+		$("#cd").text(tclass);
+		$("#tm").text(timing);*/
+
+	  $('#classdeletModal').modal('show');	  
+	});	
     function getData()
     {
         var cl = document.getElementById("txtSerachByClass");
