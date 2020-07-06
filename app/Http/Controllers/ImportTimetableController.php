@@ -38,6 +38,251 @@ class ImportTimetableController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
    
+ public function editTimetable(Request $request)
+	{
+		//dd($request->all());
+		 /*  if($request->isMethod('post'))
+		  {
+			    $request->validate([ 
+              'tid' => 'required',
+              'sel_teacher' => 'required',
+              'sel_subject' => 'required',
+			  'radio' => 'required',
+			]); */
+		$timeTableID = $request->tid;
+		$option_val = $request->radio;
+	
+		$teacher_id = $request->sel_teacher;
+		$subject_id = $request->sel_subject;
+		
+		$obj_timeTable = ClassTiming::where('id',$timeTableID)->get()->first();
+	
+		$cur_class_ID = $obj_timeTable->class_id;
+		$cur_teacher_id = $obj_timeTable->teacher_id;
+		$cur_subject_id = $obj_timeTable->subject_id;
+		
+		$cur_from_timing = $obj_timeTable->from_timing;
+		$cur_to_timing = $obj_timeTable->to_timing;
+		
+		
+		$obj_class = StudentClass::where('id',$cur_class_ID)->get()->first();
+		
+		$cur_class_name = $obj_class->class_name;
+		$cur_section_name = $obj_class->section_name;
+		$cur_g_class_id = $obj_class->g_class_id;
+		
+		
+		
+		
+		if($teacher_id != null || $teacher_id != '')
+		{
+			
+			$obj_teacher = Teacher::where('id',$teacher_id)->get()->first();
+				
+			$g_teacher_id = $obj_teacher['g_user_id'];
+			$phone = $obj_teacher['phone'];
+			
+			$subject_name = StudentSubject::where('id',$cur_subject_id)->get()->first();
+			
+			$sub_name = $subject_name['subject_name'];
+			
+			
+			$teacherTimeExist = ClassTiming::where('teacher_id',$teacher_id)->where('from_timing',$cur_from_timing)->get()->first();
+			
+			
+			//$dateClassTeacherExist = DateClass::where('teacher_id',$teacher_id)->where('from_timing',$cur_from_timing)->get()->first();
+			//	dd($dateClassTeacherExist);
+
+			if($teacherTimeExist)
+			{
+				return back()->with('error',"Teacher have already assigned lecture at selected time.");
+			}
+			/* else if($dateClassTeacherExist)
+			{
+				return back()->with('error',"Teacher have already assigned lecture at selected time.");
+			} */
+			else
+			{
+				$prve_g_code = '';
+				// Previous Teacher Data
+				$obj_prev_teacher = InvitationClass::where('class_id',$cur_class_ID)->where('subject_id',$cur_subject_id)->where('teacher_id',$teacher_id)->get()->first();
+				$token = CommonHelper::varify_Admintoken(); // verify admin token 
+				if($obj_prev_teacher){
+					$prve_g_code = $obj_prev_teacher->g_code;
+					
+					if($prve_g_code != '')
+					{
+						$inv_delete = CommonHelper::teacher_invitation_delete($token,$prve_g_code); // cancel invitation
+					}
+				}
+				/// Send SMS to Teacher for assigned new Class
+						 if(strlen($phone) <= 10){
+								$number = '91'.$phone;
+							}else{
+								$number = $phone;
+							} 
+						 
+							$message = "You are invited for a new class $cur_class_name - $cur_section_name - $sub_name.";
+							
+							$s = CommonHelper::send_sms($number,$message);
+					
+						 
+						 	 $inv_data = array( 
+									  "courseId"=>$cur_g_class_id,
+									  "role"=> "TEACHER",
+									  "userId" => $g_teacher_id
+
+									);	
+							$inv_data = json_encode($inv_data);
+							$inv_responce = CommonHelper::teacher_invitation_forClass($token,$inv_data); // Invite teacher 
+							
+							$inv_resData = array('error'=> '');
+							
+							if($inv_responce == 101)
+							{
+								return back()->with('error', Config::get('constants.WebMessageCode.119'));
+							}
+							else
+							{
+								$inv_resData = array_merge($inv_resData,json_decode($inv_responce,true));
+								//dd($inv_responce);
+							
+								if($inv_resData['error'] != '')
+								{
+									
+									if($inv_resData['error']['status'] == 'UNAUTHENTICATED') 
+									{
+										return redirect()->route('admin.logout');
+									}
+									else if($inv_resData['error']['status'] == 'FAILED_PRECONDITION')
+									{
+										return back()->with('error','The requested user\'s account is disabled or if the user already has this role');
+									}
+									else
+									{
+										//Log::error($inv_resData['error']['message']);
+										return back()->with('error',$inv_resData['error']['message']);
+									}
+								}
+								else
+								{	
+							
+										$inv_res_code = $inv_resData['id']; 
+										$obj_inv = new InvitationClass;
+										$obj_inv->class_id = $cur_class_ID;
+										$obj_inv->subject_id = $cur_subject_id;
+										$obj_inv->teacher_id = $teacher_id;
+										$obj_inv->g_code = $inv_res_code;
+										//$obj_inv->g_responce = '';
+										//$obj_inv->is_accept = 0;
+										$obj_inv->save();
+										
+										// Update All Record in time table
+										$obj = ClassTiming::where('subject_id',$cur_subject_id)->where('class_id',$cur_class_ID)->where('teacher_id',$cur_teacher_id)->where('from_timing',$cur_from_timing)->update(['teacher_id'=>$teacher_id]);
+								//$objD = DateClass::where('subject_id',$cur_subject_id)->where('class_id',$cur_class_ID)->where('teacher_id',$cur_teacher_id)->update(['teacher_id'=>$teacher_id]);    just now i commented
+																			
+									return back()->with('success',"TimeTable updated successfully..");	
+								}
+							}  
+			}
+		}
+	
+		if($subject_id != null || $subject_id != '')
+		{
+			$studentClassExist = StudentClass::where('class_name',$cur_class_name)->where('section_name',$cur_section_name)->where('subject_id',$subject_id)->get()->first();
+			
+			if(!$studentClassExist)
+			{
+				return back()->with('error',"Selected subject class does not exists...");
+			}
+			else
+			{
+				
+				$subject_name = StudentSubject::where('id',$subject_id)->get()->first();
+			
+				$sub_name = $subject_name['subject_name'];
+				
+				$obj_curTeacher = Teacher::where('id',$cur_teacher_id)->get()->first();
+				
+				$g_teacher_id = $obj_curTeacher['g_user_id'];
+				$phone = $obj_curTeacher['phone'];
+				
+				$class_id = $studentClassExist->id;
+				$g_class_id = $studentClassExist->g_class_id;
+				
+				/// Send SMS to Teacher for assigned new Class
+				 if(strlen($phone) <= 10){
+						$number = '91'.$phone;
+					}else{
+						$number = $phone;
+					} 
+				 
+					$message = "You are invited for a new class $cur_class_name - $cur_section_name - $sub_name.";
+					
+					$s = CommonHelper::send_sms($number,$message);
+			
+					$token = CommonHelper::varify_Admintoken(); // verify admin token 
+					 $inv_data = array( 
+							  "courseId"=>$g_class_id,
+							  "role"=> "TEACHER",
+							  "userId" => $g_teacher_id
+
+							);	
+					$inv_data = json_encode($inv_data);
+					$inv_responce = CommonHelper::teacher_invitation_forClass($token,$inv_data); // Ivite teacher 
+					
+				//	$inv_delete = CommonHelper::teacher_invitation_delete($token,$prve_g_code); // cancel invitation
+					
+					$inv_resData = array('error'=> '');
+					
+					if($inv_responce == 101)
+					{
+						return back()->with('error', Config::get('constants.WebMessageCode.119'));
+					}
+					else
+					{
+						$inv_resData = array_merge($inv_resData,json_decode($inv_responce,true));
+						if($inv_resData['error'] != '')
+						{
+							
+							if($inv_resData['error']['status'] == 'UNAUTHENTICATED') 
+							{
+								return redirect()->route('admin.logout');
+							}
+							else
+							{
+								//Log::error($inv_resData['error']['message']);
+								return back()->with('error',$inv_resData['error']['message']);
+							}
+						}
+						else
+						{	
+					
+								$inv_res_code = $inv_resData['id']; 
+								$obj_inv = new InvitationClass;
+								$obj_inv->class_id = $class_id;
+								$obj_inv->subject_id = $subject_id;
+								$obj_inv->teacher_id = $cur_teacher_id;
+								$obj_inv->g_code = $inv_res_code;
+								//$obj_inv->g_responce = '';
+								//$obj_inv->is_accept = 0;
+								$obj_inv->save();
+								
+								// Update All Record in time table
+								$obj = ClassTiming::where('subject_id',$cur_subject_id)->where('class_id',$cur_class_ID)->where('teacher_id',$cur_teacher_id)->update(['class_id'=>$class_id,'subject_id'=>$subject_id]);
+																	
+							return back()->with('success',"TimeTable updated successfully..");	
+						}
+					} 
+				
+				
+				
+			}
+		}
+		
+	}
+		
+		
     public function timeTableImport(Request $request)
     {
 		$g_class_id = '';
@@ -50,7 +295,7 @@ class ImportTimetableController extends Controller
             $request->validate([
                 'file' => 'required'
             ]);
-            $extensions = array("csv","xlsx");
+            $extensions = array("csv","xls","xlsx");
             $file_validate = strtolower($request->file('file')->getClientOriginalExtension());
             if (!in_array($file_validate, $extensions)) {
                 return back()->with('error', sprintf(Config::get('constants.WebMessageCode.103'), implode(",", $extensions)));
@@ -90,7 +335,7 @@ class ImportTimetableController extends Controller
 				$error = '';
 				$rows = '';
 				$error_message = '';
-				for($i=0;$i<count($reader_values);$i++){
+				for($i=0;$i<8;$i++){
 					$j++;
 					$class_section_str = $reader_keys[0];
 					$time = $reader_values[1];
@@ -561,7 +806,7 @@ class ImportTimetableController extends Controller
         return view('admin.timetable.import');
     }
 	
-	public function filterTimetable(Request $request)
+	public function filterTimetable(Request $request)  // if any update in this function, then same changes we have to update in download_Timetable function
 	{
 		$class_name = $request->txtclass;
 		$section_name = $request->txtsubject;
@@ -675,7 +920,7 @@ class ImportTimetableController extends Controller
 		
 						foreach($ttime as $t)
 						{
-							$days = \DB::select ("SELECT t.from_timing, t.to_timing, r.name, s.subject_name , t.is_lunch, r.g_meet_url
+							$days = \DB::select ("SELECT t.id, t.from_timing, t.to_timing, t.class_day, r.name, s.subject_name , t.is_lunch, r.g_meet_url
 													FROM tbl_class_timings t
 													left join tbl_student_subjects s on s.id = t.subject_id
 													left join tbl_student_classes c on c.id = t.class_id
@@ -699,12 +944,26 @@ class ImportTimetableController extends Controller
 									}
 									
 									if(empty($d->g_meet_url))
-										$e  =  $d->name."(<strong>".$d->subject_name ."</strong>)";
+										$e  =  $d->name." (<strong>".$d->subject_name ."</strong>)";
 									else
-										$e  =  "<a target='_blank' href='".$d->g_meet_url."'>".$d->name."(<strong>".$d->subject_name ."</strong>)</a>";
+										$e  =  "<a target='_blank' href='".$d->g_meet_url."'>".$d->name." (<strong>".$d->subject_name ."</strong>)</a>";
+									
+									$cc = array();
+									parse_str("details=".$d->id."/".$d->name."/".$d->subject_name."/".$d->class_day."/".date('H:i',strtotime($d->from_timing))."-".date('H:i',strtotime($d->to_timing)), $cc);
+									
+									//dd($cc);
+									
+									$ed = "<br><a 
+									data-id='".$d->id."' 
+									data-tname='".$d->name."' 
+									data-subject_name='".$d->subject_name."' 
+									data-class_day='".$d->class_day."' 
+									data-timing='".date('H:i',strtotime($d->from_timing))."-".date('H:i',strtotime($d->to_timing))."' 
+									data-deleteModal=".$d->id ."
+									href='javascript:void(0)' onclick='editTimetable(".$d->id.",".json_encode($cc).")'>Edit</a>";
 									
 									$html .= "<td>".($d->is_lunch == 1 ? "LUNCH" : $e )."</td>";
-									$htmla .= "<td>".($d->is_lunch == 1 ? "LUNCH" : $e)."</td>";
+									$htmla .= "<td>".($d->is_lunch == 1 ? "LUNCH" : $e).$ed."</td>";
 									//$html .= "<td>".$d->name."</td>";
 									$i++;
 								}
@@ -739,10 +998,17 @@ class ImportTimetableController extends Controller
     {
       $timetables = ClassTiming::join('tbl_techers', 'tbl_techers.id', '=', 'tbl_class_timings.teacher_id')->get();
 	  
-	  $class = \DB::table('tbl_classes')->distinct()->get(['class_name']);
-	  $section = \DB::table('tbl_classes')->distinct()->get(['section_name']);
+	  $ar["class"] = \DB::table('tbl_student_classes')->distinct()->get(['class_name']);
+	  $ar["sname"] = \DB::table('tbl_student_classes')->distinct()->get(['section_name']);
+	  $ar["tname"] = \DB::table('tbl_techers')->get(['id','name']);
+	  $ar["subname"] = \DB::table('tbl_student_classes as c')
+						->join('tbl_student_subjects as s','c.subject_id','s.id')
+						->where('s.subject_name', '<>', 'Lunch')
+						->get(['s.id','s.subject_name']);
+						
+	  $ar["timing"] = \DB::table('tbl_class_timings')->distinct()->pluck('from_timing','to_timing');
 
-      return view('admin.timetable.index',compact('timetables','class','section'));
+      return view('admin.timetable.index',compact('timetables','ar'));
     }
 	public function addExtraClass(Request $request)
 	{
@@ -953,8 +1219,7 @@ class ImportTimetableController extends Controller
         return response()->download($path);
 	}
 	
-	
-    /*Import no of students in a class*/
+	 /*Import no of students in a class*/
     public function importClassStudentNumber(Request $request){
         $student_class = \App\StudentClass::all();
         if(Request()->post()){
@@ -1003,5 +1268,186 @@ class ImportTimetableController extends Controller
         return view('admin.class.import_student',compact('student_class'));
     }
 	
+	
+	//DownLoad Time table same funciton as time table filter
+	public function download_Timetable($class,$section)
+	{
+		$class_name = decrypt($class);//$request->txtclass;
+		$section_name = decrypt($section);// $request->txtsubject;
+		
+		/* echo $class_name;
+		echo $section_name;
+		exit;
+		 */
+		$i = 1;
+		$p = 1;
+		$html = "";
+		
+		$cl = $class_name." ".$section_name;
+		
+		$ttime = \DB::select ('SELECT DISTINCT from_timing FROM `tbl_class_timings` ORDER by from_timing');
+		
+		
+		$days = "";
+		$htmla = "";
+		$html = "
+		
+		<style type='text/css'>
+			body {
+				background-color: #f6f6ff;
+				font-family: Calibri, Myriad;
+			}
+
+			table.timecard {
+				margin: auto;
+				width: 1400px;
+				border-collapse: collapse;
+				border: 1px solid #fff; /*for older IE*/
+				border-style: hidden;
+			}
+
+			.caption {
+				background-color: #f79646;
+				color: #fff;
+				font-size: 32px;
+				font-weight: bold;
+				letter-spacing: .3em;
+				line-height:2.5em;
+			}
+
+			table.timecard thead th {
+				padding: 8px;
+				background-color: #fde9d9;
+				font-size: large;
+			}
+
+			table.timecard thead th#thDay {
+				width: 40%;	
+			}
+
+			.special {
+				background:#222 !important;
+				color:#fff;	
+				font-size:25px !important;
+				font-weight:600;
+			}
+
+			table.timecard thead th#thRegular, table.timecard thead th#thOvertime, table.timecard thead th#thTotal {
+				width: 20%;
+			}
+
+			.odd{
+			background:#fff !important;
+			}
+
+			.even{
+			background:#eee !important;
+			}
+
+			table.timecard th, table.timecard td {
+				padding: 3px;
+				border-width: 1px;
+				border-style: solid;
+				border-color: #f79646 #ccc;
+			}
+
+			table.timecard td {
+				text-align: center;
+				height:2.5em;
+			}
+
+			table.timecard tbody th {
+				text-align: left;
+				font-weight: normal;
+			}
+
+			table.timecard tfoot {
+				font-weight: bold;
+				font-size: large;
+				background-color: #687886;
+				color: #fff;
+			}
+
+			table.timecard tr.even {
+				background-color: #fde9d9;
+			}
+		</style>";
+		
+		$html .= "<table class='timecard'>
+					<tbody>
+						<tr><td colspan=8 class='caption'>TimeTable 2020-21</td></tr>
+						<tr style='font-weight:900;font-size:22px;'>
+							<td class='special'>CLASS $cl</td><td >Time</td><td>Monday</td><td>Tuesday</td><td>Wednesday</td> <td>Thursday</td><td>Friday</td><td>Saturday</td>
+						</tr>";
+						
+		$htmla .= "<table id='teacherlist' class='table table-sm table-bordered display' style='width:100%' data-page-length='25' data-order='[[ 2, &quot;asc&quot; ]]' data-col1='60' data-collast='120' data-filterplaceholder='Search Records ...'>
+					<tbody>
+						<tr><td colspan=8>TimeTable 2020-21</td></tr>
+						<tr style='font-weight:600;font-size:14px;'>
+							<td style='width:120px;background:#222 !important;color:white;font-size:20px;'>CLASS $cl</td><td>Time</td><td>Monday</td><td>Tuesday</td><td>Wednesday</td> <td>Thursday</td><td>Friday</td><td>Saturday</td>
+						</tr>";
+		
+						foreach($ttime as $t)
+						{
+							$days = \DB::select ("SELECT t.from_timing, t.to_timing, r.name, s.subject_name , t.is_lunch, r.g_meet_url
+													FROM tbl_class_timings t
+													left join tbl_student_subjects s on s.id = t.subject_id
+													left join tbl_student_classes c on c.id = t.class_id
+													left join tbl_techers r on r.id = t.teacher_id
+													where c.class_name = ? and c.section_name=?
+													and from_timing = ?", [$class_name , $section_name, $t->from_timing]);
+					
+							if(count($days) > 0)
+							{			
+								foreach($days as $d)
+								{
+									if($p % 2 == 0)
+										$x = "even";
+									else
+										$x = "odd";
+									
+									if($i == 1)
+									{
+										$html .= "<tr class='$x'><td><strong>Period $p</strong></td><td>".date('H:i',strtotime($d->from_timing))."-".date('H:i',strtotime($d->to_timing))."</td>";
+										$htmla .= "<tr class='$x'><td>Period $p</td><td style='width:100px;'>".date('H:i',strtotime($d->from_timing))."-".date('H:i',strtotime($d->to_timing))."</td>";
+									}
+									
+									if(empty($d->g_meet_url))
+										$e  =  $d->name."(<strong>".$d->subject_name ."</strong>)";
+									else
+										$e  =  "<a target='_blank' href='".$d->g_meet_url."'>".$d->name."(<strong>".$d->subject_name ."</strong>)</a>";
+									
+									$html .= "<td>".($d->is_lunch == 1 ? "LUNCH" : $e )."</td>";
+									$htmla .= "<td>".($d->is_lunch == 1 ? "LUNCH" : $e)."</td>";
+									//$html .= "<td>".$d->name."</td>";
+									$i++;
+								}
+								$p++;
+								$i = 1;
+								$html .= "</tr>";
+								$htmla .= "</tr>";
+							}
+						}
+		
+		$html .= "</tbody></table>";
+		$htmla .= "</tbody></table>";
+		
+		//echo($html);
+		//Log::error($html);
+		
+		
+		
+		
+		$name = public_path('dl-timetable')."/".$class_name."_".$section_name."_timetable.pdf";
+		
+		if(file_exists($name))
+			unlink($name);
+		
+		//$pdf = PDF::loadHTML($html);
+		$pdf = PDF::loadHTML($html)->setPaper('a3', 'landscape')->setWarnings(false)->save($name);
+
+		return response()->download($name);
+	}
+
 	
 }

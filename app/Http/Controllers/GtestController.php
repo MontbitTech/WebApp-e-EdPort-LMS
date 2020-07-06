@@ -13,6 +13,8 @@ use Session;
 use Google_Service_Classroom_Teacher;
 use Helper;
 use PDF;
+use App\Http\Helpers\CustomHelper;
+use Mail;
 
 class GtestController extends Controller
 {
@@ -319,9 +321,13 @@ class GtestController extends Controller
 	
 	public function TestFilterTimetable($class,$section)
 	{
-		$class_name = $class;//$request->txtclass;
-		$section_name =$section;// $request->txtsubject;
+		$class_name = decrypt($class);//$request->txtclass;
+		$section_name = decrypt($section);// $request->txtsubject;
 		
+		/* echo $class_name;
+		echo $section_name;
+		exit;
+		 */
 		$i = 1;
 		$p = 1;
 		$html = "";
@@ -331,6 +337,7 @@ class GtestController extends Controller
 		$ttime = \DB::select ('SELECT DISTINCT from_timing FROM `tbl_class_timings` ORDER by from_timing');
 		
 		
+		$days = "";
 		$htmla = "";
 		$html = "
 		
@@ -431,14 +438,14 @@ class GtestController extends Controller
 		
 						foreach($ttime as $t)
 						{
-							$days = \DB::select ("SELECT t.from_timing, t.to_timing, r.name, s.subject_name , t.is_lunch
+							$days = \DB::select ("SELECT t.from_timing, t.to_timing, r.name, s.subject_name , t.is_lunch, r.g_meet_url
 													FROM tbl_class_timings t
 													left join tbl_student_subjects s on s.id = t.subject_id
 													left join tbl_student_classes c on c.id = t.class_id
 													left join tbl_techers r on r.id = t.teacher_id
 													where c.class_name = ? and c.section_name=?
 													and from_timing = ?", [$class_name , $section_name, $t->from_timing]);
-													
+					
 							if(count($days) > 0)
 							{			
 								foreach($days as $d)
@@ -454,8 +461,13 @@ class GtestController extends Controller
 										$htmla .= "<tr class='$x'><td>Period $p</td><td style='width:100px;'>".date('H:i',strtotime($d->from_timing))."-".date('H:i',strtotime($d->to_timing))."</td>";
 									}
 									
-									$html .= "<td>".($d->is_lunch == 1 ? "LUNCH" : $d->name."(<strong>".$d->subject_name ."</strong>)")."</td>";
-									$htmla .= "<td>".($d->is_lunch == 1 ? "LUNCH" : $d->name."(".$d->subject_name .")")."</td>";
+									if(empty($d->g_meet_url))
+										$e  =  $d->name."(<strong>".$d->subject_name ."</strong>)";
+									else
+										$e  =  "<a target='_blank' href='".$d->g_meet_url."'>".$d->name."(<strong>".$d->subject_name ."</strong>)</a>";
+									
+									$html .= "<td>".($d->is_lunch == 1 ? "LUNCH" : $e )."</td>";
+									$htmla .= "<td>".($d->is_lunch == 1 ? "LUNCH" : $e)."</td>";
 									//$html .= "<td>".$d->name."</td>";
 									$i++;
 								}
@@ -486,6 +498,47 @@ class GtestController extends Controller
 		return response()->download($name);
 	}
 	
+	public function send_email_timeTable()
+	{
+		$domain = CustomHelper::getDomain();
+		$from = CustomHelper::getFromMail();
+		$domain_name = $domain->value;
+		
+		$s = 'A';
+		$c = 10;
+		$class = encrypt($c);
+		$section = encrypt($s);
+		
+		$timeTable_url = "http://lms.".$domain_name."/public/timeTable/".$class."/".$section."";
+		
+		$name = "RITESH";
+		$data_mail = array('name'=>$name,'timetable_url'=>$timeTable_url);
+		$email = "ritesh696@gmail.com";
+					
+					 Mail::send('mail.mail_timetable', $data_mail, function($message) use($email,$from) 
+					 {
+						 $message->to($email);
+						 $message->subject('New Time Table');
+						 //$message->from('noreply@montbit.com','MontBIt');
+						 $message->from($from->value,'MontBIt');
+					  });
+					  
+				if( count(Mail::failures()) > 0 ) 
+				{
+				   foreach(Mail::failures as $email_address) {
+					  $er .= $email_address;
+					}
+
+				} else {
+					$er= "Notification sent successfully!";
+				}
+				
+				
+				echo $er;
+				exit;
+				
+		
+	}
 	
 	
     /**
