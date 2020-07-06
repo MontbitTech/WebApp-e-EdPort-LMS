@@ -11,21 +11,20 @@ class createTblSupportHelpTable extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up ()
     {
         Schema::create('tbl_support_help', function (Blueprint $table) {
-            			$table->increments("id");
-			$table->integer("teacher_id");
-			$table->smallInteger("help_type");
-			$table->text("description");
-			$table->text("class_join_link")->nullable();
-			$table->integer("class_id")->nullable();
-			$table->integer("subject_id")->nullable();
-			$table->smallInteger("status")->default('1');
-			$table->integer("read_status");
-			$table->timestamp("created_at")->default('CURRENT_TIMESTAMP');
-			$table->timestamp("updated_at")->default('0000-00-00 00:00:00');
+            $table->increments("id");
+            $table->integer("teacher_id");
+            $table->smallInteger("help_type");
+            $table->text("description");
+            $table->text("class_join_link")->nullable();
+            $table->integer("class_id")->nullable();
+            $table->integer("subject_id")->nullable();
+            $table->smallInteger("status")->default('1');
+            $table->integer("read_status");
 
+            $table->timestamps();
         });
     }
 
@@ -34,7 +33,7 @@ class createTblSupportHelpTable extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down ()
     {
         Schema::dropIfExists('tbl_support_help');
     }
