@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\HelpTicketCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
@@ -47,9 +48,10 @@ class ClassWorkController extends Controller
         }
 		
 		$cmsclass = \DB::select('select distinct class from tbl_cmslinks order by class');
+
+        $helpCategories = HelpTicketCategory::get();
 		
-		
-    	return  view('teacher.assignment.index',compact('class_list','links', 'cmsclass'));
+    	return  view('teacher.assignment.index',compact('class_list','links', 'cmsclass','helpCategories'));
     }
 
 	public function ajaxLinks(Request $request)

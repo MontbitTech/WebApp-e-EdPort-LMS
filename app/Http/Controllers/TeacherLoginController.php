@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\HelpTicketCategory;
 use App\Http\Helpers\CustomHelper;
 use Illuminate\Support\Facades\Config;
 use App\Teacher;
@@ -154,10 +155,11 @@ class TeacherLoginController extends Controller
 		$inviteClassData = InvitationClass::with('studentClass','studentSubject')->where('teacher_id',$logged_teacher_id)->orderBy('id','DESC')->get();
 		
 		
-		$teacherData = Teacher::where('id',$logged_teacher_id)->get()->first();	
-	
+		$teacherData = Teacher::where('id',$logged_teacher_id)->get()->first();
+
+		$helpCategories = HelpTicketCategory::get();
 		
-        return view('teacher.dashboard', compact('TodayLiveData','todaysDate','data','pastClassData','inviteClassData','teacherData'));
+        return view('teacher.dashboard', compact('TodayLiveData','todaysDate','data','pastClassData','inviteClassData','teacherData','helpCategories'));
       } 
     
       public function logout(Request $request) 
