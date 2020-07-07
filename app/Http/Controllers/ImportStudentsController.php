@@ -17,7 +17,6 @@ use App\InvitationClass;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use App\Http\Helpers\CustomHelper;
-use Mail;
 
 
 class ImportStudentsController extends Controller
@@ -25,12 +24,6 @@ class ImportStudentsController extends Controller
 
  public function addStudent(Request $request)
     {
-		
-		
-		$domain = CustomHelper::getDomain();
-		$from = CustomHelper::getFromMail();
-		$domain_name = $domain->value;
-		
          if($request->isMethod('post')) 
 		 {
             $request->validate([ 
@@ -116,24 +109,6 @@ class ImportStudentsController extends Controller
 									}  
 					}
 					\DB::insert('insert into tbl_students (name, class_id, phone, email, notify) values (?, ?, ?, ?, ?)', [$request->fname,$student[0],$request->phone,$request->email, $n]);
-					
-					$class = encrypt($request->class);
-					$section = encrypt($request->section);
-					
-					$timeTable_url = "http://lms.".$domain_name."/public/timeTable/".$class."/".$section."";
-					
-					$data_mail = array('name'=>$request->fname,'timetable_url'=>$timeTable_url);
-					$email = $request->email;
-								
-					 Mail::send('mail.mail_timetable', $data_mail, function($message) use($email,$from) 
-					 {
-						 $message->to($email);
-						 $message->subject('New Time Table');
-						 //$message->from('noreply@montbit.com','MontBIt');
-						 $message->from($from->value,'MontBIt');
-					  });
-		
-						
 					return redirect()->route('adminlist.students')->with('success',Config::get('constants.WebMessageCode.112'));
 			}
 			else
@@ -254,10 +229,31 @@ class ImportStudentsController extends Controller
 	
      public function listStudents()
     {
-      $lists = \DB::select('select s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id');
+      // $lists = \DB::select('select DISTINCT c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id');
 
-      return view('admin.numbers.index',compact('lists'));
+    	  $classes = \DB::select('select DISTINCT class_name from tbl_classes');
+
+    	   $sections = \DB::select('select DISTINCT section_name from tbl_classes');
+
+
+
+
+      return view('admin.numbers.index',compact('classes','sections'));
     }
+
+   public function filterStudent(Request $request)
+
+   {
+        $class_name = $request->txtSerachClass;
+		$section_name = $request->txtSerachSection;
+        if(!empty($request->txtSerachClass && $request->txtSerachSection  )) {
+            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=? and c.section_name=?",[$class_name , $section_name]);
+
+        }
+                    return view('admin.numbers.filter-student',compact('getResult'));
+
+    }
+
 
 	public function sampleStudentsDownload(Request $request)
 	{
@@ -269,12 +265,6 @@ class ImportStudentsController extends Controller
 	
     /*Import no of students in a class*/
     public function importClassStudentNumber(Request $request){
-		
-		
-		$domain = CustomHelper::getDomain();
-		$from = CustomHelper::getFromMail();
-		$domain_name = $domain->value;
-		
         $student_class = \App\StudentClass::all();
 		$error = "";
 		$rows = "";
@@ -420,29 +410,6 @@ class ImportStudentsController extends Controller
 									$s = \DB::table('tbl_students')->insert([
 											['name' => $reader["name"], 'class_id' => $class_id, 'email' => $reader["email"],'phone' => $reader["phone"], 'notify' => $reader["notify"]]
 										]);
-								
-									$c = $reader["class"];
-									$s = $reader["section"];
-									
-									$class = encrypt($c);
-									$section = encrypt($s);
-									
-									$name = $reader["name"];
-									$email = $reader["email"];
-									
-									$timeTable_url = "http://lms.".$domain_name."/public/timeTable/".$class."/".$section."";
-									
-									$data_mail = array('name'=>$name,'timetable_url'=>$timeTable_url);
-												
-									 Mail::send('mail.mail_timetable', $data_mail, function($message) use($email,$from) 
-									 {
-										 $message->to($email);
-										 $message->subject('New Time Table');
-										 //$message->from('noreply@montbit.com','MontBIt');
-										 $message->from($from->value,'MontBIt');
-									  });
-					
-					
 									Log::error(Config::get('constants.WebMessageCode.130') ." : ROW - " . $i);
 								}
 							}
@@ -453,6 +420,7 @@ class ImportStudentsController extends Controller
 								$error = "true";
 							}
 
+							
 						}
 						$i += 1;
 					}
@@ -476,8 +444,4 @@ class ImportStudentsController extends Controller
         }
         return view('admin.numbers.import',compact('student_class'));
     }
-	
-	
-	
-	
 }

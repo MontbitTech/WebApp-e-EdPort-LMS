@@ -17,43 +17,60 @@
           <div class="card-body pt-3">
             <div class="row justify-content-center">
               <div class="col-md-4 col-lg-3 text-md-left text-center mb-1">
-                <span data-dtlist="#teacherlist" class="mb-1">
+                <!-- <span data-dtlist="#teacherlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                </span>
+                </span> -->
               </div>
               <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
-                <span data-dtfilter="#teacherlist" class="mb-1">
+                <!-- <span data-dtfilter="#teacherlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                </span>
+                </span> -->
               </div>
-              <div class="col-sm-12">
-          <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="" data-filterplaceholder="Search Records ...">
-            <thead>
-              <tr>
-                <th>Class</th>
-                <th>Section</th>
-                <th>Subject</th>
-                <th  class="text-center">Link</th>
-				 <th  class="text-center">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-			 @if(count($classes)>0)
-              @php $i=0; @endphp
-                @foreach($classes as $cls)
-                  <tr>
-                    <td>{{$cls->class_name}}</td>
-                    <td>{{$cls->section_name}}</td>
-                    <td>{{$cls->studentSubject->subject_name}}</td>
-                    <td class="text-center"><a href="{{ $cls->g_link }}" target="_blank" >Class Link </a></td>
-				   <td  class="text-center">
-                       <a href="javascript:void(0);"  data-deleteModal="{{$cls->id}}" >{{ __('Delete') }}</a>
-					</td>
-                  </tr>
-                @endforeach
-              @endif
-           
-            </tbody>
+
+               <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
+         <span data-dtfilter="" class="mb-1">
+                  <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
+          <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
+          
+          <select id="txtSerachByClass" name="txtSerachByClass" class="form-control form-control-sm" onchange="getSubject()">
+          <option value=''>Select Class</option>
+            @if(count($classes)>0)
+            @foreach($classes as $cl)
+              <option value='{{$cl->class_name}}'>{{$cl->class_name}}</option>
+            @endforeach
+          @endif
+          </select>
+          
+        </span>
+        
+            <span data-dtfilter="" class="mb-1">
+          
+           <select id="txtSerachBySection" name="txtSerachBySection" class="form-control form-control-sm" onchange="getSubject()">
+            <option value=''>Select Section</option>
+            @if(count($section)>0)
+            @foreach($section as $sl)
+              <option value='{{$sl->section_name}}'>{{$sl->section_name}}</option>
+            @endforeach
+          @endif
+          </select>
+          
+        </span>
+        
+        
+              </div>
+
+          <div class="col-sm-12" id='subject'>
+          <table id="subjectlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+          <thead>
+            <tr>
+            <th>S.no</th>
+             <th>Class</th>
+              <th>Section</th>
+              <th>Subject</th>
+              <th  class="text-center">Link</th>
+         <th  class="text-center">Action</th>
+            </tr>
+          </thead>
           </table>
         </div>
         </div>
@@ -76,19 +93,19 @@
       </div>
       <div class="modal-body pt-4">
         <form action="{{route('classes.delete')}}" method="POST">
-			@csrf
-				<input type="hidden" name="txt_class_id" id="txt_class_id"/>
+      @csrf
+        <input type="hidden" name="txt_class_id" id="txt_class_id"/>
           <div class="form-group text-center">
-				<h4>Are You Sure ! </h4> 	
-				<h4>You want to detele this class. </h4>
-				<p style="color: #bf2d2d;font-size: 13px;">* if you delete this class, it will auto delete all associated record with this class like assignment, timetable, student, etc... </p>
-				
+        <h4>Are You Sure ! </h4>  
+        <h4>You want to detele this class. </h4>
+        <p style="color: #bf2d2d;font-size: 13px;">* if you delete this class, it will auto delete all associated record with this class like assignment, timetable, student, etc... </p>
+        
           </div>
           <div class="form-group text-center">
             <button type="submit" class="btn btn-danger px-4">
               Delete
             </button>
-			<button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
+      <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
               Cancel
             </button>
           </div>
@@ -121,5 +138,40 @@ $(document).on('click', '[data-deleteModal]', function(){
   
 });
 
+
+</script>
+
+<!-- <script>
+  function getSubject(){
+  var class_name   = $('#txtSerachByClass').val();
+  var section_name = $('#txtSerachBySection').val();
+
+  alert('yyy');
+}
+</script>
+ -->
+<script>
+    function getSubject(){
+
+       $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+    });
+        var txtSerachByClass   = $("#txtSerachByClass").val();
+        var txtSerachBySection = $("#txtSerachBySection").val();
+        $.ajax({
+            url: "{{url('filter-subject')}}",
+            type: 'POST',
+            data: {
+                txtSerachByClass   : txtSerachByClass,
+                txtSerachBySection : txtSerachBySection
+            },
+            success: function(info) {
+                $("#subject").html(info);
+                $("#subject").show();
+            }
+        });
+    }
 </script>
 @endsection
