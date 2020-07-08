@@ -36,20 +36,29 @@ class HelpController extends Controller {
      */
 
     public function helpList (Request $request) {
-
+        
         $categories = HelpTicketCategory::get();
-        $selectedCategory = null;
-        if ( isset($request->category) ) {
-            $support_help = \App\SupportHelp::orderBy('status', 'DESC')
-                ->where('help_ticket_category_id', $request->category)->get();
-            $selectedCategory = $request->category;
-        } else {
-            $support_help = \App\SupportHelp::where('read_status', 0)->update(['read_status' => 1]);
-            $support_help = \App\SupportHelp::orderBy('status', 'DESC')->get();
-        }
-
-        return view('admin.help.list', compact('support_help', 'categories', 'selectedCategory'))->with('i', 0);
+        return view('admin.help.list', compact('categories'));
     }
+
+    public function filterTicket (Request $request) {
+
+      $categories = HelpTicketCategory::get();
+
+      $selectedCategory = null;
+      if ( isset($request->category)){
+      $support_help = \App\SupportHelp::orderBy('status', 'DESC')
+      ->where('help_ticket_category_id', $request->category)->get();
+      $selectedCategory = $request->category;
+      } 
+      else{
+      $support_help = \App\SupportHelp::where('read_status', 0)->update(['read_status' => 1]);
+      $support_help = \App\SupportHelp::orderBy('status', 'DESC')->get();
+      }
+
+      return view('admin.help.filter-ticket', compact('support_help','categories','selectedCategory'))->with('i', 0);
+    }
+
 
     public function updateStatus (Request $request) {
         $help_id = $request->help_id;
