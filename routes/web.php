@@ -26,7 +26,8 @@ Route::get('/get_course','GtestController@get_course')->name('get_course');
 Route::get('/create_teacher','GtestController@create_teacher')->name('create_teacher');
 Route::get('/user_permission/{id}','GtestController@test_user_permission');
 Route::get('/create_user','GtestController@create_user'); */
-Route::get('/test_pdf/{class}/{section}','GtestController@TestFilterTimetable'); 
+Route::get('/timeTable/{class}/{section}','GtestController@TestFilterTimetable'); 
+Route::get('/test_email_timetable','GtestController@send_email_timeTable'); 
 Route::get('/get_token','GtestController@get_token')->name('get_token');
 
 // ------ //
@@ -68,25 +69,22 @@ Route::get('/admin/downloadPDF','GtestController@downloadPDF')->name('admin.down
 
 	Route::get('/admin/classes','ClassController@list_class')->name('admin.listClass');
 	Route::match(array('GET','POST'),'/admin/create-classes','ClassController@addClasses')->name('classes.add');
-	Route::post('/admin/filter-subject','ClassController@filterSubject')->name('list.filtertsubject');
-	Route::post('filter-subject','ClassController@filterSubject')->name('filter-subject');
 	//Route::match(array('GET','POST'),'/admin/edit-classes/{id}','ClassController@editClasses')->name('classes.edit');
 	Route::match(array('GET','POST'),'/admin/delete-classes','ClassController@deleteClasses')->name('classes.delete');
-	
-	
 
 	Route::match(array('GET','POST'),'/add-extraclass','ImportTimetableController@addExtraClass')->name('add.extracalss');
 	
 	Route::get('/list-timetable','ImportTimetableController@listTimetable')->name('list.timetable');
+	Route::post('/edit-timetable','ImportTimetableController@editTimetable')->name('timetable.edit');
 	Route::match(array('GET','POST'),'/timetable-import','ImportTimetableController@timeTableImport')->name('admin.timetableimport');
 	Route::get('/download-sample','ImportTimetableController@sampleDownload')->name('admin.sampleDownload');
 	
 	Route::get('/admin/list-students','ImportStudentsController@listStudents')->name('adminlist.students');
 	Route::get('/list-students','ImportStudentsController@listStudents')->name('list.students');
-	Route::post('filter-student','ImportStudentsController@filterStudent')->name('filter-student');
 	Route::match(array('GET','POST'),'/admin/edit-student/{id}','ImportStudentsController@editStudent')->name('student.edit');
 	Route::match(array('GET','POST'),'/admin/add-student','ImportStudentsController@addStudent')->name('student.add');
 	Route::post('/admin/delete-student/{id}','ImportStudentsController@deleteStudent')->name('student.delete');
+	Route::post('filter-student','ImportStudentsController@filterStudent')->name('filter-student');
 
 	Route::match(array('GET','POST'),'/students-import','ImportStudentsController@importClassStudentNumber')->name('admin.studentsimport');
 	Route::get('/download-students','ImportStudentsController@sampleStudentsDownload')->name('admin.sampleStudentsDownload');
@@ -96,6 +94,7 @@ Route::get('/admin/downloadPDF','GtestController@downloadPDF')->name('admin.down
 	Route::match(array('GET','POST'),'/admin/edit-link/{id}','ImportCMSLinksController@editLink')->name('cms.editlink');
 	Route::match(array('GET','POST'),'/admin/add-link','ImportCMSLinksController@addLink')->name('cms.addlink');
 	Route::post('/admin/delete-link/{id}','ImportCMSLinksController@deleteLink')->name('cms.deletelink');
+	Route::post('filter-subject','ClassController@filterSubject')->name('filter-subject');
 
 	Route::match(array('GET','POST'),'/cmslinks-import','ImportCMSLinksController@cmsLinksImport')->name('cms.cmslinksimport');
 	Route::get('/download-cmslinkssample','ImportCMSLinksController@sampleCMSLinksDownload')->name('cms.sampleCMSLinksDownload');
@@ -148,6 +147,7 @@ Route::get('/admin/downloadPDF','GtestController@downloadPDF')->name('admin.down
 	});
 
 Route::get('/addData_pastClass','ClassWorkController@addData_DateClass');
+Route::get('/timeTable/{class}/{section}','ImportTimetableController@download_Timetable');
 
 //Cron JOb URL  http://290px.com/elearn/public/addData_pastClass
 

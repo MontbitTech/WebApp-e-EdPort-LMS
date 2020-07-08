@@ -448,5 +448,6 @@ class ClassController extends Controller
 							);
 		return view('admin.class.add',compact('data',$data))->with('days',$days);
     } */
+	
 
 }
