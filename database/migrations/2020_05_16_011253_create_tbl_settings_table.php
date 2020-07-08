@@ -17,6 +17,7 @@ class createTblSettingsTable extends Migration
             $table->increments("id");
             $table->string("item", 100);
             $table->string("value", 4000)->nullable();
+            $table->string('folder')->nullable();
 
             $table->timestamps();
         });
