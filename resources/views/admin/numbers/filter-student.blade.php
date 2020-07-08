@@ -14,7 +14,7 @@
             </thead>
             
           <tbody>
-           @if(count($getResult)>0)
+           @if($getResult)
               @php $i=0; @endphp
                 @foreach($getResult as $list)
                   <tr>
