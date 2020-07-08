@@ -47,10 +47,9 @@ class ClassController extends Controller
 	public function filterSubject(Request $request, StudentClass $StudentClass)
 	{
 		$rec = $StudentClass->newQuery();
-		if(!empty($request->txtSerachByClass && $request->txtSerachBySection  )) 
-		{
-		$getResult = $rec->where('class_name', $request->txtSerachByClass)->where('section_name', $request->txtSerachBySection)->get();
-	    }
+		if(!empty($request->txtSerachByClass && $request->txtSerachBySection)){
+			$getResult = $rec->where('class_name', $request->txtSerachByClass)->where('section_name', $request->txtSerachBySection)->get();
+		}
 	    else $getResult="";
 
 	    return view('admin.class.filter-subject',compact('getResult'));
