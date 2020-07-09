@@ -120,7 +120,7 @@ class ImportStudentsController extends Controller
 					$class = encrypt($request->class);
 					$section = encrypt($request->section);
 					
-					$timeTable_url = "http://lms.".$domain_name."/public/timeTable/".$class."/".$section."";
+					$timeTable_url = env('APP_URL')."/timeTable/".$class."/".$section."";
 					
 					$data_mail = array('name'=>$request->fname,'timetable_url'=>$timeTable_url);
 					$email = $request->email;
@@ -430,7 +430,7 @@ class ImportStudentsController extends Controller
 									$name = $reader["name"];
 									$email = $reader["email"];
 									
-									$timeTable_url = "http://lms.".$domain_name."/public/timeTable/".$class."/".$section."";
+									$timeTable_url = env('APP_URL')."/timeTable/".$class."/".$section."";
 									
 									$data_mail = array('name'=>$name,'timetable_url'=>$timeTable_url);
 												
