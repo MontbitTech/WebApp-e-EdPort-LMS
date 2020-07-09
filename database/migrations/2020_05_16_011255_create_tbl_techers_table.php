@@ -26,6 +26,9 @@ class createTblTechersTable extends Migration
             $table->string("g_user_id", 100)->nullable();
             $table->string("g_customer_id", 100)->nullable();
             $table->text("g_response")->nullable();
+            $table->string('g_meet_url')->nullable();
+            $table->dateTime('g_meet_datetime')->nullable();
+            $table->text('hasToken')->nullable();
             $table->string("photo", 255)->nullable();
 
             $table->timestamps();
