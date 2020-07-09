@@ -35,27 +35,27 @@ class HelpController extends Controller {
      * @return list view
      */
 
-    public function helpList (Request $request) {        
+    public function helpList (Request $request) {
         $categories = HelpTicketCategory::get();
+
         return view('admin.help.list', compact('categories'));
     }
 
     public function filterTicket (Request $request) {
 
-      $categories = HelpTicketCategory::get();
+        $categories = HelpTicketCategory::get();
 
-      $selectedCategory = null;
-      if ( isset($request->category)){
-      $support_help = \App\SupportHelp::orderBy('status', 'DESC')
-      ->where('help_ticket_category_id', $request->category)->get();
-      $selectedCategory = $request->category;
-      } 
-      else{
-      $support_help = \App\SupportHelp::where('read_status', 0)->update(['read_status' => 1]);
-      $support_help = \App\SupportHelp::orderBy('status', 'DESC')->get();
-      }
+        $selectedCategory = null;
+        if ( isset($request->category) ) {
+            $support_help = \App\SupportHelp::orderBy('status', 'DESC')
+                ->where('help_ticket_category_id', $request->category)->get();
+            $selectedCategory = $request->category;
+        } else {
+            $support_help = \App\SupportHelp::where('read_status', 0)->update(['read_status' => 1]);
+            $support_help = \App\SupportHelp::orderBy('status', 'DESC')->get();
+        }
 
-      return view('admin.help.filter-ticket', compact('support_help','categories','selectedCategory'))->with('i', 0);
+        return view('admin.help.filter-ticket', compact('support_help', 'categories', 'selectedCategory'))->with('i', 0);
     }
 
     public function updateStatus (Request $request) {
@@ -142,10 +142,12 @@ class HelpController extends Controller {
             $support_help = new SupportHelp;
 
             $validator = Validator::make($request->all(), [
-                    'desc'          => 'required',
-                ],
+                'desc'          => 'required',
+                'help_category' => 'required',
+            ],
                 [
                     'desc.required'          => 'Message required',
+                    'help_category.required' => 'Category required',
                 ]);
 
             if ( !$validator->passes() ) {
@@ -169,10 +171,10 @@ class HelpController extends Controller {
 
             $s = CommonHelper::send_sms($support_numbers, $message);
 
-            echo json_encode(array('status' => 'success', 'message' => Config::get('constants.WebMessageCode.111')));
+            return json_encode(array('status' => 'success', 'message' => Config::get('constants.WebMessageCode.111')));
 
         } else {
-            echo json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.121')));
+            return json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.121')));
         }
 
     }
