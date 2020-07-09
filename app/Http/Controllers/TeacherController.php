@@ -360,7 +360,11 @@ class TeacherController extends Controller
 				
 					foreach($collection as $key => $reader)
 					{
-						
+                        if(Teacher::count() >= env('TEACHER_UPPERCAP'))	{
+                            return back()->with('error',
+                                'Maximum limit of ' . env('TEACHER_UPPERCAP').'teacher reached. 
+                                Contact administrator for extending limit');
+                        }
 						if(!isset($reader["name"]) || !isset($reader["email"]) || !isset($reader["phone"]))
 						{
 							$error = "Header mismatch";
