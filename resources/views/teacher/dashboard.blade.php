@@ -638,6 +638,14 @@
                 <div class="modal-body pt-4">
                     <form>
                         <div class="form-group">
+                            <select name="help_ticket_category" class="form-control" required>
+                                <option value="">Please select a category</option>
+                                @foreach($helpCategories as $category)
+                                    <option value="{{$category->id}}">{{$category->category}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
                             <textarea class="form-control" value="" rows="5" placeholder="Write help message..."
                                       required="required"></textarea>
                         </div>
