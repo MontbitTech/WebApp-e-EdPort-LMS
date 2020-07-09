@@ -14,7 +14,7 @@
                    <div class="form-group row">
                   <label for="colFormLabel" class="col-md-4 col-form-label">Student Name:</label>
                   <div class="col-md-5">
-                  {!! Form::text('fname', "", array('placeholder' => 'Your Name','class' => 'form-control','required'=>'required')) !!}
+                  {!! Form::text('fname', "", array('placeholder' => "Student's Name",'class' => 'form-control','required'=>'required')) !!}
                   </div>
                 </div>
 				<div class="form-group row">
@@ -32,7 +32,7 @@
                 <div class="form-group row">
 					<label for="colFormLabel" class="col-md-4 col-form-label">Email:</label>
 					<div class="col-md-5">
-                    {!! Form::email('email', "", array('placeholder' => 'yourname@domain.com','class' => 'form-control','required'=>'required')) !!}
+                    {!! Form::email('email', "", array('placeholder' => 'studentname@domain.com','class' => 'form-control','required'=>'required')) !!}
 					</div>
                 </div>
 				
