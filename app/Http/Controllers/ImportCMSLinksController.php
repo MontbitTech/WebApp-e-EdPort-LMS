@@ -200,8 +200,11 @@ class ImportCMSLinksController extends Controller
 							$error = "found";
 							$rows .= $i . ",";
 						}
-						else
-						{
+						elseif(empty($reader["assignment"]) && empty($reader["link"])){
+                            Log::error('Either assignment or link should be present : ROW - ' . $i);
+                            $error = "found";
+                            $rows .= $i . ",";
+                        }else {
 							//$subjects = \DB::table('tbl_student_subjects')->where('subject_name',$reader["subject"])->get();
 
 							if($subjects->count() > 0)
