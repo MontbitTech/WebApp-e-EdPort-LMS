@@ -35,8 +35,7 @@ class HelpController extends Controller {
      * @return list view
      */
 
-    public function helpList (Request $request) {
-        
+    public function helpList (Request $request) {        
         $categories = HelpTicketCategory::get();
         return view('admin.help.list', compact('categories'));
     }
@@ -59,7 +58,6 @@ class HelpController extends Controller {
       return view('admin.help.filter-ticket', compact('support_help','categories','selectedCategory'))->with('i', 0);
     }
 
-
     public function updateStatus (Request $request) {
         $help_id = $request->help_id;
         $status_id = $request->status_id;
@@ -69,8 +67,8 @@ class HelpController extends Controller {
         $support_help->save();
 
         echo json_encode(array('status' => 'success', 'message' => Config::get('constants.WebMessageCode.134')));
-
     }
+
 
     public function generateHelpTicket (Request $request) {
 
@@ -127,11 +125,9 @@ class HelpController extends Controller {
 
 
             echo json_encode(array('status' => 'success', 'message' => Config::get('constants.WebMessageCode.111')));
-
         } else {
             echo json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.121')));
         }
-
 
     }
 

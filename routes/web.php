@@ -85,6 +85,7 @@ Route::get('/admin/downloadPDF','GtestController@downloadPDF')->name('admin.down
 	Route::match(array('GET','POST'),'/admin/edit-student/{id}','ImportStudentsController@editStudent')->name('student.edit');
 	Route::match(array('GET','POST'),'/admin/add-student','ImportStudentsController@addStudent')->name('student.add');
 	Route::post('/admin/delete-student/{id}','ImportStudentsController@deleteStudent')->name('student.delete');
+	Route::post('filter-student','ImportStudentsController@filterStudent')->name('filter-student');
 
 	Route::match(array('GET','POST'),'/students-import','ImportStudentsController@importClassStudentNumber')->name('admin.studentsimport');
 	Route::get('/download-students','ImportStudentsController@sampleStudentsDownload')->name('admin.sampleStudentsDownload');
@@ -94,6 +95,7 @@ Route::get('/admin/downloadPDF','GtestController@downloadPDF')->name('admin.down
 	Route::match(array('GET','POST'),'/admin/edit-link/{id}','ImportCMSLinksController@editLink')->name('cms.editlink');
 	Route::match(array('GET','POST'),'/admin/add-link','ImportCMSLinksController@addLink')->name('cms.addlink');
 	Route::post('/admin/delete-link/{id}','ImportCMSLinksController@deleteLink')->name('cms.deletelink');
+	Route::post('filter-subject','ClassController@filterSubject')->name('filter-subject');
 
 	Route::match(array('GET','POST'),'/cmslinks-import','ImportCMSLinksController@cmsLinksImport')->name('cms.cmslinksimport');
 	Route::get('/download-cmslinkssample','ImportCMSLinksController@sampleCMSLinksDownload')->name('cms.sampleCMSLinksDownload');

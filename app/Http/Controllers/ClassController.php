@@ -38,9 +38,22 @@ class ClassController extends Controller
 	 
 	public function list_class()
 	{
-		$classes = StudentClass::all();
-     	return view('admin.class.list_class',compact('classes'));	
+		$classes = StudentClass::select('class_name')->distinct()->get();
+		$section = StudentClass::select('section_name')->distinct()->get();
+		return view('admin.class.list_class',compact('classes','section'));	
 	} 
+
+
+	public function filterSubject(Request $request, StudentClass $StudentClass)
+	{
+		$rec = $StudentClass->newQuery();
+		if(!empty($request->txtSerachByClass && $request->txtSerachBySection)){
+			$getResult = $rec->where('class_name', $request->txtSerachByClass)->where('section_name', $request->txtSerachBySection)->get();
+		}
+	    else $getResult="";
+
+	    return view('admin.class.filter-subject',compact('getResult'));
+	}
 	 
      public function addClasses(Request $request)
     {
