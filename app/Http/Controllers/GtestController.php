@@ -127,7 +127,7 @@ class GtestController extends Controller
         
         $client = new Google_Client();
         $client->setAuthConfigFile('../credentials.json');
-        $client->setRedirectUri('http://lms.schooltimes.ca/public/get_token');
+        $client->setRedirectUri(env('APP_URL').'/get_token');
         
        $client->addScope('https://www.googleapis.com/auth/classroom.courses');
        $client->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
@@ -509,7 +509,7 @@ class GtestController extends Controller
 		$class = encrypt($c);
 		$section = encrypt($s);
 		
-		$timeTable_url = "http://lms.".$domain_name."/public/timeTable/".$class."/".$section."";
+		$timeTable_url = env('APP_URL')."/timeTable/".$class."/".$section."";
 		
 		$name = "RITESH";
 		$data_mail = array('name'=>$name,'timetable_url'=>$timeTable_url);
