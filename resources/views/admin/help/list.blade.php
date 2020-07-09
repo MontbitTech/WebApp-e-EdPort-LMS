@@ -18,17 +18,29 @@
                         <div class="card-body pt-3">
                             <div class="row justify-content-center">
                                 <div class="col-md-4 col-lg-3 text-md-left text-center mb-1">
-                <span data-dtlist="#ticketlist" class="mb-1">
+                <!-- <span data-dtlist="#ticketlist" class="mb-1">
 					<div class="spinner-border spinner-border-sm text-secondary" role="status"></div> 
-                </span>
+                </span> -->
                                 </div>
-                                <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
-                <span data-dtfilter="#ticketlist" class="mb-1">
-                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                </span>
-                                </div>
-                                <div class="col-sm-12">
-                                    <table id="ticketlist" class="table table-sm table-bordered display"
+
+                        <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
+                        <span data-dtfilter="" class="mb-1">
+
+                        <select id="category" name="category" class="form-control form-control-sm" onchange="getCategories()">
+                        <option value=''>Select Category</option>
+                        @if(count($categories)>0)
+                        @foreach($categories as $cl)
+                        <option value='{{$cl->id}}'>{{$cl->category}}</option>
+                        @endforeach
+                        @endif
+                        </select>
+
+                        </span>
+
+                        </div>
+
+                        <div class="col-sm-12" id="getticket">
+                                    <table id="ticket" class="table table-sm table-bordered display"
                                            data-page-length="100" data-order="[[0, &quot;desc&quot; ]]"
                                            style="width:100%" data-page-length="10" data-col1="60" data-collast="120"
                                            data-filterplaceholder="Search Records ...">
@@ -45,74 +57,6 @@
                                             <th>Create Date</th>
                                         </tr>
                                         </thead>
-
-                                        @if(count($support_help) > 0)
-                                            @php
-                                                $n = count($support_help);
-                                                $n-=1;
-                                                $i = 0;
-                                            @endphp
-                                            <tbody id="ticketlist_tbody">
-
-                                            @foreach($support_help as $help)
-                                                <tr>
-                                                    <td>{{++$i}}</td>
-                                                    <td>
-                                                        @if($help->teacher)
-                                                        {{$help->teacher->name}} </br> ( <span
-                                                                style="font-weight:600;font-size:12px;color:#007bff">{{$help->teacher->phone}} </span>)
-                                                        @endif
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @if($help->studentClass)
-                                                            {{($help->help_type == 2)?$help->studentClass->class_name:''}}
-                                                        @endif
-                                                        @if($help->studentClass)
-                                                            {{($help->help_type == 2)?$help->studentClass->section_name:''}}
-                                                        @endif
-                                                    </td>
-
-                                                    <td>
-                                                        @if($help->studentSubject)
-                                                            {{($help->help_type == 2)?$help->studentSubject->subject_name:''}}
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @foreach($categories as $category)
-                                                            @if($category->id == $help->help_ticket_category_id)
-                                                                {{$category->category}}
-                                                            @endif
-                                                        @endforeach
-                                                    </td>
-                                                    <td>{{isset($help->description)?$help->description:''}}</td>
-                                                    <td style="width: 15%">
-                                                        <select name="status" class="form-control"
-                                                                data-selectStatus="{{ $help->id }}">
-                                                            <option value="1" {{($help->status == 1)?'selected':''}} >
-                                                                Pending
-                                                            </option>
-                                                            <option value="2" {{($help->status == 2)?'selected':''}} >In
-                                                                Progress
-                                                            </option>
-                                                            <option value="3" {{($help->status == 3)?'selected':''}} >
-                                                                Closed
-                                                            </option>
-                                                        </select>
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @if($help->class_join_link)
-                                                            <a href="javascript:void(0);"
-                                                               data-helplink="{{$help->class_join_link}}"
-                                                               id="{{ $help->id}}">Join Live</a>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <span style="font-size:14px;">{{date("d/m/Y h:i a",strtotime($help->created_at))}} </span>
-                                                    </td>
-                                                </tr>
-                                            @endforeach
-                                            </tbody>
-                                        @endif
                                     </table>
                                 </div>
                             </div>
@@ -179,6 +123,29 @@
             }
         });
 
+</script>
 
-    </script>
+<script>
+
+    function getCategories(){
+
+       $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+    });
+        var category   = $("#category").val();
+        $.ajax({
+            url: "{{route('filter-ticket')}}",
+            type: 'POST',
+            data: {
+                category   : category
+            },
+            success: function(info) {
+                $("#getticket").html(info);
+                $("#getticket").show();
+            }
+        });
+    }
+</script>
 @endsection

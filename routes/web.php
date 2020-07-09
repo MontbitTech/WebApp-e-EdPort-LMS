@@ -62,6 +62,7 @@ Route::get('/admin/downloadPDF','GtestController@downloadPDF')->name('admin.down
 	
 	Route::get('/admin/support-help','HelpController@helpList')->name('admin.helplist');
 	Route::post('/update-help-status','HelpController@updateStatus')->name('helpStatus.update');
+	Route::post('filter-ticket','HelpController@filterTicket')->name('filter-ticket');
 	
 	Route::get('/admin/list-timetable','ImportTimetableController@listTimetable')->name('list.timetable');
 	Route::post('/admin/filter-timetable','ImportTimetableController@filterTimetable')->name('list.filtertimetable');

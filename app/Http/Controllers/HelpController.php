@@ -35,20 +35,27 @@ class HelpController extends Controller {
      * @return list view
      */
 
-    public function helpList (Request $request) {
-
+    public function helpList (Request $request) {        
         $categories = HelpTicketCategory::get();
-        $selectedCategory = null;
-        if ( isset($request->category) ) {
-            $support_help = \App\SupportHelp::orderBy('status', 'DESC')
-                ->where('help_ticket_category_id', $request->category)->get();
-            $selectedCategory = $request->category;
-        } else {
-            $support_help = \App\SupportHelp::where('read_status', 0)->update(['read_status' => 1]);
-            $support_help = \App\SupportHelp::orderBy('status', 'DESC')->get();
-        }
+        return view('admin.help.list', compact('categories'));
+    }
 
-        return view('admin.help.list', compact('support_help', 'categories', 'selectedCategory'))->with('i', 0);
+    public function filterTicket (Request $request) {
+
+      $categories = HelpTicketCategory::get();
+
+      $selectedCategory = null;
+      if ( isset($request->category)){
+      $support_help = \App\SupportHelp::orderBy('status', 'DESC')
+      ->where('help_ticket_category_id', $request->category)->get();
+      $selectedCategory = $request->category;
+      } 
+      else{
+      $support_help = \App\SupportHelp::where('read_status', 0)->update(['read_status' => 1]);
+      $support_help = \App\SupportHelp::orderBy('status', 'DESC')->get();
+      }
+
+      return view('admin.help.filter-ticket', compact('support_help','categories','selectedCategory'))->with('i', 0);
     }
 
     public function updateStatus (Request $request) {
@@ -60,8 +67,8 @@ class HelpController extends Controller {
         $support_help->save();
 
         echo json_encode(array('status' => 'success', 'message' => Config::get('constants.WebMessageCode.134')));
-
     }
+
 
     public function generateHelpTicket (Request $request) {
 
@@ -118,11 +125,9 @@ class HelpController extends Controller {
 
 
             echo json_encode(array('status' => 'success', 'message' => Config::get('constants.WebMessageCode.111')));
-
         } else {
             echo json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.121')));
         }
-
 
     }
 
