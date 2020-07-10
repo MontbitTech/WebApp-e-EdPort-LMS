@@ -1,11 +1,10 @@
 @extends('layouts.teacher.app')
-@php $i = 1;$k=$i;@endphp
-@section('content')
+@php$i = 1;$k=$i;@endphp
+    @section('content')
+
 
 <?php
 $cls = 0;
-
-
 ?>
 
 <section class="main-section">
@@ -66,15 +65,10 @@ $cls = 0;
                             <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
                             <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
-
                             <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
                             <input type="hidden" id="txt_gMeetURL{{$i}}" value="{{$teacherData->g_meet_url}}">
                             <input type="hidden" id="txt_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
-
-
                             <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}" />
-
-
                             <div class="classes-datetime">
                                 <div class="cls-date">{{ $todaysDate }}</div>
                                 <div class="cls-from">{{$t->from_timing}}</div>
@@ -83,7 +77,6 @@ $cls = 0;
                             </div>
                             <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
                                 <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span>
-
                                     {{ $class_name }} Std
 
                                 </div>
@@ -91,11 +84,8 @@ $cls = 0;
                                     {{$section_name}}
                                 </div>
 
-
                                 <div class="font-weight-bold pt-1"><span class="text-secondary">Subject:</span>
-
                                     {{$subject_name}}
-
                                 </div>
                             </div>
                             <div class="text-editwrapper">
@@ -264,22 +254,19 @@ $cls = 0;
 
 
                         <div class="classes-box">
-
+                        
                             <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
                             <input type="hidden" id="past_subject_id{{$i}}" value="{{$t->subject_id}}">
+
 
                             <input type="hidden" id="past_desc{{$i}}" value="{{$t->class_description}}">
                             <input type="hidden" id="past_gMeetURL{{$i}}" value="{{$t->g_meet_url}}">
                             <input type="hidden" id="past_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
                             <input type="hidden" id="past_recURL{{$i}}" value="{{$t->recording_url}}">
-
-
                             <input type="hidden" id="pastg_class_id_{{$i}}" value="{{ $g_class_id}}" />
                             <?php
-
                             $class_date = date("d M", strtotime($t->class_date));
-
                             ?>
 
                             <div class="classes-datetime">
@@ -311,6 +298,7 @@ $cls = 0;
                                 {{$t->class_description}}
                                 @endif
                             </p>
+
 
 
                             <div class="d-flex justify-content-between flex-wrap py-2">
@@ -347,9 +335,10 @@ $cls = 0;
 
 
                                     <!-- 	 <a href="javascript:void(0);" data-passAssLiveLink="{{ $t->ass_live_url }}" id="past_asslive_c_link_{{$i}}"  class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+
 							<svg class="icon font-10 mr-1"><use xlink:href="../images/icons.svg#icon_eye"></use></svg> View Assignment
 						  </a>
-						  <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="new_a_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow" data-createModal='{{$i}}' data-class_modal="{{$t->class_id}}" data-subject_modal="{{$t->subject_id}}"  data-teacher_modal="{{$t->teacher_id}}">
+						  <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="new_a_link_{{ $i }}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow" data-createModal='{{ $i }}' data-class_modal="{{ $t->class_id }}" data-subject_modal="{{ $t->subject_id }}"  data-teacher_modal="{{ $t->teacher_id }}">
 							<svg class="icon font-12 mr-1"><use xlink:href="../images/icons.svg#icon_plus"></use></svg> Add New Assignment
 						  </a> 
 						  <a href="#" class="btn btn-sm btn-outline-magenta mb-1 mr-2 border-0 btn-shadow">
@@ -386,6 +375,7 @@ $cls = 0;
                                 </select>
 
                                 <?php
+
                                 $display_style = 'display: none;';
                                 $cms_link = '';
                                 if ($t->topic_id != '') {
@@ -400,6 +390,7 @@ $cls = 0;
                                 <a href="javascript:void(0);" data-pasttopiclink="{{ $cms_link }}" data-pasttopicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="pastviewcontent_{{$t->id}}" style="{{$display_style}}">
                                     View Content
                                 </a>
+
 
                             </div>
                         </div>
@@ -437,6 +428,7 @@ $cls = 0;
                                 </thead>
                                 <tbody>
                                     <?php
+
                                     if (count($inviteClassData) > 0) {
                                         $i = 0;
                                         foreach ($inviteClassData as $row) {
@@ -466,6 +458,7 @@ $cls = 0;
                                                     </a></td>
                                             </tr>
 
+
                                         <?php
 
                                         }
@@ -479,6 +472,7 @@ $cls = 0;
                                             No Record Found!
                                         </div>
                                     <?php
+
                                     }
                                     ?>
                                 </tbody>
@@ -536,21 +530,21 @@ $cls = 0;
                         </select>
                     </div>
                 </div>
-
                 <div class="form-group row">
                     <label for="inputJoinlive" class="col-md-4 col-form-label text-md-right">OR Enter New Topic
                         :</label>
                     <div class="col-md-6">
                         <input type="text" id="txt_topin_name" class="form-control" placeholder="Topic Name" />
+
                     </div>
                 </div>
-
 
                 <div class="form-group row">
                     <label for="inputAddquiz" class="col-md-4 col-form-label text-md-right"> Assignment Title
                         :</label>
                     <div class="col-md-6">
                         <input type="text" class="form-control" name="txt_aTitle" id="txt_aTitle" placeholder="Assigment Title">
+
                     </div>
                 </div>
                 <div class="form-group row">
@@ -564,7 +558,6 @@ $cls = 0;
         </div>
     </div>
 </div>
-
 
 
 <!-- Class Box Help Modal -->
@@ -621,7 +614,6 @@ $cls = 0;
                 </button>
             </div>
             <div class="modal-body pt-4">
-
                 {!! Form::open(array('route' => ['add.class'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_add_class')) !!}
                 <div class="form-group row">
                     <label for="addinputDate" class="col-md-4 col-form-label text-md-right">Date:</label>
@@ -643,7 +635,6 @@ $cls = 0;
                     </div>
                 </div>
 
-
                 <div class="form-group row">
                     <label class="col-md-12 text-danger text-center" style="font-size: 12px;padding-left: 130px;">*Extra
                         classes for regular assigned classes can be created here</label>
@@ -661,11 +652,12 @@ $cls = 0;
 
                             ?>
                         </select>
+
                     </div>
                 </div>
 
 
-                <!-- <div class="form-group row">
+                    <!-- <div class="form-group row">
 				<label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live <small>(Link)</small>:</label>
 				<div class="col-md-6">
 				  {!! Form::textarea('join_liveUrl', null, array('placeholder' => 'Enter Live class url','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
@@ -678,6 +670,7 @@ $cls = 0;
                     <div class="col-md-6">
 
                         {!! Form::textarea('notify_stdMessage', null, array('placeholder' => 'Enter Notify Message','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
                     </div>
                 </div>
                 <div class="form-group row">
@@ -723,6 +716,7 @@ $cls = 0;
                         <small>(Link)</small>:</label>
                     <div class="col-md-6">
                         {!! Form::textarea('edit_join_liveUrl',$teacherData->g_meet_url, array('id'=>'edit_join_liveUrl','placeholder' => 'Enter Live class url','class' => 'form-control','required'=>'required','rows'=>'3','disabled')) !!}
+
                     </div>
                 </div>
                 <div class="form-group row">
@@ -731,6 +725,7 @@ $cls = 0;
                     <div class="col-md-6">
 
                         {!! Form::textarea('edit_notify_stdMessage', null, array('id'=>'edit_notify_stdMessage','placeholder' => 'Enter Notify Message','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
                     </div>
                 </div>
                 <div class="form-group row">
@@ -761,7 +756,6 @@ $cls = 0;
 
                 <form>
 
-
                     <input type="hidden" id="txt_past_datecalss_id" value="" name="txt_past_datecalss_id" />
                     <input type="hidden" id="txt_boxID" value="" name="txt_boxID" />
 
@@ -776,6 +770,7 @@ $cls = 0;
                             <small>(Link)</small>:</label>
                         <div class="col-md-6">
                             {!! Form::textarea('past_edit_rec_liveUrl', null, array('id'=>'past_edit_rec_liveUrl','placeholder' => 'Enter Recording Live url','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
                         </div>
                     </div>
                     <div class="form-group row">
@@ -792,7 +787,6 @@ $cls = 0;
 </div>
 <!-- End -->
 
-
 <script type="text/javascript">
     $(document).ready(function() {
         $('.ac-datepicker').datepicker({
@@ -803,9 +797,9 @@ $cls = 0;
             controlType: 'select',
             oneLine: true,
             timeFormat: 'hh:mm tt'
+
         });
     });
-
 
     $(document).on('click', '[data-LiveLink]', function() {
         var liveurl = $(this).attr("data-LiveLink");
@@ -857,7 +851,6 @@ $cls = 0;
         }
     });
 
-
     $(document).on('click', '[data-pasttopiclink]', function() {
         var liveurl = $(this).attr("data-pasttopiclink");
         if (liveurl != '') {
@@ -868,6 +861,7 @@ $cls = 0;
             alert('No content url found!');
         }
     });
+
 
 
     $(document).on('change', '[data-passAssLiveLink]', function() {
@@ -929,9 +923,7 @@ $cls = 0;
         });
     }));
 
-
     /* past classess end  */
-
 
     $(document).on('click', '[data-INVLiveLink]', function() {
         var liveurl = $(this).attr("data-INVLiveLink");
@@ -989,12 +981,12 @@ $cls = 0;
                         data += '<li> <a href="javascript:void(0);" onclick="give_assignment(\'' + id + '\',\'' + val.g_live_link + '\',\'' + val.id + '\',\'' + val.g_title + '\')" >' + val.g_title + '</a>';
                         data += ' ( <a  href="javascript:void(0);" data-viewAssignment="' + val.g_live_link + '" > View </a>) </li>';
 
+
                     });
 
                     topics.forEach(function(val) {
 
                         topicData += '<option value="' + val.id + '">' + val.topicname + '</option>';
-
 
                     });
 
@@ -1094,6 +1086,7 @@ $cls = 0;
 
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
+
                 }
             }
         });
@@ -1168,6 +1161,7 @@ $cls = 0;
                     $.fn.notifyMe('success', 5, response.message);
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
+
                 }
             },
             error: function(error_r) {
@@ -1264,6 +1258,7 @@ $cls = 0;
                     $.fn.notifyMe('success', 5, response.message);
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
+
                 }
             },
             error: function(error_r) {
@@ -1299,7 +1294,6 @@ $cls = 0;
             $.fn.notifyMe('error', 5, 'First update the JOIN LIVE class link');
             return false;
         }
-
 
         $.ajax({
             url: '{{ url("student-notify") }}',
@@ -1351,7 +1345,6 @@ $cls = 0;
         var getDescText = (thiz.parent().find('.text-edit').text().replace(/\$/g, '')).trim();
         var dateClass_id = $("#dateClass_id" + id).val();
 
-
         if (getDescText == '') {
             $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
         } else {
@@ -1376,7 +1369,6 @@ $cls = 0;
                         $.fn.notifyMe('error', 5, response.message);
                     }
 
-
                     //$.fn.notifyMe('success',4,'Description has been saved!');
                 },
                 error: function() {
@@ -1385,7 +1377,6 @@ $cls = 0;
                 }
             });
         }
-
     });
 </script>
 

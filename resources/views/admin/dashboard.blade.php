@@ -65,16 +65,12 @@
 					@endif
 				</td>
                   <td><a href="{{route('teacher.edit', encrypt($user->id))}}">Edit</a> | 
-                       <a href="{{ route('teacher.delete', encrypt($user->id)) }}"
+                       <!-- <a href="{{ route('teacher.delete', encrypt($user->id)) }}"
                        >
                         {{ __('Delete') }}
-                      </a>
+                      </a> -->
 
-             <!--  <form id="delete-teacher-form" action="{{ route('teacher.delete', encrypt($user->id)) }}" method="POST" style="display: none;">
-                @csrf
-				 onclick="event.preventDefault();
-                        document.getElementById('delete-teacher-form').submit();"
-              </form> -->
+                      <a href="javascript:void(0);" class="button" data-teacherModal="{{$user->id}}" >{{ __('Delete') }}</a>
                   </td>
                 </tr>
               @endforeach
@@ -130,6 +126,39 @@
 </div>
 </div>
 </section>
+
+<div class="modal fade" id="tecaherdeletModal" data-backdrop="static" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-light d-flex align-items-center">
+        <h5 class="modal-title font-weight-bold">Delete Teacher</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <svg class="icon"><use xlink:href="../images/icons.svg#icon_times2"></use></svg>
+        </button>
+      </div>
+      <div class="modal-body pt-4">
+        <form action="{{route('teacher.delete' , encrypt($user->id))}}" method="GET">
+      @csrf
+        <input type="hidden" name="teacher_id" id="teacher_id"/>
+          <div class="form-group text-center">
+       <!--  <h4>Are You Sure ! </h4>  --> 
+        <h4>Type "delete" to confirm</h4>
+       <!--  <p style="color: #bf2d2d;font-size: 13px;">* if you delete this class, it will auto delete all associated record with this class like assignment, timetable, student, etc... </p> -->
+        <input type="text" name="delete" id="delete"/>
+          </div>
+          <div class="form-group text-center">
+            <button type="submit" class="btn btn-danger px-4">
+              Delete
+            </button>
+      <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript">
 $(document).ready(function() {
 	
@@ -140,6 +169,13 @@ $(document).ready(function() {
       $('[data-dtfilter="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_filter').find("input[type=search]").attr('placeholder', $('#'+settings.nTable.id).attr('data-filterplaceholder')))
     }
   });
+
+  $(document).on('click', '[data-teacherModal]', function(){
+ var val = $(this).data('teachermodal');
+  $('#tecaherdeletModal').modal('show');
+  $("#teacher_id").val(val);
+  
+});
   
   
   $('#ongoing').DataTable({

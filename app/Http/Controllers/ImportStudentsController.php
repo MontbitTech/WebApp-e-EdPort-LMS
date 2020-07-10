@@ -198,9 +198,11 @@ class ImportStudentsController extends Controller
         return view('admin.numbers.edit',compact('student'));
     }
 	
-	public function deleteStudent(Request $request,$id)
+	public function deleteStudent(Request $request)
     {
-		$sid = decrypt($id);
+
+    	if($request->delete=='Delete'||$request->delete=='delete'){
+		  $sid = $request->student_id;
 		
 		/**/
 		
@@ -244,6 +246,13 @@ class ImportStudentsController extends Controller
 					}
 				}
 			}
+
+		}
+
+		else
+		{
+          return redirect()->route('adminlist.students')->with('error',"Type delete to confirm");
+		}
 		/**/
 		
 		$student = \DB::table('tbl_students')->delete($sid);
@@ -491,6 +500,14 @@ class ImportStudentsController extends Controller
                 @unlink($path);
         }
         return view('admin.numbers.import',compact('student_class'));
+    }
+
+
+    function deleteAll(Request $request)
+    {
+    	$ids = $request->ids;
+    	Student::whereIn('id',explode(",",$ids))->delete();
+    	return response()->json(['success'=>"Student Deleted successfully."]);
     }
 	
 	

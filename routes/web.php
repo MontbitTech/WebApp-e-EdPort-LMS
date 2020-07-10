@@ -71,7 +71,10 @@ Route::get('/admin/downloadPDF','GtestController@downloadPDF')->name('admin.down
 	Route::get('/admin/classes','ClassController@list_class')->name('admin.listClass');
 	Route::match(array('GET','POST'),'/admin/create-classes','ClassController@addClasses')->name('classes.add');
 	//Route::match(array('GET','POST'),'/admin/edit-classes/{id}','ClassController@editClasses')->name('classes.edit');
-	Route::match(array('GET','POST'),'/admin/delete-classes','ClassController@deleteClasses')->name('classes.delete');
+	//Route::match(array('GET','POST'),'/admin/delete-classes','ClassController@deleteClasses')->name('classes.delete');
+	Route::post('admin/delete-classes','ClassController@deleteClasses')->name('classes.delete');
+
+
 
 	Route::match(array('GET','POST'),'/add-extraclass','ImportTimetableController@addExtraClass')->name('add.extracalss');
 	
@@ -84,7 +87,9 @@ Route::get('/admin/downloadPDF','GtestController@downloadPDF')->name('admin.down
 	Route::get('/list-students','ImportStudentsController@listStudents')->name('list.students');
 	Route::match(array('GET','POST'),'/admin/edit-student/{id}','ImportStudentsController@editStudent')->name('student.edit');
 	Route::match(array('GET','POST'),'/admin/add-student','ImportStudentsController@addStudent')->name('student.add');
-	Route::post('/admin/delete-student/{id}','ImportStudentsController@deleteStudent')->name('student.delete');
+	Route::post('/admin/delete-student','ImportStudentsController@deleteStudent')->name('student.delete');
+	Route::delete('admin/studentsDeleteAll', 'ImportStudentsController@deleteAll');
+
 	Route::post('filter-student','ImportStudentsController@filterStudent')->name('filter-student');
 
 	Route::match(array('GET','POST'),'/students-import','ImportStudentsController@importClassStudentNumber')->name('admin.studentsimport');
@@ -147,10 +152,7 @@ Route::get('/admin/downloadPDF','GtestController@downloadPDF')->name('admin.down
 		//Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
 	});
 
-Route::get('/addData_pastClass','ClassWorkController@addData_DateClass');
+Route::get('/addData_pastClass','ClassWorkController@addData_DateClass')->name('reload-timetable');
 Route::get('/timeTable/{class}/{section}','ImportTimetableController@download_Timetable');
 
-//Cron JOb URL  http://290px.com/elearn/public/addData_pastClass
-
-
-
+//Reload Timetable URL - http://<domain>/addData_pastClass
