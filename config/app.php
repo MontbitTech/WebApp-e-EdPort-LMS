@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME'),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://lms.schooltimes.ca'),
+    'url' => env('APP_URL', ''),
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -162,13 +162,13 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-	Tzsk\Sms\Provider\SmsServiceProvider::class,
-	Barryvdh\DomPDF\ServiceProvider::class,
-	LaraCrud\LaraCrudServiceProvider::class,
 
         /*
          * Package Service Providers...
          */
+        Tzsk\Sms\Provider\SmsServiceProvider::class,
+	    Barryvdh\DomPDF\ServiceProvider::class,
+	    LaraCrud\LaraCrudServiceProvider::class,
 
         /*
          * Application Service Providers...
