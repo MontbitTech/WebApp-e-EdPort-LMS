@@ -30,11 +30,10 @@ return [
             'type' => 'Tansactional', // Or: 'Promotional'
         ],
         'textlocal' => [
-            'url' => 'http://api.textlocal.in/send/', // Country Wise this may change.
-            'username' => 'developer@montbit.tech',
-            'hash' => '3d7a9f3f9bc31209a8ee264fad6b9c7a3ed7a97e096a72281307d1df28a704b3',
-          //  'hash' => 'DevTeam@123',
-            'sender' => 'ELEARN',
+            'url' => env('TXTLCL_URL'), // Country Wise this may change.
+            'username' => env('TXTLCL_USERNAME'),
+            'hash' => env('TXTLCL_HASH'),
+            'sender' => env('TXTLCL_SENDER'),
         ],
         'nexmo' => [ // Install: composer require nexmo/client
             'key' => 'Your Nexmo API Key',

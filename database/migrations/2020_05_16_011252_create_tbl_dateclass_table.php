@@ -26,7 +26,7 @@ class createTblDateclassTable extends Migration
 			$table->string("live_link",255)->nullable();
 			$table->string("ass_live_url",255)->nullable();
 			$table->string("quiz_link",255)->nullable();
-			$table->boolean("is_past");
+			$table->boolean("is_past")->default(0);
 			$table->string("class_student_msg",255)->nullable();
 			$table->string("class_description",255)->nullable();
 			$table->string("g_meet_url",255)->nullable();
