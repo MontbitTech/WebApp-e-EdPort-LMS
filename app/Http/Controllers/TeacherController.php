@@ -229,7 +229,7 @@ class TeacherController extends Controller
     }
     public function deleteTeacher(Request $request,$id)
     {
-		//$id = $request->user_id;  
+		if($request->delete=='Delete'||$request->delete=='delete'){  
 		 $id = decrypt($id);   
 		if($id != '')
 		{	
@@ -297,6 +297,10 @@ class TeacherController extends Controller
 
 				
 		}
+	  }
+	  else{
+	  	return redirect()->route('admin.dashboard')->with('error',"Type delete to confirm");
+	  }
     } 
 
 	public function sampleTeacherDownload(Request $request)
