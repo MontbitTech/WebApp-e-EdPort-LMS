@@ -91,39 +91,6 @@
 </div>
 </div>
 </section>
-<div class="modal fade" id="studentdeletModal" data-backdrop="static" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header bg-light d-flex align-items-center">
-        <h5 class="modal-title font-weight-bold">Delete Student</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <svg class="icon"><use xlink:href="../images/icons.svg#icon_times2"></use></svg>
-        </button>
-      </div>
-      <div class="modal-body pt-4">
-        <form action="{{ route('student.delete') }}" method="POST">
-      @csrf
-        <input type="hidden" name="student_id" id="student_id"/>
-          <div class="form-group text-center">
-       <!--  <h4>Are You Sure ! </h4>  --> 
-        <h4>Type "delete" to confirm</h4>
-       <!--  <p style="color: #bf2d2d;font-size: 13px;">* if you delete this class, it will auto delete all associated record with this class like assignment, timetable, student, etc... </p> -->
-        <input type="text" name="delete" id="delete"/>
-          </div>
-          <div class="form-group text-center">
-            <button type="submit" class="btn btn-danger px-4">
-              Delete
-            </button>
-      <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script type="text/javascript">
 $(document).ready(function() {
   $('#teacherlist').DataTable({
@@ -137,14 +104,6 @@ $(document).ready(function() {
     // showAnim: "slide"
   })
 });
-
-$(document).on('click', '[data-studentModal]', function(){
- var val = $(this).data('studentmodal');
-  $('#studentdeletModal').modal('show');
-  $("#student_id").val(val);
-  
-});
-
 </script>
 
 <script>
