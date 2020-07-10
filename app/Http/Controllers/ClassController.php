@@ -156,10 +156,11 @@ class ClassController extends Controller
 	
 	public function deleteClasses(Request $request)
 	{
-
-		if($request->delete=='Delete'||$request->delete=='delete'){
-		   $id = $request->txt_class_id;
 	
+		$id = $request->txt_class_id;
+		
+	
+		
 		if($id != '')
 		{
 					$classTimingExist = ClassTiming::where('class_id',$id)->get()->first();
@@ -230,11 +231,6 @@ class ClassController extends Controller
 		else{
 			return redirect()->route('admin.listClass');
 		}
-	}
-	else{
-    return redirect()->route('admin.listClass')->with('error',"Type delete to confirm");
-	}
-
 	}
 		
 		

@@ -96,10 +96,10 @@
       @csrf
         <input type="hidden" name="txt_class_id" id="txt_class_id"/>
           <div class="form-group text-center">
-       <!--  <h4>Are You Sure ! </h4>  --> 
-        <h4>Type "delete" to confirm</h4>
-       <!--  <p style="color: #bf2d2d;font-size: 13px;">* if you delete this class, it will auto delete all associated record with this class like assignment, timetable, student, etc... </p> -->
-        <input type="text" name="delete" id="delete"/>
+        <h4>Are You Sure ! </h4>  
+        <h4>You want to detele this class. </h4>
+        <p style="color: #bf2d2d;font-size: 13px;">* if you delete this class, it will auto delete all associated record with this class like assignment, timetable, student, etc... </p>
+        
           </div>
           <div class="form-group text-center">
             <button type="submit" class="btn btn-danger px-4">
@@ -138,7 +138,8 @@ $(document).on('click', '[data-deleteModal]', function(){
   
 });
 
-  </script>
+
+</script>
 
 <!-- <script>
   function getSubject(){
