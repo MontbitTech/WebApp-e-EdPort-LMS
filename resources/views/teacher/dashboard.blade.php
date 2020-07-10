@@ -12,6 +12,8 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-sm-12">
+
+                <!-- Teacher-Class-Navigation -->
                     <ul class="nav nav-tabs1 nav-pills" id="myTab" role="tablist">
                         <li class="nav-item mb-1">
                             <a class="nav-link shadow-sm active" data-toggle="tab" href="#ulclasses" role="tab"
@@ -34,7 +36,10 @@
                             </a>
                         </li>
                     </ul>
+                <!-- ./Teacher-Class-Navigation -->
+
                     <div class="tab-content pt-3">
+                    <!-- Teacher-TodayLiveClass -->
                         <div class="tab-pane fade show active" id="ulclasses">
 
                             @if(count($TodayLiveData) > 0)
@@ -62,7 +67,8 @@
                                     }
                                     ?>
 
-                                    <div class="classes-box">
+
+                                <div class="card text-center mb-3" style="border-color:#253372;">
                                         <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
                                         <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
                                         <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
@@ -76,126 +82,45 @@
 
 
                                         <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}"/>
-
-
-                                        <div class="classes-datetime">
-                                            <div class="cls-date">{{ $todaysDate }}</div>
-                                            <div class="cls-from">{{$t->from_timing}}</div>
-                                            <div class="cls-separater">to</div>
-                                            <div class="cls-to">{{$t->to_timing}}</div>
+                                    <div class="card-header p-0" style="background:#253372;color:#fff;">
+                                    <div class="row pl-2 pr-3">
+                                        <div class="d-flex align-items-center col-md-4">
+                                            <div class="cls-date font-weight-bold">{{ $todaysDate }}</div>
+                                            <div class="cls-from pt-1">{{ date('G:i',strtotime($t->from_timing))}} to {{ date('G:i',strtotime($t->to_timing))}}</div>
                                         </div>
-                                        <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
-                                            <div class="font-weight-bold pt-1"><span
-                                                        class="text-secondary">Class:</span>
-
-                                                {{ $class_name }} Std
+                                        <div class="d-flex align-items-center justify-content-between col-md-8">
+                                            <div class="font-weight-bold pt-1">
+                                            Class: 10 Std
 
                                             </div>
-                                            <div class="font-weight-bold pt-1"><span
-                                                        class="text-secondary">Section:</span>
-                                                {{$section_name}}
+                                            <div class="font-weight-bold pt-1">
+                                            Section:A
                                             </div>
 
 
-                                            <div class="font-weight-bold pt-1"><span
-                                                        class="text-secondary">Subject:</span>
-
-                                                {{$subject_name}}
+                                            <div class="font-weight-bold pt-1">
+                                            Subject: PT
 
                                             </div>
                                         </div>
-                                        <div class="text-editwrapper">
-                                            <p class="mt-0 mb-2 text-secondary text-edit" data-url="#"
-                                               data-savedesc="{{$i}}" contenteditable="true"
-                                               id="class_description_{{$i}}" onchange="updateNote(this.value);">
-                                                @if($t->class_description!='')
-                                                    {{$t->class_description}}
-                                                @else
-                                                    {{$t->class_description}}
-                                                @endif
-                                            </p>
-                                            <button type="button" class="btn btn-primary btn-sm">&#10003;</button>
+                                    </div>
+                                    </div>
+                 <div class="card-body p-0">
+    <div class="row m-2">
+
+    <div class="col-md-9">
+           
+                                            <div class="input-group text-editwrapper mt-1 mb-1">
+                                            <textarea class="form-control text-edit1" rows="3" data-url="#"
+                                               data-savedesc="{{$i}}" disabled contenteditable="true"
+                                               id="class_description_{{$i}}">
+@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif
+                                            </textarea>
                                         </div>
-                                        <div class="d-flex justify-content-between flex-wrap py-2">
-                                            <div>
-                                                <a href="javascript:void(0);"
-                                                   data-LiveLink="{{ $teacherData->g_meet_url }}"
-                                                   id="live_c_link_{{$i}}"
-                                                   class=" btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
-                                                    <svg class="icon font-10 mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_dot"></use>
-                                                    </svg>
-                                                    Join Live
-                                                </a>
-                                                <a href="#"
-                                                   class=" btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
-                                                   id="new_a_link_{{$i}}" data-createModal='{{$i}}'
-                                                   data-class_modal="{{$t->class_id}}"
-                                                   data-subject_modal="{{$t->subject_id}}"
-                                                   data-teacher_modal="{{$t->teacher_id}}">
-                                                    <svg class="icon font-12 mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_plus"></use>
-                                                    </svg>
-                                                    New Assignment
-                                                </a>
-                                                <?php
-                                                $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
-                                                ?>
-                                                <select id="view_a_link_{{$i}}"
-                                                        class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow"
-                                                        data-AssLiveLink="{{$t->id}}"/>
-                                                <?php
-                                                if(count($assignmentData) > 0)
-                                                {
-                                                ?>
-                                                <option value="">View Assigment</option><?php
-                                                foreach($assignmentData as $key){
-                                                ?>
-                                                <option value="{{$key->g_live_link}}">{{$key->g_title}} </option>
-
-                                                <?php
-                                                }
-                                                }else{
-                                                ?>
-                                                <option value="">No Assigment</option>
-                                                <?php
-                                                }
-
-                                                ?>
-                                                </select>
-
-
-                                                <a href="#"
-                                                   class="btn btn-sm btn-outline-magenta mb-1 mr-2 border-0 btn-shadow"
-                                                   data-notifyMe="{{$i}}" data-id="notify_student"
-                                                   id="notifyurl_{{$i}}">
-                                                    <svg class="icon mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_bell"></use>
-                                                    </svg>
-                                                    <span>Notify Students</span>
-                                                </a>
-                                            </div>
-                                            <div>
-                                                <button type="button" data-classhelp="{{$i}}"
-                                                        class="btn btn-sm btn-outline-info mb-1 mr-2 border-0 btn-shadow"
-                                                        title="Help" data-id="help">
-                                                    <svg class="icon mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_help"></use>
-                                                    </svg>
-                                                    Help
-                                                </button>
-                                                <button type="button" data-editModal="{{$i}}"
-                                                        class="btn btn-sm btn-outline-secondary mb-1 border-0 btn-shadow"
-                                                        title="Edit">
-                                                    <svg class="icon mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_edit"></use>
-                                                    </svg>
-                                                    Edit
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <?php
+                                        
+    </div>
+    <div class="col-md-3 mt-1">
+    <?php
                                         $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
 
                                         //if($t->subject_id == 2)
@@ -205,9 +130,7 @@
                                         //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
                                         $x = $t->cmsLink;
                                         ?>
-
-                                        <div class="select-topicbox">
-                                            <select class="form-control custom-select-sm border-0 btn-shadow"
+    <select class="form-control custom-select-sm border-0 btn-shadow"
                                                     data-selecttopic="{{$t->id}}">
                                                 <option value="">Select Topic</option>
                                                 @if(count($topics)>0)
@@ -244,9 +167,89 @@
                                                id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                 View Content
                                             </a>
+    </div>
+    </div>
+  </div>
+  <div class="card-footer p-1" style="background:#fff;">
+  <div class="d-flex justify-content-between flex-wrap">
+                                            <div class="m-auto">
+                                                <a href="javascript:void(0);"
+                                                   data-LiveLink="{{ $teacherData->g_meet_url }}"
+                                                   id="live_c_link_{{$i}}"
+                                                   class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+                                                    <svg class="icon font-10 mr-1">
+                                                        <use xlink:href="../images/icons.svg#icon_dot"></use>
+                                                    </svg>
+                                                    Join Live
+                                                </a>
+                                                
+                                                <a href="#"
+                                                   class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
+                                                   data-notifyMe="{{$i}}" data-id="notify_student"
+                                                   id="notifyurl_{{$i}}">
+                                                    <svg class="icon mr-1">
+                                                        <use xlink:href="../images/icons.svg#icon_bell"></use>
+                                                    </svg>
+                                                    <span>Notify Students</span>
+                                                </a>
+                                                <button type="button" data-classhelp="{{$i}}"
+                                                        class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
+                                                        title="Help" data-id="help">
+                                                    <svg class="icon mr-1">
+                                                        <use xlink:href="../images/icons.svg#icon_help"></use>
+                                                    </svg>
+                                                    Help
+                                                </button>
+                                                <button type="button" data-editModal="{{$i}}"
+                                                        class="btn btn-sm btn-outline-primary mb-1 border-0 btn-shadow"
+                                                        title="Edit">
+                                                    <svg class="icon mr-1">
+                                                        <use xlink:href="../images/icons.svg#icon_edit"></use>
+                                                    </svg>
+                                                    Edit
+                                                </button>
+                                            </div>
+                                            <div class="m-auto"">
+                                        <a href="#"
+                                                   class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
+                                                   id="new_a_link_{{$i}}" data-createModal='{{$i}}'
+                                                   data-class_modal="{{$t->class_id}}"
+                                                   data-subject_modal="{{$t->subject_id}}"
+                                                   data-teacher_modal="{{$t->teacher_id}}">
+                                                    <svg class="icon font-12 mr-1">
+                                                        <use xlink:href="../images/icons.svg#icon_plus"></use>
+                                                    </svg>
+                                                    New Assignment
+                                                </a>
+                                                <?php
+                                                $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
+                                                ?>
+                                                <select id="view_a_link_{{$i}}"
+                                                        class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
+                                                        data-AssLiveLink="{{$t->id}}"/>
+                                                <?php
+                                                if(count($assignmentData) > 0)
+                                                {
+                                                ?>
+                                                <option value="">View Assigment</option><?php
+                                                foreach($assignmentData as $key){
+                                                ?>
+                                                <option value="{{$key->g_live_link}}">{{$key->g_title}} </option>
 
+                                                <?php
+                                                }
+                                                }else{
+                                                ?>
+                                                <option value="">No Assigment</option>
+                                                <?php
+                                                }
+
+                                                ?>
+                                                </select>             
+                                            </div>
                                         </div>
-                                    </div>
+  </div>
+</div>
                                     @php
                                         $i++;
                                     @endphp
@@ -261,10 +264,9 @@
                                 </div>
                             @endif
                         </div>
+                        <!-- ./Teacher-TodayLiveClass -->
 
-                        <!-- ///////////////// -->
-                        <!-- Past Live Classes -->
-                        <!-- ///////////////// -->
+                        <!-- Teacher-PastLiveClasses -->
                         <div class="tab-pane fade" id="plclasses">
 
 
@@ -464,11 +466,10 @@
                                 </div>
                             @endif
                         </div>
+                        <!-- ./Teacher-PastLiveClasses -->
 
 
-                        <!---
-                        Invitation
-                         -->
+                        <!-- Teacher-AssignedClasses -->
                         <div class="tab-pane fade" id="newInvitationclasses">
 
                             <div class="col-sm-12">
@@ -540,6 +541,8 @@
                                 </table>
                             </div>
                         </div>
+                        <!-- ./Teacher-AssignedClasses -->
+
                     </div>
                 </div>
             </div>
@@ -1359,12 +1362,18 @@
         });
 
 
-        // Description or Class  note
 
-        $(document).on('click', '.text-editwrapper button', function () {
+        // Description or Class  note
+        $(document).on('mouseover', 'textarea', function () {
+            $(this).prop( "disabled", false );
+        });
+        $(document).on('mouseout', 'textarea', function () {
+            $(this).prop( "disabled", true );
+        });
+        $(document).on('focusout', '.text-editwrapper textarea', function () {
             var thiz = $(this);
-            var id = thiz.parent().find('.text-edit').attr('data-savedesc');
-            var getDescText = (thiz.parent().find('.text-edit').text().replace(/\$/g, '')).trim();
+            var id = thiz.parent().find('.text-edit1').attr('data-savedesc');
+            var getDescText = (thiz.parent().find('.text-edit1').val().replace(/\$/g, '')).trim();
             var dateClass_id = $("#dateClass_id" + id).val();
 
 
@@ -1396,9 +1405,7 @@
                     }
                 });
             }
-
         });
-
 
     </script>
 
