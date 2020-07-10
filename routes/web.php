@@ -152,10 +152,7 @@ Route::get('/admin/downloadPDF','GtestController@downloadPDF')->name('admin.down
 		//Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
 	});
 
-Route::get('/addData_pastClass','ClassWorkController@addData_DateClass');
+Route::get('/addData_pastClass','ClassWorkController@addData_DateClass')->name('reload-timetable');
 Route::get('/timeTable/{class}/{section}','ImportTimetableController@download_Timetable');
 
-//Cron JOb URL  http://290px.com/elearn/public/addData_pastClass
-
-
-
+//Reload Timetable URL - http://<domain>/addData_pastClass
