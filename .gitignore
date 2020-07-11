@@ -24,6 +24,7 @@ Homestead.json
 credentials_teacher.json
 credentials.json
 
+deploy.sh
 # Laravel Latest Gitignore
 /node_modules
 /public/hot
@@ -37,3 +38,4 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
