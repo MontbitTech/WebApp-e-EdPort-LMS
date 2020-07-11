@@ -27,5 +27,8 @@ php artisan config:cache
 php artisan migrate --force
 	# --force		Required to run when in production.
 
+#seeder file for staging server not to deployed on production
+php artisan deb:seed --class=StagingSeeder
+
 # stop maintenance mode
 php artisan up
