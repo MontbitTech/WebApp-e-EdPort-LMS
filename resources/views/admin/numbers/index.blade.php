@@ -8,7 +8,7 @@
         <div class="card card-common mb-3">
           <div class="card-header">
             <span class="topic-heading">Student Details</span>
-			 <div class="float-right">
+       <div class="float-right">
               <a type="button" class="btn btn-sm btn-success" href="{{route('admin.sampleStudentsDownload')}}">
                 <svg class="icon icon-font16 icon-mmtop-3 mr-1"><use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use></svg> Download Sample File
               </a>
@@ -18,7 +18,7 @@
                 <svg class="icon icon-font16 icon-mmtop-3 mr-1"><use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use></svg> Import Student Details
               </a>
             </div>
-			<div class="float-right mr-3">
+      <div class="float-right mr-3">
               <a type="button" class="btn btn-sm btn-info" href="{{route('student.add')}}">
                 <svg class="icon icon-font16 icon-mmtop-3 mr-1"><use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use></svg> Add Student Details
               </a>
@@ -27,17 +27,49 @@
           <div class="card-body pt-3">
             <div class="row justify-content-center">
               <div class="col-md-4 col-lg-3 text-md-left text-center mb-1">
-                <span data-dtlist="#teacherlist" class="mb-1">
+                <!-- <span data-dtlist="#teacherlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                </span>
+                </span> -->
               </div>
               <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
-                <span data-dtfilter="#teacherlist" class="mb-1">
+               <!--  <span data-dtfilter="#teacherlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                </span>
+                </span> -->
               </div>
-              <div class="col-sm-12">
-          <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+
+              <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
+         <span data-dtfilter="" class="mb-1">
+                  <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
+          <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
+          
+          <select id="txtSerachClass" name="txtSerachClass" class="form-control form-control-sm" onchange="getStudent()">
+          <option value=''>Select Class</option>
+            @if(count($classes)>0)
+            @foreach($classes as $cl)
+              <option value='{{$cl->class_name}}'>{{$cl->class_name}}</option>
+           @endforeach
+          @endif
+          </select>
+
+        </span>
+        
+            <span data-dtfilter="" class="mb-1">
+          
+           <select id="txtSerachSection" name="txtSerachSection" class="form-control form-control-sm" onchange="getStudent()">
+            <option value=''>Select Section</option>
+            @if(count($sections)>0)
+            @foreach($sections as $sl)
+              <option value='{{$sl->section_name}}'>{{$sl->section_name}}</option>
+            @endforeach
+          @endif
+          </select>
+          
+        </span>
+        
+        
+              </div>
+          <div class="col-sm-12" id="student">
+          <table id="studentlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
             <thead>
               <tr>
                 <th>#</th>
@@ -47,44 +79,9 @@
                 <th>Email</th>
                 <th>Phone</th>
                 <th>Notify</th>
-				<th>Action</th>
+        <th>Action</th>
               </tr>
             </thead>
-            
-          <tbody>
-           @if(count($lists)>0)
-              @php $i=0; @endphp
-                @foreach($lists as $list)
-                  <tr>
-                    <td>{{++$i}}</td>
-                    <td>{{$list->name}}</td>
-                    <td>{{$list->class_name}}</td>
-                    <td>{{$list->section_name}}</td>
-                    <td>{{$list->email}}</td>
-                    <td>{{$list->phone}}</td>
-                    <td>
-						@if ($list->notify=="yes")
-							<input type="checkbox" checked disabled>
-						@else
-							<input type="checkbox"  disabled>
-						@endif
-					</td>
-					<td>
-						<a href="{{route('student.edit', encrypt($list->id))}}">Edit</a> | 
-						<a href="#"
-						onclick="event.preventDefault();
-						document.getElementById('delete-student-form{{$list->id}}').submit();">
-						{{ __('Delete') }}
-						</a>
-
-					  <form id="delete-student-form{{$list->id}}" action="{{ route('student.delete',encrypt($list->id)) }}" method="POST" style="display: none;">
-						@csrf
-					  </form>
-                  </td>
-                  </tr>
-                @endforeach
-              @endif
-            </tbody>
           </table>
         </div>
         </div>
@@ -107,5 +104,30 @@ $(document).ready(function() {
     // showAnim: "slide"
   })
 });
+</script>
+
+<script>
+    function getStudent(){
+
+       $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+    });
+        var txtSerachClass   = $("#txtSerachClass").val();
+        var txtSerachSection = $("#txtSerachSection").val();
+        $.ajax({
+            url: "{{url('filter-student')}}",
+            type: 'POST',
+            data: {
+                txtSerachClass   : txtSerachClass,
+                txtSerachSection : txtSerachSection
+            },
+            success: function(info) {
+                $("#student").html(info);
+                $("#student").show();
+            }
+        });
+    }
 </script>
 @endsection

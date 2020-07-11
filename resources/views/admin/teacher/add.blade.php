@@ -2,7 +2,7 @@
 @section('content')  
 <?php 
 
-$value =  "yourname@".$domain->value;
+$value =  "teachername@".$domain->value;
 
 ?>
 
@@ -19,7 +19,7 @@ $value =  "yourname@".$domain->value;
                 <div class="form-group row">
                   <label for="colFormLabel" class="col-md-4 col-form-label">Teacher Name:</label>
                   <div class="col-md-5">
-                      {!! Form::text('fname', null, array('placeholder' => 'Your Name','class' => 'form-control','required'=>'required')) !!}
+                      {!! Form::text('fname', null, array('placeholder' => "Teacher's Name",'class' => 'form-control','required'=>'required')) !!}
                   </div>
                 </div>
 				

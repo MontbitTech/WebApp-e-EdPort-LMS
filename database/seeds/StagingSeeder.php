@@ -41,7 +41,7 @@ class StagingSeeder extends Seeder {
             ],
             [
                 'item'       => 'schoollogo',
-                'value'      => 'http://lms.schooltimes-s.ca/public/images/Delhi-Public-School-Kolar-Road-Bhopal.png',
+                'value'      => env('APP_URL').'/public/images/Delhi-Public-School-Kolar-Road-Bhopal.png',
                 'folder'     => 'images',
                 'permission' => 'DF',
             ],
