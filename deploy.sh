@@ -28,7 +28,7 @@ php artisan migrate --force
 	# --force		Required to run when in production.
 
 #staging seeder not to use on production server
-php artisan db:seed --class=StagingSeeder
+#php artisan db:seed --class=StagingSeeder
 
 # stop maintenance mode
 php artisan up
