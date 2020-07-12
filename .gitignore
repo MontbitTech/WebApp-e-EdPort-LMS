@@ -30,7 +30,6 @@ deploy.sh
 /public/hot
 /public/storage
 /storage/*.key
-/vendor
 .env
 .env.backup
 .phpunit.result.cache
@@ -39,3 +38,9 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 
+vendor/composer/autoload_classmap.php
+vendor/composer/autoload_files.php
+vendor/composer/autoload_real.php
+vendor/composer/autoload_static.php
+vendor/ocramius/package-versions/src/PackageVersions/Versions.php
+vendor/phpunit/php-code-coverage/tests/tests/XMLTest.php
