@@ -42,20 +42,18 @@ class TeacherController extends Controller
 	 
 		$logged_admin = Session::get('admin_session');
 		$logged_admin_email = $logged_admin['admin_email'];
-		 
-		 
+
 		$domain = CustomHelper::getDomain();
-	
 	
          if($request->isMethod('post')) {
             $request->validate([ 
-              'fname' => 'required|max:100|regex:/^[a-zA-Z0-9 ]*$/',
+              'fname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
              // 'lname' => 'required|max:100|alpha_num',
               'email' => 'required|email|ends_with:'.$domain->value.'|max:100|unique:tbl_techers',
               'phone' => 'required|numeric|digits:10',
              // 'pin' => 'required|min:4|unique:tbl_techers',
             ],[
-				'fname.regex'=>'The name must be letters and numbers.',
+				'fname.regex'=>'The name must be letters.',
 				//'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
 				
 			]);
@@ -144,13 +142,13 @@ class TeacherController extends Controller
 		$datetime = date('H-m-y H:i:s');
         if($request->isMethod('post')) {
             $request->validate([ 
-              'fname' => 'required|max:100|regex:/^[a-zA-Z0-9 ]*$/',
+              'fname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
              // 'lname' => 'required|max:100|alpha_num',
               'email' => 'required|email|ends_with:'.$domain->value.'|max:100|unique:tbl_techers,email,'.$id,
               'phone' => 'required|numeric|digits:10',
 			  'g_meet_url'=>"required|url"
             ],[
-				'fname.regex'=>'The name must be letters and numbers.',
+				'fname.regex'=>'The name must be letters.',
 				//'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
 				
 			]);
