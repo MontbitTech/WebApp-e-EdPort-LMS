@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://lms.schooltimes.ca/public'),
+    'url' => env('APP_URL', 'http://lms.schooltimes.ca'),
 
     'asset_url' => env('ASSET_URL', null),
 
