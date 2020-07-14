@@ -15,10 +15,10 @@
 	<div class="container-fluid">
 		<div class="row justify-content-center">
 			<div class="col-sm-12">
-				<a href="{{ route('reload-timetable') }}" target="_blank">
-					Reload today's timetable for
-					all teachers
-				</a>
+{{--				<a href="{{ route('reload-timetable') }}" target="_blank">--}}
+{{--					Reload today's timetable for--}}
+{{--					all teachers--}}
+{{--				</a>--}}
 				<div class="card card-common mb-3">
 					<div class="card-header">
 						<span class="topic-heading">Time Table</span>
