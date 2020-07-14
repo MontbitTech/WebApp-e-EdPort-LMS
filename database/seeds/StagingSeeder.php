@@ -2,34 +2,38 @@
 
 use Illuminate\Database\Seeder;
 
-class StagingSeeder extends Seeder {
+class StagingSeeder extends Seeder
+{
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run () {
+    public function run ()
+    {
         $this->settingTableSeeds();
         $this->adminTableSeeds();
+        $this->classesAndSubjectSeeds();
     }
 
-    private function settingTableSeeds () {
+    private function settingTableSeeds ()
+    {
         DB::table('tbl_settings')->insert([
             [
                 'item'       => 'domain',
-                'value'      => 'schooltimes-s.ca',
+                'value'      => env('APP_DOMAIN'),
                 'folder'     => null,
                 'permission' => 'D',
             ],
             [
                 'item'       => 'year',
-                'value'      => '1522',
+                'value'      => date("Y"),
                 'folder'     => null,
                 'permission' => 'DE',
             ],
             [
                 'item'       => 'mailfrom',
-                'value'      => 'noreply@schooltimes-s.ca',
+                'value'      => 'noreply@' . env('APP_DOMAIN'),
                 'folder'     => null,
                 'permission' => 'D',
             ],
@@ -41,7 +45,7 @@ class StagingSeeder extends Seeder {
             ],
             [
                 'item'       => 'schoollogo',
-                'value'      => env('APP_URL').'/public/images/Delhi-Public-School-Kolar-Road-Bhopal.png',
+                'value'      => env('APP_URL') . '/public/images/Delhi-Public-School-Kolar-Road-Bhopal.png',
                 'folder'     => 'images',
                 'permission' => 'DF',
             ],
@@ -54,13 +58,30 @@ class StagingSeeder extends Seeder {
         ]);
     }
 
-    private function adminTableSeeds () {
+    private function adminTableSeeds ()
+    {
         DB::table('tbl_admin')->insert([
             'first_name' => 'Admin',
             'last_name'  => 'Sys',
-            'email'      => 'developer@schooltimes-s.ca',
+            'email'      => env('MAIL_USERNAME'),
             'password'   => '',
             'phone'      => '7981921945',
+        ]);
+    }
+
+    private function classesAndSubjectSeeds ()
+    {
+        DB::table('tbl_classes')->insert([
+            'class_name'   => 10,
+            'section_name' => 'A',
+            'created_at'   => date('Y-m-d H:i:s'),
+            'updated_at'   => date('Y-m-d H:i:s'),
+        ]);
+
+        DB::table('tbl_student_subjects')->insert([
+            'subject_name' => 'English',
+            'created_at'   => date('Y-m-d H:i:s'),
+            'updated_at'   => date('Y-m-d H:i:s'),
         ]);
     }
 }
