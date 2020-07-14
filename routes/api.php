@@ -22,6 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('/teacher-login', 'Api\TeacherLoginController@teacher_login_get');
 
 Route::post('deploy', 'DeployController@deploy');
+Route::get('setupNewDeploymentJson','DeployController@createJsonFilesForGoogleAuth');
 
 Route::group(['middleware' => 'CheckUserToken'], function(){
 
