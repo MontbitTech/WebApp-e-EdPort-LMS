@@ -136,7 +136,7 @@ class ImportStudentsController extends Controller
 					  });
 		
 						
-					return redirect()->route('adminlist.students')->with('success',Config::get('constants.WebMessageCode.112'));
+					return redirect()->route('adminlist.students')->with('success','Added Successfully');
 			}
 			else
 			{
@@ -163,6 +163,8 @@ class ImportStudentsController extends Controller
               'id' => 'required|numeric',
               'class' => 'required',
               'section' => 'required',
+              'phone' => 'required|numeric|digits:10',
+              'email' => 'required|email',
             ],[
 				'fname.regex'=>'The name must be letters only.',
 				//'lname.alpha_num'=>'The Last name may only contain letters and numbers.',

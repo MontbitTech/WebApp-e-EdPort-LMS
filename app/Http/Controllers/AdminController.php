@@ -87,7 +87,7 @@ class AdminController extends Controller
 			//dd($request->all());
 			$settings = \DB::table('tbl_settings')->where('id',$id )->update(["value"=>$request->ivalue]);
 
-			return redirect()->route('admin.settings')->with('success',"Item updated successfully !.");
+			return redirect()->route('admin.settings')->with('success',"Updated successfully !.");
 		}
 		
 		$id = decrypt($request->id);
@@ -212,8 +212,8 @@ class AdminController extends Controller
    $admin_id = Session::get('admin_session');
     if (Request()->post()) {
      $request->validate([
-          'fname' => 'required',
-          'lname' => 'required',
+          'fname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
+          'lname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
          // 'email' => 'required',
         ]);
      if($request->input('phone_no')){
