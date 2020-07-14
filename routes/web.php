@@ -72,6 +72,7 @@ Route::get('/admin/downloadPDF','GtestController@downloadPDF')->name('admin.down
 	Route::match(array('GET','POST'),'/admin/create-classes','ClassController@addClasses')->name('classes.add');
 	//Route::match(array('GET','POST'),'/admin/edit-classes/{id}','ClassController@editClasses')->name('classes.edit');
 	Route::match(array('GET','POST'),'/admin/delete-classes','ClassController@deleteClasses')->name('classes.delete');
+	Route::post('filter-subject','ClassController@filterSubject')->name('filter-subject');
 
 	Route::match(array('GET','POST'),'/add-extraclass','ImportTimetableController@addExtraClass')->name('add.extracalss');
 	
@@ -88,6 +89,8 @@ Route::get('/admin/downloadPDF','GtestController@downloadPDF')->name('admin.down
 
 	Route::match(array('GET','POST'),'/students-import','ImportStudentsController@importClassStudentNumber')->name('admin.studentsimport');
 	Route::get('/download-students','ImportStudentsController@sampleStudentsDownload')->name('admin.sampleStudentsDownload');
+
+	Route::post('filter-student','ImportStudentsController@filterStudent')->name('filter-student');
 	
 	Route::get('/admin/list-topics','ImportCMSLinksController@listTopics')->name('admincms.listtopics');
 	Route::get('/list-topics','ImportCMSLinksController@listTopics')->name('cms.listtopics');
