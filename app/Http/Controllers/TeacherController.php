@@ -61,8 +61,8 @@ class TeacherController extends Controller
 			
 			$data = array( "name"=> array(
 							"familyName"=> "Teacher",//$request->fname,
-							"givenName"=> $request->fname,
-							"fullName"=> $request->fname,//.' '.$request->lname
+							"givenName" => $request->fname,
+							"fullName"  => $request->fname,//.' '.$request->lname
 						  ),
 						  "password"=> 't#'. $request->phone,
 						  "primaryEmail"=> $request->email,
@@ -448,7 +448,7 @@ class TeacherController extends Controller
 												"givenName"=> $name,
 												"fullName"=> $name,//.' '.$request->lname
 											  ),
-											  "password"=> $phone,
+											  "password"=> 't#'.$phone,
 											  "primaryEmail"=> $email,
 											  "recoveryEmail" => $logged_admin_email
 											);	
