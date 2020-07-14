@@ -99,6 +99,7 @@ Route::group(['middleware' => 'adminsession'], function () {
 
     Route::match(array('GET', 'POST'), '/cmslinks-import', 'ImportCMSLinksController@cmsLinksImport')->name('cms.cmslinksimport');
     Route::get('/download-cmslinkssample', 'ImportCMSLinksController@sampleCMSLinksDownload')->name('cms.sampleCMSLinksDownload');
+
 });
 
 
@@ -149,8 +150,4 @@ Route::group(['middleware' => 'teachersession'], function () {
 
 Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass');
 Route::get('/timeTable/{class}/{section}', 'ImportTimetableController@download_Timetable');
-
-//Cron JOb URL  http://290px.com/elearn/public/addData_pastClass
-
-
-
+//Reload Timetable URL - http://<domain>/addData_pastClass

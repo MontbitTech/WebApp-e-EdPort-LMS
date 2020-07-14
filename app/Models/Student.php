@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use App\Models\ClassSection;
+
+class Student extends Model
+{
+    protected $table = 'tbl_students';
+
+    protected $fillable = ['name','class_id','email','phone','notify'];
+
+}
