@@ -21,7 +21,7 @@ class DeployController extends Controller
 //            $process->run(function ($type, $buffer) {
 //                echo $buffer;
 //            });
-            echo shell_exec(base_path() . '/deploy.sh');
+            echo shell_exec(base_path() . '../deploy.sh');
 
         }
     }
