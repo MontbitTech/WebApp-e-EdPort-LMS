@@ -61,11 +61,11 @@ class TeacherController extends Controller
 			
 			$data = array( "name"=> array(
 							"familyName"=> "Teacher",//$request->fname,
-							"givenName"=> $request->fname,
-							"fullName"=> $request->fname,//.' '.$request->lname
+							"givenName" => $request->fname,
+							"fullName"  => $request->fname,//.' '.$request->lname
 						  ),
-						  "password"=> $request->phone,
-						  "primaryEmail"=> $request->email,
+						  "password"      => 't#'. $request->phone,
+						  "primaryEmail"  => $request->email,
 						  "recoveryEmail" => $logged_admin_email
 						);	
 			$data = json_encode($data);
