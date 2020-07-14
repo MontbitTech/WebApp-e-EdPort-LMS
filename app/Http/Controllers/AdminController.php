@@ -15,28 +15,6 @@ use App\Teacher;
 
 class AdminController extends Controller
 {
- // use AuthenticatesUsers;
-  //protected $redirectTo = '/dashboard';
-    
-  public function __construct()
-  {
-    //$this->middleware('guest')->except('logout');
-   // $client = new Google_Client();
-    //$client->setAuthConfig('../credentials.json');
-
-  }
-
-/*  public function guard()
-  {
-   return Auth::guard('admin');
-  } */
- 
-
- /*  public function showAdminLoginForm(){
-   
-    return view('admin.login');
-  } */
-  
 	public function index()
 	{
 		return view('admin.welcome');
@@ -210,6 +188,7 @@ class AdminController extends Controller
 
     }
   }
+
   public function adminDashboard(Request $request)
   {
 	 $teacher = Teacher::all();
@@ -222,12 +201,8 @@ class AdminController extends Controller
 
   public function logout(Request $request)
   {
-    //Auth::guard('admin')->logout();
-		
     Session::forget('access_token');
-    Session::put('access_token','');
     Session::forget('admin_session');
-    Session::put('admin_session','');
 	
 	return redirect(url('/admin'));
   }
