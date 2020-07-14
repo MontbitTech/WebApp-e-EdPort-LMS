@@ -99,7 +99,8 @@ Route::group(['middleware' => 'adminsession'], function () {
 
     Route::match(array('GET', 'POST'), '/cmslinks-import', 'ImportCMSLinksController@cmsLinksImport')->name('cms.cmslinksimport');
     Route::get('/download-cmslinkssample', 'ImportCMSLinksController@sampleCMSLinksDownload')->name('cms.sampleCMSLinksDownload');
-
+    Route::post('filter-subject','ClassController@filterSubject')->name('filter-subject');
+	Route::post('filter-student','ImportStudentsController@filterStudent')->name('filter-student');
 });
 
 
