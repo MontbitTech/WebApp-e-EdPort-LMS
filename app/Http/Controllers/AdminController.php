@@ -81,7 +81,7 @@ class AdminController extends Controller
 		{
             $request->validate([ 
               'item' => 'required',
-              'ivalue.year' => 'required',
+              'ivalue' => 'required',
             ]);
 			
 			$settings = \DB::table('tbl_settings')->where('item',$request->item);
