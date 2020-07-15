@@ -2,7 +2,7 @@
     @foreach ($errors->all() as $error)
       <script type="text/javascript">
       $(document).ready(function(){
-        $.fn.notifyMe('danger', 120, "{{ $error}}");
+        $.fn.notifyMe('danger', 500, "{{ $error}}");
       });
     </script>
     @endforeach
@@ -11,7 +11,7 @@
   @if(session()->get('error'))
     <script type="text/javascript">
       $(document).ready(function(){
-        $.fn.notifyMe('danger', 120, "{{ session()->get('error')}}");
+        $.fn.notifyMe('danger', 500, "{{ session()->get('error')}}");
       });
     </script> 
   @endif
