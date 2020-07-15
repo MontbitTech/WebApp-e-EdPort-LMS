@@ -66,6 +66,14 @@
       <div class="modal-body pt-4">
         <form>
           <div class="form-group">
+            <select name="help_ticket_category" id="helpCategory" class="form-control" required>
+              <option value="">Please select a category</option>
+              @foreach($helpCategories as $category)
+                <option value="{{$category->id}}">{{$category->category}}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="form-group">
             <textarea class="form-control" value="" rows="5" id="desc" placeholder="Write help message..." required="required"></textarea>
           </div>
           <div class="form-group text-right">
@@ -86,6 +94,7 @@
    
      var desc = $("#desc").val();
      var help_type = 1;
+     var help_category = $('#helpCategory').val();
 	 
 	 if(desc != '')
 	 {
@@ -100,7 +109,7 @@
 			  $.ajax({
 				url: "{{ route('generate-Ghelp')}}",
 				method: 'post',
-				data: {desc:desc,help_type:help_type},
+				data: {desc:desc,help_type:help_type,help_category:help_category},
 				success: function(response){
 				  $('.loader').fadeOut();
 				   //------------------------
