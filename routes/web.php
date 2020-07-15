@@ -96,6 +96,7 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::match(array('GET', 'POST'), '/admin/edit-link/{id}', 'ImportCMSLinksController@editLink')->name('cms.editlink');
     Route::match(array('GET', 'POST'), '/admin/add-link', 'ImportCMSLinksController@addLink')->name('cms.addlink');
     Route::post('/admin/delete-link/{id}', 'ImportCMSLinksController@deleteLink')->name('cms.deletelink');
+    Route::post('filter-record','ImportCMSLinksController@filterRecord')->name('filter-record');
 
     Route::match(array('GET', 'POST'), '/cmslinks-import', 'ImportCMSLinksController@cmsLinksImport')->name('cms.cmslinksimport');
     Route::get('/download-cmslinkssample', 'ImportCMSLinksController@sampleCMSLinksDownload')->name('cms.sampleCMSLinksDownload');

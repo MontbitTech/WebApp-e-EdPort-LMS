@@ -10,10 +10,12 @@ use Auth;
 use Validator;
 use App\Http\Helpers\CommonHelper;
 use App\Teacher;
+use App\CmsLink;
 use App\StudentClass;
 use App\StudentSubject;
 use App\ClassTiming;
 use App\InvitationClass;
+use App\Models\ClassSection;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use App\Http\Helpers\CustomHelper;
@@ -100,15 +102,27 @@ class ImportCMSLinksController extends Controller
 			
 		$lists = \DB::select('select c.id, c.class, c.subject, s.subject_name, c.topic, c.link from tbl_cmslinks c, tbl_student_subjects s where c.subject = s.id');
 
-		return redirect()->route('cms.listtopics')->with('success',Config::get('constants.WebMessageCode.112'));
+		return redirect()->route('cms.listtopics')->with('success','Deleted Successfully');
     } 
 	
 	
      public function listTopics()
     {
-      $lists = \DB::select('select c.id, c.class, c.subject, s.subject_name, c.topic, c.link, c.assignment_link from tbl_cmslinks c, tbl_student_subjects s where c.subject = s.id');
+        $classes  = ClassSection::select('class_name')->distinct()->get();
+		$subjects = StudentSubject::get();
+        return view('admin.cmslinks.index',compact('classes','subjects'));
+    }
 
-      return view('admin.cmslinks.index',compact('lists'));
+    public function filterRecord(Request $request, CmsLink $cmslink)
+    {
+    	$rec = $cmslink->newQuery();
+		
+		if(!empty($request->txtSerachClass && $request->txtSerachSubject)){
+			$getResult = $rec->where('class', $request->txtSerachClass)->where('subject', $request->txtSerachSubject)->get();
+		}
+	    else $getResult="";
+
+	    return view('admin.cmslinks.filter-record',compact('getResult'));
     }
 
 	public function sampleCMSLinksDownload(Request $request)
