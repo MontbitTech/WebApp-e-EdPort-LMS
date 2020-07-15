@@ -144,7 +144,7 @@ body {
 .profile-box{
   position: fixed;
   top: 0;
-  background-color: #007bff;
+  background-color: #253372;
   padding: 20px 10px;
   height: 100%;
   left: 0px;
@@ -184,8 +184,8 @@ body {
 
 .profile-picture{
   display: block;
-  width: 130px;
-  height: 130px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   overflow: hidden;
   margin: auto auto 10px auto;
@@ -243,7 +243,7 @@ body {
   text-align: center;
   width: 100%;
   color: #fff;
-  font-size: 23px;
+  font-size: 18px;
   background: transparent;
   outline: none;
   border-radius: 0.25rem;
@@ -322,7 +322,7 @@ body {
   box-shadow: 0px 5px 14px gainsboro;
 }
 .classes-datetime{
-  background: linear-gradient(#007bff,#9eccde);
+  background: #253372;
   position: absolute;
   color: #fff;
   text-align: center;
@@ -331,11 +331,13 @@ body {
   width: 88px;
   height: 100%;
 }
+.btn-ui{
+  background:#253372;
+  color:#fff;
+}
 .cls-date{
-  margin-bottom: 10px;
-  border-bottom: 2px solid rgba(255,255,255,0.2);
   padding: 8px 10px;
-  font-size: 14px;
+  font-size: 20px;
 }
 .cls-separater{
   font-size: 14px;
@@ -370,12 +372,12 @@ body {
 	box-shadow: 0px 2px 5px rgba(0,0,0,0.20);
 }
 .text-edit{
-  outline: none;
+  outline: auto;
   padding-right: 30px;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3e%3cpath fill='%23888' d='M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z'%3e%3c/path%3e%3c/svg%3e");
+  /*background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3e%3cpath fill='%23888' d='M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z'%3e%3c/path%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 5px;
-  background-size: 14px 14px;
+  background-size: 14px 14px;*/
 }
 .text-edit:hover,.text-edit:focus{
 	outline-offset: 4px;
