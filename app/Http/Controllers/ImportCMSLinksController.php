@@ -125,7 +125,6 @@ class ImportCMSLinksController extends Controller
 	    return view('admin.cmslinks.filter-record',compact('getResult'));
     }
 
-
 	public function sampleCMSLinksDownload(Request $request)
 	{
 		$path = public_path('cms-excels/sample/').'/ClassSubjectTopicUrl.csv';

@@ -22,7 +22,7 @@
                   <tr>
                     <td>{{++$i}}</td>
                     <td class="text-center">{{$list->class}}</td>
-                    <td>{{$list->getSubject->subject_name}}</td>
+                    <td>{{$list->Subject->subject_name}}</td>
                     <td>{{$list->topic}}</td>
                     <td>
 					@if(empty($list->link))
