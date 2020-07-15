@@ -14,5 +14,10 @@ class CmsLink extends Model
    {
 	   return $this->hasMany('App\DateClass','topic_id','id');
    }
+
+   public function getSubject()
+   {
+	   return $this->belongsTo('App\StudentSubject','subject','id');
+   }
    
 }

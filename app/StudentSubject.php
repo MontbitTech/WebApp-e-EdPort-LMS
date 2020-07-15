@@ -30,4 +30,9 @@ class StudentSubject extends Model
     {
         return $this->hasMany('App\InvitationClass','subject_id','id');
     }
+
+    public function getCmsRecords()
+    {
+      return $this->hasMany('App\CmsLink','subject','id');
+    }
 }
