@@ -14,6 +14,8 @@ use App\StudentClass;
 use App\StudentSubject;
 use App\ClassTiming;
 use App\InvitationClass;
+use App\Models\ClassSection;
+use App\Models\Student;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use App\Http\Helpers\CustomHelper;
@@ -134,7 +136,7 @@ class ImportStudentsController extends Controller
 					  });
 		
 						
-					return redirect()->route('adminlist.students')->with('success',Config::get('constants.WebMessageCode.112'));
+					return redirect()->route('adminlist.students')->with('success','Added Successfully');
 			}
 			else
 			{
@@ -161,6 +163,8 @@ class ImportStudentsController extends Controller
               'id' => 'required|numeric',
               'class' => 'required',
               'section' => 'required',
+              'phone' => 'required|numeric|digits:10',
+              'email' => 'required|email',
             ],[
 				'fname.regex'=>'The name must be letters only.',
 				//'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
@@ -252,12 +256,26 @@ class ImportStudentsController extends Controller
     } 
 	
 	
-     public function listStudents()
-    {
-      $lists = \DB::select('select s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id');
+    
+	public function listStudents()
+	{
+		$classes  = ClassSection::select('class_name')->distinct()->get();
+		$sections = ClassSection::select('section_name')->distinct()->get();
+		return view('admin.numbers.index',compact('classes','sections'));
+	}
 
-      return view('admin.numbers.index',compact('lists'));
-    }
+	public function filterStudent(Request $request)
+	{
+		$class_name = $request->txtSerachClass;
+		$section_name = $request->txtSerachSection;
+		if(!empty($request->txtSerachClass && $request->txtSerachSection)){
+		$getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=? and c.section_name=?",[$class_name , $section_name]);
+	    }
+
+	    else $getResult="";
+		
+		return view('admin.numbers.filter-student',compact('getResult'));
+	}
 
 	public function sampleStudentsDownload(Request $request)
 	{

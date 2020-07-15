@@ -61,10 +61,10 @@ class TeacherController extends Controller
 			
 			$data = array( "name"=> array(
 							"familyName"=> "Teacher",//$request->fname,
-							"givenName"=> $request->fname,
-							"fullName"=> $request->fname,//.' '.$request->lname
+							"givenName" => $request->fname,
+							"fullName"  => $request->fname,//.' '.$request->lname
 						  ),
-						  "password"=> $request->phone,
+						  "password"=> 't#'. $request->phone,
 						  "primaryEmail"=> $request->email,
 						  "recoveryEmail" => $logged_admin_email
 						);	
@@ -358,7 +358,11 @@ class TeacherController extends Controller
 				
 					foreach($collection as $key => $reader)
 					{
-						
+                        if(Teacher::count() >= env('TEACHER_UPPERCAP'))	{
+                            return back()->with('error',
+                                'Maximum limit of ' . env('TEACHER_UPPERCAP').'teacher reached. 
+                                Contact administrator for extending limit');
+                        }
 						if(!isset($reader["name"]) || !isset($reader["email"]) || !isset($reader["phone"]))
 						{
 							$error = "Header mismatch";
@@ -444,7 +448,7 @@ class TeacherController extends Controller
 												"givenName"=> $name,
 												"fullName"=> $name,//.' '.$request->lname
 											  ),
-											  "password"=> $phone,
+											  "password"=> 't#'.$phone,
 											  "primaryEmail"=> $email,
 											  "recoveryEmail" => $logged_admin_email
 											);	

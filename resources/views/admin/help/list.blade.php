@@ -1,45 +1,38 @@
 @extends('layouts.admin.app')
 
 @section('content')
-
-
-
-
-
     <section class="main-section">
         <div class="container-fluid">
             <div class="row justify-content-center">
                 <div class="col-sm-12">
                     <div class="card card-common mb-3">
                         <div class="card-header">
-                            <span class="topic-heading">Help Tickets</span>
-
+                            <div class="row">
+                                <div class="col-md-4 col-lg-8 text-md-left mb-1">
+                                    <span class="topic-heading">Help Tickets</span>
+                                </div>
+                                <div class="col-md-8 col-lg-4 text-md-right mb-1">
+                                    <select id="category" name="category" class="form-control"
+                                            onchange="getCategories()">
+                                        <option value=''>Select Category</option>
+                                        @if(count($categories)>0)
+                                            @foreach($categories as $cl)
+                                                <option value='{{$cl->id}}'>{{$cl->category}}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <div class="card-body pt-3">
                             <div class="row justify-content-center">
                                 <div class="col-md-4 col-lg-3 text-md-left text-center mb-1">
-                <!-- <span data-dtlist="#ticketlist" class="mb-1">
-					<div class="spinner-border spinner-border-sm text-secondary" role="status"></div> 
-                </span> -->
+                                    <!-- <span data-dtlist="#ticketlist" class="mb-1">
+                                        <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+                                    </span> -->
                                 </div>
 
-                        <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
-                        <span data-dtfilter="" class="mb-1">
-
-                        <select id="category" name="category" class="form-control form-control-sm" onchange="getCategories()">
-                        <option value=''>Select Category</option>
-                        @if(count($categories)>0)
-                        @foreach($categories as $cl)
-                        <option value='{{$cl->id}}'>{{$cl->category}}</option>
-                        @endforeach
-                        @endif
-                        </select>
-
-                        </span>
-
-                        </div>
-
-                        <div class="col-sm-12" id="getticket">
+                                <div class="col-sm-12" id="getticket">
                                     <table id="ticket" class="table table-sm table-bordered display"
                                            data-page-length="100" data-order="[[0, &quot;desc&quot; ]]"
                                            style="width:100%" data-page-length="10" data-col1="60" data-collast="120"
@@ -59,7 +52,6 @@
                                         </thead>
                                     </table>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
@@ -124,29 +116,29 @@
             }
         });
 
-</script>
+    </script>
 
-<script>
+    <script>
 
-    function getCategories(){
+        function getCategories() {
 
-       $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
-    });
-        var category   = $("#category").val();
-        $.ajax({
-            url: "{{route('filter-ticket')}}",
-            type: 'POST',
-            data: {
-                category   : category
-            },
-            success: function(info) {
-                $("#getticket").html(info);
-                $("#getticket").show();
-            }
-        });
-    }
-</script>
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            var category = $("#category").val();
+            $.ajax({
+                url    : "{{route('filter-ticket')}}",
+                type   : 'POST',
+                data   : {
+                    category: category
+                },
+                success: function (info) {
+                    $("#getticket").html(info);
+                    $("#getticket").show();
+                }
+            });
+        }
+    </script>
 @endsection
