@@ -4,7 +4,7 @@
     <svg class="icon"><use xlink:href="{{asset('images/icons.svg#icon_bars')}}"></use></svg>
   </div>
   <div class="container">
-    <a class="navbar-brand" href="./home" title="E-Learning">E-Learning</a>
+    <a class="navbar-brand" href="./home" title="E-Learning">e-Edport</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupport" aria-expanded="false">
       <span class="navbar-toggler-icon">
         <svg class="icon icon-2x"><use xlink:href="{{asset('images/icons.svg#icon_vdots')}}"></use></svg>
@@ -24,7 +24,7 @@
         </li>-->
         <li class="nav-item">
           <a class="nav-link {{ Request::segment(2) == 'assignment'?'active':''}}" href="{{route('teacher.assignment')}}">
-            <svg class="icon mr-1"><use xlink:href="{{asset('images/icons.svg#icon_file')}}"></use></svg> Assignments
+            <svg class="icon mr-1"><use xlink:href="{{asset('images/icons.svg#icon_edit')}}"></use></svg> Examination
           </a>
         </li>        
         <!--<li class="nav-item">
@@ -42,7 +42,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <button type="button" class="btn btn-primary header-help" data-toggle="modal" href="#classhelpModal" role="modal">
+          <button type="button" class="btn btn-ui header-help" data-toggle="modal" href="#classhelpModal" role="modal">
             <svg class="icon mr-1"><use xlink:href="{{asset('images/icons.svg#icon_help')}}"></use></svg> Help!
           </button>
         </li>
