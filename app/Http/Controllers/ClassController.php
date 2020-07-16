@@ -19,208 +19,177 @@ use App\ClassWork;
 
 class ClassController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //$this->middleware('auth');
-      //  return Auth::guard('admin');
-    }
+	/**
+	 * Create a new controller instance.
+	 *
+	 * @return void
+	 */
+	public function __construct()
+	{
+		//$this->middleware('auth');
+		//  return Auth::guard('admin');
+	}
 
-    /**
-     * Show the application dashboard.|min:8
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-	 
+	/**
+	 * Show the application dashboard.|min:8
+	 *
+	 * @return \Illuminate\Contracts\Support\Renderable
+	 */
+
 	public function list_class()
 	{
 		$classes = StudentClass::all();
-     	return view('admin.class.list_class',compact('classes'));	
-	} 
-	 
-     public function addClasses(Request $request)
-    {
-		
-          if($request->isMethod('post')) {
-			  
-			  $allocate_email = "me";
-            $request->validate([ 
-              'class_name' => 'required|max:100',
-              'subject' => 'required',
-              'section' => 'required|max:100',
-            ]);
-			
-			
+		return view('admin.class.list_class', compact('classes'));
+	}
+
+	public function addClasses(Request $request)
+	{
+
+		if ($request->isMethod('post')) {
+
+			$allocate_email = "me";
+			$request->validate([
+				'class_name' => 'required|max:100',
+				'subject' => 'required',
+				'section' => 'required|max:100',
+			]);
+
+
 			$subject_id = $request->subject;
 			$class_name = $request->class_name;
 			$section_name = $request->section;
-			
-			$subject_name = StudentSubject::where('id',$request->subject)->get();
+
+			$subject_name = StudentSubject::where('id', $request->subject)->get();
 			$sub_name = $subject_name[0]['subject_name'];
-			$classExist = StudentClass::where('class_name',$class_name)->where('section_name',$section_name)->where('subject_id',$subject_id)->get()->first();
-			if($classExist)
-			{
-				return redirect()->route('classes.add')->with('error',"Class Already Exists !.");
-			}
-			else
-			{
-			
-						$data = array( 
-										  "name"=> $class_name.' '.$sub_name,
-										  "section"=> $section_name,
-										  "descriptionHeading"=> "",
-										  "description"=> "",
-										  "room"=> "",
-										  "ownerId"=> "me",
-										  "courseState"=> "ACTIVE"
+			$classExist = StudentClass::where('class_name', $class_name)->where('section_name', $section_name)->where('subject_id', $subject_id)->get()->first();
+			if ($classExist) {
+				return redirect()->route('classes.add')->with('error', "Class Already Exists !.");
+			} else {
 
-									);	
-						$data = json_encode($data);
-							
-						$token = CommonHelper::varify_Admintoken(); // verify admin token 
-						
-					
-						$responce = CommonHelper::create_class($token,$data); // access Google api craete Cource
-						$resData = array('error'=> '');
-									
-						if($responce == 101)
-						{
-							return back()->with('error', Config::get('constants.WebMessageCode.119'));
-						}
-						else
-						{
-							$resData = array_merge($resData,json_decode($responce,true));
-							
-						
-							 if($resData['error'])
-							{
-								if($resData['error']['status'] == 'UNAUTHENTICATED')  
-								{
-									return redirect()->route('admin.logout');
-								}
-								else
-								{
-									return redirect()->route('classes.add')->with('error',$resData['error']['message']);
-								}
-								
-							}
-							else
-							{  
-							
-								$g_class_id = $resData['id'];
-								$obj = new StudentClass;
-								$obj->class_name = $class_name;
-								$obj->section_name = $section_name;
-								$obj->subject_id = $subject_id;
-								
-								$obj->g_class_id = $g_class_id;
-								$obj->g_link = $resData['alternateLink'];
-								$obj->g_response = $responce;
-								$obj->save();
-							
+				$data = array(
+					"name" => $class_name . ' ' . $sub_name,
+					"section" => $section_name,
+					"descriptionHeading" => "",
+					"description" => "",
+					"room" => "",
+					"ownerId" => "me",
+					"courseState" => "ACTIVE"
 
-								return redirect()->route('admin.listClass')->with('success',Config::get('constants.WebMessageCode.125'));
-							}
-							
+				);
+				$data = json_encode($data);
+
+				$token = CommonHelper::varify_Admintoken(); // verify admin token 
+
+
+				$responce = CommonHelper::create_class($token, $data); // access Google api craete Cource
+				$resData = array('error' => '');
+
+				if ($responce == 101) {
+					return back()->with('error', Config::get('constants.WebMessageCode.119'));
+				} else {
+					$resData = array_merge($resData, json_decode($responce, true));
+
+
+					if ($resData['error']) {
+						if ($resData['error']['status'] == 'UNAUTHENTICATED') {
+							return redirect()->route('admin.logout');
+						} else {
+							return redirect()->route('classes.add')->with('error', $resData['error']['message']);
 						}
+					} else {
+
+						$g_class_id = $resData['id'];
+						$obj = new StudentClass;
+						$obj->class_name = $class_name;
+						$obj->section_name = $section_name;
+						$obj->subject_id = $subject_id;
+
+						$obj->g_class_id = $g_class_id;
+						$obj->g_link = $resData['alternateLink'];
+						$obj->g_response = $responce;
+						$obj->save();
+
+
+						return redirect()->route('admin.listClass')->with('success', Config::get('constants.WebMessageCode.125'));
+					}
+				}
 			}
-			
-        } 
-	
+		}
+
 		$data['subject'] = StudentSubject::orderBy('subject_name', 'ASC')->pluck('subject_name', 'id');
-		$data['subject']->prepend('Select Subject','');
-		$data['section'] = DB::table('tbl_classes')->select('section_name')->distinct()->get()->pluck('section_name','section_name');
-		$data['class'] = DB::table('tbl_classes')->select('class_name')->distinct()->get()->pluck('class_name','class_name');
-		$data['class']->prepend('Select Class','');
-		$data['section']->prepend('Select Section','');
-		
-		return view('admin.class.add',compact('data',$data));
-    }
-	
+		$data['subject']->prepend('Select Subject', '');
+		$data['section'] = DB::table('tbl_classes')->select('section_name')->distinct()->get()->pluck('section_name', 'section_name');
+		$data['class'] = DB::table('tbl_classes')->select('class_name')->distinct()->get()->pluck('class_name', 'class_name');
+		$data['class']->prepend('Select Class', '');
+		$data['section']->prepend('Select Section', '');
+
+		return view('admin.class.add', compact('data', $data));
+	}
+
 	public function deleteClasses(Request $request)
 	{
-	
-		$id = $request->txt_class_id;
-		
-	
-		
-		if($id != '')
-		{
-					$classTimingExist = ClassTiming::where('class_id',$id)->get()->first();
-					
-					$dateClassExist = DateClass::where('class_id',$id)->get()->first();
-					
-					$classWorkExits = ClassWork::where('class_id',$id)->get()->first();
-					
-					if($classTimingExist)
+		if ($request->delete == 'Delete' || $request->delete == 'delete') {
+			$id = $request->txt_class_id;
+
+
+
+			if ($id != '') {
+				$classTimingExist = ClassTiming::where('class_id', $id)->get()->first();
+
+				$dateClassExist = DateClass::where('class_id', $id)->get()->first();
+
+				$classWorkExits = ClassWork::where('class_id', $id)->get()->first();
+
+				if ($classTimingExist) {
+					return redirect()->route('admin.listClass')->with('error', "you cannot delete this class! it's associated with Teacher,Assignent....");
+				} else if ($dateClassExist) {
+					return redirect()->route('admin.listClass')->with('error', "you cannot delete this class! it's associated with Teacher,Assignent....");
+				} else if ($classWorkExits) {
+					return redirect()->route('admin.listClass')->with('error', "you cannot delete this class! it's associated with Assignent....");
+				} else {
+					$classes = StudentClass::find($id);
+
+					$g_class_id = $classes->g_class_id;
+
+
+					$token = CommonHelper::varify_Admintoken(); // verify admin token 
+
+
+					$responce = CommonHelper::delete_class($token, $g_class_id); // access Google api delete Cource
+
+
+
+					if ($responce) // || $responce == '' || $responce == null)
 					{
-						return redirect()->route('admin.listClass')->with('error', "you cannot delete this class! it's associated with Teacher,Assignent....");
+						$classes->delete();
+						return redirect()->route('admin.listClass')->with('success', "Class Deleted Successfully.");
 					}
-					else if($dateClassExist)
-					{
-						return redirect()->route('admin.listClass')->with('error', "you cannot delete this class! it's associated with Teacher,Assignent....");
-					}
-					else if($classWorkExits)
-					{
-						return redirect()->route('admin.listClass')->with('error', "you cannot delete this class! it's associated with Assignent....");
-					}
-					else
-					{
-						$classes = StudentClass::find($id);
-						
-						 $g_class_id = $classes->g_class_id;
-						
-						
-							$token = CommonHelper::varify_Admintoken(); // verify admin token 
-									
-								
-							$responce = CommonHelper::delete_class($token,$g_class_id); // access Google api delete Cource
-							
-						
-							
-							if($responce)// || $responce == '' || $responce == null)
-							{
-								$classes->delete();
-								return redirect()->route('admin.listClass')->with('success',"Class Deleted Successfully.");
-									
+
+
+					$resData = array('error' => '');
+
+					if ($responce == 101) {
+						return redirect()->route('admin.listClass')->with('error', Config::get('constants.WebMessageCode.119'));
+					} else {
+						$resData = array_merge($resData, json_decode($responce, true));
+						if ($resData['error']) {
+							if ($resData['error']['status'] == 'UNAUTHENTICATED') {
+								return redirect()->route('admin.logout');
+							} else {
+								return redirect()->route('admin.listClass')->with('error', $resData['error']['message']);
 							}
-					
-						
-							$resData = array('error'=> '');
-										
-							if($responce == 101)
-							{
-								return redirect()->route('admin.listClass')->with('error', Config::get('constants.WebMessageCode.119'));
-							}
-							else
-							{
-								$resData = array_merge($resData,json_decode($responce,true));
-								if($resData['error'])
-								{
-									if($resData['error']['status'] == 'UNAUTHENTICATED')  
-									{
-										return redirect()->route('admin.logout');
-									}
-									else
-									{
-										return redirect()->route('admin.listClass')->with('error',$resData['error']['message']);
-									}
-									
-								}
-								
-							}
+						}
 					}
-		}
-		else{
-			return redirect()->route('admin.listClass');
+				}
+			} else {
+				return redirect()->route('admin.listClass');
+			}
+		} else {
+			return redirect()->back()->with('error', "Type delete to confirm");
 		}
 	}
-		
-		
+
+
 	/*  public function addClasses(Request $request)
     {
 		$teacher_id = '';
@@ -436,6 +405,4 @@ class ClassController extends Controller
 							);
 		return view('admin.class.add',compact('data',$data))->with('days',$days);
     } */
-	
-
 }
