@@ -90,6 +90,7 @@ Route::group(['middleware' => 'adminsession'], function () {
 
     Route::match(array('GET', 'POST'), '/students-import', 'ImportStudentsController@importClassStudentNumber')->name('admin.studentsimport');
     Route::get('/download-students', 'ImportStudentsController@sampleStudentsDownload')->name('admin.sampleStudentsDownload');
+    Route::delete('admin/deleteallstudent', 'ImportStudentsController@deleteAllStudent');
 
     Route::get('/admin/list-topics', 'ImportCMSLinksController@listTopics')->name('admincms.listtopics');
     Route::get('/list-topics', 'ImportCMSLinksController@listTopics')->name('cms.listtopics');
@@ -97,6 +98,7 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::match(array('GET', 'POST'), '/admin/add-link', 'ImportCMSLinksController@addLink')->name('cms.addlink');
     Route::post('/admin/delete-link/{id}', 'ImportCMSLinksController@deleteLink')->name('cms.deletelink');
     Route::post('filter-record','ImportCMSLinksController@filterRecord')->name('filter-record');
+    Route::delete('admin/cmsDeleteAll', 'ImportCMSLinksController@deleteAll');
 
     Route::match(array('GET', 'POST'), '/cmslinks-import', 'ImportCMSLinksController@cmsLinksImport')->name('cms.cmslinksimport');
     Route::get('/download-cmslinkssample', 'ImportCMSLinksController@sampleCMSLinksDownload')->name('cms.sampleCMSLinksDownload');

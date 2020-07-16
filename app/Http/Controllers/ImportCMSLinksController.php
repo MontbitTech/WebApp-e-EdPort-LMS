@@ -263,4 +263,11 @@ class ImportCMSLinksController extends Controller
         }
         return view('admin.cmslinks.import');
     }
+
+    function deleteAll(Request $request)
+    {
+    	$ids = $request->ids;
+    	CmsLink::whereIn('id',explode(",",$ids))->delete();
+    	return response()->json(['success'=>"Deleted successfully."]);
+    }
 }
