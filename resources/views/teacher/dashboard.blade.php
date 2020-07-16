@@ -484,6 +484,8 @@ $cls = 0;
                                 </tbody>
                             </table>
                         </div>
+                        <!-- ./Teacher-AssignedClasses -->
+
                     </div>
                 </div>
             </div>
@@ -1387,7 +1389,54 @@ $cls = 0;
             });
         }
 
-    });
-</script>
+        });
+
+
+
+        // Description or Class  note
+        $(document).on('mouseover', 'textarea', function () {
+            $(this).prop( "disabled", false );
+        });
+        $(document).on('mouseout', 'textarea', function () {
+            $(this).prop( "disabled", true );
+        });
+        $(document).on('focusout', '.text-editwrapper textarea', function () {
+            var thiz = $(this);
+            var id = thiz.parent().find('.text-edit1').attr('data-savedesc');
+            var getDescText = (thiz.parent().find('.text-edit1').val().replace(/\$/g, '')).trim();
+            var dateClass_id = $("#dateClass_id" + id).val();
+
+
+            if (getDescText == '') {
+                $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
+            } else {
+                $.ajax({
+                    type   : 'POST',
+                    url    : '{{ url("update-classNotes") }}',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data   : { 'dateClass_id': dateClass_id, 'description': getDescText },
+                    success: function (result) {
+
+                        var response = JSON.parse(result);
+
+                        if (response.status == 'success') {
+                            $.fn.notifyMe('success', 5, response.message);
+                            $("#txt_desc" + id).val(getDescText);
+                        } else {
+                            $.fn.notifyMe('error', 5, response.message);
+                        }
+
+
+                        //$.fn.notifyMe('success',4,'Description has been saved!');
+                    },
+                    error  : function () {
+                        // thiz.parent().find('.text-edit').removeClass('active');
+                        $.fn.notifyMe('error', 4, 'There is some error while saving class note text!');
+                    }
+                });
+            }
+        });
+
+    </script>
 
 @endsection

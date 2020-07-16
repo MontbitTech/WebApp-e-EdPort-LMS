@@ -15,28 +15,6 @@ use App\Teacher;
 
 class AdminController extends Controller
 {
- // use AuthenticatesUsers;
-  //protected $redirectTo = '/dashboard';
-    
-  public function __construct()
-  {
-    //$this->middleware('guest')->except('logout');
-   // $client = new Google_Client();
-    //$client->setAuthConfig('../credentials.json');
-
-  }
-
-/*  public function guard()
-  {
-   return Auth::guard('admin');
-  } */
- 
-
- /*  public function showAdminLoginForm(){
-   
-    return view('admin.login');
-  } */
-  
 	public function index()
 	{
 		return view('admin.welcome');
@@ -109,7 +87,7 @@ class AdminController extends Controller
 			//dd($request->all());
 			$settings = \DB::table('tbl_settings')->where('id',$id )->update(["value"=>$request->ivalue]);
 
-			return redirect()->route('admin.settings')->with('success',"Item updated successfully !.");
+			return redirect()->route('admin.settings')->with('success',"Updated successfully !.");
 		}
 		
 		$id = decrypt($request->id);
@@ -210,6 +188,7 @@ class AdminController extends Controller
 
     }
   }
+
   public function adminDashboard(Request $request)
   {
 	 $teacher = Teacher::all();
@@ -222,12 +201,8 @@ class AdminController extends Controller
 
   public function logout(Request $request)
   {
-    //Auth::guard('admin')->logout();
-		
     Session::forget('access_token');
-    Session::put('access_token','');
     Session::forget('admin_session');
-    Session::put('admin_session','');
 	
 	return redirect(url('/admin'));
   }
@@ -237,8 +212,8 @@ class AdminController extends Controller
    $admin_id = Session::get('admin_session');
     if (Request()->post()) {
      $request->validate([
-          'fname' => 'required',
-          'lname' => 'required',
+          'fname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
+          'lname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
          // 'email' => 'required',
         ]);
      if($request->input('phone_no')){

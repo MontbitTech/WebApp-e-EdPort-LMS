@@ -14,6 +14,8 @@ use App\StudentClass;
 use App\StudentSubject;
 use App\ClassTiming;
 use App\InvitationClass;
+use App\Models\ClassSection;
+use App\Models\Student;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use App\Http\Helpers\CustomHelper;
@@ -67,82 +69,89 @@ class ImportStudentsController extends Controller
 
 
 			if (count($obj_class) > 0) {
-				$token = CommonHelper::varify_Admintoken(); // verify admin token 
+				$token = CommonHelper::varify_Admintoken(); // verify admin token
 				foreach ($obj_class as $row) {
 
-					$g_class_id = $row->g_class_id;
+                    $g_class_id = $row->g_class_id;
 
-					//	dd($g_class_id);
+                    //	dd($g_class_id);
 
-					$inv_data = array(
-						"courseId" => $g_class_id,
-						"role" => "STUDENT",
-						"userId" => $request->email
+                    $inv_data = array(
+                        "courseId" => $g_class_id,
+                        "role"     => "STUDENT",
+                        "userId"   => $request->email
 
-					);
-					$inv_data = json_encode($inv_data);
-					$inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // Invite Student
-					$inv_resData = array('error' => '');
-					if ($inv_responce == 101) {
-						return back()->with('error', Config::get('constants.WebMessageCode.119'));
-					} else {
-						$inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-						if ($inv_resData['error'] != '') {
+                    );
+                    $inv_data = json_encode($inv_data);
+                    $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // Invite Student
+                    $inv_resData = array('error' => '');
+                    if ( $inv_responce == 101 ) {
+                        return back()->with('error', Config::get('constants.WebMessageCode.119'));
+                    } else {
+                        $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
+                        if ( $inv_resData['error'] != '' ) {
 
-							if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
-								return redirect()->route('admin.logout');
-							} else {
-								//Log::error($inv_resData['error']['message']);
-								return back()->with('error', $inv_resData['error']['message']);
-							}
-						} else {
-							$inv_res_code = $inv_resData['id'];
-						}
-					}
-				}
-				\DB::insert('insert into tbl_students (name, class_id, phone, email, notify) values (?, ?, ?, ?, ?)', [$request->fname, $student[0], $request->phone, $request->email, $n]);
+                            if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                                return redirect()->route('admin.logout');
+                            } else {
+                                //Log::error($inv_resData['error']['message']);
+                                return back()->with('error', $inv_resData['error']['message']);
+                            }
+                        } else {
+                            $inv_res_code = $inv_resData['id'];
+                        }
+                    }
+                }
+					\DB::insert('insert into tbl_students (name, class_id, phone, email, notify) values (?, ?, ?, ?, ?)', [$request->fname,$student[0],$request->phone,$request->email, $n]);
 
-				$class = encrypt($request->class);
-				$section = encrypt($request->section);
+					$class = encrypt($request->class);
+					$section = encrypt($request->section);
 
-				$timeTable_url = env('APP_URL') . "/timeTable/" . $class . "/" . $section . "";
+					$timeTable_url = env('APP_URL')."/timeTable/".$class."/".$section."";
 
-				$data_mail = array('name' => $request->fname, 'timetable_url' => $timeTable_url);
-				$email = $request->email;
+					$data_mail = array('name'=>$request->fname,'timetable_url'=>$timeTable_url);
+					$email = $request->email;
 
-				Mail::send('mail.mail_timetable', $data_mail, function ($message) use ($email, $from) {
-					$message->to($email);
-					$message->subject('New Time Table');
-					//$message->from('noreply@montbit.com','MontBIt');
-					$message->from($from->value, 'MontBIt');
-				});
+					 Mail::send('mail.mail_timetable', $data_mail, function($message) use($email,$from)
+					 {
+						 $message->to($email);
+						 $message->subject('New Time Table');
+						 //$message->from('noreply@montbit.com','MontBIt');
+						 $message->from($from->value,'MontBIt');
+					  });
 
 
-				return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.112'));
-			} else {
-				return redirect()->route('student.add')->with('error', "Selected Class is not created.");
+					return redirect()->route('adminlist.students')->with('success','Added Successfully');
 			}
-		}
+			else
+			{
+				return redirect()->route('student.add')->with('error',"Selected Class is not created.");
+			}
 
-		$data['section'] = \DB::table('tbl_classes')->select('section_name')->distinct()->get()->pluck('section_name', 'section_name');
-		$data['class'] = \DB::table('tbl_classes')->select('class_name')->distinct()->get()->pluck('class_name', 'class_name');
-		$data['class']->prepend('Select Class', '');
-		$data['section']->prepend('Select Section', '');
+        }
 
-		return view('admin.numbers.add', compact('data', $data));
-	}
-	public function editStudent(Request $request, $id)
-	{
+		$data['section'] = \DB::table('tbl_classes')->select('section_name')->distinct()->get()->pluck('section_name','section_name');
+		$data['class'] = \DB::table('tbl_classes')->select('class_name')->distinct()->get()->pluck('class_name','class_name');
+		$data['class']->prepend('Select Class','');
+		$data['section']->prepend('Select Section','');
 
-		if ($request->isMethod('post')) {
-			$request->validate([
-				'fname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
-				// 'lname' => 'required|max:100|alpha_num',
-				'id' => 'required|numeric',
-				'class' => 'required',
-				'section' => 'required',
-			], [
-				'fname.regex' => 'The name must be letters only.',
+		return view('admin.numbers.add',compact('data',$data));
+    }
+     public function editStudent(Request $request, $id)
+    {
+
+        if($request->isMethod('post'))
+		{
+            $request->validate([
+              'fname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
+             // 'lname' => 'required|max:100|alpha_num',
+              'id' => 'required|numeric',
+              'class' => 'required',
+              'section' => 'required',
+              'phone' => 'required|numeric|digits:10',
+              'email' => 'required|email',
+            ],[
+				'fname.regex'=>'The name must be letters only.',
 				//'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
 
 			]);
@@ -188,7 +197,7 @@ class ImportStudentsController extends Controller
 
 				$obj_class = StudentClass::where('class_name', $student->class_name)->where('section_name', $student->section_name)->get();
 
-				$token = CommonHelper::varify_Admintoken(); // verify admin token 
+				$token = CommonHelper::varify_Admintoken(); // verify admin token
 				foreach ($obj_class as $row) {
 
 					$g_class_id = $row->g_class_id;
@@ -209,7 +218,7 @@ class ImportStudentsController extends Controller
 						}
 						/*	else
 						{
-							$inv_res_code = $inv_resData['id']; 
+							$inv_res_code = $inv_resData['id'];
 						}*/
 					}
 				}
@@ -225,13 +234,25 @@ class ImportStudentsController extends Controller
 			return redirect()->back()->with('error', "Type delete to confirm");
 		}
 	}
-
-
+    
 	public function listStudents()
 	{
-		$lists = \DB::select('select s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id');
+		$classes  = ClassSection::select('class_name')->distinct()->get();
+		$sections = ClassSection::select('section_name')->distinct()->get();
+		return view('admin.numbers.index',compact('classes','sections'));
+	}
 
-		return view('admin.numbers.index', compact('lists'));
+	public function filterStudent(Request $request)
+	{
+		$class_name = $request->txtSerachClass;
+		$section_name = $request->txtSerachSection;
+		if(!empty($request->txtSerachClass && $request->txtSerachSection)){
+		$getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=? and c.section_name=?",[$class_name , $section_name]);
+	    }
+
+	    else $getResult="";
+		
+		return view('admin.numbers.filter-student',compact('getResult'));
 	}
 
 	public function sampleStudentsDownload(Request $request)
