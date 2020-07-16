@@ -266,8 +266,7 @@ class ImportCMSLinksController extends Controller
 
     function deleteAll(Request $request)
     {
-    	$ids = $request->ids;
-    	CmsLink::whereIn('id',explode(",",$ids))->delete();
+    	CmsLink::whereIn('id',explode(",",$request->ids))->delete();
     	return response()->json(['success'=>"Deleted successfully."]);
     }
 }

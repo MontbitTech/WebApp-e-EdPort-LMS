@@ -18,7 +18,7 @@
             
           <tbody>
            @if($getResult)
-           <button style="margin-bottom: 10px" class="btn btn-info delete_all" data-url="{{ url('admin/deleteallstudent') }}">Delete All Selected</button>
+           <button style="margin-bottom: 10px" class="btn btn-info delete_all" data-url="{{ url('admin/deleteAllStudent') }}">Delete All Selected</button>
               @php $i=0; @endphp
                 @foreach($getResult as $list)
                   <tr id="tr_{{$list->id}}">

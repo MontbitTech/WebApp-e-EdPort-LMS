@@ -90,7 +90,7 @@ Route::group(['middleware' => 'adminsession'], function () {
 
     Route::match(array('GET', 'POST'), '/students-import', 'ImportStudentsController@importClassStudentNumber')->name('admin.studentsimport');
     Route::get('/download-students', 'ImportStudentsController@sampleStudentsDownload')->name('admin.sampleStudentsDownload');
-    Route::delete('admin/deleteallstudent', 'ImportStudentsController@deleteAllStudent');
+    Route::delete('admin/deleteAllStudent', 'ImportStudentsController@deleteAllStudent');
 
     Route::get('/admin/list-topics', 'ImportCMSLinksController@listTopics')->name('admincms.listtopics');
     Route::get('/list-topics', 'ImportCMSLinksController@listTopics')->name('cms.listtopics');

@@ -497,10 +497,7 @@ class ImportStudentsController extends Controller
 
     function deleteAllStudent(Request $request)
     {
-    	$ids = $request->ids;
-    	Student::whereIn('id',explode(",",$ids))->delete();
+    	Student::whereIn('id',explode(",",$request->ids))->delete();
     	return response()->json(['success'=>"Deleted successfully."]);
-    }
-	
-	
+    }	
 }
