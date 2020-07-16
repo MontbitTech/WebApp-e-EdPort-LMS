@@ -39,8 +39,8 @@ class ClassController extends Controller
 	 
 	public function list_class()
 	{
-		$classes = ClassSection::select('class_name')->distinct()->orderByRaw('LENGTH(class_name)', 'ASC')->orderBy('class_name','ASC')->get();
-		$section = ClassSection::select('section_name')->distinct()->orderBy('section_name','ASC')->get();
+		$classes = ClassSection::select('class_name')->distinct()->get();
+		$section = ClassSection::select('section_name')->distinct()->get();
 		return view('admin.class.list_class',compact('classes','section'));	
 	} 
 
