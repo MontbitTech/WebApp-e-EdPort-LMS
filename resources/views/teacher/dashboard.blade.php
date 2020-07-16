@@ -716,7 +716,7 @@ $cls = 0;
                     <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live
                         <small>(Link)</small>:</label>
                     <div class="col-md-6">
-                        {!! Form::textarea('edit_join_liveUrl',$teacherData->g_meet_url, array('id'=>'edit_join_liveUrl','placeholder' => 'Enter Live class url','class' => 'form-control','required'=>'required','rows'=>'3','disabled')) !!}
+                        {!! Form::textarea('edit_join_liveUrl',$teacherData->g_meet_url, array('id'=>'edit_join_liveUrl','placeholder' => 'Enter Live class url','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
                     </div>
                 </div>
