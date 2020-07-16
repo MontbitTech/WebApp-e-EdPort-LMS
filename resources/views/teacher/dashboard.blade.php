@@ -1,11 +1,10 @@
 @extends('layouts.teacher.app')
-@php $i = 1;$k=$i;@endphp
-@section('content')
+@php$i = 1;$k=$i;@endphp
+    @section('content')
+
 
 <?php
 $cls = 0;
-
-
 ?>
 
 <section class="main-section">
@@ -21,7 +20,8 @@ $cls = 0;
                             Classes</a>
                     </li>
                     <li class="nav-item mb-1">
-                        <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assigned Class</a>
+                        <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assigned
+                            Class</a>
                     </li>
                     <li class="nav-item mb-1 ml-md-auto">
                         <a class="nav-link shadow-sm mr-0" data-toggle="modal" href="#addClassModal" role="modal">
@@ -60,164 +60,164 @@ $cls = 0;
                         }
                         ?>
 
-                        <div class="classes-box">
-                            <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
-                            <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
-                            <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
-                            <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
+<div class="card text-center mb-3" style="border-color:#253372;">
+                        <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
+                        <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
+                        <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
+                        <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
+                        <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
+                        <input type="hidden" id="txt_gMeetURL{{$i}}" value="{{$teacherData->g_meet_url}}">
+                        <input type="hidden" id="txt_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
+                        <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}"/>
+    <div class="card-header p-0" style="background:#253372;color:#fff;">
+        <div class="row pl-2 pr-3">
+            <div class="d-flex align-items-center col-md-4">
+                <div class="cls-date font-weight-bold">{{ $todaysDate }}</div>
+                    <div class="cls-from pt-1">
+                        {{ date('G:i',strtotime($t->from_timing))}} to {{ date('G:i',strtotime($t->to_timing))}}</div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between col-md-8">
+                    <div class="font-weight-bold pt-1">
+                        Class: {{ $class_name }} Std
+                    </div>
+                    <div class="font-weight-bold pt-1">
+                        Section:{{$section_name}}
+                    </div>
+                    <div class="font-weight-bold pt-1">
+                        Subject: {{$subject_name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <div class="row m-2">
+                <div class="col-md-9">
+                    <div class="input-group text-editwrapper mt-1 mb-1">
+                        <textarea class="form-control text-edit1" rows="3" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" 
+                        id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+                     </div>
+               </div>
+               <div class="col-md-3 mt-1">
+                    <?php
+                        $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
 
-                            <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
-                            <input type="hidden" id="txt_gMeetURL{{$i}}" value="{{$teacherData->g_meet_url}}">
-                            <input type="hidden" id="txt_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
+                                        //if($t->subject_id == 2)
+                                        //	dd($topics);
 
-
-                            <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}" />
-
-
-                            <div class="classes-datetime">
-                                <div class="cls-date">{{ $todaysDate }}</div>
-                                <div class="cls-from">{{$t->from_timing}}</div>
-                                <div class="cls-separater">to</div>
-                                <div class="cls-to">{{$t->to_timing}}</div>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
-                                <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span>
-
-                                    {{ $class_name }} Std
-
-                                </div>
-                                <div class="font-weight-bold pt-1"><span class="text-secondary">Section:</span>
-                                    {{$section_name}}
-                                </div>
-
-
-                                <div class="font-weight-bold pt-1"><span class="text-secondary">Subject:</span>
-
-                                    {{$subject_name}}
-
-                                </div>
-                            </div>
-                            <div class="text-editwrapper">
-                                <p class="mt-0 mb-2 text-secondary text-edit" data-url="#" data-savedesc="{{$i}}" contenteditable="true" id="class_description_{{$i}}" onchange="updateNote(this.value);">
-                                    @if($t->class_description!='')
-                                    {{$t->class_description}}
-                                    @else
-                                    {{$t->class_description}}
-                                    @endif
-                                </p>
-                                <button type="button" class="btn btn-primary btn-sm">&#10003;</button>
-                            </div>
-                            <div class="d-flex justify-content-between flex-wrap py-2">
-                                <div>
-                                    <a href="javascript:void(0);" data-LiveLink="{{ $teacherData->g_meet_url }}" id="live_c_link_{{$i}}" class=" btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
-                                        <svg class="icon font-10 mr-1">
-                                            <use xlink:href="../images/icons.svg#icon_dot"></use>
-                                        </svg>
-                                        Join Live
-                                    </a>
-                                    <a href="#" class=" btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="new_a_link_{{$i}}" data-createModal='{{$i}}' data-class_modal="{{$t->class_id}}" data-subject_modal="{{$t->subject_id}}" data-teacher_modal="{{$t->teacher_id}}">
-                                        <svg class="icon font-12 mr-1">
-                                            <use xlink:href="../images/icons.svg#icon_plus"></use>
-                                        </svg>
-                                        New Assignment
-                                    </a>
-                                    <?php
-                                    $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
-                                    ?>
-                                    <select id="view_a_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow" data-AssLiveLink="{{$t->id}}" />
-                                    <?php
-                                    if (count($assignmentData) > 0) {
-                                    ?>
-                                        <option value="">View Assigment</option><?php
-                                                                                foreach ($assignmentData as $key) {
-                                                                                ?>
-                                            <option value="{{$key->g_live_link}}">
-                                                {{Str::limit($key->g_title,10,'..')}}
-                                            </option>
-
-                                        <?php
-                                                                                }
-                                                                            } else {
+                                        //dd($topics);
+                                        //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
+                                        $x = $t->cmsLink;
                                         ?>
-                                        <option value="">No Assigment</option>
-                                    <?php
-                                                                            }
+                         <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
+                                                <option value="">Select Topic</option>
+                                                @if(count($topics)>0)
+                                                    @foreach($topics as $topic)
+                                                        <?php $selected = ( $topic->id == $t->topic_id ) ? 'selected' : '';?>
+                                                        <option value="{{$topic->id}}" {{$selected}}>{{$topic->topic}}</option>
+                                                    @endforeach
+                                                @endif
+                                                </select>
+                                                </select>
 
-                                    ?>
-                                    </select>
-
-
-                                    <a href="#" class="btn btn-sm btn-outline-magenta mb-1 mr-2 border-0 btn-shadow" data-notifyMe="{{$i}}" data-id="notify_student" id="notifyurl_{{$i}}">
-                                        <svg class="icon mr-1">
-                                            <use xlink:href="../images/icons.svg#icon_bell"></use>
-                                        </svg>
-                                        <span>Notify Students</span>
-                                    </a>
-                                </div>
-                                <div>
-                                    <button type="button" data-classhelp="{{$i}}" class="btn btn-sm btn-outline-info mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help">
-                                        <svg class="icon mr-1">
-                                            <use xlink:href="../images/icons.svg#icon_help"></use>
-                                        </svg>
-                                        Help
-                                    </button>
-                                    <button type="button" data-editModal="{{$i}}" class="btn btn-sm btn-outline-secondary mb-1 border-0 btn-shadow" title="Edit">
-                                        <svg class="icon mr-1">
-                                            <use xlink:href="../images/icons.svg#icon_edit"></use>
-                                        </svg>
-                                        Edit
-                                    </button>
-                                </div>
-                            </div>
-
-                            <?php
-                            $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
-
-                            //if($t->subject_id == 2)
-                            //	dd($topics);
-
-                            //dd($topics);
-                            //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
-                            $x = $t->cmsLink;
-                            ?>
-
-                            <div class="select-topicbox">
-                                <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
-                                    <option value="">Select Topic</option>
-                                    @if(count($topics)>0)
-                                    @foreach($topics as $topic)
-                                    <?php $selected = ($topic->id == $t->topic_id) ? 'selected' : ''; ?>
-                                    <option value="{{$topic->id}}" {{$selected}}>{{$topic->topic}}</option>
-                                    @endforeach
-                                    @endif
-                                </select>
-                                </select>
-
-                                <?php
-                                $cms_link = '';
-                                if (strlen($x) > 0) {
-                                    $display_style = 'display: block;';
-                                    $cms_link = $x->link;
-                                } else
-                                    $display_style = 'display: none;';
+                                            <?php
+                                            $cms_link = '';
+                                            if ( strlen($x) > 0 ) {
+                                                $display_style = 'display: block;';
+                                                $cms_link = $x->link;
+                                            } else
+                                                $display_style = 'display: none;';
 
 
-                                if ($t->topic_id != '') {
-                                    //  $display_style = 'display: block;';
-                                }
-                                if ($t->cmsLink) {
-                                    // $cms_link = $t->cmsLink->link;
-                                }
+                                            if ( $t->topic_id != '' ) {
+                                                //  $display_style = 'display: block;';
+                                            }
+                                            if ( $t->cmsLink ) {
+                                                // $cms_link = $t->cmsLink->link;
+                                            }
 
 
-                                ?>
+                                            ?>
 
-                                <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
-                                    View Content
-                                </a>
+                                            <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}"
+                                               data-topicid="{{$t->topic_id}}"
+                                               class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow"
+                                               id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                                View Content
+                                            </a>
+                 </div>
+            </div>
+    </div>
+    <div class="card-footer p-1" style="background:#fff;">
+         <div class="d-flex justify-content-between flex-wrap">
+            <div class="m-auto">
+                <a href="javascript:void(0);" data-LiveLink="{{ $teacherData->g_meet_url }}" id="live_c_link_{{$i}}" 
+                    class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+                                                    <svg class="icon font-10 mr-1">
+                                                        <use xlink:href="../images/icons.svg#icon_dot"></use>
+                                                    </svg>
+                                                    Join Live
+                </a>
+                                                
+                <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notifyMe="{{$i}}" data-id="notify_student" 
+                id="notifyurl_{{$i}}">
+                                                    <svg class="icon mr-1">
+                                                        <use xlink:href="../images/icons.svg#icon_bell"></use>
+                                                    </svg>
+                                                    <span>Notify Students</span>
+                 </a>
+                <button type="button" data-classhelp="{{$i}}" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
+                                                        title="Help" data-id="help">
+                                                    <svg class="icon mr-1">
+                                                        <use xlink:href="../images/icons.svg#icon_help"></use>
+                                                    </svg>
+                                                    Help
+                </button>
+                <button type="button" data-editModal="{{$i}}" class="btn btn-sm btn-outline-primary mb-1 border-0 btn-shadow"
+                                                        title="Edit">
+                                                    <svg class="icon mr-1">
+                                                        <use xlink:href="../images/icons.svg#icon_edit"></use>
+                                                    </svg>
+                                                    Edit
+                                                </button>
+            </div>
+            <div class="m-auto"">
+                <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
+                 id="new_a_link_{{$i}}" data-createModal='{{$i}}' data-class_modal="{{$t->class_id}}" 
+                 data-subject_modal="{{$t->subject_id}}" data-teacher_modal="{{$t->teacher_id}}">
+                                                    <svg class="icon font-12 mr-1">
+                                                        <use xlink:href="../images/icons.svg#icon_plus"></use>
+                                                    </svg>
+                                                    New Assignment
+                </a>
+                                                <?php
+                                                $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
+                                                ?>
+                                                <select id="view_a_link_{{$i}}"
+                                                        class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
+                                                        data-AssLiveLink="{{$t->id}}"/>
+                                                <?php
+                                                if(count($assignmentData) > 0)
+                                                {
+                                                ?>
+                                                <option value="">View Assigment</option><?php
+                                                foreach($assignmentData as $key){
+                                                ?>
+                                                <option value="{{$key->g_live_link}}">{{Str::limit($key->g_title,10, '..')}}</option>
 
-                            </div>
-                        </div>
+                                                <?php
+                                                }
+                                                }else{
+                                                ?>
+                                                <option value="">No Assigment</option>
+                                                <?php
+                                                }
+
+                                                ?>
+                                                </select>             
+            </div>
+        </div>
+  </div>
+</div>
                         @php
                         $i++;
                         @endphp
@@ -264,22 +264,19 @@ $cls = 0;
 
 
                         <div class="classes-box">
-
+                        
                             <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
                             <input type="hidden" id="past_subject_id{{$i}}" value="{{$t->subject_id}}">
+
 
                             <input type="hidden" id="past_desc{{$i}}" value="{{$t->class_description}}">
                             <input type="hidden" id="past_gMeetURL{{$i}}" value="{{$t->g_meet_url}}">
                             <input type="hidden" id="past_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
                             <input type="hidden" id="past_recURL{{$i}}" value="{{$t->recording_url}}">
-
-
                             <input type="hidden" id="pastg_class_id_{{$i}}" value="{{ $g_class_id}}" />
                             <?php
-
                             $class_date = date("d M", strtotime($t->class_date));
-
                             ?>
 
                             <div class="classes-datetime">
@@ -313,6 +310,7 @@ $cls = 0;
                             </p>
 
 
+
                             <div class="d-flex justify-content-between flex-wrap py-2">
                                 <div>
                                     <a href="javascript:void(0);" data-pastLiveLink="{{ $t->recording_url }}" id="past_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
@@ -341,7 +339,6 @@ $cls = 0;
                                         <option value="">No Assignment</option>
                                     <?php
                                                                                 }
-
                                     ?>
                                     </select>
 
@@ -349,7 +346,7 @@ $cls = 0;
                                     <!-- 	 <a href="javascript:void(0);" data-passAssLiveLink="{{ $t->ass_live_url }}" id="past_asslive_c_link_{{$i}}"  class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
 							<svg class="icon font-10 mr-1"><use xlink:href="../images/icons.svg#icon_eye"></use></svg> View Assignment
 						  </a>
-						  <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="new_a_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow" data-createModal='{{$i}}' data-class_modal="{{$t->class_id}}" data-subject_modal="{{$t->subject_id}}"  data-teacher_modal="{{$t->teacher_id}}">
+						  <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="new_a_link_{{ $i }}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow" data-createModal='{{ $i }}' data-class_modal="{{ $t->class_id }}" data-subject_modal="{{ $t->subject_id }}"  data-teacher_modal="{{ $t->teacher_id }}">
 							<svg class="icon font-12 mr-1"><use xlink:href="../images/icons.svg#icon_plus"></use></svg> Add New Assignment
 						  </a> 
 						  <a href="#" class="btn btn-sm btn-outline-magenta mb-1 mr-2 border-0 btn-shadow">
@@ -391,7 +388,6 @@ $cls = 0;
                                 if ($t->topic_id != '') {
                                     $display_style = 'display: block;';
                                 }
-
                                 if ($t->cmsLink) {
                                     $cms_link = $t->cmsLink->link;
                                 }
@@ -400,6 +396,7 @@ $cls = 0;
                                 <a href="javascript:void(0);" data-pasttopiclink="{{ $cms_link }}" data-pasttopicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="pastviewcontent_{{$t->id}}" style="{{$display_style}}">
                                     View Content
                                 </a>
+
 
                             </div>
                         </div>
@@ -466,8 +463,8 @@ $cls = 0;
                                                     </a></td>
                                             </tr>
 
-                                        <?php
 
+                                        <?php
                                         }
                                         $i++;
                                     } else {
@@ -484,8 +481,6 @@ $cls = 0;
                                 </tbody>
                             </table>
                         </div>
-                        <!-- ./Teacher-AssignedClasses -->
-
                     </div>
                 </div>
             </div>
@@ -538,21 +533,21 @@ $cls = 0;
                         </select>
                     </div>
                 </div>
-
                 <div class="form-group row">
                     <label for="inputJoinlive" class="col-md-4 col-form-label text-md-right">OR Enter New Topic
                         :</label>
                     <div class="col-md-6">
                         <input type="text" id="txt_topin_name" class="form-control" placeholder="Topic Name" />
+
                     </div>
                 </div>
-
 
                 <div class="form-group row">
                     <label for="inputAddquiz" class="col-md-4 col-form-label text-md-right"> Assignment Title
                         :</label>
                     <div class="col-md-6">
                         <input type="text" class="form-control" name="txt_aTitle" id="txt_aTitle" placeholder="Assigment Title">
+
                     </div>
                 </div>
                 <div class="form-group row">
@@ -566,7 +561,6 @@ $cls = 0;
         </div>
     </div>
 </div>
-
 
 
 <!-- Class Box Help Modal -->
@@ -586,9 +580,8 @@ $cls = 0;
                     <div class="form-group">
                         <select name="help_ticket_category" class="form-control" required>
                             <option value="">Please select a category</option>
-                            @foreach($helpCategories as $category)
-                            <option value="{{$category->id}}">{{$category->category}}</option>
-                            @endforeach
+                            
+                            
                         </select>
                     </div>
                     <div class="form-group">
@@ -623,7 +616,6 @@ $cls = 0;
                 </button>
             </div>
             <div class="modal-body pt-4">
-
                 {!! Form::open(array('route' => ['add.class'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_add_class')) !!}
                 <div class="form-group row">
                     <label for="addinputDate" class="col-md-4 col-form-label text-md-right">Date:</label>
@@ -645,7 +637,6 @@ $cls = 0;
                     </div>
                 </div>
 
-
                 <div class="form-group row">
                     <label class="col-md-12 text-danger text-center" style="font-size: 12px;padding-left: 130px;">*Extra
                         classes for regular assigned classes can be created here</label>
@@ -660,14 +651,14 @@ $cls = 0;
                                 <option value="<?= $row->id; ?>"> <?= 'Class ' . $row->class_name . ' - ' . $row->section_name . ' - ' . $row->subject_name; ?></option>
                             <?php
                             }
-
                             ?>
                         </select>
+
                     </div>
                 </div>
 
 
-                <!-- <div class="form-group row">
+                    <!-- <div class="form-group row">
 				<label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live <small>(Link)</small>:</label>
 				<div class="col-md-6">
 				  {!! Form::textarea('join_liveUrl', null, array('placeholder' => 'Enter Live class url','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
@@ -680,6 +671,7 @@ $cls = 0;
                     <div class="col-md-6">
 
                         {!! Form::textarea('notify_stdMessage', null, array('placeholder' => 'Enter Notify Message','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
                     </div>
                 </div>
                 <div class="form-group row">
@@ -725,6 +717,7 @@ $cls = 0;
                         <small>(Link)</small>:</label>
                     <div class="col-md-6">
                         {!! Form::textarea('edit_join_liveUrl',$teacherData->g_meet_url, array('id'=>'edit_join_liveUrl','placeholder' => 'Enter Live class url','class' => 'form-control','required'=>'required','rows'=>'3','disabled')) !!}
+
                     </div>
                 </div>
                 <div class="form-group row">
@@ -733,6 +726,7 @@ $cls = 0;
                     <div class="col-md-6">
 
                         {!! Form::textarea('edit_notify_stdMessage', null, array('id'=>'edit_notify_stdMessage','placeholder' => 'Enter Notify Message','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
                     </div>
                 </div>
                 <div class="form-group row">
@@ -763,7 +757,6 @@ $cls = 0;
 
                 <form>
 
-
                     <input type="hidden" id="txt_past_datecalss_id" value="" name="txt_past_datecalss_id" />
                     <input type="hidden" id="txt_boxID" value="" name="txt_boxID" />
 
@@ -778,6 +771,7 @@ $cls = 0;
                             <small>(Link)</small>:</label>
                         <div class="col-md-6">
                             {!! Form::textarea('past_edit_rec_liveUrl', null, array('id'=>'past_edit_rec_liveUrl','placeholder' => 'Enter Recording Live url','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
                         </div>
                     </div>
                     <div class="form-group row">
@@ -794,8 +788,6 @@ $cls = 0;
 </div>
 <!-- End -->
 
-
-
 <script type="text/javascript">
     $(document).ready(function() {
         $('.ac-datepicker').datepicker({
@@ -808,8 +800,6 @@ $cls = 0;
             timeFormat: 'hh:mm tt'
         });
     });
-
-
     $(document).on('click', '[data-LiveLink]', function() {
         var liveurl = $(this).attr("data-LiveLink");
         if (liveurl != '') {
@@ -820,8 +810,6 @@ $cls = 0;
             alert('No Join link found!');
         }
     });
-
-
     $(document).on('change', '[data-AssLiveLink]', function() {
         var liveurl = $(this).val();
         if (liveurl != '') {
@@ -832,8 +820,6 @@ $cls = 0;
             alert('No assignement url found!');
         }
     });
-
-
     $(document).on('click', '[data-topiclink]', function() {
         var liveurl = $(this).attr("data-topiclink");
         if (liveurl != '') {
@@ -844,11 +830,9 @@ $cls = 0;
             alert('No content url found!');
         }
     });
-
     /*
     past calsses
     */
-
     $(document).on('click', '[data-pastLiveLink]', function() {
         var liveurl = $(this).attr("data-pastLiveLink");
         if (liveurl != '') {
@@ -859,8 +843,6 @@ $cls = 0;
             alert('No Video recording found!');
         }
     });
-
-
     $(document).on('click', '[data-pasttopiclink]', function() {
         var liveurl = $(this).attr("data-pasttopiclink");
         if (liveurl != '') {
@@ -871,8 +853,6 @@ $cls = 0;
             alert('No content url found!');
         }
     });
-
-
     $(document).on('change', '[data-passAssLiveLink]', function() {
         var liveurl = $(this).val();
         if (liveurl != '') {
@@ -883,26 +863,19 @@ $cls = 0;
             alert('No assignement url found!');
         }
     });
-
     $(document).on('click', '[data-pasteditModal]', function() {
         var val = $(this).data('pasteditmodal');
         $('#pasteditClassModal').modal('show');
-
         $("#past_edit_description").val($("#past_desc" + val).val());
         $("#past_edit_rec_liveUrl").val($("#past_recURL" + val).val());
-
         $("#txt_past_datecalss_id").val($("#pastdateClass_id" + val).val());
         $("#txt_boxID").val(val);
-
     });
-
     $(document).on('click', '#update_pastClass', (function() {
         var id = $("#txt_boxID").val();
         var rec_url = $('#past_edit_rec_liveUrl').val();
         var desc = $('#past_edit_description').val();
         var dateClass_id = $("#txt_past_datecalss_id").val();
-
-
         $.ajax({
             url: "{{url('edit-past-class')}}",
             type: "POST",
@@ -917,25 +890,19 @@ $cls = 0;
             success: function(result) {
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
-
                     $.fn.notifyMe('success', 5, response.message);
                     $('#pasteditClassModal').modal('hide');
                     $('#past_live_c_link_' + id).attr('data-pastLiveLink', response.rec_url);
                     $("#past_desc" + id).val(desc);
                     $("#past_recURL" + id).val(response.rec_url);
                     //window.open(response.cource_url,"title","dialogWidth:400px;dialogHeight:300px");
-
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
                 }
             }
         });
     }));
-
-
     /* past classess end  */
-
-
     $(document).on('click', '[data-INVLiveLink]', function() {
         var liveurl = $(this).attr("data-INVLiveLink");
         if (liveurl != '') {
@@ -946,7 +913,6 @@ $cls = 0;
             alert('No Class url found!');
         }
     });
-
     $(document).on('click', '[data-createModal]', function() {
         var id = $(this).data('createmodal');
         $('#new_assignment').val($("#dateClass_id" + id).val());
@@ -955,12 +921,9 @@ $cls = 0;
         $("#ass_class_id").val($('#txt_class_id' + id).val());
         $("#ass_subject_id").val($('#txt_subject_id' + id).val());
         $("#ass_teacher_id").val($('#txt_teacher_id' + id).val());
-
         var class_id = $('[data-createmodal="' + id + '"]').data('class_modal');
         var subject_id = $('[data-createmodal="' + id + '"]').data('subject_modal');
         //var teacher_id = $('[data-createmodal="'+id+'"]').data('teacher_modal');
-
-
         /* console.log(id);
             console.log(class_id);
            console.log(subject_id);
@@ -968,7 +931,6 @@ $cls = 0;
         $("#txt_aTitle").val('');
         $("#txt_topin_name").val('');
         $('#createAssiModal').modal('show');
-
         $.ajax({
             url: "{{url('get-assignment')}}",
             type: "POST",
@@ -982,38 +944,27 @@ $cls = 0;
             success: function(result) {
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
-
                     var AssigmentData = response.data;
                     var topics = response.topics;
                     var data = '';
                     var topicData = '<option value="">Select Topic</option>';
                     AssigmentData.forEach(function(val) {
-
                         data += '<li> <a href="javascript:void(0);" onclick="give_assignment(\'' + id + '\',\'' + val.g_live_link + '\',\'' + val.id + '\',\'' + val.g_title + '\')" >' + val.g_title + '</a>';
                         data += ' ( <a  href="javascript:void(0);" data-viewAssignment="' + val.g_live_link + '" > View </a>) </li>';
-
                     });
-
                     topics.forEach(function(val) {
-
                         topicData += '<option value="' + val.id + '">' + val.topicname + '</option>';
-
-
                     });
-
-
                     $("#sel_topic").html('');
                     $("#sel_topic").append(topicData);
                     $("#li_assignment").html('');
                     $("#li_assignment").append(data);
-
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
                 }
             }
         });
     });
-
     function give_assignment(id, link, classwork_id, title) {
         ///console.log(id);
         //console.log(link);
@@ -1031,43 +982,31 @@ $cls = 0;
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(result) {
-
                 ///  console.log(result);
                 var response = JSON.parse(result);
-
-
                 if (response.status == 'success') {
                     //$('#new_a_link_'+edit_assignment).attr('href',new_assignment_url);
                     var data = '<option value="' + link + '">' + title + '</option>';
                     $('#view_a_link_' + id).append(data);
                     $.fn.notifyMe('success', 5, response.message);
                     $('#createAssiModal').modal('hide');
-
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
                 }
             }
         });
-
-
     }
-
-
     $(document).on('click', '#assignment_create', (function() {
         var id = $("#row_id").val();
         var class_id = $('#ass_class_id').val();
         var subject_id = $('#ass_subject_id').val();
         var teacher_id = $('#ass_teacher_id').val();
         //var timing_id = $('[data-createmodal="'+id+'"]').data('timing_modal');
-
         var g_class_id = $('#g_class_id').val();
-
         var txt_topic_name = $('#txt_topin_name').val();
         var sel_topic_name = $('#sel_topic').val();
         var assignment_title = $('#txt_aTitle').val();
         var dateClass_id = $('#new_assignment').val();
-
-
         $.ajax({
             url: "{{url('create-assignment')}}",
             type: "POST",
@@ -1086,31 +1025,23 @@ $cls = 0;
             },
             success: function(result) {
                 var response = JSON.parse(result);
-
                 if (response.status == 'success') {
-
                     $.fn.notifyMe('success', 5, response.message);
                     $('#createAssiModal').modal('hide');
                     window.open(response.cource_url, "title", "dialogWidth:400px;dialogHeight:300px");
                     var data = '<option value="' + response.cource_url + '">' + assignment_title + '</option>';
                     $('#view_a_link_' + id).append(data);
-
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
                 }
             }
         });
     }));
-
-
     $(document).on('change', '[data-selecttopic]', function() {
         var getid = $(this).attr('data-selecttopic');
         if ($(this).val() != '') {
-
             var topic_id = $(this).val();
-
             var dateWork_id = getid;
-
             if (dateWork_id != '') {
                 $.ajax({
                     type: 'POST',
@@ -1137,19 +1068,14 @@ $cls = 0;
             $('#' + getid).hide();
         }
     });
-
-
     /*help ajax */
     $('[data-id=help]').click(function() {
         var getBoxId = $(this).attr("data-classhelp");
-
         var dateClass_id = $("#dateClass_id" + getBoxId).val();
         var class_id = $("#txt_class_id" + getBoxId).val();
         var subject_id = $("#txt_subject_id" + getBoxId).val();
         var description = $('#class_description_' + getBoxId).text();
         var joinlive = $('#live_c_link_' + getBoxId).attr('data-LiveLink');
-
-
         var help_type = 2;
         $.ajax({
             url: "{{route('teacher.generate_ticket')}}",
@@ -1181,29 +1107,20 @@ $cls = 0;
             }
         });
     });
-
-
     $(document).on('click', '[data-editModal]', function() {
         var val = $(this).data('editmodal');
         $('#editClassModal').modal('show');
-
         $("#edit_description").val($("#txt_desc" + val).val());
         $("#edit_join_liveUrl").val($("#txt_gMeetURL" + val).val());
         $("#edit_notify_stdMessage").val($("#txt_stdMessage" + val).val());
-
         $("#txt_datecalss_id").val($("#dateClass_id" + val).val());
-
     });
-
-
     $("#frm_class_edit").on('submit', (function(e) {
         // e.preventDefault();
         var dateClass_id = $("#txt_datecalss_id").val();
         var description = $("#edit_description").val();
         var join_liveUrl = $("#edit_join_liveUrl").val();
         var notify_stdMessage = $("#edit_notify_stdMessage").val();
-
-
         $.ajax({
             url: "{{url('edit-live-class')}}",
             type: "POST",
@@ -1223,14 +1140,12 @@ $cls = 0;
                 var response = JSON.parse(result);
                 //console.log(response.data);
                 if (response.status == 'success') {
-
                     $("#liveurl_" + dateClass_id).attr("data-livelink", join_liveUrl);
                     $('#editClassModal').modal('hide');
                     $.fn.notifyMe('success', 5, response.message);
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
                 }
-
             },
             error: function(error_r) {
                 var obj = JSON.parse(error_r.responseText);
@@ -1241,16 +1156,12 @@ $cls = 0;
             }
         });
     }));
-
-    /* INvitaion Accept */
-
+    /* Invitaion Accept */
     $('[data-id=accept]').click(function() {
         var id = $(this).attr("data-invaccept");
         var g_code = $("#txt_inv_code" + id).val();
         var inv_id = $("#txt_inv_id" + id).val();
-
         //alert(id);
-
         $.ajax({
             url: "{{route('teacher.acceptClass')}}",
             type: "POST",
@@ -1277,7 +1188,6 @@ $cls = 0;
             }
         });
     });
-
     $(document).on('click', '[data-viewAssignment]', function() {
         var liveurl = $(this).attr("data-viewAssignment");
         if (liveurl != '') {
@@ -1288,22 +1198,17 @@ $cls = 0;
             alert('No assignement url found!');
         }
     });
-
-
-    // NOtify Students
+    // Notify Students
     $('[data-id=notify_student]').click(function() {
         var getBoxId = $(this).attr("data-notifyMe");
         var dateClass_id = $("#dateClass_id" + getBoxId).val();
         var class_id = $("#txt_class_id" + getBoxId).val();
         var subject_id = $("#txt_subject_id" + getBoxId).val();
         var g_meet_url = $("#txt_gMeetURL" + getBoxId).val();
-
         if (g_meet_url == '') {
             $.fn.notifyMe('error', 5, 'First update the JOIN LIVE class link');
             return false;
         }
-
-
         $.ajax({
             url: '{{ url("student-notify") }}',
             type: "POST",
@@ -1335,69 +1240,20 @@ $cls = 0;
             error: function(error_r) {
                 $(this).prop('disable', false);
                 $('#notifyurl_' + getBoxId + ' span').text('Notify Students');
-
                 var obj = JSON.parse(error_r.responseText);
                 $.each(obj.errors, function(key, value) {
                     $.fn.notifyMe('error', 5, value);
                 });
             }
         });
-
     });
 
 
-    // Description or Class  note
-
-    $(document).on('click', '.text-editwrapper button', function() {
-        var thiz = $(this);
-        var id = thiz.parent().find('.text-edit').attr('data-savedesc');
-        var getDescText = (thiz.parent().find('.text-edit').text().replace(/\$/g, '')).trim();
-        var dateClass_id = $("#dateClass_id" + id).val();
-
-
-        if (getDescText == '') {
-            $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
-        } else {
-            $.ajax({
-                type: 'POST',
-                url: '{{ url("update-classNotes") }}',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: {
-                    'dateClass_id': dateClass_id,
-                    'description': getDescText
-                },
-                success: function(result) {
-
-                    var response = JSON.parse(result);
-
-                    if (response.status == 'success') {
-                        $.fn.notifyMe('success', 5, response.message);
-                        $("#txt_desc" + id).val(getDescText);
-                    } else {
-                        $.fn.notifyMe('error', 5, response.message);
-                    }
-
-
-                    //$.fn.notifyMe('success',4,'Description has been saved!');
-                },
-                error: function() {
-                    // thiz.parent().find('.text-edit').removeClass('active');
-                    $.fn.notifyMe('error', 4, 'There is some error while saving class note text!');
-                }
-            });
-        }
-
-        });
-
-
-
         // Description or Class  note
-        $(document).on('mouseover', 'textarea', function () {
+        $(document).on('mouseover', '.text-editwrapper textarea', function () {
             $(this).prop( "disabled", false );
         });
-        $(document).on('mouseout', 'textarea', function () {
+        $(document).on('mouseout', '.text-editwrapper textarea', function () {
             $(this).prop( "disabled", true );
         });
         $(document).on('focusout', '.text-editwrapper textarea', function () {
@@ -1407,9 +1263,10 @@ $cls = 0;
             var dateClass_id = $("#dateClass_id" + id).val();
 
 
-            if (getDescText == '') {
-                $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
-            } else {
+            if(getDescText.length>255) {
+                $.fn.notifyMe('error', 4, 'Not To be Exceed More than 255 Char,You have Written '+getDescText.length+' Char');
+            } 
+            else {
                 $.ajax({
                     type   : 'POST',
                     url    : '{{ url("update-classNotes") }}',
@@ -1436,7 +1293,7 @@ $cls = 0;
                 });
             }
         });
-
-    </script>
+        
+</script>
 
 @endsection
