@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ClassTiming;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -63,6 +64,22 @@ class DeployController extends Controller
             $result = 'credentials_teacher created';
         }
 
-        echo Response::json(['success' =>$result ]);
+        echo Response::json(['success' => $result]);
+    }
+
+    public function test (Request $request)
+    {
+        $day = date('l', strtotime($request->date));
+        $startTime = date('H:i:s', strtotime($request->startTime));
+        $endTime = date('H:i:s', strtotime($request->endTime));
+        $classExist = ClassTiming::where('class_day', $day)
+            ->where(function ($q) use ($startTime, $endTime) {
+                $q->where('from_timing', '<=', $endTime);
+                $q->where('to_timing', '>=', $startTime);
+            })
+            ->get();
+
+
+        return \response()->json(['success' => 'true', 'data' => $classExist]);
     }
 }

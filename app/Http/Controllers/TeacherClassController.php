@@ -541,4 +541,19 @@ class TeacherClassController extends Controller
     {
         //
     }
+
+    public function availableClasses(Request $request){
+       $day =  date('l',strtotime($request->date));
+       $startTime = $request->startTime;
+        $endTime = $request->endTime;
+       $classExist = ClassTiming::where('class_day',$day)
+           ->where(function ($q) use($startTime,$endTime){
+               $q->where('from_timing','<',$startTime);
+                  $q->where('to_timing','>',$endTime);
+           })
+           ->get();
+
+        return json_encode(array('status' => 'success', 'message' => 'asd'));
+//        ClassTiming::where()
+    }
 }

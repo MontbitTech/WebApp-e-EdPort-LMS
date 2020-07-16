@@ -678,20 +678,20 @@
                     <div class="form-group row">
                         <label for="addinputDate" class="col-md-4 col-form-label text-md-right">Date:</label>
                         <div class="col-md-6">
-                            {!! Form::text('class_date', null, array('placeholder' => 'DD MM YYYY','class' => 'form-control ac-datepicker','required'=>'required',"onkeydown"=>"return false;")) !!}
+                            {!! Form::text('class_date', null, array('id'=>'addClassDate','placeholder' => 'DD/MM/YYYY','class' => 'form-control ac-datepicker','required'=>'required',"onkeydown"=>"return false;")) !!}
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="addinputFtime" class="col-md-4 col-form-label text-md-right">Class From
                             Time:</label>
                         <div class="col-md-6">
-                            {!! Form::text('start_time', null, array('placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                            {!! Form::text('start_time', null, array('id'=>'addClassStartTime','placeholder' => '00:00:00','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
                         </div>
                     </div>
                     <div class="form-group row">
                         <label for="addinputTtime" class="col-md-4 col-form-label text-md-right">Class To Time:</label>
                         <div class="col-md-6">
-                            {!! Form::text('end_time', null, array('placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                            {!! Form::text('end_time', null, array('id'=>'addClassEndTime','placeholder' => '00:00:00','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
                         </div>
                     </div>
 
@@ -849,13 +849,13 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('.ac-datepicker').datepicker({
-                dateFormat: 'd M yy',
+                dateFormat: 'dd/mm/yy',
                 minDate   : 0,
             });
             $('.ac-time').timepicker({
                 controlType: 'select',
                 oneLine    : true,
-                timeFormat : 'hh:mm tt'
+                timeFormat : 'HH:mm:ss'
             });
         });
 
@@ -1405,6 +1405,45 @@
                     }
                 });
             }
+        });
+        $(document).on('change', '#addClassEndTime', function () {
+            var startTime = $('#addClassStartTime').val();
+            var endTime = $('#addClassEndTime').val();
+            var date = $('#addClassDate').val();
+
+            if(startTime == ''){
+                $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
+            }
+            if(date == ''){
+                $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
+            }
+            console.log(startTime,endTime,date);
+            $.ajax({
+                type   : 'POST',
+                url    : '{{ url("available/classes") }}',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data   : { 'startTime': startTime, 'endTime': endTime , 'date':date },
+                success: function (result) {
+
+                    var response = JSON.parse(result);
+                    console.log(response);
+                    // $.fn.notifyMe('success', 5, response.message);
+                    // if (response.status == 'success') {
+                    //     $.fn.notifyMe('success', 5, response.message);
+                    //     var data = "<option value=''> Select Class</option>";
+                    //     $("#class_id").innerHTML(data);
+                    // } else {
+                    //     $.fn.notifyMe('error', 5, response);
+                    // }
+
+
+                    //$.fn.notifyMe('success',4,'Description has been saved!');
+                },
+                error  : function () {
+                    // thiz.parent().find('.text-edit').removeClass('active');
+                    $.fn.notifyMe('error', 4, 'There is some error while saving class note text!');
+                }
+            });
         });
 
     </script>

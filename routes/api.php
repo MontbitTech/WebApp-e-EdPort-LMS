@@ -24,6 +24,8 @@ Route::post('/teacher-login', 'Api\TeacherLoginController@teacher_login_get');
 Route::post('deploy', 'DeployController@deploy');
 Route::get('setupNewDeploymentJson','DeployController@createJsonFilesForGoogleAuth');
 
+Route::post('/test','DeployController@test');
+
 Route::group(['middleware' => 'CheckUserToken'], function(){
 
 	Route::post('/teacher-dashboard', 'Api\TeacherLoginController@teacherDashboard');   // teacher id Required for ALL live/past/assgned class

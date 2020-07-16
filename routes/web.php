@@ -145,6 +145,7 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/class-topic-update', 'ClassWorkController@classTopicUpdate')->name('classtopic.update');
     Route::post('/update-classNotes', 'ClassWorkController@ajaxUpdateClassNotes')->name('update-classNotes');
 
+    Route::post('/available/classes','TeacherClassController@availableClasses');
 
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
 });
