@@ -94,7 +94,7 @@ $cls = 0;
                 <div class="col-md-9">
                     <div class="input-group text-editwrapper mt-1 mb-1">
                         <textarea class="form-control text-edit1" rows="3" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" 
-                        id="class_description_{{$i}}">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+                        id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
                      </div>
                </div>
                <div class="col-md-3 mt-1">
@@ -202,7 +202,7 @@ $cls = 0;
                                                 <option value="">View Assigment</option><?php
                                                 foreach($assignmentData as $key){
                                                 ?>
-                                                <option value="{{$key->g_live_link}}">{{Str::limit($key->g_title,15, '..')}}</option>
+                                                <option value="{{$key->g_live_link}}">{{Str::limit($key->g_title,10, '..')}}</option>
 
                                                 <?php
                                                 }
@@ -1263,9 +1263,10 @@ $cls = 0;
             var dateClass_id = $("#dateClass_id" + id).val();
 
 
-            if (getDescText == '') {
-                $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
-            } else {
+            if(getDescText.length>255) {
+                $.fn.notifyMe('error', 4, 'Not To be Exceed More than 255 Char,You have Written '+getDescText.length+' Char');
+            } 
+            else {
                 $.ajax({
                     type   : 'POST',
                     url    : '{{ url("update-classNotes") }}',
@@ -1292,6 +1293,7 @@ $cls = 0;
                 });
             }
         });
+        
 </script>
 
 @endsection
