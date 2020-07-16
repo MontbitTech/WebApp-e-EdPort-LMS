@@ -57,6 +57,7 @@
           
            <select id="txtSerachSection" name="txtSerachSection" class="form-control form-control-sm" onchange="getStudent()">
             <option value=''>Select Section</option>
+            <option value='all'>All</option>
             @if(count($sections)>0)
             @foreach($sections as $sl)
               <option value='{{$sl->section_name}}'>{{$sl->section_name}}</option>
@@ -91,20 +92,6 @@
 </div>
 </div>
 </section>
-<script type="text/javascript">
-$(document).ready(function() {
-  $('#teacherlist').DataTable({
-    initComplete: function(settings, json) {
-      $('[data-dtlist="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_length').find("label"));
-      $('[data-dtfilter="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_filter').find("input[type=search]").attr('placeholder', $('#'+settings.nTable.id).attr('data-filterplaceholder')))
-    }
-  });
-  $('.dateset').datepicker({
-    dateFormat: "yy/mm/dd"
-    // showAnim: "slide"
-  })
-});
-</script>
 
 <script>
     function getStudent(){
@@ -126,6 +113,19 @@ $(document).ready(function() {
             success: function(info) {
                 $("#student").html(info);
                 $("#student").show();
+
+          if(txtSerachSection){
+            $('#studentlist').DataTable({
+            initComplete: function(settings, json) {
+            $('[data-dtlist="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_length').find("label"));
+            $('[data-dtfilter="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_filter').find("input[type=search]").attr('placeholder', $('#'+settings.nTable.id).attr('data-filterplaceholder')))
+            }
+            });
+            $('.dateset').datepicker({
+            dateFormat: "yy/mm/dd"
+            // showAnim: "slide"
+            })
+            }
             }
         });
     }

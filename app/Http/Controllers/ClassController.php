@@ -48,10 +48,14 @@ class ClassController extends Controller
 	{
 		$rec = $StudentClass->newQuery();
 		if(!empty($request->txtSerachByClass && $request->txtSerachBySection)){
+			if( $request->txtSerachByClass && $request->txtSerachBySection == 'all'){
+				$getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
+			}
+			else{	
 			$getResult = $rec->where('class_name', $request->txtSerachByClass)->where('section_name', $request->txtSerachBySection)->get();
+		    }
 		}
 	    else $getResult="";
-
 	    return view('admin.class.filter-subject',compact('getResult'));
 	}
 	 
