@@ -10,7 +10,9 @@
             <span class="topic-heading">Class List</span>
             <div class="float-right">
               <a type="button" class="btn btn-sm btn-success" href="{{route('classes.add')}}">
-                <svg class="icon icon-font16 icon-mmtop-3 mr-1"><use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use></svg> Create Class
+                <svg class="icon icon-font16 icon-mmtop-3 mr-1">
+                  <use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use>
+                </svg> Create Class
               </a>
             </div>
           </div>
@@ -78,8 +80,6 @@
       </div>
     </div>
   </div>
-</div>
-</div>
 </section>
 
 
@@ -89,24 +89,33 @@
       <div class="modal-header bg-light d-flex align-items-center">
         <h5 class="modal-title font-weight-bold">Delete Class</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <svg class="icon"><use xlink:href="../images/icons.svg#icon_times2"></use></svg>
+          <svg class="icon">
+            <use xlink:href="../images/icons.svg#icon_times2"></use>
+          </svg>
         </button>
       </div>
       <div class="modal-body pt-4">
         <form action="{{route('classes.delete')}}" method="POST">
-      @csrf
-        <input type="hidden" name="txt_class_id" id="txt_class_id"/>
+          @csrf
+          <input type="hidden" name="txt_class_id" id="txt_class_id" />
+          <!-- <div class="form-group text-center">
+            <h4>Are You Sure ! </h4>
+            <h4>You want to detele this class. </h4>
+            <p style="color: #bf2d2d;font-size: 13px;">* if you delete this class, it will auto delete all associated record with this class like assignment, timetable, student, etc... </p>
+
+          </div> -->
           <div class="form-group text-center">
-        <h4>Are You Sure ! </h4>  
-        <h4>You want to detele this class. </h4>
-        <p style="color: #bf2d2d;font-size: 13px;">* if you delete this class, it will auto delete all associated record with this class like assignment, timetable, student, etc... </p>
-        
+            <h4>Type "delete" to confirm</h4>
+          </div>
+          <div class="form-group text-center ">
+            <input type="text" name="delete" class="form-control" id="delete">
+
           </div>
           <div class="form-group text-center">
             <button type="submit" class="btn btn-danger px-4">
               Delete
             </button>
-      <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
               Cancel
             </button>
           </div>
@@ -128,7 +137,25 @@ $(document).on('click', '[data-deleteModal]', function(){
 
   
 });
+  $(document).ready(function() {
+    $('#teacherlist').DataTable({
+      initComplete: function(settings, json) {
+        $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
+        $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+      }
+    });
+    $('.dateset').datepicker({
+      dateFormat: "yy/mm/dd"
+      // showAnim: "slide"
+    })
+  });
 
+  $(document).on('click', '[data-deleteModal]', function() {
+    var val = $(this).data('deletemodal');
+    $('#classdeletModal').modal('show');
+    $("#txt_class_id").val(val);
+
+  });
 
 </script>
 

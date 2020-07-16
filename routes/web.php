@@ -135,6 +135,7 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/get-assignment', 'ClassWorkController@ajaxGetAssignment');
     Route::post('/give-assignment', 'ClassWorkController@ajaxGiveAssignment');
 
+	Route::get('/test_email', 'TeacherClassController@html_email'); //->name('teacher.acceptClass');
 
     Route::get('/teacher/report', 'ReportController@index')->name('teacher.report');
     Route::match(array('GET', 'POST'), '/student-notify', 'TeacherClassController@notifyStudents')->name('student-notify');

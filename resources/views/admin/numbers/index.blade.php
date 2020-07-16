@@ -1,6 +1,7 @@
 @extends('layouts.admin.app')
 
 @section('content')
+
 <section class="main-section">
   <div class="container-fluid">
     <div class="row justify-content-center">
@@ -10,17 +11,23 @@
             <span class="topic-heading">Student Details</span>
        <div class="float-right">
               <a type="button" class="btn btn-sm btn-success" href="{{route('admin.sampleStudentsDownload')}}">
-                <svg class="icon icon-font16 icon-mmtop-3 mr-1"><use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use></svg> Download Sample File
+                <svg class="icon icon-font16 icon-mmtop-3 mr-1">
+                  <use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use>
+                </svg> Download Sample File
               </a>
             </div>
             <div class="float-right mr-3">
               <a type="button" class="btn btn-sm btn-success" href="{{route('admin.studentsimport')}}">
-                <svg class="icon icon-font16 icon-mmtop-3 mr-1"><use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use></svg> Import Student Details
+                <svg class="icon icon-font16 icon-mmtop-3 mr-1">
+                  <use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use>
+                </svg> Import Student Details
               </a>
             </div>
       <div class="float-right mr-3">
               <a type="button" class="btn btn-sm btn-info" href="{{route('student.add')}}">
-                <svg class="icon icon-font16 icon-mmtop-3 mr-1"><use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use></svg> Add Student Details
+                <svg class="icon icon-font16 icon-mmtop-3 mr-1">
+                  <use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use>
+                </svg> Add Student Details
               </a>
             </div>
           </div>
@@ -89,9 +96,66 @@
       </div>
     </div>
   </div>
-</div>
-</div>
 </section>
+<div class="modal fade" id="studentdeletModal" data-backdrop="static" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-light d-flex align-items-center">
+        <h5 class="modal-title font-weight-bold">Delete Class</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <svg class="icon">
+            <use xlink:href="../images/icons.svg#icon_times2"></use>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body pt-4">
+        <form id="deleteform" method="POST">
+          @csrf
+          <input type="hidden" name="txt_student_id" id="txt_student_id" />
+          <div class="form-group text-center">
+            <h4>Type "delete" to confirm</h4>
+          </div>
+          <div class="form-group text-center ">
+            <input type="text" name="delete" class="form-control" id="delete">
+
+          </div>
+          <div class="form-group text-center">
+            <button type="submit" class="btn btn-danger px-4">
+              Delete
+            </button>
+            <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('#teacherlist').DataTable({
+      initComplete: function(settings, json) {
+        $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
+        $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+      }
+    });
+    $('.dateset').datepicker({
+      dateFormat: "yy/mm/dd"
+      // showAnim: "slide"
+    })
+  });
+  $(document).on('click', '[data-deleteModal]', function() {
+    var val = $(this).data('deletemodal');
+
+    $('#studentdeletModal').modal('show');
+    var route = "{{url('admin/delete-student')}}" + "/" + val;
+    $("#deleteform").attr('action', route);
+
+  });
+</script>
 
 <script>
     function getStudent(){
