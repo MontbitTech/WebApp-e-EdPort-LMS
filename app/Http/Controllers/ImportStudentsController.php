@@ -136,7 +136,7 @@ class ImportStudentsController extends Controller
 					  });
 		
 						
-					return redirect()->route('adminlist.students')->with('success','Added Successfully');
+					return redirect()->route('adminlist.students')->with('success','Created Successfully');
 			}
 			else
 			{
@@ -494,8 +494,10 @@ class ImportStudentsController extends Controller
         }
         return view('admin.numbers.import',compact('student_class'));
     }
-	
-	
-	
-	
+
+    function deleteAllStudent(Request $request)
+    {
+    	Student::whereIn('id',explode(",",$request->ids))->delete();
+    	return response()->json(['success'=>"Deleted successfully."]);
+    }	
 }
