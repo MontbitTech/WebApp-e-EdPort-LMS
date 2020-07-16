@@ -259,8 +259,8 @@ class ImportStudentsController extends Controller
     
 	public function listStudents()
 	{
-		$classes  = ClassSection::select('class_name')->distinct()->get();
-		$sections = ClassSection::select('section_name')->distinct()->get();
+		$classes  = ClassSection::select('class_name')->distinct()->orderByRaw('LENGTH(class_name)', 'ASC')->orderBy('class_name','ASC')->get();
+		$sections = ClassSection::select('section_name')->distinct()->orderBy('section_name','ASC')->get();
 		return view('admin.numbers.index',compact('classes','sections'));
 	}
 
