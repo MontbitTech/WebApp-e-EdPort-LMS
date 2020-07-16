@@ -110,11 +110,11 @@ $('.delete_all').on('click', function(e) {
                     if (data['success']) {
                         $(".sub_chk:checked").each(function() {  
                             $(this).parents("tr").remove();
-                             //location.reload(true);
-                             $('.master').prop('checked',false);
+                             location.reload(true);
+                             //$('.master').prop('checked',false);
                         });
                         //alert(data['success']);
-                       $.fn.notifyMe('success', 7, "Deleted Successfully");
+                       $.fn.notifyMe('success', 10, "Deleted Successfully");
                     } else if (data['error']) {
                         alert(data['error']);
                     } else {

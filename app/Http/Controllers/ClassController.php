@@ -36,27 +36,30 @@ class ClassController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-
     public function list_class ()
-    {
-        $classes = StudentClass::select('class_name')->distinct()->get();
-        $section = StudentClass::select('section_name')->distinct()->get();
+	{
+		$classes = StudentClass::select('class_name')->distinct()->get();
+		$section = StudentClass::select('section_name')->distinct()->get();
+		return view('admin.class.list_class',compact('classes','section'));	
+	} 
 
-        return view('admin.class.list_class', compact('classes', 'section'));
-    }
 
-
-    public function filterSubject (Request $request, StudentClass $StudentClass)
-    {
-        $rec = $StudentClass->newQuery();
-        if ( !empty($request->txtSerachByClass && $request->txtSerachBySection) ) {
-            $getResult = $rec->where('class_name', $request->txtSerachByClass)->where('section_name', $request->txtSerachBySection)->get();
-        } else $getResult = "";
-
-        return view('admin.class.filter-subject', compact('getResult'));
-    }
-
-    public function addClasses (Request $request)
+	public function filterSubject(Request $request, StudentClass $StudentClass)
+	{
+		$rec = $StudentClass->newQuery();
+		if(!empty($request->txtSerachByClass && $request->txtSerachBySection)){
+			if( $request->txtSerachByClass && $request->txtSerachBySection == 'all'){
+				$getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
+			}
+			else{	
+			$getResult = $rec->where('class_name', $request->txtSerachByClass)->where('section_name', $request->txtSerachBySection)->get();
+		    }
+		}
+	    else $getResult="";
+	    return view('admin.class.filter-subject',compact('getResult'));
+	}
+	 
+    public function addClasses(Request $request)
     {
         if ( $request->isMethod('post') ) {
             $request->validate([

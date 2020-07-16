@@ -17,12 +17,12 @@
           <div class="card-body pt-3">
             <div class="row justify-content-center">
               <div class="col-md-4 col-lg-3 text-md-left text-center mb-1">
-                <!-- <span data-dtlist="#teacherlist" class="mb-1">
+                <!-- <span data-dtlist="#subjectlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
                 </span> -->
               </div>
               <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
-                <!-- <span data-dtfilter="#teacherlist" class="mb-1">
+                <!-- <span data-dtfilter="#subjectlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
                 </span> -->
               </div>
@@ -47,6 +47,7 @@
           
            <select id="txtSerachBySection" name="txtSerachBySection" class="form-control form-control-sm" onchange="getSubject()">
             <option value=''>Select Section</option>
+            <option value='all'>All</option>
             @if(count($section)>0)
             @foreach($section as $sl)
               <option value='{{$sl->section_name}}'>{{$sl->section_name}}</option>
@@ -118,23 +119,13 @@
 
 
 <script type="text/javascript">
-$(document).ready(function() {
-  $('#teacherlist').DataTable({
-    initComplete: function(settings, json) {
-      $('[data-dtlist="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_length').find("label"));
-      $('[data-dtfilter="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_filter').find("input[type=search]").attr('placeholder', $('#'+settings.nTable.id).attr('data-filterplaceholder')))
-    }
-  });
-  $('.dateset').datepicker({
-    dateFormat: "yy/mm/dd"
-    // showAnim: "slide"
-  })
-});
 
 $(document).on('click', '[data-deleteModal]', function(){
  var val = $(this).data('deletemodal');
+ //alert(val);
   $('#classdeletModal').modal('show');
   $("#txt_class_id").val(val);
+
   
 });
 
@@ -170,6 +161,18 @@ $(document).on('click', '[data-deleteModal]', function(){
             success: function(info) {
                 $("#subject").html(info);
                 $("#subject").show();
+            if(txtSerachBySection){
+            $('#subjectlist').DataTable({
+            initComplete: function(settings, json) {
+            $('[data-dtlist="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_length').find("label"));
+            $('[data-dtfilter="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_filter').find("input[type=search]").attr('placeholder', $('#'+settings.nTable.id).attr('data-filterplaceholder')))
+            }
+            });
+            $('.dateset').datepicker({
+            dateFormat: "yy/mm/dd"
+            // showAnim: "slide"
+            })
+            }
             }
         });
     }
