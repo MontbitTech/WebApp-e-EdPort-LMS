@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ClassTiming;
+use App\StudentClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -72,14 +73,22 @@ class DeployController extends Controller
         $day = date('l', strtotime($request->date));
         $startTime = date('H:i:s', strtotime($request->startTime));
         $endTime = date('H:i:s', strtotime($request->endTime));
-        $classExist = ClassTiming::where('class_day', $day)
-            ->where(function ($q) use ($startTime, $endTime) {
+        $occupiedClasses = StudentClass::with('classtiming')
+            ->whereHas('classtiming',function ($q)use($startTime, $endTime, $day){
                 $q->where('from_timing', '<=', $endTime);
                 $q->where('to_timing', '>=', $startTime);
+                $q->where('class_day','=' ,$day);
             })
-            ->get();
+            ->get()
+            ->pluck('section_name','class_name');
 
+            $availableClasses[] = StudentClass::with('studentSubject')
+                ->where('class_name','!=' ,$occupiedClass->student_class->class_name)
+                ->where('section_name', '!=',$occupiedClass->student_class->section_name)
+                ->get();
 
-        return \response()->json(['success' => 'true', 'data' => $classExist]);
+//        $availableClasses = StudentClass::with('studentSubject')->whereNotIn('id', $classExist)->get();
+
+        return \response()->json(['success' => 'true', 'data' => $occupiedClasses]);
     }
 }

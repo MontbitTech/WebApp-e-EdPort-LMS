@@ -13,7 +13,7 @@ class StudentClass extends Model
 	
 	public function classtiming()
     {
-        return $this->hasMany('App\ClassTiming');
+        return $this->hasMany('App\ClassTiming','class_id','id');
     }
 	 public function studentSubject()
     {
