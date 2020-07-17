@@ -57,8 +57,8 @@
           
            <select id="txtSerachSection" name="txtSerachSection" class="form-control form-control-sm" onchange="getStudent()">
             <option value=''>Select Section</option>
-            <option value='all'>All</option>
             @if(count($sections)>0)
+            <option value='all'>All</option>
             @foreach($sections as $sl)
               <option value='{{$sl->section_name}}'>{{$sl->section_name}}</option>
             @endforeach
