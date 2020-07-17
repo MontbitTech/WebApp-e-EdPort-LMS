@@ -9,7 +9,7 @@
         <div class="card card-common mb-3">
           <div class="card-header">
             <span class="topic-heading">Student Details</span>
-       <div class="float-right">
+            <div class="float-right">
               <a type="button" class="btn btn-sm btn-success" href="{{route('admin.sampleStudentsDownload')}}">
                 <svg class="icon icon-font16 icon-mmtop-3 mr-1">
                   <use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use>
@@ -23,7 +23,7 @@
                 </svg> Import Student Details
               </a>
             </div>
-      <div class="float-right mr-3">
+            <div class="float-right mr-3">
               <a type="button" class="btn btn-sm btn-info" href="{{route('student.add')}}">
                 <svg class="icon icon-font16 icon-mmtop-3 mr-1">
                   <use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use>
@@ -39,13 +39,13 @@
                 </span> -->
               </div>
               <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
-               <!--  <span data-dtfilter="#teacherlist" class="mb-1">
+                <!--  <span data-dtfilter="#teacherlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
                 </span> -->
               </div>
 
               <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
-         <span data-dtfilter="" class="mb-1">
+                <span data-dtfilter="" class="mb-1">
                   <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
           <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
           
@@ -76,28 +76,28 @@
         
         
               </div>
-          <div class="col-sm-12" id="student">
-          <table id="studentlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Class</th>
-                <th>Section</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Notify</th>
-        <th>Action</th>
-              </tr>
-            </thead>
-          </table>
-        </div>
+              <div class="col-sm-12" id="student">
+                <table id="studentlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Class</th>
+                      <th>Section</th>
+                      <th>Email</th>
+                      <th>Phone</th>
+                      <th>Notify</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 </section>
-<div class="modal fade" id="studentdeletModal" data-backdrop="static" tabindex="-1" role="dialog">
+<div class="modal fade" id="classdeletModal" data-backdrop="static" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-light d-flex align-items-center">
@@ -109,9 +109,15 @@
         </button>
       </div>
       <div class="modal-body pt-4">
-        <form id="deleteform" method="POST">
+        <form action="{{route('classes.delete')}}" method="POST">
           @csrf
           <input type="hidden" name="txt_student_id" id="txt_student_id" />
+          <!-- <div class="form-group text-center">
+            <h4>Are You Sure ! </h4>
+            <h4>You want to detele this class. </h4>
+            <p style="color: #bf2d2d;font-size: 13px;">* if you delete this class, it will auto delete all associated record with this class like assignment, timetable, student, etc... </p>
+
+          </div> -->
           <div class="form-group text-center">
             <h4>Type "delete" to confirm</h4>
           </div>
@@ -147,23 +153,36 @@
       // showAnim: "slide"
     })
   });
+
   $(document).on('click', '[data-deleteModal]', function() {
     var val = $(this).data('deletemodal');
-
-    $('#studentdeletModal').modal('show');
-    var route = "{{url('admin/delete-student')}}" + "/" + val;
-    $("#deleteform").attr('action', route);
+    $('#classdeletModal').modal('show');
+    $("#txt_student_id").val(val);
 
   });
 </script>
 
 <script>
-    function getStudent(){
+  function getStudent() {
 
-       $.ajaxSetup({
-          headers: {
-              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-          }
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    var txtSerachClass = $("#txtSerachClass").val();
+    var txtSerachSection = $("#txtSerachSection").val();
+    $.ajax({
+      url: "{{url('filter-student')}}",
+      type: 'POST',
+      data: {
+        txtSerachClass: txtSerachClass,
+        txtSerachSection: txtSerachSection
+      },
+      success: function(info) {
+        $("#student").html(info);
+        $("#student").show();
+      }
     });
         var txtSerachClass   = $("#txtSerachClass").val();
         var txtSerachSection = $("#txtSerachSection").val();
