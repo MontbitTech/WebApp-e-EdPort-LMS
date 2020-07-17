@@ -70,25 +70,6 @@ class DeployController extends Controller
 
     public function test (Request $request)
     {
-        $day = date('l', strtotime($request->date));
-        $startTime = date('H:i:s', strtotime($request->startTime));
-        $endTime = date('H:i:s', strtotime($request->endTime));
-        $occupiedClasses = StudentClass::with('classtiming')
-            ->whereHas('classtiming',function ($q)use($startTime, $endTime, $day){
-                $q->where('from_timing', '<=', $endTime);
-                $q->where('to_timing', '>=', $startTime);
-                $q->where('class_day','=' ,$day);
-            })
-            ->get()
-            ->pluck('section_name','class_name');
-
-            $availableClasses[] = StudentClass::with('studentSubject')
-                ->where('class_name','!=' ,$occupiedClass->student_class->class_name)
-                ->where('section_name', '!=',$occupiedClass->student_class->section_name)
-                ->get();
-
-//        $availableClasses = StudentClass::with('studentSubject')->whereNotIn('id', $classExist)->get();
-
-        return \response()->json(['success' => 'true', 'data' => $occupiedClasses]);
+        return \response()->json(['success' => 'true', 'data' => 'rest in peace bro...']);
     }
 }
