@@ -109,7 +109,7 @@
         </button>
       </div>
       <div class="modal-body pt-4">
-        <form action="{{route('classes.delete')}}" method="POST">
+        <form action="{{url('/admin/delete-student/1')}}" method="POST">
           @csrf
           <input type="hidden" name="txt_student_id" id="txt_student_id" />
           <!-- <div class="form-group text-center">
@@ -155,7 +155,7 @@
   });
 
   $(document).on('click', '[data-deleteModal]', function() {
-    var val = $(this).data('deletemodal');
+    var val = $(this).data('deleteModal');
     $('#classdeletModal').modal('show');
     $("#txt_student_id").val(val);
 

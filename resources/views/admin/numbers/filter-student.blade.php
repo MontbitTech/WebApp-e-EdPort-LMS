@@ -38,9 +38,7 @@
           </td>
           <td>
             <a href="{{route('student.edit', encrypt($list->id))}}">Edit</a> | 
-            <a href="#"
-            onclick="event.preventDefault();
-            document.getElementById('delete-student-form{{$list->id}}').submit();">
+            <a href="#" data-deleteModal="{{$list->id}}">
             {{ __('Delete') }}
             </a>
 
