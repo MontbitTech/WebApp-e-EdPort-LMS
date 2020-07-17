@@ -24,6 +24,7 @@ Route::get('/get_course','GtestController@get_course')->name('get_course');
 Route::get('/create_teacher','GtestController@create_teacher')->name('create_teacher');
 Route::get('/user_permission/{id}','GtestController@test_user_permission');
 Route::get('/create_user','GtestController@create_user'); */
+
 Route::get('/timeTable/{class}/{section}', 'GtestController@TestFilterTimetable');
 Route::get('/test_email_timetable', 'GtestController@send_email_timeTable');
 Route::get('/get_token', 'GtestController@get_token')->name('get_token');
@@ -45,7 +46,7 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::post('/admin/school-logo', 'AdminController@updateSchoolLogo')->name('admin.school_logo');
 
     Route::match(array('GET', 'POST'), '/admin/list-setting', 'AdminController@listSetting')->name('admin.settings');
-//Route::match(array('GET','POST'),'/admin/add-setting','AdminController@addSetting')->name('setting.add');
+    //Route::match(array('GET','POST'),'/admin/add-setting','AdminController@addSetting')->name('setting.add');
     Route::match(array('GET', 'POST'), '/admin/edit-setting/{id}', 'AdminController@editSetting')->name('setting.edit');
     Route::match(array('GET', 'POST'), '/admin/delete-setting', 'AdminController@deleteSetting')->name('setting.delete');
 
@@ -65,6 +66,13 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::get('/admin/support-help', 'HelpController@helpList')->name('admin.helplist');
     Route::post('/update-help-status', 'HelpController@updateStatus')->name('helpStatus.update');
     Route::post('filter-ticket', 'HelpController@filterTicket')->name('filter-ticket');
+
+
+    Route::get('/admin/help-category-add', 'HelpTicketCategoryController@add')->name('admin.help-category-add');
+    Route::post('/admin/help-category-store', 'HelpTicketCategoryController@store')->name('admin.help-category-store');
+    Route::get('/admin/help-category-edit/{id}', 'HelpTicketCategoryController@edit')->name('admin.help-category-edit');
+    Route::post('/admin/help-category-update/{id}', 'HelpTicketCategoryController@update')->name('admin.help-category-update');
+    Route::get('/admin/help-category-delete/{id}', 'HelpTicketCategoryController@delete')->name('admin.help-category-delete');
 
     Route::get('/admin/list-timetable', 'ImportTimetableController@listTimetable')->name('list.timetable');
     Route::post('/admin/filter-timetable', 'ImportTimetableController@filterTimetable')->name('list.filtertimetable');
@@ -102,8 +110,8 @@ Route::group(['middleware' => 'adminsession'], function () {
 
     Route::match(array('GET', 'POST'), '/cmslinks-import', 'ImportCMSLinksController@cmsLinksImport')->name('cms.cmslinksimport');
     Route::get('/download-cmslinkssample', 'ImportCMSLinksController@sampleCMSLinksDownload')->name('cms.sampleCMSLinksDownload');
-    Route::post('filter-subject','ClassController@filterSubject')->name('filter-subject');
-	Route::post('filter-student','ImportStudentsController@filterStudent')->name('filter-student');
+    Route::post('filter-subject', 'ClassController@filterSubject')->name('filter-subject');
+    Route::post('filter-student', 'ImportStudentsController@filterStudent')->name('filter-student');
 });
 
 
@@ -119,10 +127,10 @@ Route::group(['middleware' => 'teachersession'], function () {
 
     Route::post('/teacher/add-class', 'TeacherClassController@addClass')->name('add.class');
     Route::post('/teacher/edit-live-class', 'TeacherClassController@ajaxSaveLiveClass')->name('edit.class');
-    Route::post('/edit-past-class', 'TeacherClassController@ajaxSavePastClass');//->name('edit.Pastclass');
+    Route::post('/edit-past-class', 'TeacherClassController@ajaxSavePastClass'); //->name('edit.Pastclass');
     Route::get('/teacher/acceptClass', 'TeacherClassController@ajaxAcceptClass')->name('teacher.acceptClass');
 
-    Route::get('/test_email', 'TeacherClassController@html_email');//->name('teacher.acceptClass');
+    Route::get('/test_email', 'TeacherClassController@html_email'); //->name('teacher.acceptClass');
 
     Route::get('/teacher/quiz', 'QuizController@index')->name('teacher.quiz');
 
