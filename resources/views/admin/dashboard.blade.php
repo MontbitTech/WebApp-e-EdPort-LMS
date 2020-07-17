@@ -200,7 +200,6 @@
 
     $('#studentdeletModal').modal('show');
     var route = "{{url('admin/delete-teacher')}}" + "/" + val;
-    alert(route);
     $("#deleteform").attr('action', route);
 
   });
