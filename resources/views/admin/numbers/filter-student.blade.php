@@ -33,7 +33,7 @@
          </td>
          <td>
            <a href="{{route('student.edit', encrypt($list->id))}}">Edit</a> |
-           <a href="javascript:void(0);" data-deleteModal="{{$list->id}}">
+           <a href="#" data-deleteModal="{{$list->id}}" class='deleteStudent' value='{{$list->id}}'>
              {{ __('Delete') }}
            </a>
 

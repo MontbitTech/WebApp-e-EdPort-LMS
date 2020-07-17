@@ -185,7 +185,7 @@ class ImportStudentsController extends Controller
 
             /**/
 
-            $student = \DB::select('select class_name, section_name, email from tbl_students s, tbl_classes c where s.class_id = c.id');
+            $student = \DB::select('select class_name, section_name, email from tbl_students s, tbl_classes c where s.class_id = c.id and s.id=' . $sid);
 
             if ( count($student) > 0 ) {
                 $student = $student[0];
