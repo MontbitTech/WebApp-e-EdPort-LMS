@@ -36,7 +36,7 @@ class HelpTicketCategoryController extends Controller
         $category->category = $request->category;
         $category->save();
 
-        return back()->with('success', 'successfully Category Created');;
+        return back()->with('success', 'Category Created successfully');;
     }
     public function edit($id)
     {
@@ -50,11 +50,11 @@ class HelpTicketCategoryController extends Controller
         $category =  HelpTicketCategory::findorFail($sid);
         $category->category = $request->category;
         $category->save();
-        return redirect()->route('admin.helplist')->with('success', 'successfully Category update');
+        return redirect()->route('admin.helplist')->with('success', 'Category updated successfully');
     }
     public function delete(Request $request, $id)
     {
-        if ($request->delete == 'Delete' || $request->delete == 'delete') {
+        if ($request->delete == 'delete') {
 
             $category = HelpTicketCategory::findorFail($id);
             $category->delete();
