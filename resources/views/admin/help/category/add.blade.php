@@ -17,7 +17,7 @@
                             @csrf
                             <div class="form-group">
                                 <label for="Category">Category</label>
-                                <input type="text" name="category" class="form-control text-lowercase" id="Category" placeholder="Enter Category" value="{{isset($category)?$category->category:''}}">
+                                <input type="text" name="category" class="form-control " id="Category" placeholder="Enter Category" value="{{isset($category)?$category->category:''}}">
 
                             </div>
                             <button type="submit" class="btn btn-secondary">

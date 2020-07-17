@@ -117,7 +117,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header bg-light d-flex align-items-center">
-                <h5 class="modal-title font-weight-bold">Delete Class</h5>
+                <h5 class="modal-title font-weight-bold">Delete Category</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <svg class="icon">
                         <use xlink:href="../images/icons.svg#icon_times2"></use>
@@ -132,7 +132,7 @@
                         <h4>Type "delete" to confirm</h4>
                     </div>
                     <div class="form-group text-center ">
-                        <input type="text" name="delete" class="form-control" id="delete">
+                        <input type="text" name="delete" class="form-control text-lowercase" id="delete">
 
                     </div>
                     <div class="form-group text-center">
