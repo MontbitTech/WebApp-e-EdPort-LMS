@@ -154,8 +154,8 @@
     })
   });
 
-  $(document).on('click', '[data-deleteModal]', function() {
-    var val = $(this).data('deleteModal');
+  $(document).on('click', '.deleteStudent', function() {
+    var val = $(this).attr('value');
     $('#classdeletModal').modal('show');
     $("#txt_student_id").val(val);
 

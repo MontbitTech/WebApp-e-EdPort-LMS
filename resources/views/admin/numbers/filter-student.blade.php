@@ -38,11 +38,11 @@
           </td>
           <td>
             <a href="{{route('student.edit', encrypt($list->id))}}">Edit</a> | 
-            <a href="#" data-deleteModal="{{$list->id}}">
+            <a href="#" data-deleteModal="{{$list->id}}" class='deleteStudent' value='{{$list->id}}'>
             {{ __('Delete') }}
             </a>
 
-            <form id="delete-student-form{{$list->id}}" action="{{ route('student.delete',encrypt($list->id)) }}" method="POST" style="display: none;">
+            <!-- <form id="delete-student-form{{$list->id}}" action="{{ route('student.delete',encrypt($list->id)) }}" method="POST" style="display: none;"> -->
             @csrf
             </form>
                   </td>
