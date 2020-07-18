@@ -10,9 +10,9 @@ class HelpTicketCategoryController extends Controller
 {
     public function index(Request $request)
     {
-        $categories = HelpTicketCategory::get();
+        $categories = HelpTicketCategory::all();
 
-        return $categories;
+        return view('admin.help.category.index', compact('categories'));
     }
 
     /**
@@ -50,7 +50,7 @@ class HelpTicketCategoryController extends Controller
         $category =  HelpTicketCategory::findorFail($sid);
         $category->category = $request->category;
         $category->save();
-        return redirect()->route('admin.helplist')->with('success', 'Category updated successfully');
+        return redirect()->route('admin.help-category')->with('success', 'Category updated successfully');
     }
     public function delete(Request $request, $id)
     {
@@ -58,7 +58,7 @@ class HelpTicketCategoryController extends Controller
 
             $category = HelpTicketCategory::findorFail($id);
             $category->delete();
-            return back();
+            return back()->with('success', "Category deleted successfully");;
         } else {
             return back()->with('error', "Type delete to confirm");
         }

@@ -9,7 +9,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>{{ config('app.name', 'eLearning Platform') }}</title>
-
+  <script src="https://kit.fontawesome.com/a3a1b3a803.js" crossorigin="anonymous"></script>
   <!-- Scripts -->
   {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
   <script type="text/javascript" src="{{asset('js/jquery-3.4.1.min.js')}}"></script>

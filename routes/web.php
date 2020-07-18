@@ -67,7 +67,7 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::post('/update-help-status', 'HelpController@updateStatus')->name('helpStatus.update');
     Route::post('filter-ticket', 'HelpController@filterTicket')->name('filter-ticket');
 
-
+    Route::get('/admin/help-category', 'HelpTicketCategoryController@index')->name('admin.help-category');
     Route::get('/admin/help-category-add', 'HelpTicketCategoryController@add')->name('admin.help-category-add');
     Route::post('/admin/help-category-store', 'HelpTicketCategoryController@store')->name('admin.help-category-store');
     Route::get('/admin/help-category-edit/{id}', 'HelpTicketCategoryController@edit')->name('admin.help-category-edit');
