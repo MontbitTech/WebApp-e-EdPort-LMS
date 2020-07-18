@@ -17,6 +17,7 @@ use App\ClassTiming;
 use App\InvitationClass;
 use App\DateClass;
 use App\ClassWork;
+use App\Models\ClassSection;
 
 class ClassController extends Controller
 {
@@ -38,8 +39,8 @@ class ClassController extends Controller
      */
     public function list_class ()
 	{
-		$classes = StudentClass::select('class_name')->distinct()->get();
-		$section = StudentClass::select('section_name')->distinct()->get();
+		$classes = ClassSection::select('class_name')->distinct()->get();
+		$section = ClassSection::select('section_name')->distinct()->get();
 		return view('admin.class.list_class',compact('classes','section'));	
 	} 
 
