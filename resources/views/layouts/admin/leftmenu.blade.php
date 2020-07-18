@@ -72,15 +72,16 @@ $cmslinks ="enabled";
 @endphp
 
 <header>
+
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-10">
 
-				<button type="button" class="btn-menu" id="menu-bar">
+				<a href="./" class="btn-menu btn text-white	  " style="background-color:#253372;" id="menu-bar">
 					<svg class="icon">
 						<use xlink:href="{{asset('images/icons.svg#icon_arrowdown')}}"></use>
 					</svg>
-				</button>
+				</a>
 				<a class="navbar-logo" href="./"><img src="{{asset('images/logo.png')}}" alt="logo"></a>
 				@if(count($t) > 0)
 				@php
@@ -136,45 +137,56 @@ $cmslinks ="enabled";
 <div class="leftmenu-section">
 	<div class="left-accordion" id="parentAccordion">
 		<div class="left-card">
-			<div class="left-link {{ Request::segment(1) == 'list-setting'?'active':''}}"><a href="{{route('admin.settings')}}"><svg class="icon">
-						<use xlink:href="{{asset('images/icons.svg#schoolsetting')}}"></use>
-					</svg>School Settings</a></div>
+			<div class="left-link {{ Request::segment(1) == 'list-setting'?'active':''}}"><a href="{{route('admin.settings')}}" class="pl-3">
+
+					<i class="fas fa-cogs icon icon-4x"></i>
+					School Settings</a>
+			</div>
 		</div>
 
 		<div class="left-card">
-			<div class="left-link {{ Request::segment(2) == 'dashboard'?'active':''}}"><a href="{{route('admin.dashboard')}}"><svg class="icon">
-						<use xlink:href="{{asset('images/icons.svg#teacher')}}"></use>
-					</svg>Teacher</a></div>
+			<div class="left-link {{ Request::segment(2) == 'dashboard'?'active':''}}"><a href="{{route('admin.dashboard')}}" class="pl-3">
+					<i class="fas fa-chalkboard-teacher icon icon-4x"></i>
+					Teacher
+				</a>
+			</div>
 		</div>
 
 		<div class="left-card">
-			<div class="left-link {{ Request::segment(2) == 'classes'?'active':''}}"><a href="{{route('admin.listClass')}}" class="{{$classes}}"><svg class="icon">
-						<use xlink:href="{{asset('images/icons.svg#class')}}"></use>
-					</svg>Classes</a></div>
+			<div class="left-link {{ Request::segment(2) == 'classes'?'active':''}}"><a href="{{route('admin.listClass')}}" class="{{$classes}} pl-3">
+
+					<i class="fas fa-book-reader icon-4x icon"></i>
+					Classes</a></div>
 		</div>
 
 		<div class="left-card">
-			<div class="left-link {{ Request::segment(1) == 'list-timetable'?'active':''}}"><a href="{{route('list.timetable')}}" class="{{$timetable}}"><svg class="icon">
-						<use xlink:href="{{asset('images/icons.svg#timetable')}}"></use>
-					</svg>Time Table</a></div>
+			<div class="left-link {{ Request::segment(1) == 'list-timetable'?'active':''}}"><a href="{{route('list.timetable')}}" class="{{$timetable}} pl-3">
+					<i class="fas fa-calendar-alt icon icon-4x"></i>
+					Time Table</a></div>
 		</div>
 
 		<div class="left-card">
-			<div class="left-link {{ Request::segment(1) == 'list-students'?'active':''}}"><a href="{{route('list.students')}}" class="{{$student}}"><svg class="icon">
-						<use xlink:href="{{asset('images/icons.svg#student')}}"></use>
-					</svg>Student</a></div>
+			<div class="left-link {{ Request::segment(1) == 'list-students'?'active':''}}"><a href="{{route('list.students')}}" class="{{$student}} pl-3">
+					<i class="fas fa-user-graduate icon icon-4x"></i>
+
+					Student</a></div>
 		</div>
 
 		<div class="left-card">
-			<div class="left-link {{ Request::segment(1) == 'list-topics'?'active':''}}"><a href="{{route('cms.listtopics')}}" class="{{$cmslinks}}"><svg class="icon">
-						<use xlink:href="{{asset('images/icons.svg#icon_listing')}}"></use>
-					</svg>CMS Topics</a></div>
+			<div class="left-link {{ Request::segment(1) == 'list-topics'?'active':''}}"><a href="{{route('cms.listtopics')}}" class="{{$cmslinks}} pl-3">
+					<i class="fas fa-clipboard-list icon icon-4x"></i>
+					CMS Topics</a></div>
 		</div>
 
 		<div class="left-card">
-			<div class="left-link {{ Request::segment(2) == 'support-help'?'active':''}}"><a href="{{route('admin.helplist')}}" class="{{$support}}"><svg class="icon">
-						<use xlink:href="{{asset('images/icons.svg#helptickets')}}" class="icon-8x"></use>
-					</svg>Help Tickets</a></div>
+			<div class="left-link {{ Request::segment(2) == 'support-help'?'active':''}}"><a href="{{route('admin.helplist')}}" class="{{$support}} pl-3">
+					<i class="fas fa-receipt icon icon-4x"></i>
+					Help Tickets</a></div>
+		</div>
+		<div class="left-card">
+			<div class="left-link {{ Request::segment(2) == 'help-category'?'active':''}}"><a href="{{route('admin.help-category')}}" class="{{$support}} pl-3">
+					<i class="fa fa-code-fork icon icon-4x" aria-hidden="true"></i>
+					Help Category</a></div>
 		</div>
 	</div>
 </div>
