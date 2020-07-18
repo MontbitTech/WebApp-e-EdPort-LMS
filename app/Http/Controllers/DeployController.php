@@ -67,9 +67,4 @@ class DeployController extends Controller
 
         echo Response::json(['success' => $result]);
     }
-
-    public function test (Request $request)
-    {
-        return \response()->json(['success' => 'true', 'data' => 'rest in peace bro...']);
-    }
 }
