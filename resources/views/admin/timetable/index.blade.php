@@ -228,6 +228,7 @@
             var td = document.getElementById('tid');
             var timings = $(this).data('timing');
             var day = $(this).data('class_day');
+            var classSection = $(this).data('')
 
             td.value = tid;
             tn.innerHTML = tname;
@@ -237,17 +238,13 @@
                 type   : 'POST',
                 url    : '{{ url("available/teacher") }}',
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                data   : { 'timings': timings, 'day': day },
+                data   : { 'timings': timings, 'day': day, timeTableId: tid },
                 success: function (result) {
-                    var response = JSON.parse(result);
-                    if (response.status == 'success') {
-                        $("#sel_teacher option").remove();
-                        var data = "<option value=''> Select Class</option>";
-                        console.log(response);
-                        response.message.forEach(function (teacher) {
-                            data += "<option value='" + teacher.id + "'>" + teacher.name + "</option>";
-                        })
-                        $("#sel_teacher").append(data);
+                    // var response = JSON.parse(result);
+                    console.log(result);
+                    if (result.status == 'success') {
+                        setTeacherData(result.data.teacher);
+                        setSubjectData(result.data.subject);
                     } else {
                         $.fn.notifyMe('error', 5, 'something went wrong');
                     }
@@ -299,6 +296,26 @@
                     }
                 });
             }
+        }
+
+        function setTeacherData(teachers) {
+            $("#sel_teacher option").remove();
+            var data = "<option value=''> Select Teacher</option>";
+            // console.log(response);
+            teachers.forEach(function (teacher) {
+                data += "<option value='" + teacher.id + "'>" + teacher.name + "</option>";
+            })
+            $("#sel_teacher").append(data);
+        }
+
+        function setSubjectData(subjects) {
+            $("#sel_subject option").remove();
+            var data = "<option value=''> Select Subject</option>";
+            // console.log(response);
+            subjects.forEach(function (subject) {
+                data += "<option value='" + subject.id + "'>" + subject.subject_name + "</option>";
+            })
+            $("#sel_subject").append(data);
         }
     </script>
 

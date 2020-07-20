@@ -16,7 +16,7 @@ class StudentSubject extends Model
     }
 	public function studentClass()
     {
-      return $this->belongsTo('App\StudentClass','subject_id','id');
+      return $this->belongsTo('App\StudentClass','id','subject_id');
     }
 	public function dateClass()
     {

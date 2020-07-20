@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\ClassTiming;
-use App\StudentClass;
-use App\Teacher;
+use App\libraries\Availability;
 use Illuminate\Http\Request;
 
 class AvailabilityController extends Controller
@@ -15,29 +13,15 @@ class AvailabilityController extends Controller
         $startTime = date('H:i:s', strtotime($request->startTime));
         $endTime = date('H:i:s', strtotime($request->endTime));
 
-        $occupiedClassTiminngs = ClassTiming::with('StudentClass')
-            ->where('from_timing', '<=', $endTime)
-            ->where('to_timing', '>=', $startTime)
-            ->where('class_day', '=', $day)
-            ->get()->pluck('class_id');
-
-        $availableClasses = StudentClass::with('studentSubject')->whereNotIn('id', $occupiedClassTiminngs)->get();
-
-
-        return json_encode(array('status' => 'success', 'message' => $availableClasses));
+        return json_encode(array('status'  => 'success',
+                                 'message' => Availability::getAvailableClasses($day, $startTime, $endTime)));
     }
 
-    public function availableTeacher (Request $request)
+    public function availableTeacherAndSubject (Request $request)
     {
-        $day = $request->day;
-        $timings = explode('-', $request->timings);
+        $availabilityData['teacher'] = Availability::getAvailableTeacher(explode('-', $request->timings), $request->day);
+        $availabilityData['subject'] = Availability::getAvailableSubject($request->timeTableId);
 
-        $availableTeacher = Teacher::whereDoesntHave('class_timing', function ($q) use ($timings, $day) {
-            $q->where('from_timing', '<=', $timings[1]);
-            $q->where('to_timing', '>=', $timings[0]);
-            $q->where('class_day', '=', $day);
-        })->get();
-
-        return json_encode(array('status' => 'success', 'message' => $availableTeacher));
+        return \response()->json(array('status' => 'success', 'data' => $availabilityData));
     }
 }
