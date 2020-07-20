@@ -5,11 +5,11 @@
 <section class="main-section">
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-sm-12 col-md-6 ">
+            <div class="col-sm-12 col-md-6 mt-5 ">
 
 
-                <div class="card ">
-                    <div class="card-header bg-secondary text-white">
+                <div class="card mt-5">
+                    <div class="card-header ">
                         Category
                     </div>
                     <div class="card-body">
@@ -23,6 +23,7 @@
                             <button type="submit" class="btn btn-secondary">
                                 {{isset($category)?'Update':'Submit'}}
                             </button>
+                            <a href="{{route('admin.help-category')}}" class="btn btn-danger ml-1"><i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>Back</a>
                         </form>
                     </div>
                 </div>

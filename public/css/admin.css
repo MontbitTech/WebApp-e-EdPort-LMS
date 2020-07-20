@@ -90,11 +90,13 @@ header {
 .navbar-logo {
   display: inline-block;
   margin-top: 5px;
+  font-family: 'Roboto-Bold', Arial, sans-serif;
+  font-size: 1.9rem;
+  padding: 0;
+  color: #373C8E;
 }
 
-.navbar-logo img {
-  height: 44px;
-}
+
 
 .dropdown-user {
   text-align: right;

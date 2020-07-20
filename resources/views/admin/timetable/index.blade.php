@@ -4,41 +4,33 @@
 
 @php
 
-	$class=$ar["class"];
-	$section=$ar["sname"];
-	$tname=$ar["tname"];
-	$subn=$ar["subname"];
-	$timing=$ar["timing"];
+$class=$ar["class"];
+$section=$ar["sname"];
+$tname=$ar["tname"];
+$subn=$ar["subname"];
+$timing=$ar["timing"];
 
 @endphp
 <section class="main-section">
 	<div class="container-fluid">
 		<div class="row justify-content-center">
 			<div class="col-sm-12">
-{{--				<a href="{{ route('reload-timetable') }}" target="_blank">--}}
-{{--					Reload today's timetable for--}}
-{{--					all teachers--}}
-{{--				</a>--}}
+				{{-- <a href="{{ route('reload-timetable') }}" target="_blank">--}}
+				{{-- Reload today's timetable for--}}
+				{{-- all teachers--}}
+				{{-- </a>--}}
 				<div class="card card-common mb-3">
 					<div class="card-header">
 						<span class="topic-heading">Time Table</span>
 						<div class="float-right">
-							<a type="button" class="btn btn-sm btn-success"
-								href="{{ route('admin.timetableimport') }}">
-								<svg class="icon icon-font16 icon-mmtop-3 mr-1">
-									<use
-										xlink:href="{{ asset('images/icons.svg#icon_adduser') }}">
-									</use>
-								</svg> Import Time Table
+							<a type="button" class="btn btn-sm btn-secondary" href="{{ route('admin.timetableimport') }}">
+								<i class="fa fa-upload mr-1" aria-hidden="true"></i>
+								Import Time Table
 							</a>
 						</div>
 						<div class="float-right  mr-3">
-							<a type="button" class="btn btn-sm btn-success"
-								href="{{ route('add.extracalss') }}">
-								<svg class="icon icon-font16 icon-mmtop-3 mr-1">
-									<use
-										xlink:href="{{ asset('images/icons.svg#icon_adduser') }}">
-									</use>
+							<a type="button" class="btn btn-sm btn-secondary" href="{{ route('add.extracalss') }}">
+								<i class="fa fa-user-plus mr-1" aria-hidden="true"></i>
 								</svg> Add ExtraClass
 							</a>
 						</div>
@@ -61,14 +53,13 @@
 									<!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
 				  <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
 
-									<select id="txtSerachByClass" name="txtSerachByClass"
-										class="form-control form-control-sm" onchange="getData()">
+									<select id="txtSerachByClass" name="txtSerachByClass" class="form-control form-control-sm" onchange="getData()">
 										<option value=''>Select Class</option>
 										@if(count($class)>0)
-											@foreach($class as $cl)
-												<option value='{{ $cl->class_name }}'>{{ $cl->class_name }}
-												</option>
-											@endforeach
+										@foreach($class as $cl)
+										<option value='{{ $cl->class_name }}'>{{ $cl->class_name }}
+										</option>
+										@endforeach
 										@endif
 									</select>
 
@@ -78,15 +69,14 @@
 									<!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
 				  <input type="text"  id="txtSerachBySection" class="form-control form-control-sm" placeholder="Search By Section..." />-->
 
-									<select id="txtSerachBySection" name="txtSerachBySection"
-										class="form-control form-control-sm" onchange="getData()">
+									<select id="txtSerachBySection" name="txtSerachBySection" class="form-control form-control-sm" onchange="getData()">
 										<option value=''>Select Section</option>
 										@if(count($section)>0)
-											@foreach($section as $sl)
-												<option value='{{ $sl->section_name }}'>
-													{{ $sl->section_name }}
-												</option>
-											@endforeach
+										@foreach($section as $sl)
+										<option value='{{ $sl->section_name }}'>
+											{{ $sl->section_name }}
+										</option>
+										@endforeach
 										@endif
 									</select>
 
@@ -97,9 +87,7 @@
 
 
 							<div class="col-sm-12" id='timetable'>
-								<table id="teacherlist" class="table table-sm table-bordered display" style="width:100%"
-									data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60"
-									data-collast="120" data-filterplaceholder="Search Records ...">
+								<table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
 									<thead>
 										<tr>
 											<th id='classname'></th>
@@ -148,13 +136,12 @@
 								<td><label id='tname'></label></td>
 								<td><input type="radio" name="radio" id="tradio" value="tch" checked /></td>
 								<td>
-									<select id="sel_teacher" name="sel_teacher" class="form-control form-control-sm"
-										required>
+									<select id="sel_teacher" name="sel_teacher" class="form-control form-control-sm" required>
 										<option value=''>Select Teacher</option>
 										@if(count($tname)>0)
-											@foreach($tname as $tn)
-												<option value='{{ $tn->id }}'>{{ $tn->name }}</option>
-											@endforeach
+										@foreach($tname as $tn)
+										<option value='{{ $tn->id }}'>{{ $tn->name }}</option>
+										@endforeach
 										@endif
 									</select>
 								</td>
@@ -164,13 +151,12 @@
 								<td><label id='subject_name'></label></td>
 								<td><input type="radio" name="radio" id="sradio" value="sub" /></td>
 								<td>
-									<select id="sel_subject" name="sel_subject" class="form-control form-control-sm"
-										disabled required>
+									<select id="sel_subject" name="sel_subject" class="form-control form-control-sm" disabled required>
 										<option value=''>Select Subject</option>
 										@if(count($subn)>0)
-											@foreach($subn as $sn)
-												<option value='{{ $sn->id }}'>{{ $sn->subject_name }}</option>
-											@endforeach
+										@foreach($subn as $sn)
+										<option value='{{ $sn->id }}'>{{ $sn->subject_name }}</option>
+										@endforeach
 										@endif
 									</select>
 								</td>
@@ -203,7 +189,7 @@
 
 	}
 
-	$("input[type='radio']").on("click", function () {
+	$("input[type='radio']").on("click", function() {
 		var option = this.value;
 		if (option == "sub") {
 			$("#sel_subject").attr('disabled', false);
@@ -216,7 +202,7 @@
 
 	});
 
-	$(document).on('click', '[data-deleteModal]', function () {
+	$(document).on('click', '[data-deleteModal]', function() {
 		var tid = $(this).data('id');
 		var tname = $(this).data('tname');
 		var sname = $(this).data('subject_name');
@@ -272,7 +258,7 @@
 				/* contentType: false,
 				cache: false,
 				processData:false, */
-				success: function (data) {
+				success: function(data) {
 					tt.innerHTML = data["html"];
 					if (data["data"] != "") {
 						dl.href = "{{ url('/dl-timetable') }}" + "/" + cl.value + "_" + sl

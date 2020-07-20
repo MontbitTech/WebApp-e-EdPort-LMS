@@ -75,34 +75,40 @@ $cmslinks ="enabled";
 
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-10">
+			<div class="col-4">
 
 				<a href="./" class="btn-menu btn text-white	  " style="background-color:#253372;" id="menu-bar">
 					<svg class="icon">
 						<use xlink:href="{{asset('images/icons.svg#icon_arrowdown')}}"></use>
 					</svg>
 				</a>
-				<a class="navbar-logo" href="./"><img src="{{asset('images/logo.png')}}" alt="logo"></a>
-				@if(count($t) > 0)
-				@php
-				$dosc = "Ticket : " . $t[0]->name . "(" .$t[0]->phone . ")" . (!empty($t[0]->description) ? " - " .substr($t[0]->description, 30) : "");
-				@endphp
+				<a class="navbar-logo align-middle font-weight-bold" href="./">
+					e-EdPort
+				</a>
 
-				<div class='text-left col-lg-9' style="float:right;line-height: 3em;font-size:20px;">
-					<p class="marquee">
-						<span>
-							<a target="_blank" style="color:indianred !important;" href='{{$t[0]->class_join_link}}'> {{$dosc}}</a>
-						</span>
-					</p>
-				</div>
-				@endif
 			</div>
-			<div class="col-2 dropdown-user">
+			<div class="col-8 dropdown-user">
+				@if($t)
+
+				<a href="" class="text-danger mr-2 icon-lg align-middle">
+
+					<i class="fa fa-bell " style="font-size: 20px;" aria-hidden="true"></i>
+				</a>
+
+				@else
+				<a href="" class="text-success mr-3 icon-lg align-bottom">
+
+					<i class="fa fa-bell" style="font-size: 20px;" aria-hidden="true"></i>
+
+
+				</a>
+				@endif
+
 
 				<div class="dropdown d-inline-block">
 
 					<div class="dropdown-toggle" data-toggle="dropdown">
-						<div class="user-profilepic"><img src="{{asset('images/user.jpg')}}"></div><span>Admin</span>
+						<div class="user-profilepic"><img src="{{asset('images/user.jpg')}}" width="31px"></div><span>My Profile</span>
 					</div>
 					<div class="dropdown-menu dropdown-menu-right">
 						<a class="dropdown-item" href="{{route('admin.profile')}}"><svg class="icon">
@@ -111,7 +117,7 @@ $cmslinks ="enabled";
 						<!-- <a class="dropdown-item" href="#">Change Password</a> -->
 						<div class="dropdown-divider"></div>
 
-						<a class="dropdown-item" href="{{ route('admin.logout') }}">
+						<a class="dropdown-item text-danger" href="{{ route('admin.logout') }}">
 							<svg class="icon">
 								<use xlink:href="{{asset('images/icons.svg#icon_logout')}}"></use>
 							</svg> {{ __('Logout') }}
