@@ -86,6 +86,9 @@ $cls = 0;
                     <div class="font-weight-bold pt-1">
                         Subject: {{$subject_name}}
                     </div>
+                    <div class="font-weight-bold pt-1">
+                        G class id: {{$g_class_id}}
+                    </div>
                 </div>
             </div>
         </div>
