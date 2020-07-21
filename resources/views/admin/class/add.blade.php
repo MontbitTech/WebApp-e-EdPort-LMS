@@ -37,7 +37,7 @@
 						<div class="form-group row">
 						  <label for="colFormLabel" class="col-md-4 col-form-label">Select Subject:</label>
 						  <div class="col-md-4">
-							  {!! Form::select('subject', $data['subject'], null,array('class' => 'form-control','required'=>'required')) !!}
+							  {!! Form::select('subject[]', $data['subject'], null,array('multiple'=>'multiple','class' => 'form-control','required'=>'required')) !!}
 						  </div>
 						</div>
 						
