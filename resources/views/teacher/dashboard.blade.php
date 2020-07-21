@@ -1,8 +1,6 @@
 @extends('layouts.teacher.app')
 @php$i = 1;$k=$i;@endphp
     @section('content')
-
-
 <?php
 $cls = 0;
 ?>
@@ -121,9 +119,15 @@ $cls = 0;
 
                                             <?php
                                             $cms_link = '';
+                                            $youtube='';
+                                            $academy='';
+                                            $other='';
                                             if ( strlen($x) > 0 ) {
                                                 $display_style = 'display: block;';
                                                 $cms_link = $x->link;
+                                                $youtube = $x->youtube;
+                                                $academy = $x->khan_academy;
+                                                $other   = $x->others;
                                             } else
                                                 $display_style = 'display: none;';
 
@@ -137,13 +141,45 @@ $cls = 0;
 
 
                                             ?>
+                                                   <div class="m-auto">
 
+                                           @if($cms_link!="")
                                             <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}"
                                                data-topicid="{{$t->topic_id}}"
                                                class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow"
                                                id="viewcontent_{{$t->id}}" style="{{$display_style}}">
-                                                View Content
+                                                Edport Content
                                             </a>
+                                            @endif
+
+                                            @if($youtube!="")
+                                            <a href="javascript:void(0);" data-topiclink="{{ $youtube}}"
+                                               data-topicid="{{$t->topic_id}}"
+                                               class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow"
+                                               id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                                Youtube
+                                            </a>
+                                            @endif
+
+                                            @if($other!="")
+                                             <a href="javascript:void(0);" data-topiclink="{{ $other}}"
+                                               data-topicid="{{$t->topic_id}}"
+                                               class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow"
+                                               id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                                Wikipedia
+                                            </a>
+                                            @endif
+
+                                            @if($academy!="")
+                                            <a href="javascript:void(0);" data-topiclink="{{ $academy}}"
+                                               data-topicid="{{$t->topic_id}}"
+                                               class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow"
+                                               id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                                My School
+                                            </a>
+                                            @endif
+
+                                        </div>
                  </div>
             </div>
     </div>

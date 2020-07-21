@@ -78,7 +78,6 @@
                 <th>Subject</th>
                 <th>Topic</th>
                 <th>Link</th>
-                <th>Assignment Link</th>
                 <th>Action</th>
               </tr>
             </thead>
