@@ -27,75 +27,64 @@
           <div class="card-body pt-3">
             <div class="row justify-content-center">
               <div class="col-md-4 col-lg-3 text-md-left text-center mb-1">
-                <span data-dtlist="#teacherlist" class="mb-1">
+                <!-- <span data-dtlist="#teacherlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                </span>
+                </span> -->
               </div>
               <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
-                <span data-dtfilter="#teacherlist" class="mb-1">
+                <!-- <span data-dtfilter="#teacherlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                </span>
+                </span> -->
               </div>
-              <div class="col-sm-12">
-          <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+
+      <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
+         <span data-dtfilter="" class="mb-1">
+                  <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
+          <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
+          
+          <select id="txtSerachClass" name="txtSerachClass" class="form-control form-control-sm" onchange="getRecord()">
+          <option value=''>Select Class</option>
+            @if(count($classes)>0)
+            @foreach($classes as $cl)
+              <option value='{{$cl->class_name}}'>{{$cl->class_name}}</option>
+           @endforeach
+          @endif
+          </select>
+
+        </span>
+        
+            <span data-dtfilter="" class="mb-1">
+          
+           <select id="txtSerachSubject" name="txtSerachSubject" class="form-control form-control-sm" onchange="getRecord()">
+            <option value=''>Select Subject</option>
+            @if(count($subjects)>0)
+            @foreach($subjects->unique('subject_name') as $sl)
+              <option value='{{$sl->id}}'>{{$sl->subject_name}}</option>
+            @endforeach
+          @endif
+          </select>
+          
+        </span>
+        
+        
+              </div>
+
+          <div class="col-sm-12" id="cms">
+          <table id="cmsrecords" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
             <thead>
-              <tr>
+               <tr>
                 <th>#</th>
                 <th>Class</th>
                 <th>Subject</th>
                 <th>Topic</th>
                 <th>Link</th>
                 <th>Assignment Link</th>
-				<th>Action</th>
+                <th>Action</th>
               </tr>
             </thead>
-            
-          <tbody>
-           @if(count($lists)>0)
-              @php $i=0; @endphp
-		  
-		  
-                @foreach($lists as $list)
-					@php 
-						$enc = encrypt($list->id); 
-					@endphp
-			
-                  <tr>
-                    <td>{{++$i}}</td>
-                    <td class="text-center">{{$list->class}}</td>
-                    <td>{{$list->subject_name}}</td>
-                    <td>{{$list->topic}}</td>
-                    <td>
-					@if(empty($list->link))
-						 <?=""?>
-					@else
-						<a href='{{$list->link}}' target="_blank">Open Link</a>
-					@endif
-					</td>
-					 <td>
-					@if(empty($list->assignment_link))
-						 <?=""?>
-					@else
-						<a href='{{$list->assignment_link}}' target="_blank">Open Assignment Link</a></td>
-					@endif
-					<td>
-						<a href="{{route('cms.editlink', $enc)}}">Edit</a> | 
-						<a href="#"
-						onclick="event.preventDefault();
-						document.getElementById('delete-cms-form{{$list->id}}').submit();">
-						{{ __('Delete') }}
-						</a>
-
-					  <form id="delete-cms-form{{$list->id}}" action="{{ route('cms.deletelink', $enc) }}" method="POST" style="display: none;">
-						@csrf
-					  </form>
-                  </td>
-                  </tr>
-                @endforeach
-              @endif
-            </tbody>
           </table>
         </div>
+              
         </div>
       </div>
     </div>
@@ -103,18 +92,41 @@
 </div>
 </div>
 </section>
-<script type="text/javascript">
-$(document).ready(function() {
-  $('#teacherlist').DataTable({
-    initComplete: function(settings, json) {
-      $('[data-dtlist="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_length').find("label"));
-      $('[data-dtfilter="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_filter').find("input[type=search]").attr('placeholder', $('#'+settings.nTable.id).attr('data-filterplaceholder')))
+
+<script>
+    function getRecord(){
+
+       $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+    });
+        var txtSerachClass   = $("#txtSerachClass").val();
+        var txtSerachSubject = $("#txtSerachSubject").val();
+        $.ajax({
+            url: "{{url('filter-record')}}",
+            type: 'POST',
+            data: {
+                txtSerachClass   : txtSerachClass,
+                txtSerachSubject : txtSerachSubject
+            },
+            success: function(info) {
+                $("#cms").html(info);
+                $("#cms").show();
+          if(txtSerachSubject){
+            $('#cmsrecords').DataTable({
+            initComplete: function(settings, json) {
+            $('[data-dtlist="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_length').find("label"));
+            $('[data-dtfilter="#'+settings.nTable.id+'"').html($('#'+settings.nTable.id+'_filter').find("input[type=search]").attr('placeholder', $('#'+settings.nTable.id).attr('data-filterplaceholder')))
+            }
+            });
+            $('.dateset').datepicker({
+            dateFormat: "yy/mm/dd"
+            // showAnim: "slide"
+            })
+            }
+            }
+        });
     }
-  });
-  $('.dateset').datepicker({
-    dateFormat: "yy/mm/dd"
-    // showAnim: "slide"
-  })
-});
 </script>
 @endsection

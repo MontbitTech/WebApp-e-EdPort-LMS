@@ -333,8 +333,8 @@ class ClassWorkController extends Controller
 			$desc = $request->description;
 			$dateClass_id = $request->dateClass_id;
 
-			if ($desc == "") {
-				return json_encode(array('status' => 'error', 'message' => 'Class Note required.'));
+			if (strlen($desc)>255) {
+				return json_encode(array('status' => 'error', 'message' => 'Maximum Character Exceeded.'));
 			}
 			/* else if(!preg_match("/^[a-zA-Z0-9 ]*$/", $desc))
 				{

@@ -1,5 +1,6 @@
 <?php
 
+use App\HelpTicketCategory;
 use Illuminate\Database\Seeder;
 
 class StagingSeeder extends Seeder
@@ -14,6 +15,7 @@ class StagingSeeder extends Seeder
         $this->settingTableSeeds();
         $this->adminTableSeeds();
         $this->classesAndSubjectSeeds();
+        $this->categoryTableSeeds();
     }
 
     private function settingTableSeeds ()
@@ -82,6 +84,16 @@ class StagingSeeder extends Seeder
             'subject_name' => 'English',
             'created_at'   => date('Y-m-d H:i:s'),
             'updated_at'   => date('Y-m-d H:i:s'),
+        ]);
+    }
+
+    private function categoryTableSeeds ()
+    {
+        HelpTicketCategory::insert([
+            ['category' => 'Live Class'],
+            ['category' => 'Assignment'],
+            ['category' => 'Content'],
+            ['category' => 'Others'],
         ]);
     }
 }

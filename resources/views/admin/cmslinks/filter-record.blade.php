@@ -1,50 +1,58 @@
- <div class="col-sm-12" id="student">
-          <table id="studentlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+<div class="col-sm-12" id="cms">
+          <table id="cmsrecords" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
             <thead>
               <tr>
-                @if($getResult)
+                @if(count($getResult)>0)
                <th width="50px"><input type="checkbox" class="master"id="master"></th>
                @endif
                 <th>#</th>
-                <th>Name</th>
                 <th>Class</th>
-                <th>Section</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Notify</th>
-        <th>Action</th>
+                <th>Subject</th>
+                <th>Topic</th>
+                <th>Link</th>
+                <th>Assignment Link</th>
+				<th>Action</th>
               </tr>
             </thead>
             
           <tbody>
-           @if($getResult)
-           <button style="margin-bottom: 10px" class="btn btn-info delete_all" data-url="{{ url('admin/deleteAllStudent') }}">Delete All Selected</button>
+                @if(count($getResult)>0)
               @php $i=0; @endphp
+		  
+		           <button style="margin-bottom: 10px" class="btn btn-info delete_all" data-url="{{ url('admin/cmsDeleteAll') }}">Delete All Selected</button>
+                
                 @foreach($getResult as $list)
+			
                   <tr id="tr_{{$list->id}}">
                      <td><input type="checkbox" class="sub_chk" data-id="{{$list->id}}"></td>
                     <td>{{++$i}}</td>
-                    <td>{{$list->name}}</td>
-                    <td>{{$list->class_name}}</td>
-                    <td>{{$list->section_name}}</td>
-                    <td>{{$list->email}}</td>
-                    <td>{{$list->phone}}</td>
+                    <td class="text-center">{{$list->class}}</td>
+                    <td>{{$list->Subject->subject_name}}</td>
+                    <td>{{$list->topic}}</td>
                     <td>
-            @if ($list->notify=="yes")
-              <input type="checkbox" checked disabled>
-            @else
-              <input type="checkbox"  disabled>
-            @endif
-          </td>
-          <td>
-            <a href="{{route('student.edit', encrypt($list->id))}}">Edit</a> | 
-            <a href="#" data-deleteModal="{{$list->id}}" class='deleteStudent' value='{{$list->id}}'>
-            {{ __('Delete') }}
-            </a>
+					@if(empty($list->link))
+						 <?=""?>
+					@else
+						<a href='{{$list->link}}' target="_blank">Open Link</a>
+					@endif
+					</td>
+					 <td>
+					@if(empty($list->assignment_link))
+						 <?=""?>
+					@else
+						<a href='{{$list->assignment_link}}' target="_blank">Open Assignment Link</a></td>
+					@endif
+					<td>
+						<a href="{{route('cms.editlink', encrypt($list->id))}}">Edit</a> | 
+						<a href="#"
+						onclick="event.preventDefault();
+						document.getElementById('delete-cms-form{{$list->id}}').submit();">
+						{{ __('Delete') }}
+						</a>
 
-            <!-- <form id="delete-student-form{{$list->id}}" action="{{ route('student.delete',encrypt($list->id)) }}" method="POST" style="display: none;"> -->
-            @csrf
-            </form>
+					  <form id="delete-cms-form{{$list->id}}" action="{{ route('cms.deletelink', encrypt($list->id)) }}" method="POST" style="display: none;">
+						@csrf
+					  </form>
                   </td>
                   </tr>
                 @endforeach
@@ -53,8 +61,7 @@
           </table>
         </div>
 
-
-   <script type="text/javascript">
+ <script type="text/javascript">
     $(document).ready(function () {
 
 

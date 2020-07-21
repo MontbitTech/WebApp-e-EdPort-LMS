@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +9,7 @@
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>{{ config('app.name', 'eLearning Platform') }}</title>
-
+  <script src="https://kit.fontawesome.com/a3a1b3a803.js" crossorigin="anonymous"></script>
   <!-- Scripts -->
   {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
   <script type="text/javascript" src="{{asset('js/jquery-3.4.1.min.js')}}"></script>
@@ -22,14 +23,16 @@
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.6.2/css/buttons.dataTables.min.css">
 
 </head>
+
 <body>
   <div id="app">
-   @include('layouts.admin.leftmenu')
-   @include('layouts.notifications')
-  <main class="py-4">
-    @yield('content')
-  </main>
-  @include('layouts.admin.footer')
-</div>
+    @include('layouts.admin.leftmenu')
+    @include('layouts.notifications')
+    <main class="py-4">
+      @yield('content')
+    </main>
+    @include('layouts.admin.footer')
+  </div>
 </body>
+
 </html>

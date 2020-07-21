@@ -87,7 +87,7 @@
   </div>
 </div>
 
-
+<input type="hidden" class="base_url" value="{{ URL::to('/')}}"/>
 <script type="text/javascript">
   $('#btn_help').click(function(e){
      e.preventDefault();
