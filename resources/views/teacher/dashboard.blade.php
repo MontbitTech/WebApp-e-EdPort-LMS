@@ -482,6 +482,8 @@ $cls = 0;
                             </table>
                         </div>
                     </div>
+                    <!-- ./Teacher-AssignedClasses -->
+
                 </div>
             </div>
         </div>
@@ -603,37 +605,39 @@ $cls = 0;
 
 
 
-<!-- Add Class Modal -->
-<div class="modal fade" id="addClassModal" data-backdrop="static" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-light d-flex align-items-center">
-                <h5 class="modal-title font-weight-bold">Add Class</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <svg class="icon">
-                        <use xlink:href="../images/icons.svg#icon_times2"></use>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body pt-4">
-                {!! Form::open(array('route' => ['add.class'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_add_class')) !!}
-                <div class="form-group row">
-                    <label for="addinputDate" class="col-md-4 col-form-label text-md-right">Date:</label>
-                    <div class="col-md-6">
-                        {!! Form::text('class_date', null, array('placeholder' => 'DD MM YYYY','class' => 'form-control ac-datepicker','required'=>'required',"onkeydown"=>"return false;")) !!}
-                    </div>
+    <!-- Add Class Modal -->
+    <div class="modal fade" id="addClassModal" data-backdrop="static" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-light d-flex align-items-center">
+                    <h5 class="modal-title font-weight-bold">Add Class</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <svg class="icon">
+                            <use xlink:href="../images/icons.svg#icon_times2"></use>
+                        </svg>
+                    </button>
                 </div>
-                <div class="form-group row">
-                    <label for="addinputFtime" class="col-md-4 col-form-label text-md-right">Class From
-                        Time:</label>
-                    <div class="col-md-6">
-                        {!! Form::text('start_time', null, array('placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                <div class="modal-body pt-4">
+
+                    {!! Form::open(array('route' => ['add.class'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_add_class')) !!}
+                    <div class="form-group row">
+                        <label for="addinputDate" class="col-md-4 col-form-label text-md-right">Date:</label>
+                        <div class="col-md-6">
+                            {!! Form::text('class_date', null, array('id'=>'addClassDate','placeholder' => 'DD/MM/YYYY','class' => 'form-control ac-datepicker','required'=>'required',"onkeydown"=>"return false;")) !!}
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label for="addinputTtime" class="col-md-4 col-form-label text-md-right">Class To Time:</label>
-                    <div class="col-md-6">
-                        {!! Form::text('end_time', null, array('placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                    <div class="form-group row">
+                        <label for="addinputFtime" class="col-md-4 col-form-label text-md-right">Class From
+                            Time:</label>
+                        <div class="col-md-6">
+                            {!! Form::text('start_time', null, array('id'=>'addClassStartTime','placeholder' => '00:00:00','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="addinputTtime" class="col-md-4 col-form-label text-md-right">Class To Time:</label>
+                        <div class="col-md-6">
+                            {!! Form::text('end_time', null, array('id'=>'addClassEndTime','placeholder' => '00:00:00','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                        </div>
                     </div>
                 </div>
 
@@ -791,13 +795,13 @@ $cls = 0;
 <script type="text/javascript">
     $(document).ready(function() {
         $('.ac-datepicker').datepicker({
-            dateFormat: 'd M yy',
+            dateFormat: 'dd/mm/yy',
             minDate: 0,
         });
         $('.ac-time').timepicker({
             controlType: 'select',
             oneLine: true,
-            timeFormat: 'hh:mm tt'
+            timeFormat: 'HH:mm:ss'
         });
     });
     $(document).on('click', '[data-LiveLink]', function() {
@@ -1248,7 +1252,6 @@ $cls = 0;
         });
     });
 
-
         // Description or Class  note
         $(document).on('mouseover', '.text-editwrapper textarea', function () {
             $(this).prop( "disabled", false );
@@ -1293,7 +1296,42 @@ $cls = 0;
                 });
             }
         });
-        
-</script>
+        $(document).on('change', '#addClassEndTime', function () {
+            var startTime = $('#addClassStartTime').val();
+            var endTime = $('#addClassEndTime').val();
+            var date = $('#addClassDate').val();
+
+            if (startTime == '') {
+                $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
+            }
+            if (date == '') {
+                $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
+            }
+            $.ajax({
+                type   : 'POST',
+                url    : '{{ url("available/classes") }}',
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                data   : { 'startTime': startTime, 'endTime': endTime, 'date': date },
+                success: function (result) {
+                    var response = JSON.parse(result);
+                    if (response.status == 'success') {
+                        $("#class_id option").remove();
+                        var data = "<option value=''> Select Class</option>";
+                        // $.fn.notifyMe('success', 5, response.message);
+                        response.message.forEach(function (studentClass) {
+                            data += "<option value='" + studentClass.id + "'> Class " + studentClass.class_name + " - " +
+                                studentClass.section_name + " - " + studentClass.student_subject.subject_name + "</option>";
+                        })
+                        $("#class_id").append(data);
+                    } else {
+                        $.fn.notifyMe('error', 5, 'something went wrong');
+                    }
+                },
+                error  : function () {
+                    $.fn.notifyMe('error', 4, 'There is some error while searching for available class!');
+                }
+            });
+        });
+        </script>
 
 @endsection

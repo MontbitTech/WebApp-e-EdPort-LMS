@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\ClassTiming;
+use App\StudentClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
@@ -63,6 +65,6 @@ class DeployController extends Controller
             $result = 'credentials_teacher created';
         }
 
-        echo Response::json(['success' =>$result ]);
+        echo Response::json(['success' => $result]);
     }
 }

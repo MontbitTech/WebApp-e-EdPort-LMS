@@ -110,8 +110,9 @@ Route::group(['middleware' => 'adminsession'], function () {
 
     Route::match(array('GET', 'POST'), '/cmslinks-import', 'ImportCMSLinksController@cmsLinksImport')->name('cms.cmslinksimport');
     Route::get('/download-cmslinkssample', 'ImportCMSLinksController@sampleCMSLinksDownload')->name('cms.sampleCMSLinksDownload');
-    Route::post('filter-subject', 'ClassController@filterSubject')->name('filter-subject');
-    Route::post('filter-student', 'ImportStudentsController@filterStudent')->name('filter-student');
+    Route::post('filter-subject','ClassController@filterSubject')->name('filter-subject');
+	Route::post('filter-student','ImportStudentsController@filterStudent')->name('filter-student');
+    Route::post('/available/teacher','AvailabilityController@availableTeacherAndSubject');
 });
 
 
@@ -157,6 +158,7 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/class-topic-update', 'ClassWorkController@classTopicUpdate')->name('classtopic.update');
     Route::post('/update-classNotes', 'ClassWorkController@ajaxUpdateClassNotes')->name('update-classNotes');
 
+    Route::post('/available/classes','AvailabilityController@availableClasses');
 
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
 });
