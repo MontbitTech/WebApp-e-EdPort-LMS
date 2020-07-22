@@ -1,12 +1,31 @@
 @extends('layouts.teacher.app')
 @php$i = 1;$k=$i;@endphp
-    @section('content')
+@section('content')
 
 
 <?php
 $cls = 0;
 ?>
+<style>
+    .mgQYsb {
+        background-image: url(https://www.gstatic.com/classroom/logo_square_47.svg);
+    }
 
+    .g-sharetoclassroom {
+        height: 50px;
+        opacity: .0;
+        color: antiquewhite;
+        background-color: bisque;
+        width: 100px;
+        overflow: hidden;
+    }
+
+    button#___sharetoclassroom_0 {
+        height: 50px;
+        width: 100px;
+        overflow: hidden;
+    }
+</style>
 <section class="main-section">
     <div class="container">
         <div class="row justify-content-center">
@@ -60,49 +79,48 @@ $cls = 0;
                         }
                         ?>
 
-<div class="card text-center mb-3" style="border-color:#253372;">
-                        <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
-                        <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
-                        <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
-                        <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
-                        <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
-                        <input type="hidden" id="txt_gMeetURL{{$i}}" value="{{$teacherData->g_meet_url}}">
-                        <input type="hidden" id="txt_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
-                        <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}"/>
-    <div class="card-header p-0" style="background:#253372;color:#fff;">
-        <div class="row pl-2 pr-3">
-            <div class="d-flex align-items-center col-md-4">
-                <div class="cls-date font-weight-bold">{{ $todaysDate }}</div>
-                    <div class="cls-from pt-1">
-                        {{ date('G:i',strtotime($t->from_timing))}} to {{ date('G:i',strtotime($t->to_timing))}}</div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between col-md-8">
-                    <div class="font-weight-bold pt-1">
-                        Class: {{ $class_name }} Std
-                    </div>
-                    <div class="font-weight-bold pt-1">
-                        Section:{{$section_name}}
-                    </div>
-                    <div class="font-weight-bold pt-1">
-                        Subject: {{$subject_name}}
-                    </div>
-                    <div class="font-weight-bold pt-1">
-                        G class id: {{$g_class_id}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-body p-0">
-            <div class="row m-2">
-                <div class="col-md-9">
-                    <div class="input-group text-editwrapper mt-1 mb-1">
-                        <textarea class="form-control text-edit1" rows="3" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" 
-                        id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
-                     </div>
-               </div>
-               <div class="col-md-3 mt-1">
-                    <?php
-                        $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
+                        <div class="card text-center mb-3" style="border-color:#253372;">
+                            <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
+                            <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
+                            <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
+                            <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
+                            <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
+                            <input type="hidden" id="txt_gMeetURL{{$i}}" value="{{$teacherData->g_meet_url}}">
+                            <input type="hidden" id="txt_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
+                            <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}" />
+                            <div class="card-header p-0" style="background:#253372;color:#fff;">
+                                <div class="row pl-2 pr-3">
+                                    <div class="d-flex align-items-center col-md-4">
+                                        <div class="cls-date font-weight-bold">{{ $todaysDate }}</div>
+                                        <div class="cls-from pt-1">
+                                            {{ date('G:i',strtotime($t->from_timing))}} to {{ date('G:i',strtotime($t->to_timing))}}</div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between col-md-8">
+                                        <div class="font-weight-bold pt-1">
+                                            Class: {{ $class_name }} Std
+                                        </div>
+                                        <div class="font-weight-bold pt-1">
+                                            Section:{{$section_name}}
+                                        </div>
+                                        <div class="font-weight-bold pt-1">
+                                            Subject: {{$subject_name}}
+                                        </div>
+                                        <div class="font-weight-bold pt-1">
+                                            G class id: {{$g_class_id}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="row m-2">
+                                    <div class="col-md-9">
+                                        <div class="input-group text-editwrapper mt-1 mb-1">
+                                            <textarea class="form-control text-edit1" rows="3" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-1">
+                                        <?php
+                                        $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
 
                                         //if($t->subject_id == 2)
                                         //	dd($topics);
@@ -111,116 +129,118 @@ $cls = 0;
                                         //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
                                         $x = $t->cmsLink;
                                         ?>
-                         <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
-                                                <option value="">Select Topic</option>
-                                                @if(count($topics)>0)
-                                                    @foreach($topics as $topic)
-                                                        <?php $selected = ( $topic->id == $t->topic_id ) ? 'selected' : '';?>
-                                                        <option value="{{$topic->id}}" {{$selected}}>{{$topic->topic}}</option>
-                                                    @endforeach
-                                                @endif
-                                                </select>
-                                                </select>
+                                        <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
+                                            <option value="">Select Topic</option>
+                                            @if(count($topics)>0)
+                                            @foreach($topics as $topic)
+                                            <?php $selected = ($topic->id == $t->topic_id) ? 'selected' : ''; ?>
+                                            <option value="{{$topic->id}}" {{$selected}}>{{$topic->topic}}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                        </select>
 
-                                            <?php
-                                            $cms_link = '';
-                                            if ( strlen($x) > 0 ) {
-                                                $display_style = 'display: block;';
-                                                $cms_link = $x->link;
-                                            } else
-                                                $display_style = 'display: none;';
-
-
-                                            if ( $t->topic_id != '' ) {
-                                                //  $display_style = 'display: block;';
-                                            }
-                                            if ( $t->cmsLink ) {
-                                                // $cms_link = $t->cmsLink->link;
-                                            }
+                                        <?php
+                                        $cms_link = '';
+                                        if (strlen($x) > 0) {
+                                            $display_style = 'display: block;';
+                                            $cms_link = $x->link;
+                                        } else
+                                            $display_style = 'display: none;';
 
 
-                                            ?>
+                                        if ($t->topic_id != '') {
+                                            //  $display_style = 'display: block;';
+                                        }
+                                        if ($t->cmsLink) {
+                                            // $cms_link = $t->cmsLink->link;
+                                        }
 
-                                            <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}"
-                                               data-topicid="{{$t->topic_id}}"
-                                               class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow"
-                                               id="viewcontent_{{$t->id}}" style="{{$display_style}}">
-                                                View Content
-                                            </a>
-                 </div>
-            </div>
-    </div>
-    <div class="card-footer p-1" style="background:#fff;">
-         <div class="d-flex justify-content-between flex-wrap">
-            <div class="m-auto">
-                <a href="javascript:void(0);" data-LiveLink="{{ $teacherData->g_meet_url }}" id="live_c_link_{{$i}}" 
-                    class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
-                                                    <svg class="icon font-10 mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_dot"></use>
-                                                    </svg>
-                                                    Join Live
-                </a>
-                                                
-                <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notifyMe="{{$i}}" data-id="notify_student" 
-                id="notifyurl_{{$i}}">
-                                                    <svg class="icon mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_bell"></use>
-                                                    </svg>
-                                                    <span>Notify Students</span>
-                 </a>
-                <button type="button" data-classhelp="{{$i}}" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
-                                                        title="Help" data-id="help">
-                                                    <svg class="icon mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_help"></use>
-                                                    </svg>
-                                                    Help
-                </button>
-                <button type="button" data-editModal="{{$i}}" class="btn btn-sm btn-outline-primary mb-1 border-0 btn-shadow"
-                                                        title="Edit">
-                                                    <svg class="icon mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_edit"></use>
-                                                    </svg>
-                                                    Edit
-                                                </button>
-            </div>
-            <div class="m-auto"">
-                <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
-                 id="new_a_link_{{$i}}" data-createModal='{{$i}}' data-class_modal="{{$t->class_id}}" 
-                 data-subject_modal="{{$t->subject_id}}" data-teacher_modal="{{$t->teacher_id}}">
-                                                    <svg class="icon font-12 mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_plus"></use>
-                                                    </svg>
-                                                    New Assignment
-                </a>
-                                                <?php
-                                                $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
-                                                ?>
-                                                <select id="view_a_link_{{$i}}"
-                                                        class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
-                                                        data-AssLiveLink="{{$t->id}}"/>
-                                                <?php
-                                                if(count($assignmentData) > 0)
-                                                {
-                                                ?>
-                                                <option value="">View Assigment</option><?php
-                                                foreach($assignmentData as $key){
-                                                ?>
+
+                                        ?>
+
+                                        <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                            View Content
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer p-1" style="background:#fff;">
+                                <div class="d-flex justify-content-between flex-wrap">
+                                    <div class="m-auto">
+                                        <a href="javascript:void(0);" data-LiveLink="{{ $teacherData->g_meet_url }}" id="live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+                                            <svg class="icon font-10 mr-1">
+                                                <use xlink:href="../images/icons.svg#icon_dot"></use>
+                                            </svg>
+                                            Join Live
+                                        </a>
+
+                                        <button id="new" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">
+
+                                            <span>Notify Students</span>
+
+                                        </button>
+                                        <div id="google" class="g-sharetoclassroom" data-itemtype="announcement" data-courseid="{{$g_class_id}}" data-size="100" title="Sample Student Notification" data-body="body" data-url="{{ $teacherData->g_meet_url }}">
+
+                                        </div>
+                                        <!-- <div>
+                                            <button class="btn btn-sm " id="google">
+                                                <small>
+                                                    <g:sharetoclassroom courseid="{{$g_class_id}}" theme="classic" style="opacity: .1;" size="50" itemtype="announcement" onsharestart=start_share onsharecomplete=end_share title="insert your text" body="<input type='text'>" url="{{ $teacherData->g_meet_url }}">
+
+                                                    </g:sharetoclassroom>
+                                                </small>
+                                                {{$g_class_id}}
+                                            </button>
+
+                                        </div> -->
+
+                                        <button type="button" data-classhelp="{{$i}}" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help">
+                                            <svg class="icon mr-1">
+                                                <use xlink:href="../images/icons.svg#icon_help"></use>
+                                            </svg>
+                                            Help
+                                        </button>
+                                        <button type="button" data-editModal="{{$i}}" class="btn btn-sm btn-outline-primary mb-1 border-0 btn-shadow" title="Edit">
+                                            <svg class="icon mr-1">
+                                                <use xlink:href="../images/icons.svg#icon_edit"></use>
+                                            </svg>
+                                            Edit
+                                        </button>
+                                    </div>
+                                    <div class="m-auto">
+                                        <a href=" #" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="new_a_link_{{$i}}" data-createModal='{{$i}}' data-class_modal="{{$t->class_id}}" data-subject_modal="{{$t->subject_id}}" data-teacher_modal="{{$t->teacher_id}}">
+                                            <svg class="icon font-12 mr-1">
+                                                <use xlink:href="../images/icons.svg#icon_plus"></use>
+                                            </svg>
+                                            New Assignment
+                                        </a>
+                                        <?php
+                                        $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
+                                        ?>
+                                        <select id="view_a_link_{{$i}}" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-AssLiveLink="{{$t->id}}" />
+                                        <?php
+                                        if (count($assignmentData) > 0) {
+                                        ?>
+                                            <option value="">View Assigment</option><?php
+                                                                                    foreach ($assignmentData as $key) {
+                                                                                    ?>
                                                 <option value="{{$key->g_live_link}}">{{Str::limit($key->g_title,10, '..')}}</option>
 
-                                                <?php
-                                                }
-                                                }else{
-                                                ?>
-                                                <option value="">No Assigment</option>
-                                                <?php
-                                                }
+                                            <?php
+                                                                                    }
+                                                                                } else {
+                                            ?>
+                                            <option value="">No Assigment</option>
+                                        <?php
+                                                                                }
 
-                                                ?>
-                                                </select>             
-            </div>
-        </div>
-  </div>
-</div>
+                                        ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         @php
                         $i++;
                         @endphp
@@ -267,7 +287,7 @@ $cls = 0;
 
 
                         <div class="classes-box">
-                        
+
                             <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
                             <input type="hidden" id="past_subject_id{{$i}}" value="{{$t->subject_id}}">
@@ -489,6 +509,16 @@ $cls = 0;
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="row">
+
+            <a href="">
+                <g:sharetoclassroom courseid="{{$g_class_id}}" theme="classic" size="20" itemtype="announcement" onsharestart=start_share onsharecomplete=end_share title='insert your text'>
+                </g:sharetoclassroom>
+
+            </a>
+        </div>
+    </div>
 </section>
 
 
@@ -583,8 +613,8 @@ $cls = 0;
                     <div class="form-group">
                         <select name="help_ticket_category" class="form-control" required>
                             <option value="">Please select a category</option>
-                            
-                            
+
+
                         </select>
                     </div>
                     <div class="form-group">
@@ -661,7 +691,7 @@ $cls = 0;
                 </div>
 
 
-                    <!-- <div class="form-group row">
+                <!-- <div class="form-group row">
 				<label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live <small>(Link)</small>:</label>
 				<div class="col-md-6">
 				  {!! Form::textarea('join_liveUrl', null, array('placeholder' => 'Enter Live class url','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
@@ -790,7 +820,30 @@ $cls = 0;
     </div>
 </div>
 <!-- End -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<script>
+    $(document).ready(function() {
+        $("#new").click(function() {
+            alert("iframe.E4UQqb.TIX7Hf.mgQYsb");
 
+        });
+    });
+    // $("#new").bind("click", (function() {
+    //     $("#google").trigger("click");
+
+    // }));
+</script>
+
+<script>
+    function start_share(fahrenheit) {
+        window.alert("Starting sharing of content");
+    }
+
+    function end_share(fahrenheit) {
+        window.alert("Ending sharing of content");
+    }
+</script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('.ac-datepicker').datepicker({
@@ -968,6 +1021,7 @@ $cls = 0;
             }
         });
     });
+
     function give_assignment(id, link, classwork_id, title) {
         ///console.log(id);
         //console.log(link);
@@ -1252,51 +1306,54 @@ $cls = 0;
     });
 
 
-        // Description or Class  note
-        $(document).on('mouseover', '.text-editwrapper textarea', function () {
-            $(this).prop( "disabled", false );
-        });
-        $(document).on('mouseout', '.text-editwrapper textarea', function () {
-            $(this).prop( "disabled", true );
-        });
-        $(document).on('focusout', '.text-editwrapper textarea', function () {
-            var thiz = $(this);
-            var id = thiz.parent().find('.text-edit1').attr('data-savedesc');
-            var getDescText = (thiz.parent().find('.text-edit1').val().replace(/\$/g, '')).trim();
-            var dateClass_id = $("#dateClass_id" + id).val();
+    // Description or Class  note
+    $(document).on('mouseover', '.text-editwrapper textarea', function() {
+        $(this).prop("disabled", false);
+    });
+    $(document).on('mouseout', '.text-editwrapper textarea', function() {
+        $(this).prop("disabled", true);
+    });
+    $(document).on('focusout', '.text-editwrapper textarea', function() {
+        var thiz = $(this);
+        var id = thiz.parent().find('.text-edit1').attr('data-savedesc');
+        var getDescText = (thiz.parent().find('.text-edit1').val().replace(/\$/g, '')).trim();
+        var dateClass_id = $("#dateClass_id" + id).val();
 
 
-            if(getDescText.length>255) {
-                $.fn.notifyMe('error', 4, 'Not To be Exceed More than 255 Char,You have Written '+getDescText.length+' Char');
-            } 
-            else {
-                $.ajax({
-                    type   : 'POST',
-                    url    : '{{ url("update-classNotes") }}',
-                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                    data   : { 'dateClass_id': dateClass_id, 'description': getDescText },
-                    success: function (result) {
+        if (getDescText.length > 255) {
+            $.fn.notifyMe('error', 4, 'Not To be Exceed More than 255 Char,You have Written ' + getDescText.length + ' Char');
+        } else {
+            $.ajax({
+                type: 'POST',
+                url: '{{ url("update-classNotes") }}',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    'dateClass_id': dateClass_id,
+                    'description': getDescText
+                },
+                success: function(result) {
 
-                        var response = JSON.parse(result);
+                    var response = JSON.parse(result);
 
-                        if (response.status == 'success') {
-                            $.fn.notifyMe('success', 5, response.message);
-                            $("#txt_desc" + id).val(getDescText);
-                        } else {
-                            $.fn.notifyMe('error', 5, response.message);
-                        }
-
-
-                        //$.fn.notifyMe('success',4,'Description has been saved!');
-                    },
-                    error  : function () {
-                        // thiz.parent().find('.text-edit').removeClass('active');
-                        $.fn.notifyMe('error', 4, 'There is some error while saving class note text!');
+                    if (response.status == 'success') {
+                        $.fn.notifyMe('success', 5, response.message);
+                        $("#txt_desc" + id).val(getDescText);
+                    } else {
+                        $.fn.notifyMe('error', 5, response.message);
                     }
-                });
-            }
-        });
-        
+
+
+                    //$.fn.notifyMe('success',4,'Description has been saved!');
+                },
+                error: function() {
+                    // thiz.parent().find('.text-edit').removeClass('active');
+                    $.fn.notifyMe('error', 4, 'There is some error while saving class note text!');
+                }
+            });
+        }
+    });
 </script>
 
 @endsection
