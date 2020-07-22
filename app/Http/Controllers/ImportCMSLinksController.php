@@ -31,10 +31,13 @@ class ImportCMSLinksController extends Controller
 
             $request->validate([ 
               'subject' => 'required',
-              'class' => 'required',
-              'topic' => 'required',
-			  'link' => 'required|regex:'.$regex,
-			  'alink' => 'required|regex:'.$regex
+              'class'   => 'required',
+              'topic'   => 'required',
+	          'link'    => 'required_without_all:khan_academy,youtube,others,alink|nullable|regex:'.$regex,
+			  'khan_academy' => 'required_without_all:link,youtube,others,alink|nullable|regex:'.$regex,
+			  'youtube'   => 'required_without_all:khan_academy,link,others,alink|nullable|regex:'.$regex,
+		      'others'  => 'required_without_all:khan_academy,link,youtube,alink|nullable|regex:'.$regex,
+			  'alink'  => 'required_without_all:khan_academy,link,youtube,others|nullable|regex:'.$regex
             ]);
 			
 			$studentClassExist=\DB::select('select id from tbl_cmslinks where class=? and subject=? and topic=? and link=? and assignment_link=?',
@@ -47,7 +50,7 @@ class ImportCMSLinksController extends Controller
 			}
 			else
 				$s = \DB::table('tbl_cmslinks')->insert(
-									['class' => $request["class"], 'subject' => $request["subject"], 'topic' => $request["topic"],'link' => $request["link"],'assignment_link'=> $request["alink"]]
+									['class' => $request["class"], 'subject' => $request["subject"], 'topic' => $request["topic"],'link' => $request["link"], 'khan_academy' => $request["khan_academy"], 'youtube' => $request["youtube"], 'others' => $request["others"],'assignment_link'=> $request["alink"]]
 								);
 			
 			if($error == "found")
@@ -69,17 +72,21 @@ class ImportCMSLinksController extends Controller
         if($request->isMethod('post')) 
 		{
             $request->validate([ 
-              'subject' => 'required|max:100',
-              'class' => 'required',
-              'topic' => 'required',
-			  'link' => 'required|regex:'.$regex,
-			  'alink' => 'required|regex:'.$regex
+            'subject' => 'required|max:100',
+            'class' => 'required',
+            'topic' => 'required',
+			'link' => 'required_without_all:khan_academy,youtube,others,alink|nullable|regex:'.$regex,
+			'khan_academy' => 'required_without_all:link,youtube,others,alink|nullable|regex:'.$regex,
+			'youtube'      => 'required_without_all:khan_academy,link,others,alink|nullable|regex:'.$regex,
+		     'others'       => 'required_without_all:khan_academy,link,youtube,alink|nullable|regex:'.$regex,
+			  'alink'  => 'required_without_all:khan_academy,link,youtube,others|nullable|regex:'.$regex
             ]);
 			
 			$id = decrypt($id);
 			
 			$s = \DB::table('tbl_cmslinks')->where('id',$id)->update(
-					['class' => $request["class"], 'subject' => $request["subject"], 'topic' => $request["topic"],'link' => $request["link"],'assignment_link'=> $request["alink"]]
+					['class' => $request["class"], 'subject' => $request["subject"], 'topic' => $request["topic"],'link' => $request["link"],
+					'youtube' => $request["youtube"],'khan_academy' => $request["khan_academy"],'others' => $request["others"],'assignment_link'=> $request["alink"]]
 			);
 			
 			return redirect()->route('cms.listtopics')->with('success',Config::get('constants.WebMessageCode.112'));
@@ -208,22 +215,41 @@ class ImportCMSLinksController extends Controller
 							$error = "found";
 							$rows .= $i . ",";
 						}
+						elseif(!empty($reader["youtube"]) && !CustomHelper::is_url( $reader['youtube'] ))	
+						{	
+							Log::error('Invalid Link url : ROW - ' . $i);	
+							$error = "found";	
+							$rows .= $i . ",";	
+						}	
+						elseif(!empty($reader["khan_academy"]) && !CustomHelper::is_url( $reader['khan_academy'] ))	
+						{	
+							Log::error('Invalid Link url : ROW - ' . $i);	
+							$error = "found";	
+							$rows .= $i . ",";	
+						}	
+						elseif(!empty($reader["others"]) && !CustomHelper::is_url( $reader['others'] ))	
+						{	
+							Log::error('Invalid Link url : ROW - ' . $i);	
+							$error = "found";	
+							$rows .= $i . ",";	
+						}
 						elseif(!empty($reader["assignment"]) && !CustomHelper::is_url( $reader['assignment'] ))
 						{
 							Log::error('Invalid Assignment url : ROW - ' . $i);
 							$error = "found";
 							$rows .= $i . ",";
 						}
-						elseif(empty($reader["assignment"]) && empty($reader["link"])){
-                            Log::error('Either assignment or link should be present : ROW - ' . $i);
-                            $error = "found";
-                            $rows .= $i . ",";
-                        }else {
+						elseif(empty($reader["link"]) && empty($reader["youtube"]) && empty($reader["khan_academy"]) && empty($reader["others"]) && empty($reader["assignment"])){	
+                            Log::error('Either one CMS link  should be present : ROW - ' . $i);	
+                            $error = "found";	
+                            $rows .= $i . ",";	
+                        }
+						else {
 							//$subjects = \DB::table('tbl_student_subjects')->where('subject_name',$reader["subject"])->get();
 
 							if($subjects->count() > 0)
 							{
-								$studentClassExist=\DB::select('select id from tbl_cmslinks where class="'.$reader["class"].'" and subject="'.$subjects[0]->id.'" and topic="'.$reader["topic"].'" and link="'.$reader["link"].'" and assignment_link="'.$reader["assignment"].'"');
+								$studentClassExist=\DB::select('select id from tbl_cmslinks where class="'.$reader["class"].'" and subject="'.$subjects[0]->id.'" and topic="'.$reader["topic"].'" and link="'.$reader["link"].'" and youtube="'.$reader["youtube"].'"and khan_academy="'.$reader["khan_academy"].'"and others="'.$reader["others"].'" and assignment_link="'.$reader["assignment"].'"');
 								
 								if(count($studentClassExist) > 0)
 								{
@@ -233,8 +259,10 @@ class ImportCMSLinksController extends Controller
 								}
 								else
 								{
-									$s = \DB::table('tbl_cmslinks')->insert(
-								['class' => $reader["class"], 'subject' => $subjects[0]->id, 'topic' => $reader["topic"],'link' => $reader["link"],'assignment_link'=>$reader["assignment"]]
+									$s = \DB::table('tbl_cmslinks')->insert(	
+								['class' => $reader["class"], 'subject' => $subjects[0]->id, 'topic' => $reader["topic"],'link' => $reader["link"],
+								'youtube' => $reader["youtube"],'khan_academy' => $reader["khan_academy"],'others' => $reader["others"],	
+								'assignment_link'=>$reader["assignment"]]
 									);
 								}								
 							}

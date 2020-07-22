@@ -37,17 +37,40 @@
                     {!! Form::text('topic', $link[0]->topic, array('placeholder' => 'Topic','class' => 'form-control')) !!}
 					</div>
                 </div>
-				<div class="form-group row">
-					<label for="colFormLabel" class="col-md-4 col-form-label">URL:</label>
-					<div class="col-md-5">
-                    {!! Form::text('link', $link[0]->link, array('placeholder' => 'URL','class' => 'form-control','required'=>'required')) !!}
-					</div>
+
+         <div class="form-group row">
+          <label for="colFormLabel" class="col-md-4 col-form-label">URL:</label>
+          <div class="col-md-5">
+                    {!! Form::text('link', $link[0]->link, array('placeholder' => 'URL','class' => 'form-control')) !!}
+          </div>
+
+          </div>
+        <div class="form-group row">
+          <label for="colFormLabel" class="col-md-4 col-form-label">Youtube URL:</label>
+          <div class="col-md-5">
+                    {!! Form::text('youtube', $link[0]->youtube, array('placeholder' => 'Youtube URL','class' => 'form-control')) !!}
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label for="colFormLabel" class="col-md-4 col-form-label">Wikipedia URL:</label>
+          <div class="col-md-5">
+                    {!! Form::text('others', $link[0]->others, array('placeholder' => 'Wikipedia URL','class' => 'form-control')) !!}
+          </div>
+                </div>
+				
+
+        <div class="form-group row">
+          <label for="colFormLabel" class="col-md-4 col-form-label">Academic URL:</label>
+          <div class="col-md-5">
+                    {!! Form::text('khan_academy', $link[0]->khan_academy, array('placeholder' => 'Academic URL','class' => 'form-control')) !!}
+          </div>
                 </div>
                  
 				 <div class="form-group row">
 					<label for="colFormLabel" class="col-md-4 col-form-label">Assignment URL:</label>
 					<div class="col-md-5">
-                    {!! Form::text('alink', $link[0]->assignment_link , array('placeholder' => 'Assignment URL','class' => 'form-control','required'=>'required')) !!}
+                    {!! Form::text('alink', $link[0]->assignment_link , array('placeholder' => 'Assignment URL','class' => 'form-control')) !!}
 					</div>
                 </div>
 				 

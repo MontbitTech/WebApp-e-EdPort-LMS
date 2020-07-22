@@ -4,7 +4,7 @@
   <section class="main-section">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-md-12">
+        <div class="col-md-10 mt-5">
           <div class="card card-common mb-3">
             <div class="card-header">
               <span class="topic-heading">Add Student</span>
@@ -59,8 +59,8 @@
 
               <div class="form-group row">
                 <div class="col-md-6 offset-md-4">
-                  <button type="submit" class="btn btn-primary btn-w140">Submit</button>
-                  <a href="{{route('list.students')}}" class="btn btn-danger">Back</a>
+                  <button type="submit" class="btn btn-secondary btn-w140">Submit</button>
+                  <a href="{{route('list.students')}}" class="btn btn-danger ml-3"><i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>Back</a>
                 </div>
               </div>
               {!! Form::close() !!}
