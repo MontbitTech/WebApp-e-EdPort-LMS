@@ -58,46 +58,45 @@ $cls = 0;
                         }
                         ?>
 
-<div class="card text-center mb-3" style="border-color:#253372;">
-                        <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
-                        <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
-                        <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
-                        <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
-                        <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
-                        <input type="hidden" id="txt_gMeetURL{{$i}}" value="{{$teacherData->g_meet_url}}">
-                        <input type="hidden" id="txt_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
-                        <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}"/>
-    <div class="card-header p-0" style="background:#253372;color:#fff;">
-        <div class="row pl-2 pr-3">
-            <div class="d-flex align-items-center col-md-4">
-                <div class="cls-date font-weight-bold">{{ $todaysDate }}</div>
-                    <div class="cls-from pt-1">
-                        {{ date('G:i',strtotime($t->from_timing))}} to {{ date('G:i',strtotime($t->to_timing))}}</div>
-                </div>
-                <div class="d-flex align-items-center justify-content-between col-md-8">
-                    <div class="font-weight-bold pt-1">
-                        Class: {{ $class_name }} Std
-                    </div>
-                    <div class="font-weight-bold pt-1">
-                        Section:{{$section_name}}
-                    </div>
-                    <div class="font-weight-bold pt-1">
-                        Subject: {{$subject_name}}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card-body p-0">
-            <div class="row m-2">
-                <div class="col-md-9">
-                    <div class="input-group text-editwrapper mt-1 mb-1">
-                        <textarea class="form-control text-edit1" rows="3" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" 
-                        id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
-                     </div>
-               </div>
-               <div class="col-md-3 mt-1">
-                    <?php
-                        $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
+                        <div class="card text-center mb-3" style="border-color:#253372;">
+                            <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
+                            <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
+                            <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
+                            <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
+                            <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
+                            <input type="hidden" id="txt_gMeetURL{{$i}}" value="{{$teacherData->g_meet_url}}">
+                            <input type="hidden" id="txt_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
+                            <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}" />
+                            <div class="card-header p-0" style="background:#253372;color:#fff;">
+                                <div class="row pl-2 pr-3">
+                                    <div class="d-flex align-items-center col-md-4">
+                                        <div class="cls-date font-weight-bold">{{ $todaysDate }}</div>
+                                        <div class="cls-from pt-1">
+                                            {{ date('G:i',strtotime($t->from_timing))}} to {{ date('G:i',strtotime($t->to_timing))}}</div>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-between col-md-8">
+                                        <div class="font-weight-bold pt-1">
+                                            Class: {{ $class_name }} Std
+                                        </div>
+                                        <div class="font-weight-bold pt-1">
+                                            Section:{{$section_name}}
+                                        </div>
+                                        <div class="font-weight-bold pt-1">
+                                            Subject: {{$subject_name}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="row m-2">
+                                    <div class="col-md-9">
+                                        <div class="input-group text-editwrapper mt-1 mb-1">
+                                            <textarea class="form-control text-edit1" rows="3" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mt-1">
+                                        <?php
+                                        $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
 
                                         //if($t->subject_id == 2)
                                         //	dd($topics);
@@ -139,6 +138,13 @@ $cls = 0;
                                                 // $cms_link = $t->cmsLink->link;
                                             }
 
+                                 <?php
+                                        $cms_link = '';
+                                        if (strlen($x) > 0) {
+                                            $display_style = 'display: block;';
+                                            $cms_link = $x->link;
+                                        } else
+                                            $display_style = 'display: none;';
 
                                             ?>
                                                    <div class="m-auto">
@@ -300,7 +306,7 @@ $cls = 0;
 
 
                         <div class="classes-box">
-                        
+
                             <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
                             <input type="hidden" id="past_subject_id{{$i}}" value="{{$t->subject_id}}">
@@ -541,18 +547,9 @@ $cls = 0;
             </div>
             <div class="modal-body pt-4">
 
-                <div class="form-group row">
-                    <label class="col-md-6 col-form-label text-md-right">Select From Existing Assignment :</label>
 
-                    <div class="col-md-6">
-                        <ul class="pl-4" id="li_assignment">
-
-                        </ul>
-                    </div>
-                </div>
-                <span class="modal-header bg-light"></span>
                 <div class="form-group row">
-                    <label class="col-md-6 col-form-label text-md-right"> OR Create New</label>
+
 
                 </div>
                 <input type="hidden" id="row_id" value="">
@@ -599,7 +596,51 @@ $cls = 0;
         </div>
     </div>
 </div>
+<!-- ./New Assignment Modal -->
 
+<!-- View Assignment Modal -->
+<div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title font-weight-bold">View Assignment </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body pt-4">
+
+
+                <table id="teacherlist" class="table table-hover btn-shadow table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                    <thead class="text-white" style="background:#253372;">
+                        <tr>
+
+                            <th>Assignment Name</th>
+                            <th>Link</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach($assignmentData as $key)
+
+                        <tr>
+
+                            <td>{{$key->g_title}}</td>
+                            <td>
+                                <a href="{{$key->g_live_link}}" class="text-decoration-none" target="_blank">Link</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ./View Assignment Modal -->
 
 <!-- Class Box Help Modal -->
 <div class="modal fade" id="classhelpModal" data-backdrop="static" tabindex="-1" role="dialog">
@@ -618,8 +659,8 @@ $cls = 0;
                     <div class="form-group">
                         <select name="help_ticket_category" class="form-control" required>
                             <option value="">Please select a category</option>
-                            
-                            
+
+
                         </select>
                     </div>
                     <div class="form-group">
@@ -641,89 +682,89 @@ $cls = 0;
 
 
 
-    <!-- Add Class Modal -->
-    <div class="modal fade" id="addClassModal" data-backdrop="static" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header bg-light d-flex align-items-center">
-                    <h5 class="modal-title font-weight-bold">Add Class</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <svg class="icon">
-                            <use xlink:href="../images/icons.svg#icon_times2"></use>
-                        </svg>
-                    </button>
-                </div>
-                <div class="modal-body pt-4">
+<!-- Add Class Modal -->
+<div class="modal fade" id="addClassModal" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-light d-flex align-items-center">
+                <h5 class="modal-title font-weight-bold">Add Class</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <svg class="icon">
+                        <use xlink:href="../images/icons.svg#icon_times2"></use>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body pt-4">
 
-                    {!! Form::open(array('route' => ['add.class'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_add_class')) !!}
-                    <div class="form-group row">
-                        <label for="addinputDate" class="col-md-4 col-form-label text-md-right">Date:</label>
-                        <div class="col-md-6">
-                            {!! Form::text('class_date', null, array('id'=>'addClassDate','placeholder' => 'DD/MM/YYYY','class' => 'form-control ac-datepicker','required'=>'required',"onkeydown"=>"return false;")) !!}
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="addinputFtime" class="col-md-4 col-form-label text-md-right">Class From
-                            Time:</label>
-                        <div class="col-md-6">
-                            {!! Form::text('start_time', null, array('id'=>'addClassStartTime','placeholder' => '00:00:00','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label for="addinputTtime" class="col-md-4 col-form-label text-md-right">Class To Time:</label>
-                        <div class="col-md-6">
-                            {!! Form::text('end_time', null, array('id'=>'addClassEndTime','placeholder' => '00:00:00','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
-                        </div>
-                    </div>
-                </div>
-
+                {!! Form::open(array('route' => ['add.class'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_add_class')) !!}
                 <div class="form-group row">
-                    <label class="col-md-12 text-danger text-center" style="font-size: 12px;padding-left: 130px;">*Extra
-                        classes for regular assigned classes can be created here</label>
-                    <label for="addclassChoose" class="col-md-4 col-form-label text-md-right">Class:</label>
+                    <label for="addinputDate" class="col-md-4 col-form-label text-md-right">Date:</label>
                     <div class="col-md-6">
-                        <select name="class_id" id="class_id" class="form-control" required>
-                            <option value=""> Select Class</option>
-                            <?php
-                            foreach ($data['classData'] as $row) {
-                            ?>
-
-                                <option value="<?= $row->id; ?>"> <?= 'Class ' . $row->class_name . ' - ' . $row->section_name . ' - ' . $row->subject_name; ?></option>
-                            <?php
-                            }
-                            ?>
-                        </select>
-
+                        {!! Form::text('class_date', null, array('id'=>'addClassDate','placeholder' => 'DD/MM/YYYY','class' => 'form-control ac-datepicker','required'=>'required',"onkeydown"=>"return false;")) !!}
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label for="addinputFtime" class="col-md-4 col-form-label text-md-right">Class From
+                        Time:</label>
+                    <div class="col-md-6">
+                        {!! Form::text('start_time', null, array('id'=>'addClassStartTime','placeholder' => '00:00:00','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="addinputTtime" class="col-md-4 col-form-label text-md-right">Class To Time:</label>
+                    <div class="col-md-6">
+                        {!! Form::text('end_time', null, array('id'=>'addClassEndTime','placeholder' => '00:00:00','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-12 text-danger text-center" style="font-size: 12px;padding-left: 130px;">*Extra
+                    classes for regular assigned classes can be created here</label>
+                <label for="addclassChoose" class="col-md-4 col-form-label text-md-right">Class:</label>
+                <div class="col-md-6">
+                    <select name="class_id" id="class_id" class="form-control" required>
+                        <option value=""> Select Class</option>
+                        <?php
+                        foreach ($data['classData'] as $row) {
+                        ?>
+
+                            <option value="<?= $row->id; ?>"> <?= 'Class ' . $row->class_name . ' - ' . $row->section_name . ' - ' . $row->subject_name; ?></option>
+                        <?php
+                        }
+                        ?>
+                    </select>
+
+                </div>
+            </div>
 
 
-                    <!-- <div class="form-group row">
+            <!-- <div class="form-group row">
 				<label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live <small>(Link)</small>:</label>
 				<div class="col-md-6">
 				  {!! Form::textarea('join_liveUrl', null, array('placeholder' => 'Enter Live class url','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
                         </div>
                       </div> -->
 
-                <div class="form-group row">
-                    <label for="inputNotifystd" class="col-md-4 col-form-label text-md-right">Notify
-                        Students:</label>
-                    <div class="col-md-6">
+            <div class="form-group row">
+                <label for="inputNotifystd" class="col-md-4 col-form-label text-md-right">Notify
+                    Students:</label>
+                <div class="col-md-6">
 
-                        {!! Form::textarea('notify_stdMessage', null, array('placeholder' => 'Enter Notify Message','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+                    {!! Form::textarea('notify_stdMessage', null, array('placeholder' => 'Enter Notify Message','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
-                    </div>
                 </div>
-                <div class="form-group row">
-                    <div class="col-md-8 offset-md-4">
-                        <button type="submit" class="btn btn-primary px-4">Save Class</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-                </form>
             </div>
+            <div class="form-group row">
+                <div class="col-md-8 offset-md-4">
+                    <button type="submit" class="btn btn-primary px-4">Save Class</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 <!-- End -->
 
@@ -1005,6 +1046,7 @@ $cls = 0;
             }
         });
     });
+
     function give_assignment(id, link, classwork_id, title) {
         ///console.log(id);
         //console.log(link);
@@ -1288,86 +1330,96 @@ $cls = 0;
         });
     });
 
-        // Description or Class  note
-        $(document).on('mouseover', '.text-editwrapper textarea', function () {
-            $(this).prop( "disabled", false );
-        });
-        $(document).on('mouseout', '.text-editwrapper textarea', function () {
-            $(this).prop( "disabled", true );
-        });
-        $(document).on('focusout', '.text-editwrapper textarea', function () {
-            var thiz = $(this);
-            var id = thiz.parent().find('.text-edit1').attr('data-savedesc');
-            var getDescText = (thiz.parent().find('.text-edit1').val().replace(/\$/g, '')).trim();
-            var dateClass_id = $("#dateClass_id" + id).val();
+    // Description or Class  note
+    $(document).on('mouseover', '.text-editwrapper textarea', function() {
+        $(this).prop("disabled", false);
+    });
+    $(document).on('mouseout', '.text-editwrapper textarea', function() {
+        $(this).prop("disabled", true);
+    });
+    $(document).on('focusout', '.text-editwrapper textarea', function() {
+        var thiz = $(this);
+        var id = thiz.parent().find('.text-edit1').attr('data-savedesc');
+        var getDescText = (thiz.parent().find('.text-edit1').val().replace(/\$/g, '')).trim();
+        var dateClass_id = $("#dateClass_id" + id).val();
 
 
-            if(getDescText.length>255) {
-                $.fn.notifyMe('error', 4, 'Not To be Exceed More than 255 Char,You have Written '+getDescText.length+' Char');
-            } 
-            else {
-                $.ajax({
-                    type   : 'POST',
-                    url    : '{{ url("update-classNotes") }}',
-                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                    data   : { 'dateClass_id': dateClass_id, 'description': getDescText },
-                    success: function (result) {
-
-                        var response = JSON.parse(result);
-
-                        if (response.status == 'success') {
-                            $.fn.notifyMe('success', 5, response.message);
-                            $("#txt_desc" + id).val(getDescText);
-                        } else {
-                            $.fn.notifyMe('error', 5, response.message);
-                        }
-
-
-                        //$.fn.notifyMe('success',4,'Description has been saved!');
-                    },
-                    error  : function () {
-                        // thiz.parent().find('.text-edit').removeClass('active');
-                        $.fn.notifyMe('error', 4, 'There is some error while saving class note text!');
-                    }
-                });
-            }
-        });
-        $(document).on('change', '#addClassEndTime', function () {
-            var startTime = $('#addClassStartTime').val();
-            var endTime = $('#addClassEndTime').val();
-            var date = $('#addClassDate').val();
-
-            if (startTime == '') {
-                $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
-            }
-            if (date == '') {
-                $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
-            }
+        if (getDescText.length > 255) {
+            $.fn.notifyMe('error', 4, 'Not To be Exceed More than 255 Char,You have Written ' + getDescText.length + ' Char');
+        } else {
             $.ajax({
-                type   : 'POST',
-                url    : '{{ url("available/classes") }}',
-                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                data   : { 'startTime': startTime, 'endTime': endTime, 'date': date },
-                success: function (result) {
-                    var response = JSON.parse(result);
-                    if (response.status == 'success') {
-                        $("#class_id option").remove();
-                        var data = "<option value=''> Select Class</option>";
-                        // $.fn.notifyMe('success', 5, response.message);
-                        response.message.forEach(function (studentClass) {
-                            data += "<option value='" + studentClass.id + "'> Class " + studentClass.class_name + " - " +
-                                studentClass.section_name + " - " + studentClass.student_subject.subject_name + "</option>";
-                        })
-                        $("#class_id").append(data);
-                    } else {
-                        $.fn.notifyMe('error', 5, 'something went wrong');
-                    }
+                type: 'POST',
+                url: '{{ url("update-classNotes") }}',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                error  : function () {
-                    $.fn.notifyMe('error', 4, 'There is some error while searching for available class!');
+                data: {
+                    'dateClass_id': dateClass_id,
+                    'description': getDescText
+                },
+                success: function(result) {
+
+                    var response = JSON.parse(result);
+
+                    if (response.status == 'success') {
+                        $.fn.notifyMe('success', 5, response.message);
+                        $("#txt_desc" + id).val(getDescText);
+                    } else {
+                        $.fn.notifyMe('error', 5, response.message);
+                    }
+
+
+                    //$.fn.notifyMe('success',4,'Description has been saved!');
+                },
+                error: function() {
+                    // thiz.parent().find('.text-edit').removeClass('active');
+                    $.fn.notifyMe('error', 4, 'There is some error while saving class note text!');
                 }
             });
+        }
+    });
+    $(document).on('change', '#addClassEndTime', function() {
+        var startTime = $('#addClassStartTime').val();
+        var endTime = $('#addClassEndTime').val();
+        var date = $('#addClassDate').val();
+
+        if (startTime == '') {
+            $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
+        }
+        if (date == '') {
+            $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
+        }
+        $.ajax({
+            type: 'POST',
+            url: '{{ url("available/classes") }}',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                'startTime': startTime,
+                'endTime': endTime,
+                'date': date
+            },
+            success: function(result) {
+                var response = JSON.parse(result);
+                if (response.status == 'success') {
+                    $("#class_id option").remove();
+                    var data = "<option value=''> Select Class</option>";
+                    // $.fn.notifyMe('success', 5, response.message);
+                    response.message.forEach(function(studentClass) {
+                        data += "<option value='" + studentClass.id + "'> Class " + studentClass.class_name + " - " +
+                            studentClass.section_name + " - " + studentClass.student_subject.subject_name + "</option>";
+                    })
+                    $("#class_id").append(data);
+                } else {
+                    $.fn.notifyMe('error', 5, 'something went wrong');
+                }
+            },
+            error: function() {
+                $.fn.notifyMe('error', 4, 'There is some error while searching for available class!');
+            }
         });
-        </script>
+    });
+</script>
 
 @endsection
