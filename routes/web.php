@@ -76,6 +76,8 @@ Route::group(['middleware' => 'adminsession'], function () {
 
     Route::get('/admin/list-timetable', 'ImportTimetableController@listTimetable')->name('list.timetable');
     Route::post('/admin/filter-timetable', 'ImportTimetableController@filterTimetable')->name('list.filtertimetable');
+    Route::get('delete-timetable/{id}', 'ImportTimetableController@deleteTimetable')->name('delete-timetable');
+    Route::post('deleteAll-timetable', 'ImportTimetableController@deleteAllTimetable')->name('deleteAll-timetable');
     Route::match(array('GET', 'POST'), '/admin/admin_profile', 'AdminController@adminProfile')->name('admin.profile');
 
     Route::get('/admin/classes', 'ClassController@list_class')->name('admin.listClass');

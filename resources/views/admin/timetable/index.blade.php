@@ -59,6 +59,12 @@
 								</span>
                                 </div>
                                 <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
+          <form method="post" action="{{route('deleteAll-timetable')}}">
+          @csrf
+          <button type="submit" id="submit" class="btn btn-info px-4" onclick = "return confirmDelete()" style="display:none;margin-top: 36px;
+    margin-left: -253px;">
+            Delete all
+          </button>
 								<span data-dtfilter="" class="mb-1">
 									<!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
 				  <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
@@ -95,7 +101,8 @@
 								</span>
 
 
-                                </div>
+                                </form>
+                             </div>
 
 
                                 <div class="col-sm-12" id='timetable'>
@@ -259,10 +266,11 @@
         });
 
         function getData() {
-            var cl = document.getElementById("txtSerachByClass");
-            var sl = document.getElementById("txtSerachBySection");
-            var dl = document.getElementById("download");
-            var tt = document.getElementById("timetable");
+            var cl  = document.getElementById("txtSerachByClass");
+            var sl  = document.getElementById("txtSerachBySection");
+            var dl  = document.getElementById("download");
+            var tt  = document.getElementById("timetable");
+            var del = document.getElementById("submit");
             var url = "{{ route('list.filtertimetable') }}";
 
             if (cl.value == "") {
@@ -291,7 +299,8 @@
                         if (data["data"] != "") {
                             dl.href = "{{ url('/dl-timetable') }}" + "/" + cl.value + "_" + sl
                                 .value + "_timetable.pdf";
-                            dl.style.display = "block";
+                            dl.style.display  = "block";
+                            del.style.display = "block";
                         }
                     }
                 });
@@ -318,5 +327,44 @@
             $("#sel_subject").append(data);
         }
     </script>
+
+    <script type='text/javascript'>
+  $(document).ready(function () {
+    
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+     $('body').on('click', '#delete-timetable', function () {
+        var post_id = $(this).data("id");
+        //alert(post_id);
+        if(confirm("Are you sure want to delete this?"))
+        {
+        $.ajax({
+            type: "GET",
+             url: "{{ url('delete-timetable')}}"+'/'+post_id,
+            success: function (data) {
+                //$("#student_id_" + post_id).remove();
+                location.reload(true);
+                $.fn.notifyMe('success', 10, "Deleted Successfully");
+            },
+            error: function (data) {
+                console.log('Error:', data);
+            }
+        });
+       } 
+    });
+   });
+</script>
+
+
+<script>
+function confirmDelete() 
+ {
+ return confirm('Are you sure want to delete this all?');
+}
+</script>
 
 @endsection

@@ -236,7 +236,12 @@ class ImportStudentsController extends Controller
         $class_name = $request->txtSerachClass;
         $section_name = $request->txtSerachSection;
         if ( !empty($request->txtSerachClass && $request->txtSerachSection) ) {
-            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=? and c.section_name=?", [$class_name, $section_name]);
+            if( $request->txtSerachClass && $request->txtSerachSection == 'all'){
+            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$class_name]);
+            }
+        else{
+             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=? and c.section_name=?", [$class_name, $section_name]);
+            }
         } else $getResult = "";
 
         return view('admin.numbers.filter-student', compact('getResult'));
