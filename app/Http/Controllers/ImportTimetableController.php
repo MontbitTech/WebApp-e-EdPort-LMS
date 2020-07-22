@@ -925,11 +925,10 @@ class ImportTimetableController extends Controller
         left join tbl_student_subjects s on s.id = t.subject_id
         left join tbl_student_classes c on c.id = t.class_id
         where c.class_name = ? and c.section_name=?", [$request->txtSerachByClass,$request->txtSerachBySection]);
-
         foreach($timeTables as $timeTable){
-        $objTeacher  = InvitationClass::where('class_id', $timeTable->class_id)->where('subject_id', $timeTable->subject_id)->where('teacher_id', $timeTable->teacher_id)->get()->first();
+        $objTeacher = InvitationClass::where('class_id', $timeTable->class_id)->where('subject_id', $timeTable->subject_id)->where('teacher_id', $timeTable->teacher_id)->get()->first();
         $token = CommonHelper::varify_Admintoken(); // verify admin token
-        if ($objTeacher){
+        if($objTeacher){
         $gCode = $objTeacher->g_code;
           if($gCode != ''){
             $invDelete = CommonHelper::teacher_invitation_delete($token, $gCode); 
