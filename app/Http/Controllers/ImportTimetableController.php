@@ -828,8 +828,10 @@ class ImportTimetableController extends Controller
                         $x = "odd";
 
                     if ( $i == 1 ) {
-                        $html .= "<tr class='$x'><td><strong>Period $p</strong></td><td>" . date('H:i', strtotime($d->from_timing)) . "-" . date('H:i', strtotime($d->to_timing)) . "</td>";
-                        $htmla .= "<tr class='$x'><td>Period $p</td><td style='width:100px;'>" . date('H:i', strtotime($d->from_timing)) . "-" . date('H:i', strtotime($d->to_timing)) . "</td>";
+                        $ef ='<br><a href="javascript:void(0)" id="delete-timetable" data-id='.$d->id.'>'.'Delete </a>';
+
+                                        $html .= "<tr class='$x'><td><strong>Period $p</strong>".$ef."</td><td>".date('H:i',strtotime($d->from_timing))."-".date('H:i',strtotime($d->to_timing))."</td>";
+                                        $htmla .= "<tr class='$x'><td>Period $p".$ef."</td><td style='width:100px;'>".date('H:i',strtotime($d->from_timing))."-".date('H:i',strtotime($d->to_timing))."</td>";
                     }
 
                     if ( empty($d->g_meet_url) )
@@ -865,7 +867,7 @@ class ImportTimetableController extends Controller
 
         $html .= "</tbody></table>";
         $htmla .= "</tbody></table>";
-
+        
         //echo($html);
         //Log::error($html);
 
@@ -896,6 +898,44 @@ class ImportTimetableController extends Controller
         $ar["timing"] = \DB::table('tbl_class_timings')->distinct()->pluck('from_timing', 'to_timing');
 
         return view('admin.timetable.index', compact('timetables', 'ar'));
+    }
+
+    public function deleteTimetable($id)
+    {
+        $timetableId = $id;
+        $token = CommonHelper::varify_Admintoken(); // verify admin token               
+        if($timetableId != ''){
+            $inv_delete = CommonHelper::teacher_invitation_delete($token,$timetableId); 
+         }
+         $classTiming = ClassTiming::where('id', $id)->first();
+         $getTime     = ClassTiming::where('from_timing', $classTiming->from_timing)->get();
+         foreach($getTime as $gt){
+         $gt->delete();
+         }
+         return redirect()->back()->with('success',"Deleted Successfully");
+    }
+
+    public function deleteAllTimetable(Request $request)
+    {
+        $class_name  = $request->txtSerachByClass;
+        $section_name = $request->txtSerachBySection;
+
+        $days = \DB::select ("SELECT t.class_id, t.subject_id,t.id
+        FROM tbl_class_timings t
+        left join tbl_student_subjects s on s.id = t.subject_id
+        left join tbl_student_classes c on c.id = t.class_id
+        where c.class_name = ? and c.section_name=?", [$class_name , $section_name]);
+
+        foreach($days as $gt) {
+        $token = CommonHelper::varify_Admintoken(); // verify admin token           
+        if($gt!= ''){
+        $inv_delete = CommonHelper::teacher_invitation_delete($token,$gt->id); 
+        }
+
+        $getTime = ClassTiming::where('class_id',  $gt->class_id)->where("subject_id",$gt->subject_id);
+         $getTime->delete();
+       }
+        return redirect()->back()->with('success',"Deleted Successfully");
     }
 
     public function addExtraClass (Request $request)
