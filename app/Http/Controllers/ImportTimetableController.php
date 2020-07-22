@@ -902,10 +902,9 @@ class ImportTimetableController extends Controller
 
     public function deleteTimetable(Request $request,$id)
     {
-        $timeTableId = $id;
         $token = CommonHelper::varify_Admintoken(); // verify admin token               
-        if($timeTableId != ''){
-           $invDelete = CommonHelper::teacher_invitation_delete($token,$timeTableId); 
+        if($id!= ''){
+           $invDelete = CommonHelper::teacher_invitation_delete($token,$id); 
          }
          $classTiming = ClassTiming::where('id', $id)->first();
          $timeTables     = ClassTiming::where('from_timing', $classTiming->from_timing)->get();
