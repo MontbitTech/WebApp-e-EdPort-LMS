@@ -10,25 +10,22 @@
           <div class="card-header">
             <span class="topic-heading">Teachers List</span>
             <div class="float-right">
-              <a type="button" class="btn btn-sm btn-success" href="{{route('admin.sampleTeacherDownload')}}">
-                <svg class="icon icon-font16 icon-mmtop-3 mr-1">
-                  <use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use>
-                </svg> Download Sample File
+              <a type="button" class="btn btn-sm btn-secondary" href="{{route('admin.sampleTeacherDownload')}}">
+                <i class="fa fa-download mr-1 " aria-hidden="true"></i>
+                Download Sample File
               </a>
             </div>
             <div class="float-right mr-3">
-              <a type="button" class="btn btn-sm btn-success" href="{{ route('admin.teacherimport') }}">
-                <svg class="icon icon-font16 icon-mmtop-3 mr-1">
-                  <use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use>
-                </svg> Import Teacher Details
+              <a type="button" class="btn btn-sm btn-secondary" href="{{ route('admin.teacherimport') }}">
+                <i class="fa fa-upload mr-1 " aria-hidden="true"></i>
+                Import Teacher Details
               </a>
             </div>
 
             <div class="float-right mr-3">
-              <a type="button" class="btn btn-sm btn-info" href="{{route('teacher.add')}}">
-                <svg class="icon icon-font16 icon-mmtop-3 mr-1">
-                  <use xlink:href="{{asset('images/icons.svg#icon_adduser')}}"></use>
-                </svg> Add Teacher
+              <a type="button" class="btn btn-sm btn-secondary" href="{{route('teacher.add')}}">
+                <i class="fa fa-user-plus mr-1" aria-hidden="true"></i>
+                Add Teacher
               </a>
             </div>
           </div>
