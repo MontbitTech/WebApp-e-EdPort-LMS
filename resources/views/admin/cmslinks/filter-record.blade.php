@@ -9,8 +9,11 @@
                 <th>Class</th>
                 <th>Subject</th>
                 <th>Topic</th>
-                <th>Link</th>
-                <th>Assignment Link</th>
+                <th>Link 1</th>    
+                <th>Link 2</th> 
+                <th>Link 3</th> 
+                <th>Link 4</th>               
+                <th>Link 5</th>
 				<th>Action</th>
               </tr>
             </thead>
@@ -36,6 +39,28 @@
 						<a href='{{$list->link}}' target="_blank">Open Link</a>
 					@endif
 					</td>
+
+                    <td>    
+                    @if(empty($list->youtube))  
+                         <?=""?>    
+                    @else   
+                        <a href='{{$list->youtube}}' target="_blank">Open Link</a>  
+                    @endif  
+                    </td>
+                     <td>    
+                    @if(empty($list->others))   
+                         <?=""?>    
+                    @else   
+                        <a href='{{$list->others}}' target="_blank">Open Link</a>   
+                    @endif  
+                    </td>
+                      <td>  
+                    @if(empty($list->khan_academy)) 
+                         <?=""?>    
+                    @else   
+                        <a href='{{$list->khan_academy}}' target="_blank">Open Link</a> 
+                    @endif  
+                    </td>      
 					 <td>
 					@if(empty($list->assignment_link))
 						 <?=""?>

@@ -89,6 +89,8 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::post('/edit-timetable', 'ImportTimetableController@editTimetable')->name('timetable.edit');
     Route::match(array('GET', 'POST'), '/timetable-import', 'ImportTimetableController@timeTableImport')->name('admin.timetableimport');
     Route::get('/download-sample', 'ImportTimetableController@sampleDownload')->name('admin.sampleDownload');
+    Route::get('timetable/delete/{id}', 'ImportTimetableController@deleteTimetable')->name('timetable-delete');
+    Route::post('timetable/deleteAll', 'ImportTimetableController@deleteAllTimetable')->name('timetable-deleteAll');
 
     Route::get('/admin/list-students', 'ImportStudentsController@listStudents')->name('adminlist.students');
     Route::get('/list-students', 'ImportStudentsController@listStudents')->name('list.students');

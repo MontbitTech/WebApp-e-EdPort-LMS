@@ -8,14 +8,14 @@
         <div class="row justify-content-center">
             <div class="col-sm-8">
                 <div class="card card-common mb-3">
-                    <div class="card-header bg-secondary text-white">
+                    <div class="card-header ">
                         <div class="row">
                             <div class="col-md-4 col-lg-8 text-md-left ">
-                                Category
+                                <span class="topic-heading"> Category</span>
                             </div>
                             <div class="col-md-8 col-lg-4 text-md-right ">
-                                <a href="{{route('admin.help-category-add')}}" class="btn bg-white  text-secondary m-0 btn-sm">
-
+                                <a href="{{route('admin.help-category-add')}}" class="btn bg-secondary  text-white m-0 btn-sm">
+                                    <i class="fa fa-plus mr-2" aria-hidden="true"></i>
                                     add Category
                                 </a>
                             </div>
