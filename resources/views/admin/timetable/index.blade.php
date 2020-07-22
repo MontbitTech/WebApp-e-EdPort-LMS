@@ -60,7 +60,7 @@
                                 </div>
                                 <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
 
-             <form method="post" action="{{route('deleteAll-timetable')}}">
+             <form method="post" action="{{route('timetable-deleteAll')}}">
              @csrf
              <button type="submit" id="submit" class="btn btn-info px-4" onclick = "return confirmDelete()" style="display:none;margin-top: 36px;
                margin-left: -253px;">Delete all 
@@ -343,7 +343,7 @@
         {
         $.ajax({
             type: "GET",
-             url: "{{ url('delete-timetable')}}"+'/'+post_id,
+             url: "{{ url('timetable/delete')}}"+'/'+post_id,
             success: function (data) {
                 //$("#student_id_" + post_id).remove();
                 location.reload(true);

@@ -867,7 +867,7 @@ class ImportTimetableController extends Controller
 
         $html .= "</tbody></table>";
         $htmla .= "</tbody></table>";
-        
+
         //echo($html);
         //Log::error($html);
 
@@ -900,41 +900,40 @@ class ImportTimetableController extends Controller
         return view('admin.timetable.index', compact('timetables', 'ar'));
     }
 
-    public function deleteTimetable($id)
+    public function deleteTimetable(Request $request,$id)
     {
-        $timetableId = $id;
+        $timeTableId = $id;
         $token = CommonHelper::varify_Admintoken(); // verify admin token               
-        if($timetableId != ''){
-            $inv_delete = CommonHelper::teacher_invitation_delete($token,$timetableId); 
+        if($timeTableId != ''){
+           $invDelete = CommonHelper::teacher_invitation_delete($token,$timeTableId); 
          }
          $classTiming = ClassTiming::where('id', $id)->first();
-         $getTime     = ClassTiming::where('from_timing', $classTiming->from_timing)->get();
-         foreach($getTime as $gt){
-         $gt->delete();
+         $timeTables     = ClassTiming::where('from_timing', $classTiming->from_timing)->get();
+         foreach($timeTables as $timeTable){
+         $timeTable->delete();
          }
          return redirect()->back()->with('success',"Deleted Successfully");
     }
 
     public function deleteAllTimetable(Request $request)
     {
-        $class_name  = $request->txtSerachByClass;
-        $section_name = $request->txtSerachBySection;
-
-        $days = \DB::select ("SELECT t.class_id, t.subject_id,t.id
+        $className  = $request->txtSerachByClass;
+        $sectionName = $request->txtSerachBySection;
+        
+        $timeTables = \DB::select ("SELECT t.class_id, t.subject_id,t.id
         FROM tbl_class_timings t
         left join tbl_student_subjects s on s.id = t.subject_id
         left join tbl_student_classes c on c.id = t.class_id
-        where c.class_name = ? and c.section_name=?", [$class_name , $section_name]);
+        where c.class_name = ? and c.section_name=?", [$className , $sectionName]);
 
-        foreach($days as $gt) {
+        foreach($timeTables as $timeTable) {
         $token = CommonHelper::varify_Admintoken(); // verify admin token           
-        if($gt!= ''){
-        $inv_delete = CommonHelper::teacher_invitation_delete($token,$gt->id); 
+        if($timeTable!= ''){
+        $invDelete = CommonHelper::teacher_invitation_delete($token,$timeTable->id);
         }
-
-        $getTime = ClassTiming::where('class_id',  $gt->class_id)->where("subject_id",$gt->subject_id);
-         $getTime->delete();
-       }
+        $classTime = ClassTiming::where('class_id',  $timeTable->class_id)->where("subject_id",$timeTable->subject_id);
+        $classTime->delete();
+        }
         return redirect()->back()->with('success',"Deleted Successfully");
     }
 
