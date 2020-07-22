@@ -7,13 +7,6 @@ use App\DateClass;
 use DB;
 class CustomHelper
 {
-    
-/*    public function __construct()
-    {
-
-        parent::__construct();
-        
-    }*/
 	
 	public static function addOrdinalNumberSuffix($num) {
 	    if (!in_array(($num % 100),array(11,12,13))){
@@ -235,7 +228,3 @@ class CustomHelper
 	}
 		
 }
-
-
-
-?>
