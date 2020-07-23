@@ -92,16 +92,17 @@ class HelpController extends Controller {
                 return json_encode(array('status'=>'error', 'message'=> "Description must be letter and numbers."));
             } */
 
-
-            $support_help = new SupportHelp;
+            
+            $support_help = new SupportHelp();
 
             $support_help->teacher_id = $logged_teacher_id;
-            // $support_help->description = isset($request->description)?$request->description:'';
+            $support_help->description = isset($request->description)?$request->description:'';
             $support_help->help_type = $request->help_type;
             $support_help->class_id = $request->class_id;
             $support_help->subject_id = $request->subject_id;
             $support_help->read_status = 0;
             $support_help->class_join_link = isset($request->joinlive) ? $request->joinlive : '';
+            $support_help->help_ticket_category_id = null;
             $support_help->save();
 
 
