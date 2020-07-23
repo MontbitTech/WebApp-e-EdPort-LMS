@@ -119,5 +119,25 @@
         $("#deleteform").attr('action', route);
 
     });
+
+    function getCategories(){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        var category   = $("#category").val();
+        $.ajax({
+            url: "{{route('filter-ticket')}}",
+            type: 'POST',
+            data: {
+                category   : category
+            },
+            success: function(info) {
+                $("#getticket").html(info);
+                $("#getticket").show();
+            }
+        });
+    }
 </script>
 @endsection
