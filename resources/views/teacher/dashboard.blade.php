@@ -138,7 +138,7 @@ $cls = 0;
                                                 // $cms_link = $t->cmsLink->link;
                                             }
 
-                                 <?php
+
                                         $cms_link = '';
                                         if (strlen($x) > 0) {
                                             $display_style = 'display: block;';
