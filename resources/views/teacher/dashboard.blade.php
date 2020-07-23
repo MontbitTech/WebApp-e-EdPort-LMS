@@ -217,7 +217,7 @@ $cls = 0;
                                         $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
                                         ?>
                                         @if (count($assignmentData) > 0)
-                                        <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
+                                        <button onclick="viewAssignment({{$t->id}})" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
                                         @else
 
                                         <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">no Assigment</button>
@@ -578,7 +578,7 @@ $cls = 0;
             <div class="modal-body pt-4">
 
 
-                <table id="teacherlist" class="table table-hover btn-shadow table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                <table id="assignmentList" class="table table-hover btn-shadow table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                     <thead class="text-white" style="background:#253372;">
                         <tr>
 
@@ -587,16 +587,7 @@ $cls = 0;
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($assignmentData as $key)
 
-                        <tr>
-
-                            <td>{{$key->g_title}}</td>
-                            <td>
-                                <a href="{{$key->g_live_link}}" class="text-decoration-none" target="_blank">Link</a>
-                            </td>
-                        </tr>
-                        @endforeach
                     </tbody>
                 </table>
 
@@ -1385,6 +1376,36 @@ $cls = 0;
             }
         });
     });
+
+    function viewAssignment(id) {
+
+        $.ajax({
+            type: 'POST',
+            url: '{{ url("/teacher/class/assignments") }}',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                'class_id': id,
+            },
+            success: function(result) {
+                var response = JSON.parse(result);
+                let data = '';
+                response.data.forEach(function(classAssignment) {
+                    $('#assignmentList').find('tbody').find('tr').remove();
+                    data += '<tr>';
+                    data += '<td>'+ classAssignment.g_title+'</td>';
+                    data +='<td><a href="'+classAssignment.g_live_link+'" class="text-decoration-none" target="_blank">Link</a></td>';
+                    data +='</tr>';
+
+                    $('#assignmentList').find('tbody').append(data);
+                });
+            },
+            error: function() {
+                $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
+            }
+        });
+    }
 </script>
 
 @endsection
