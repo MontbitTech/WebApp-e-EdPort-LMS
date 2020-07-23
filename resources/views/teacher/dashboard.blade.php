@@ -828,7 +828,7 @@ $cls = 0;
 <script type="text/javascript">
     $(document).ready(function() {
         $('.ac-datepicker').datepicker({
-            dateFormat: 'dd/mm/yy',
+            dateFormat: 'd M yy',
             minDate: 0,
         });
         $('.ac-time').timepicker({
