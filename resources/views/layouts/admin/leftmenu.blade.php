@@ -77,7 +77,7 @@ $cmslinks ="enabled";
 		<div class="row">
 			<div class="col-4">
 
-				<a href="./" class="btn-menu btn text-white	  " style="background-color:#253372;" id="menu-bar">
+				<a href="/" class="btn-menu btn text-white	  " style="background-color:#253372;" id="menu-bar">
 					<svg class="icon">
 						<use xlink:href="{{asset('images/icons.svg#icon_arrowdown')}}"></use>
 					</svg>
