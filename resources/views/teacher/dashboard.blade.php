@@ -1,6 +1,6 @@
 @extends('layouts.teacher.app')
 @php$i = 1;$k=$i;@endphp
-    @section('content')
+@section('content')
 <?php
 $cls = 0;
 ?>
@@ -105,38 +105,38 @@ $cls = 0;
                                         //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
                                         $x = $t->cmsLink;
                                         ?>
-                         <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
-                                                <option value="">Select Topic</option>
-                                                @if(count($topics)>0)
-                                                    @foreach($topics as $topic)
-                                                        <?php $selected = ( $topic->id == $t->topic_id ) ? 'selected' : '';?>
-                                                        <option value="{{$topic->id}}" {{$selected}}>{{$topic->topic}}</option>
-                                                    @endforeach
-                                                @endif
-                                                </select>
-                                                </select>
+                                        <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
+                                            <option value="">Select Topic</option>
+                                            @if(count($topics)>0)
+                                            @foreach($topics as $topic)
+                                            <?php $selected = ($topic->id == $t->topic_id) ? 'selected' : ''; ?>
+                                            <option value="{{$topic->id}}" {{$selected}}>{{$topic->topic}}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                        </select>
 
-                                            <?php
-                                            $cms_link = '';
-                                            $youtube='';
-                                            $academy='';
-                                            $other='';
-                                            if ( strlen($x) > 0 ) {
-                                                $display_style = 'display: block;';
-                                                $cms_link = $x->link;
-                                                $youtube = $x->youtube;
-                                                $academy = $x->khan_academy;
-                                                $other   = $x->others;
-                                            } else
-                                                $display_style = 'display: none;';
+                                        <?php
+                                        $cms_link = '';
+                                        $youtube = '';
+                                        $academy = '';
+                                        $other = '';
+                                        if (strlen($x) > 0) {
+                                            $display_style = 'display: block;';
+                                            $cms_link = $x->link;
+                                            $youtube = $x->youtube;
+                                            $academy = $x->khan_academy;
+                                            $other   = $x->others;
+                                        } else
+                                            $display_style = 'display: none;';
 
 
-                                            if ( $t->topic_id != '' ) {
-                                                //  $display_style = 'display: block;';
-                                            }
-                                            if ( $t->cmsLink ) {
-                                                // $cms_link = $t->cmsLink->link;
-                                            }
+                                        if ($t->topic_id != '') {
+                                            //  $display_style = 'display: block;';
+                                        }
+                                        if ($t->cmsLink) {
+                                            // $cms_link = $t->cmsLink->link;
+                                        }
 
 
                                         $cms_link = '';
@@ -146,120 +146,87 @@ $cls = 0;
                                         } else
                                             $display_style = 'display: none;';
 
-                                            ?>
-                                                   <div class="m-auto">
+                                        ?>
+                                        <div class="m-auto">
 
-                                           @if($cms_link!="")
-                                            <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}"
-                                               data-topicid="{{$t->topic_id}}"
-                                               class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow"
-                                               id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                            @if($cms_link!="")
+                                            <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                 Edport Content
                                             </a>
                                             @endif
 
                                             @if($youtube!="")
-                                            <a href="javascript:void(0);" data-topiclink="{{ $youtube}}"
-                                               data-topicid="{{$t->topic_id}}"
-                                               class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow"
-                                               id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                            <a href="javascript:void(0);" data-topiclink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                 Youtube
                                             </a>
                                             @endif
 
                                             @if($other!="")
-                                             <a href="javascript:void(0);" data-topiclink="{{ $other}}"
-                                               data-topicid="{{$t->topic_id}}"
-                                               class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow"
-                                               id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                            <a href="javascript:void(0);" data-topiclink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                 Wikipedia
                                             </a>
                                             @endif
 
                                             @if($academy!="")
-                                            <a href="javascript:void(0);" data-topiclink="{{ $academy}}"
-                                               data-topicid="{{$t->topic_id}}"
-                                               class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow"
-                                               id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                            <a href="javascript:void(0);" data-topiclink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                 My School
                                             </a>
                                             @endif
 
                                         </div>
-                 </div>
-            </div>
-    </div>
-    <div class="card-footer p-1" style="background:#fff;">
-         <div class="d-flex justify-content-between flex-wrap">
-            <div class="m-auto">
-                <a href="javascript:void(0);" data-LiveLink="{{ $teacherData->g_meet_url }}" id="live_c_link_{{$i}}" 
-                    class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
-                                                    <svg class="icon font-10 mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_dot"></use>
-                                                    </svg>
-                                                    Join Live
-                </a>
-                                                
-                <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notifyMe="{{$i}}" data-id="notify_student" 
-                id="notifyurl_{{$i}}">
-                                                    <svg class="icon mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_bell"></use>
-                                                    </svg>
-                                                    <span>Notify Students</span>
-                 </a>
-                <button type="button" data-classhelp="{{$i}}" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
-                                                        title="Help" data-id="help">
-                                                    <svg class="icon mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_help"></use>
-                                                    </svg>
-                                                    Help
-                </button>
-                <button type="button" data-editModal="{{$i}}" class="btn btn-sm btn-outline-primary mb-1 border-0 btn-shadow"
-                                                        title="Edit">
-                                                    <svg class="icon mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_edit"></use>
-                                                    </svg>
-                                                    Edit
-                                                </button>
-            </div>
-            <div class="m-auto"">
-                <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
-                 id="new_a_link_{{$i}}" data-createModal='{{$i}}' data-class_modal="{{$t->class_id}}" 
-                 data-subject_modal="{{$t->subject_id}}" data-teacher_modal="{{$t->teacher_id}}">
-                                                    <svg class="icon font-12 mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_plus"></use>
-                                                    </svg>
-                                                    New Assignment
-                </a>
-                                                <?php
-                                                $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
-                                                ?>
-                                                <select id="view_a_link_{{$i}}"
-                                                        class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow"
-                                                        data-AssLiveLink="{{$t->id}}"/>
-                                                <?php
-                                                if(count($assignmentData) > 0)
-                                                {
-                                                ?>
-                                                <option value="">View Assigment</option><?php
-                                                foreach($assignmentData as $key){
-                                                ?>
-                                                <option value="{{$key->g_live_link}}">{{Str::limit($key->g_title,10, '..')}}</option>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer p-1" style="background:#fff;">
+                                <div class="d-flex justify-content-between flex-wrap">
+                                    <div class="m-auto">
+                                        <a href="javascript:void(0);" data-LiveLink="{{ $teacherData->g_meet_url }}" id="live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+                                            <svg class="icon font-10 mr-1">
+                                                <use xlink:href="../images/icons.svg#icon_dot"></use>
+                                            </svg>
+                                            Join Live
+                                        </a>
 
-                                                <?php
-                                                }
-                                                }else{
-                                                ?>
-                                                <option value="">No Assigment</option>
-                                                <?php
-                                                }
+                                        <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notifyMe="{{$i}}" data-id="notify_student" id="notifyurl_{{$i}}">
+                                            <svg class="icon mr-1">
+                                                <use xlink:href="../images/icons.svg#icon_bell"></use>
+                                            </svg>
+                                            <span>Notify Students</span>
+                                        </a>
+                                        <button type="button" data-classhelp="{{$i}}" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help">
+                                            <svg class="icon mr-1">
+                                                <use xlink:href="../images/icons.svg#icon_help"></use>
+                                            </svg>
+                                            Help
+                                        </button>
+                                        <button type="button" data-editModal="{{$i}}" class="btn btn-sm btn-outline-primary mb-1 border-0 btn-shadow" title="Edit">
+                                            <svg class="icon mr-1">
+                                                <use xlink:href="../images/icons.svg#icon_edit"></use>
+                                            </svg>
+                                            Edit
+                                        </button>
+                                    </div>
+                                    <div class="m-auto">
+                                        <a href=" #" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="new_a_link_{{$i}}" data-createModal='{{$i}}' data-class_modal="{{$t->class_id}}" data-subject_modal="{{$t->subject_id}}" data-teacher_modal="{{$t->teacher_id}}">
+                                            <svg class="icon font-12 mr-1">
+                                                <use xlink:href="../images/icons.svg#icon_plus"></use>
+                                            </svg>
+                                            New Assignment
+                                        </a>
+                                        <?php
+                                        $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
+                                        ?>
+                                        @if (count($assignmentData) > 0)
+                                        <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
+                                        @else
 
-                                                ?>
-                                                </select>             
-            </div>
-        </div>
-  </div>
-</div>
+                                        <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">no Assigment</button>
+
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         @php
                         $i++;
                         @endphp
@@ -599,7 +566,7 @@ $cls = 0;
 <!-- ./New Assignment Modal -->
 
 <!-- View Assignment Modal -->
-{{--<div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog">
+<div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-light">
@@ -639,7 +606,7 @@ $cls = 0;
             </div>
         </div>
     </div>
-</div>--}}
+</div>
 <!-- ./View Assignment Modal -->
 
 <!-- Class Box Help Modal -->
