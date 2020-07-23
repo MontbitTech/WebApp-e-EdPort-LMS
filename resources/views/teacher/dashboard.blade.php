@@ -330,14 +330,14 @@ $cls = 0;
                                     </a>
 
                                     <?php
-                                    $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
+                                    $assignmentDataOfPastLiveClasses = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
                                     ?>
                                     <select id="past_asslive_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow" data-passAssLiveLink="{{$t->id}}" />
                                     <?php
-                                    if (count($assignmentData) > 0) {
+                                    if (count($assignmentDataOfPastLiveClasses) > 0) {
                                     ?>
                                         <option value="">View Assignment</option><?php
-                                                                                    foreach ($assignmentData as $key) {
+                                                                                    foreach ($assignmentDataOfPastLiveClasses as $key) {
                                                                                     ?>
                                             <option value="{{$key->g_live_link}}">{{$key->g_title}} </option>
 
@@ -566,7 +566,7 @@ $cls = 0;
 <!-- ./New Assignment Modal -->
 
 <!-- View Assignment Modal -->
-{{--<div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog">
+<div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-light">
@@ -587,7 +587,6 @@ $cls = 0;
                         </tr>
                     </thead>
                     <tbody>
-
                         @foreach($assignmentData as $key)
 
                         <tr>
@@ -606,7 +605,7 @@ $cls = 0;
             </div>
         </div>
     </div>
-</div>--}}
+</div>
 <!-- ./View Assignment Modal -->
 
 <!-- Class Box Help Modal -->
@@ -731,7 +730,6 @@ $cls = 0;
             </form>
         </div>
     </div>
-</div>
 </div>
 <!-- End -->
 
