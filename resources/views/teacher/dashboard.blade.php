@@ -566,7 +566,7 @@ $cls = 0;
 <!-- ./New Assignment Modal -->
 
 <!-- View Assignment Modal -->
-<div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog">
+{{--<div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-light">
@@ -606,7 +606,7 @@ $cls = 0;
             </div>
         </div>
     </div>
-</div>
+</div>--}}
 <!-- ./View Assignment Modal -->
 
 <!-- Class Box Help Modal -->
