@@ -259,10 +259,10 @@ class ImportTimetableController extends Controller
         $class_name = '';
         $section_name = '';
         if ( $request->isMethod('post') ) {
-            try {
-                $request->validate([
+            $request->validate([
                     'file' => 'required',
                 ]);
+            try {
                 $extensions = array("csv", "xls", "xlsx");
                 $file_validate = strtolower($request->file('file')->getClientOriginalExtension());
                 if ( !in_array($file_validate, $extensions) ) {
