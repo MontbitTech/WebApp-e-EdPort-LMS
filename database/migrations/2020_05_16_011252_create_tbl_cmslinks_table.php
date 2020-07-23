@@ -19,8 +19,10 @@ class createTblCmslinksTable extends Migration
             $table->integer("subject")->nullable();
             $table->string("topic", 100)->nullable();
             $table->string("link", 1000)->nullable();
+            $table->string("khan_academy", 255)->nullable();
+            $table->string("youtube", 255)->nullable();
+            $table->string("others", 255)->nullable();
             $table->string("assignment_link", 255)->nullable();
-
             $table->timestamps();
         });
     }
