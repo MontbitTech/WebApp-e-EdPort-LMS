@@ -49,7 +49,7 @@ class TeacherController extends Controller
                 'fname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
                 // 'lname' => 'required|max:100|alpha_num',
                 'email' => 'required|email|ends_with:' . $domain->value . '|max:100|unique:tbl_techers',
-                'phone' => 'required|numeric|digits:10',
+                'phone' => 'required|numeric|digits:10|unique:tbl_techers',
                 // 'pin' => 'required|min:4|unique:tbl_techers',
             ], [
                 'fname.regex' => 'The name must be letters.',
@@ -287,11 +287,10 @@ class TeacherController extends Controller
         $logged_admin = Session::get('admin_session');
         $logged_admin_email = $logged_admin['admin_email'];
         if ( Request()->post() ) {
-            try {
-                $request->validate([
+            $request->validate([
                     'file' => 'required'
-                    //   'class' => 'required'
                 ]);
+            try {
 
                 $extensions = array("csv", "xlsx");
                 $file_validate = strtolower($request->file('file')->getClientOriginalExtension());

@@ -126,7 +126,7 @@ class ClassController extends Controller
         }
 
         $data['subject'] = StudentSubject::orderBy('subject_name', 'ASC')->pluck('subject_name', 'id');
-        $data['subject']->prepend('Select Subject', '');
+        //$data['subject']->prepend('Select Subject', '');
         $data['section'] = DB::table('tbl_classes')->select('section_name')->distinct()->get()->pluck('section_name', 'section_name');
         $data['class'] = DB::table('tbl_classes')->select('class_name')->distinct()->get()->pluck('class_name', 'class_name');
         $data['class']->prepend('Select Class', '');

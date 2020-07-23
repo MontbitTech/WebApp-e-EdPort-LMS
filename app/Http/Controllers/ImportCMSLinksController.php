@@ -145,11 +145,11 @@ class ImportCMSLinksController extends Controller
        // $student_class = \App\StudentClass::all();
 		$error = "";
         if(Request()->post()){
-            try{
-                $request->validate([
+        	$request->validate([
                     'file' => 'required'
                  //   'class' => 'required'
                 ]);
+            try{
 				
                 $extensions = array("csv","xlsx");
                 $file_validate = strtolower($request->file('file')->getClientOriginalExtension());
