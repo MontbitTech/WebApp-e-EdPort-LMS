@@ -1334,48 +1334,48 @@ $cls = 0;
             });
         }
     });
-    $(document).on('change', '#addClassEndTime', function() {
-        var startTime = $('#addClassStartTime').val();
-        var endTime = $('#addClassEndTime').val();
-        var date = $('#addClassDate').val();
+    {{--$(document).on('change', '#addClassEndTime', function() {--}}
+    {{--    var startTime = $('#addClassStartTime').val();--}}
+    {{--    var endTime = $('#addClassEndTime').val();--}}
+    {{--    var date = $('#addClassDate').val();--}}
 
-        if (startTime == '') {
-            $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
-        }
-        if (date == '') {
-            $.fn.notifyMe('error', 4, 'Class Note can not be blank!');
-        }
-        $.ajax({
-            type: 'POST',
-            url: '{{ url("available/classes") }}',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-                'startTime': startTime,
-                'endTime': endTime,
-                'date': date
-            },
-            success: function(result) {
-                var response = JSON.parse(result);
-                if (response.status == 'success') {
-                    $("#class_id option").remove();
-                    var data = "<option value=''> Select Class</option>";
-                    // $.fn.notifyMe('success', 5, response.message);
-                    response.message.forEach(function(studentClass) {
-                        data += "<option value='" + studentClass.id + "'> Class " + studentClass.class_name + " - " +
-                            studentClass.section_name + " - " + studentClass.student_subject.subject_name + "</option>";
-                    })
-                    $("#class_id").append(data);
-                } else {
-                    $.fn.notifyMe('error', 5, 'something went wrong');
-                }
-            },
-            error: function() {
-                $.fn.notifyMe('error', 4, 'There is some error while searching for available class!');
-            }
-        });
-    });
+    {{--    if (startTime == '') {--}}
+    {{--        $.fn.notifyMe('error', 4, 'Class Note can not be blank!');--}}
+    {{--    }--}}
+    {{--    if (date == '') {--}}
+    {{--        $.fn.notifyMe('error', 4, 'Class Note can not be blank!');--}}
+    {{--    }--}}
+    {{--    $.ajax({--}}
+    {{--        type: 'POST',--}}
+    {{--        url: '{{ url("available/classes") }}',--}}
+    {{--        headers: {--}}
+    {{--            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
+    {{--        },--}}
+    {{--        data: {--}}
+    {{--            'startTime': startTime,--}}
+    {{--            'endTime': endTime,--}}
+    {{--            'date': date--}}
+    {{--        },--}}
+    {{--        success: function(result) {--}}
+    {{--            var response = JSON.parse(result);--}}
+    {{--            if (response.status == 'success') {--}}
+    {{--                $("#class_id option").remove();--}}
+    {{--                var data = "<option value=''> Select Class</option>";--}}
+    {{--                // $.fn.notifyMe('success', 5, response.message);--}}
+    {{--                response.message.forEach(function(studentClass) {--}}
+    {{--                    data += "<option value='" + studentClass.id + "'> Class " + studentClass.class_name + " - " +--}}
+    {{--                        studentClass.section_name + " - " + studentClass.student_subject.subject_name + "</option>";--}}
+    {{--                })--}}
+    {{--                $("#class_id").append(data);--}}
+    {{--            } else {--}}
+    {{--                $.fn.notifyMe('error', 5, 'something went wrong');--}}
+    {{--            }--}}
+    {{--        },--}}
+    {{--        error: function() {--}}
+    {{--            $.fn.notifyMe('error', 4, 'There is some error while searching for available class!');--}}
+    {{--        }--}}
+    {{--    });--}}
+    {{--});--}}
 
     function viewAssignment(id) {
 

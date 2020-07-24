@@ -398,7 +398,7 @@ class TeacherController extends Controller
                                     "givenName"  => $name,
                                     "fullName"   => $name, //.' '.$request->lname
                                 ),
-                                "password"      => $phone,
+                                "password"      => 't#'.$phone,
                                 "primaryEmail"  => $email,
                                 "recoveryEmail" => $logged_admin_email,
                             );

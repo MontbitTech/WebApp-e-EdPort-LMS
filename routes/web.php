@@ -28,6 +28,7 @@ Route::get('/create_user','GtestController@create_user'); */
 Route::get('/timeTable/{class}/{section}', 'GtestController@TestFilterTimetable');
 Route::get('/test_email_timetable', 'GtestController@send_email_timeTable');
 Route::get('/get_token', 'GtestController@get_token')->name('get_token');
+Route::get('/test','TestController@test');
 
 // ------ //
 
