@@ -166,6 +166,6 @@ Route::group(['middleware' => 'teachersession'], function () {
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
 });
 
-Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass');
+Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass')->name('reload-timetable');
 Route::get('/timeTable/{class}/{section}', 'ImportTimetableController@download_Timetable');
 //Reload Timetable URL - http://<domain>/addData_pastClass

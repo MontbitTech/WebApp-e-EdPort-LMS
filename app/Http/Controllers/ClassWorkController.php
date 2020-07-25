@@ -369,7 +369,7 @@ class ClassWorkController extends Controller
                 //exit;
                 if ( $pastClassExist ) {
                     //$res['id'] = $value->id;
-                    $res['message'] = "data Already Added.";
+                    return back()->with('success','No record foucnd on class timming.');
                 } else {
                     $obj_dataClass = new DateClass;
 
@@ -384,11 +384,11 @@ class ClassWorkController extends Controller
                     $obj_dataClass->save();
 
                     //$res['id'] = '';
-                    $res['message'] = "data Added Successfully.";
+                    return back()->with('success','No record foucnd on class timming.');
                 }
             }
         } else {
-            $res['message'] = "No record foucnd on class timming.";
+            return back()->with('error','No record foucnd on class timming.');
         }
         // echo "<pre>";
         //	 print_r($res);

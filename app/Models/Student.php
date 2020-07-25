@@ -9,6 +9,10 @@ class Student extends Model
 {
     protected $table = 'tbl_students';
 
-    protected $fillable = ['name','class_id','email','phone','notify'];
+    protected $fillable = ['name', 'class_id', 'email', 'phone', 'notify'];
 
+    public function class ()
+    {
+        return $this->hasOne(ClassSection::class, 'id', 'class_id');
+    }
 }

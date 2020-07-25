@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\libraries\Utility\StudentUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
@@ -27,11 +28,7 @@ class ImportStudentsController extends Controller
 
     public function addStudent (Request $request)
     {
-
-
-        $domain = CustomHelper::getDomain();
         $from = CustomHelper::getFromMail();
-        $domain_name = $domain->value;
 
         if ( $request->isMethod('post') ) {
             $request->validate([
@@ -47,7 +44,7 @@ class ImportStudentsController extends Controller
                 //'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
 
             ]);
-            //dd($request->all());
+
             if ( $request->notify == true ) {
                 if ( isset($request->phone) || isset($request->email) )
                     $n = "yes";
@@ -67,7 +64,7 @@ class ImportStudentsController extends Controller
 
             $obj_class = StudentClass::where('class_name', $request->class)->where('section_name', $request->section)->get();
 
-
+            $inv_responce = null;
             if ( count($obj_class) > 0 ) {
                 $token = CommonHelper::varify_Admintoken(); // verify admin token
                 foreach ( $obj_class as $row ) {
@@ -102,7 +99,23 @@ class ImportStudentsController extends Controller
                         }
                     }
                 }
-                \DB::insert('insert into tbl_students (name, class_id, phone, email, notify) values (?, ?, ?, ?, ?)', [$request->fname, $student[0], $request->phone, $request->email, $n]);
+
+                StudentUtility::createStudent([
+                    'name'            => $request->name,
+                    'class_id'        => $student[0],
+                    'phone'           => $request->phone,
+                    'email'           => $request->email,
+                    'notify'          => $n,
+                    'invitation_code' => isset($inv_responce->id) ?? null,
+                ]);
+//                $student = new Student();
+//                $student->name = $request->name;
+//                $student->class_id = $student[0];
+//                $student->phone = $request->phone;
+//                $student->email = $request->email;
+//                $student->invitation_code = isset($inv_responce->id) ?? null;
+//                $student->save();
+//                \DB::insert('insert into tbl_students (name, class_id, phone, email, notify) values (?, ?, ?, ?, ?)', [$request->fname, $student[0], $request->phone, $request->email, $n]);
 
                 $class = encrypt($request->class);
                 $section = encrypt($request->section);
@@ -195,6 +208,8 @@ class ImportStudentsController extends Controller
                 $token = CommonHelper::varify_Admintoken(); // verify admin token
                 foreach ( $obj_class as $row ) {
 
+                    $invitationResponse = CommonHelper::teacher_invitation_delete($token, $student->invitation_code);
+
                     $inv_responce = CommonHelper::student_course_delete($token, $student->email, $row->g_class_id); // Invite Student
 
                     $inv_resData = array('error' => '');
@@ -235,15 +250,13 @@ class ImportStudentsController extends Controller
     {
         $class_name = $request->txtSerachClass;
         $section_name = $request->txtSerachSection;
-        if ( !empty($request->txtSerachClass && $request->txtSerachSection) ){
-            if( $request->txtSerachClass && $request->txtSerachSection == 'all'){
-            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$class_name]);
+        if ( !empty($request->txtSerachClass && $request->txtSerachSection) ) {
+            if ( $request->txtSerachClass && $request->txtSerachSection == 'all' ) {
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$class_name]);
+            } else {
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=? and c.section_name=?", [$class_name, $section_name]);
             }
-        else{
-             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=? and c.section_name=?", [$class_name, $section_name]);
-            }
-        } 
-        else $getResult = "";
+        } else $getResult = "";
 
         return view('admin.numbers.filter-student', compact('getResult'));
     }
@@ -259,22 +272,17 @@ class ImportStudentsController extends Controller
     /*Import no of students in a class*/
     public function importClassStudentNumber (Request $request)
     {
-
-
-        $domain = CustomHelper::getDomain();
         $from = CustomHelper::getFromMail();
-        $domain_name = $domain->value;
 
-        $student_class = \App\StudentClass::all();
+        $student_class = StudentClass::all();
         $error = "";
         $rows = "";
 
         if ( Request()->post() ) {
 
             $request->validate([
-                    'file' => 'required'
-                    //   'class' => 'required'
-                ]);
+                'file' => 'required',
+            ]);
             try {
 
                 $extensions = array("csv", "xlsx");
@@ -313,7 +321,6 @@ class ImportStudentsController extends Controller
                     if ( !isset($reader["class"]) || !isset($reader["name"]) || !isset($reader["phone"]) || !isset($reader["email"]) || !isset($reader["class"]) ) {
                         $error = "Header mismatch";
                         Log::error('Header mismatch!!');
-                        //return back()->with('error',Config::get('constants.WebMessageCode.137'));
                     } elseif ( $reader["name"] == "" || $reader["class"] == "" || $reader["section"] == "" || $reader["email"] == "" || $reader["phone"] == "" ) {
                         Log::error('Student details missing : ROW - ' . $i);
                         $error = "true";
@@ -380,8 +387,16 @@ class ImportStudentsController extends Controller
                                         }
                                     }
                                 }
-                                $s = \DB::table('tbl_students')->insert([
-                                    ['name' => $reader["name"], 'class_id' => $class_id, 'email' => $reader["email"], 'phone' => $reader["phone"], 'notify' => $reader["notify"]],
+//                                $s = \DB::table('tbl_students')->insert([
+//                                    ['name' => $reader["name"], 'class_id' => $class_id, 'email' => $reader["email"], 'phone' => $reader["phone"], 'notify' => $reader["notify"]],
+//                                ]);
+                                $s = StudentUtility::createStudent([
+                                    'name'            => $reader["name"],
+                                    'class_id'        => $class_id,
+                                    'phone'           => $reader["phone"],
+                                    'email'           => $reader["email"],
+                                    'notify'          => $reader["notify"],
+                                    'invitation_code' => isset($inv_responce->id) ?? null,
                                 ]);
 
                                 $c = $reader["class"];
@@ -434,9 +449,12 @@ class ImportStudentsController extends Controller
         return view('admin.numbers.import', compact('student_class'));
     }
 
-    function deleteAllStudent(Request $request)
+    function deleteAllStudent (Request $request)
     {
-    	Student::whereIn('id',explode(",",$request->ids))->delete();
-    	return response()->json(['success'=>"Deleted successfully."]);
+        $students = Student::with('class')->whereIn('id', explode(",", $request->ids))->get();
+
+        StudentUtility::removeStudentsFromClassroom($students);
+
+        return response()->json(['success' => "Deleted successfully."]);
     }
 }
