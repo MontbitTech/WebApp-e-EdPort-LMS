@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\libraries\Utility\StudentUtility;
+use App\Models\StudentCourseInvitation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
@@ -98,15 +99,20 @@ class ImportStudentsController extends Controller
                             $inv_res_code = $inv_resData['id'];
                         }
                     }
+
+                    $courseInvitation = new StudentCourseInvitation();
+                    $courseInvitation->course_code = $g_class_id;
+                    $courseInvitation->invitation_code = $inv_resData['id'];
+                    $courseInvitation->student_email = $request->email;
+                    $courseInvitation->save();
                 }
 
                 StudentUtility::createStudent([
-                    'name'            => $request->name,
-                    'class_id'        => $student[0],
-                    'phone'           => $request->phone,
-                    'email'           => $request->email,
-                    'notify'          => $n,
-                    'invitation_code' => isset($inv_responce->id) ?? null,
+                    'name'     => $request->fname,
+                    'class_id' => $student[0],
+                    'phone'    => $request->phone,
+                    'email'    => $request->email,
+                    'notify'   => $n,
                 ]);
 //                $student = new Student();
 //                $student->name = $request->name;
@@ -196,19 +202,21 @@ class ImportStudentsController extends Controller
         if ( $request->delete == 'Delete' || $request->delete == 'delete' ) {
             $sid = $request->txt_student_id;
 
-            /**/
+//            $student = \DB::select('select * from tbl_students s, tbl_classes c where s.class_id = c.id and s.id=' . $sid);
+            $student = Student::with('class')->find($sid);
 
-            $student = \DB::select('select * from tbl_students s, tbl_classes c where s.class_id = c.id and s.id=' . $sid);
-
-            if ( count($student) > 0 ) {
-                $student = $student[0];
-
-                $obj_class = StudentClass::where('class_name', $student->class_name)->where('section_name', $student->section_name)->get();
+            if ( $student ) {
+                $obj_class = StudentClass::where('class_name', $student->class->class_name)->where('section_name', $student->class->section_name)->get();
 
                 $token = CommonHelper::varify_Admintoken(); // verify admin token
                 foreach ( $obj_class as $row ) {
 
-                    $invitationResponse = CommonHelper::teacher_invitation_delete($token, $student->invitation_code);
+                    $courseInvitations = StudentCourseInvitation::where('student_email', $student->email)->get();
+
+                    foreach ( $courseInvitations as $courseInvitation ) {
+                        CommonHelper::teacher_invitation_delete($token, $courseInvitation->invitation_code);
+                        $courseInvitation->delete();
+                    }
 
                     $inv_responce = CommonHelper::student_course_delete($token, $student->email, $row->g_class_id); // Invite Student
 
@@ -225,12 +233,12 @@ class ImportStudentsController extends Controller
                         }
                     }
                 }
+                $student->delete();
             }
             /**/
-            $student = Student::find($sid);
-            $student->delete();
+//            $student = Student::find($sid);
 
-            $lists = \DB::select('select s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id');
+//            $lists = \DB::select('select s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id');
 
             return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.139'));
         } else {
@@ -386,17 +394,23 @@ class ImportStudentsController extends Controller
                                             $inv_res_code = $inv_resData['id'];
                                         }
                                     }
+
+                                    $courseInvitation = new StudentCourseInvitation();
+                                    $courseInvitation->course_code = $g_class_id;
+                                    $courseInvitation->invitation_code = $inv_resData['id'];
+                                    $courseInvitation->student_email = $reader["email"];
+                                    $courseInvitation->save();
+
                                 }
 //                                $s = \DB::table('tbl_students')->insert([
 //                                    ['name' => $reader["name"], 'class_id' => $class_id, 'email' => $reader["email"], 'phone' => $reader["phone"], 'notify' => $reader["notify"]],
 //                                ]);
                                 $s = StudentUtility::createStudent([
-                                    'name'            => $reader["name"],
-                                    'class_id'        => $class_id,
-                                    'phone'           => $reader["phone"],
-                                    'email'           => $reader["email"],
-                                    'notify'          => $reader["notify"],
-                                    'invitation_code' => isset($inv_responce->id) ?? null,
+                                    'name'     => $reader["name"],
+                                    'class_id' => $class_id,
+                                    'phone'    => $reader["phone"],
+                                    'email'    => $reader["email"],
+                                    'notify'   => $reader["notify"],
                                 ]);
 
                                 $c = $reader["class"];

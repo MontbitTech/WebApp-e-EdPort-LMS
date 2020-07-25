@@ -4,6 +4,7 @@ namespace App\libraries\Utility;
 
 use App\Http\Helpers\CommonHelper;
 use App\Models\Student;
+use App\Models\StudentCourseInvitation;
 use App\StudentClass;
 
 /**
@@ -27,7 +28,11 @@ class StudentUtility
     {
         $token = CommonHelper::varify_Admintoken();
         foreach ( $students as $student ) {
-            $invitationResponse = CommonHelper::teacher_invitation_delete($token, $student->invitation_code);
+            $courseInvitations = StudentCourseInvitation::where('student_email',$student->email)->get();
+
+            foreach ($courseInvitations as $courseInvitation){
+                CommonHelper::teacher_invitation_delete($token, $courseInvitation->invitation_code);
+            }
 
             $studentClasses = StudentClass::where('class_name', $student->class_name)->where('section_name', $student->section_name)->get();
 
