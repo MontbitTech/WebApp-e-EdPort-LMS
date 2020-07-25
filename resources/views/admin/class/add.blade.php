@@ -33,23 +33,15 @@
 							</div>
 
 						</div>
-
+						
 						<div class="form-group row">
 							<label for="colFormLabel" class="col-md-4 col-form-label">Select Subject:</label>
 							<div class="col-md-6">
-								{!! Form::select('subject[]', $data['subject'], null,array('multiple'=>'multiple','class' => 'form-control','required'=>'required')) !!}
+								{!! Form::select('subject[]', $data['subject'], null,array('multiple'=>'multiple', 'id'=>'subject', 'class' => 'subject','required'=>'required','style'=>'width:100%','data-placeholder'=>'Select Subject')) !!}
 							</div>
 						</div>
 
-
-
-
-
-
-
-
-
-						<div class="form-group row">
+                       <div class="form-group row">
 							<div class="col-md-6 offset-md-4">
 								<button type="submit" class="btn btn-secondary btn-w140">Submit</button>
 								<a href="{{route('admin.listClass')}}" class="btn btn-danger ml-3"> <i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>Back</a>
@@ -68,16 +60,10 @@
 	</div>
 </section>
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('.ac-datepicker').datepicker({
-			dateFormat: 'd M yy'
-		});
-		$('.ac-time').timepicker({
-			controlType: 'select',
-			oneLine: true,
-			timeFormat: 'hh:mm tt'
-		});
-	});
+<script>
+  $(function () {
+    $('#subject').select2();
+  })
 </script>
+
 @endsection
