@@ -35,7 +35,7 @@
               @csrf
               <div class="form-group">
                 <label for="new" class="text-uppercase">{{$se->item}}</label>
-                <input class="form-control" type="text" id="new" value="{{$se->value}}" name="ivalue">
+                <input class="form-control" type="text" id="new" value="{{$se->value}}" name="ivalue" readonly>
               </div>
 
             </form>
