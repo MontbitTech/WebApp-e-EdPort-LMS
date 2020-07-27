@@ -564,10 +564,13 @@ class ImportTimetableController extends Controller
                                         if ( $inv_resData['error'] != '' ) {
                                             //return back()->with('error', "error 04");//Config::get('constants.WebMessageCode.119'));
                                             Log::error('Invitation has not send to teacher for class, Error In ROW - ' . $period_name);
-                                            $error = "found";
-                                            $rows_period .= $period_name . ",";
-                                            $error_msg = 'Invitation has not send to teacher for class, ' . $inv_resData['error']['message'] . ' Error In ROW - ' . $period_name;
-
+                                            if ( $inv_resData['error']['message'] == 'Invalid Credentials' ) {
+                                                return redirect()->route('admin.logout');
+                                            }else {
+                                                $error = "found";
+                                                $rows_period .= $period_name . ",";
+                                                $error_msg = 'Invitation has not send to teacher for class, ' . $inv_resData['error']['message'] . ' Error In ROW - ' . $period_name;
+                                            }
                                         } else {
                                             $inv_res_code = $inv_resData['id'];
                                             $obj_inv = new InvitationClass;
