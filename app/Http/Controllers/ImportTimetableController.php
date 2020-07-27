@@ -1354,6 +1354,4 @@ class ImportTimetableController extends Controller
 
         return response()->download($name);
     }
-
-
 }
