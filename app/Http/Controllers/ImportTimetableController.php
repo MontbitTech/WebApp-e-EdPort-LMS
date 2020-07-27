@@ -711,7 +711,7 @@ class ImportTimetableController extends Controller
 
         $ttime = \DB::select('SELECT DISTINCT from_timing FROM `tbl_class_timings` ORDER by from_timing');
 
-
+        $data = false;
         $days = "";
         $htmla = "";
         $html = "
@@ -821,6 +821,7 @@ class ImportTimetableController extends Controller
 													and from_timing = ?", [$class_name, $section_name, $t->from_timing]);
 
             if ( count($days) > 0 ) {
+                $data=true;
                 foreach ( $days as $d ) {
                     if ( $p % 2 == 0 )
                         $x = "even";
@@ -880,7 +881,7 @@ class ImportTimetableController extends Controller
         //$pdf = PDF::loadHTML($html);
         $pdf = PDF::loadHTML($html)->setPaper('a3', 'landscape')->setWarnings(false)->save($name);
 
-        return array("html" => $htmla, "data" => $days);
+        return array("html" => $htmla, "data" => $data);
     }
 
     public function listTimetable ()
@@ -1073,7 +1074,7 @@ class ImportTimetableController extends Controller
                     if ( $inv_resData['error'] != '' ) {
 
                         if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
-                            return redirect()->route('admin.logout');
+                            return redirect()->route('admin.login.post');
                         } else {
                             //Log::error($inv_resData['error']['message']);
                             return back()->with('error', $inv_resData['error']['message']);

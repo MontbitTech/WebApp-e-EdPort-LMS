@@ -285,8 +285,10 @@ $timing=$ar["timing"];
                     cache: false,
                     processData:false, */
                     success: function (data) {
+                        dl.style.display = "none";
+                        del.style.display = "none";
                         tt.innerHTML = data["html"];
-                        if (data["data"] != "") {
+                        if (data["data"]) {
                             dl.href = "{{ url('/dl-timetable') }}" + "/" + cl.value + "_" + sl
                                 .value + "_timetable.pdf";
                             dl.style.display = "block";
