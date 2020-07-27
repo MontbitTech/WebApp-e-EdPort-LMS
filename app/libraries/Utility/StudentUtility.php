@@ -32,6 +32,7 @@ class StudentUtility
 
             foreach ($courseInvitations as $courseInvitation){
                 CommonHelper::teacher_invitation_delete($token, $courseInvitation->invitation_code);
+                $courseInvitation->delete();
             }
 
             $studentClasses = StudentClass::where('class_name', $student->class_name)->where('section_name', $student->section_name)->get();

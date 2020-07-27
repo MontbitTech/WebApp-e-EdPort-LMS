@@ -46,7 +46,7 @@ class HelpController extends Controller {
         $categories = HelpTicketCategory::get();
 
         $selectedCategory = null;
-        if ( isset($request->category) ) {
+        if ( isset($request->category) && $request->category != 'all') {
             $support_help = \App\SupportHelp::orderBy('status', 'DESC')
                 ->where('help_ticket_category_id', $request->category)->get();
             $selectedCategory = $request->category;

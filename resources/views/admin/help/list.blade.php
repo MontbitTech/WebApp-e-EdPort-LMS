@@ -17,9 +17,10 @@
                                 <select id="category" name="category" class="form-control " onchange="getCategories()">
                                     <option value=''>Select Category</option>
                                     @if(count($categories)>0)
-                                    @foreach($categories as $cl)
-                                    <option value='{{$cl->id}}'>{{$cl->category}}</option>
-                                    @endforeach
+                                        @foreach($categories as $cl)
+                                            <option value='{{$cl->id}}'>{{$cl->category}}</option>
+                                        @endforeach
+                                        <option value="all">Show All</option>
                                     @endif
                                 </select>
 
