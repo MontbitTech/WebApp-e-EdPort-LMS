@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\CustomHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 
 //use Auth;
+use Illuminate\Support\Facades\Log;
 use Validator;
 use App\Http\Helpers\CommonHelper;
 use App\StudentClass;
@@ -102,8 +104,21 @@ class ClassController extends Controller
                 $response = CommonHelper::create_class($token, $data); // access Google api craete Cource
 
                 if ( !$response['success'] ) {
-                    if ( $response['data']->status == 'UNAUTHENTICATED' )
-                        return redirect()->route('admin.logout');
+                    if ( $response['data']->status == 'UNAUTHENTICATED' ) {
+                        Log::error($response['data']->message);
+                        CustomHelper::get_refresh_token();
+                        $token = CommonHelper::varify_Admintoken(); // verify admin token
+
+                        $response = CommonHelper::create_class($token, $data); // access Google api craete Cource
+//                        return redirect()->route('admin.logout');
+                    }
+                }
+
+                if ( !$response['success'] ) {
+//                    if ( $response['data']->status == 'UNAUTHENTICATED' ) {
+//                        Log::error($response['data']->message);
+////                        return redirect()->route('admin.logout');
+//                    }
 
                     return back()->with('error', $response['data']->message);
                 } else {

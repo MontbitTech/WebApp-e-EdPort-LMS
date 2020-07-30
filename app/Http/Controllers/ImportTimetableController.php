@@ -669,7 +669,7 @@ class ImportTimetableController extends Controller
                                     }
                                 }
                             } else {
-                                Log::error('Something went wrong while Createting time table for  ROW - ' . $period_name);
+                                Log::error('Something went wrong while Creating time table for  ROW - ' . $period_name);
                                 $error = "found";
                                 $rows_period .= $period_name . ",";
                                 //$error_msg = 'Something went wrong while Createting time table for  ROW - ' .$period_name;

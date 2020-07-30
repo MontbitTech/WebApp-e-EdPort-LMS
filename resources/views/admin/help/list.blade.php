@@ -140,5 +140,37 @@
             }
         });
     }
+
+    $(document).on('click', '[data-helplink]', function () {
+        var liveurl = $(this).attr("data-helplink");
+        if (liveurl != '') {
+            //$('#viewClassModal').modal('show');
+            //$("#thedialog").attr('src','https://google.com');
+            window.open(liveurl, "dialog name", "dialogWidth:400px;dialogHeight:300px");
+        } else {
+            alert('No assignement url found!');
+        }
+    });
+    $(document).on('change', '[data-selectStatus]', function () {
+        var help_id = $(this).attr("data-selectStatus");
+        if ($(this).val != '') {
+            var status_id = $(this).val();
+            if (help_id != '') {
+                $.ajax({
+                    type   : 'POST',
+                    url    : '{{ route("helpStatus.update") }}',
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data   : { help_id: help_id, status_id: status_id },
+                    success: function (data) {
+                        var res = JSON.parse(data);
+                        $.fn.notifyMe('success', 4, res.message);
+                    },
+                    error  : function () {
+                        $.fn.notifyMe('error', 4, 'There is some error while update status!');
+                    }
+                });
+            }
+        }
+    });
 </script>
 @endsection

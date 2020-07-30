@@ -7,6 +7,7 @@ use App\Http\Helpers\CustomHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
+use Illuminate\Support\Facades\Log;
 use Session;
 use App\Http\Helpers\CommonHelper;
 use App\ClassTopic;
@@ -155,6 +156,19 @@ class ClassWorkController extends Controller
                 return json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.119')));
             } else {
                 $resData = array_merge($resData, json_decode($responce, true));
+
+                if ( $resData['error'] != '' ) {
+                    if ( $resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                        Log::error($resData['error']['status']);
+                        CustomHelper::get_refresh_token();
+                        $token = CommonHelper::varify_Admintoken(); // verify admin token
+
+                        $responce = CommonHelper::create_topic($token, $g_class_id, $data); // access Google api craete Topic
+                        $resData = array('error' => '');
+                        $resData = array_merge($resData, json_decode($responce, true));
+                    }
+                }
+
                 if ( $resData['error'] != '' ) {
                     if ( $resData['error']['status'] == 'UNAUTHENTICATED' ) {
                         return redirect()->route('teacher.logout');
@@ -194,6 +208,19 @@ class ClassWorkController extends Controller
             return json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.119')));
         } else {
             $w_resData = array_merge($w_resData, json_decode($work_response, true));
+
+            if ( $w_resData['error'] != '' ) {
+                if ( $w_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                    Log::error($w_resData['error']['status']);
+                    CustomHelper::get_refresh_token();
+                    $token = CommonHelper::varify_Admintoken(); // verify admin token
+
+                    $work_response = CommonHelper::create_courcework($token, $g_class_id, $array_data);
+                    $w_resData = array('error' => '');
+                    $w_resData = array_merge($w_resData, json_decode($work_response, true));
+                }
+            }
+
             if ( $w_resData['error'] != '' ) {
 
                 if ( $w_resData['error']['status'] == 'UNAUTHENTICATED' ) {
