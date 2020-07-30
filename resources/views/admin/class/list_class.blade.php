@@ -8,6 +8,12 @@
         <div class="card card-common mb-3">
           <div class="card-header">
             <span class="topic-heading">Class List</span>
+            <div class="float-right ml-1">
+              <a type="button" class="btn btn-sm btn-secondary" href="{{route('classes.add')}}">
+                <i class="fa fa-upload mr-1" aria-hidden="true"></i>
+                Import Class
+              </a>
+            </div>
             <div class="float-right">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('classes.add')}}">
                 <i class="fa fa-user-plus mr-1" aria-hidden="true"></i>
@@ -17,18 +23,18 @@
           </div>
           <div class="card-body pt-3">
             <div class="row justify-content-center">
-              <div class="col-md-4 col-lg-3 text-md-left text-center mb-1">
-                <!-- <span data-dtlist="#subjectlist" class="mb-1">
+              <!--div class="col-md-4 col-lg-3 text-md-left text-center mb-1">
+                <span data-dtlist="#subjectlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                </span> -->
-              </div>
-              <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
-                <!-- <span data-dtfilter="#subjectlist" class="mb-1">
+                </span>
+              </!--div>
+              <div-- class="col-md-8 col-lg-9 text-md-right text-center mb-1">
+                <span data-dtfilter="#subjectlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                </span> -->
-              </div>
+                </span> 
+              </div-->
 
-              <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
+              <div class="col-md-12 col-lg-12 text-md-right text-center mb-1" id="appenddata">
                 <span data-dtfilter="" class="mb-1">
                   <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
           <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
@@ -137,11 +143,14 @@
   });
   $(document).ready(function() {
     $('#teacherlist').DataTable({
+
       initComplete: function(settings, json) {
         $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
         $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
       }
     });
+
+
     $('.dateset').datepicker({
       dateFormat: "yy/mm/dd"
       // showAnim: "slide"
@@ -185,13 +194,32 @@
       success: function(info) {
         $("#subject").html(info);
         $("#subject").show();
+
+        $(".buttons-csv").remove();
         if (txtSerachBySection) {
-          $('#subjectlist').DataTable({
+          var table = $('#subjectlist').DataTable({
+            'dom': 'Btp',
+            buttons: [{
+              extend: 'csvHtml5',
+              autoFilter: true,
+              sheetName: 'Exported data',
+              text: '<i class="fa fa-download mr-1 " aria-hidden="true"></i>Export CMS Details',
+              className: 'btn btn-secondary btn-sm',
+              init: function(api, node, config) {
+                $(node).removeClass('dt-button')
+              },
+              exportOptions: {
+                columns: [1, 2, 3]
+              }
+
+            }],
             initComplete: function(settings, json) {
               $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
               $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
             }
           });
+          table.buttons().container()
+            .appendTo('#appenddata');
           $('.dateset').datepicker({
             dateFormat: "yy/mm/dd"
             // showAnim: "slide"

@@ -12,6 +12,32 @@
 		background: grey;
 	}
 
+	.color-change {
+		animation: myanimation 1s infinite;
+	}
+
+	@keyframes myanimation {
+		0% {
+			color: red;
+		}
+
+		25% {
+			color: yellow;
+		}
+
+		50% {
+			color: green;
+		}
+
+		75% {
+			color: brown;
+		}
+
+		100% {
+			color: red;
+		}
+	}
+
 	.marquee {
 		margin: 0 auto;
 		white-space: nowrap;
@@ -68,29 +94,29 @@ $student ="enabled";
 
 if($s["student"] > 0)
 $cmslinks ="enabled";
-
+$s = \App\Http\Helpers\CustomHelper::getSchool();
 @endphp
 
 <header>
 
 	<div class="container-fluid">
-		<div class="row">
-			<div class="col-4">
+		<div class="row" style="display: inline;">
+			<div class=" float-left">
 
-				<a href="/" class="btn-menu btn text-white	  " style="background-color:#253372;" id="menu-bar">
+				<a href="/" class="btn-menu btn text-white" style="background-color:#253372;" id="menu-bar">
 					<svg class="icon">
 						<use xlink:href="{{asset('images/icons.svg#icon_arrowdown')}}"></use>
 					</svg>
 				</a>
 				<a class="navbar-logo align-middle font-weight-bold" href="./">
-					e-EdPort
+					{{$s[0]->value}}
 				</a>
 
 			</div>
-			<div class="col-8 dropdown-user">
+			<div class="float-right dropdown-user">
 				@if($t)
 
-				<a href="" class="text-danger mr-2 icon-lg align-middle">
+				<a href="" class=" color-change mr-2 icon-lg align-middle">
 
 					<i class="fa fa-bell " style="font-size: 20px;" aria-hidden="true"></i>
 				</a>
@@ -193,9 +219,11 @@ $cmslinks ="enabled";
 					<i class="fa fa-code-fork icon icon-4x" aria-hidden="true"></i>
 					Help Category</a></div>
 		</div>
+
 	</div>
+	<div class="text-center text-white mt-2 pb-1 mb-1" style="font-size: 10px;letter-spacing: 1px;">Powered By e-Edport</div>
 </div>
-<p class="copyrights">&copy;{{date('Y')}} LMS - All Rights Reserved</p>
+<p class="copyrights">&copy;{{date('YS')}} LM - All Rights Reserved</p>
 
 </div>
 <!-- End | Left Menu Bar -->

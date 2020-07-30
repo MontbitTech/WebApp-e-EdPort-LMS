@@ -15,10 +15,10 @@ $timing=$ar["timing"];
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-sm-12">
-                 <a href="{{ route('reload-timetable') }}" target="_blank">
-                 Reload today's timetable for
-                 all teachers
-                 </a>
+                <a href="{{ route('reload-timetable') }}" target="_blank">
+                    Reload today's timetable for
+                    all teachers
+                </a>
                 <div class="card card-common mb-3">
                     <div class="card-header">
                         <span class="topic-heading">Time Table</span>
@@ -39,64 +39,61 @@ $timing=$ar["timing"];
                 <svg class="icon icon-font16 icon-mmtop-3 mr-1"><use xlink:href="{{ asset('images/icons.svg#icon_adduser') }}"></use></svg> Download Sample File
               </a>
             </div> -->
-                        </div>
-                        <div class="card-body pt-3">
-                            <div class="row justify-content-center">
-                                <div class="col-md-4 col-lg-3 text-md-left text-center mb-1">
-                                <span data-dtlist="#teacherlist" class="mb-1">
-                                    <!--  <div class="spinner-border spinner-border-sm text-secondary" role="status"></div> -->
-                                    <a href='' target='_blank' id='download' style='display:none;'>Download/View</a>
-                                </span>
-                                </div>
-                                <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
+                    </div>
+                    <div class="card-body pt-3">
+                        <div class="row justify-content-center">
 
-             <form method="post" action="{{route('timetable-deleteAll')}}">
-             @csrf
-             <button type="submit" id="submit" class="btn btn-info px-4" onclick = "return confirmDelete()" style="display:none;margin-top: 36px;
-               margin-left: -253px;">Delete all 
-             </button>
-                                <span data-dtfilter="" class="mb-1">
-                
+                            <div class="col-md-12 col-lg-12 text-center mb-1">
 
-                                    <select id="txtSerachByClass" name="txtSerachByClass" class="form-control form-control-sm" onchange="getData()">
-                                        <option value=''>Select Class</option>
-                                        @if(count($class)>0)
-                                        @foreach($class as $cl)
-                                        <option value='{{ $cl->class_name }}'>{{ $cl->class_name }}
-                                        </option>
-                                        @endforeach
-                                        @endif
-                                    </select>
-
-                                </span>
-
-                                <span data-dtfilter="" class="mb-1">
-                                    <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
+                                <form method="post" action="{{route('timetable-deleteAll')}}">
+                                    @csrf
+                                    <button type="submit" id="submit" style="float:left;display:none;" class="btn btn-secondary btn-sm" onclick="return confirmDelete()"><i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete all
+                                    </button>
+                                    <span data-dtlist="#teacherlist" style="float:left;" class="ml-2">
+                                        <!--  <div class="spinner-border spinner-border-sm text-secondary" role="status"></div> -->
+                                        <a href='' class="btn btn-secondary btn-sm" target='_blank' id='download' style='display:none;'><i class="fa fa-download mr-1 " aria-hidden="true"></i>Download/View</a>
+                                    </span>
+                                    <span data-dtfilter="" style="float:right;">
+                                        <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
                   <input type="text"  id="txtSerachBySection" class="form-control form-control-sm" placeholder="Search By Section..." />-->
 
-                                    <select id="txtSerachBySection" name="txtSerachBySection" class="form-control form-control-sm" onchange="getData()">
-                                        <option value=''>Select Section</option>
-                                        @if(count($section)>0)
-                                        @foreach($section as $sl)
-                                        <option value='{{ $sl->section_name }}'>
-                                            {{ $sl->section_name }}
-                                        </option>
-                                        @endforeach
-                                        @endif
-                                    </select>
+                                        <select id="txtSerachBySection" name="txtSerachBySection" class="form-control form-control-sm" onchange="getData()">
+                                            <option value=''>Select Section</option>
+                                            @if(count($section)>0)
+                                            @foreach($section as $sl)
+                                            <option value='{{ $sl->section_name }}'>
+                                                {{ $sl->section_name }}
+                                            </option>
+                                            @endforeach
+                                            @endif
+                                        </select>
 
-                                </span>
+                                    </span>
+                                    <span data-dtfilter="" class="mr-2" style="float:right;">
 
 
+                                        <select id="txtSerachByClass" name="txtSerachByClass" class="form-control form-control-sm" onchange="getData()">
+                                            <option value=''>Select Class</option>
+                                            @if(count($class)>0)
+                                            @foreach($class as $cl)
+                                            <option value='{{ $cl->class_name }}'>{{ $cl->class_name }}
+                                            </option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+
+                                    </span>
+
+
+
+
+
+
+                                </form>
                             </div>
-
-                               </form>
-                                <div class="col-sm-12" id='timetable'>
-                                    <table id="teacherlist" class="table table-sm table-bordered display"
-                                           style="width:100%"
-                                           data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60"
-                                           data-collast="120" data-filterplaceholder="Search Records ...">
-                                        <thead>
+                            <div class="col-sm-12" id='timetable'>
+                                <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                                    <thead>
 
                                         <tr>
                                             <th id='classname'></th>
@@ -252,112 +249,109 @@ $timing=$ar["timing"];
             }
         });
 
-            $('#classdeletModal').modal('show');
+        $('#classdeletModal').modal('show');
+    });
+
+    function getData() {
+        var cl = document.getElementById("txtSerachByClass");
+        var sl = document.getElementById("txtSerachBySection");
+        var dl = document.getElementById("download");
+        var tt = document.getElementById("timetable");
+        var del = document.getElementById("submit");
+        var url = "{{ route('list.filtertimetable') }}";
+
+        if (cl.value == "") {
+            cl.focus();
+            return false;
+        } else if (sl.value == "") {
+            sl.focus();
+            return false;
+        } else {
+            $.ajax({
+
+                url: url,
+                type: "POST",
+                data: {
+                    txtclass: cl.value,
+                    txtsubject: sl.value
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                /* contentType: false,
+                cache: false,
+                processData:false, */
+                success: function(data) {
+                    dl.style.display = "none";
+                    del.style.display = "none";
+                    tt.innerHTML = data["html"];
+                    if (data["data"]) {
+                        dl.href = "{{ url('/dl-timetable') }}" + "/" + cl.value + "_" + sl
+                            .value + "_timetable.pdf";
+                        dl.style.display = "block";
+                        del.style.display = "block";
+                    }
+                }
+            });
+        }
+    }
+
+    function setTeacherData(teachers) {
+        $("#sel_teacher option").remove();
+        var data = "<option value=''> Select Teacher</option>";
+        // console.log(response);
+        teachers.forEach(function(teacher) {
+            data += "<option value='" + teacher.id + "'>" + teacher.name + "</option>";
+        })
+        $("#sel_teacher").append(data);
+    }
+
+    function setSubjectData(subjects) {
+        $("#sel_subject option").remove();
+        var data = "<option value=''> Select Subject</option>";
+        // console.log(response);
+        subjects.forEach(function(subject) {
+            data += "<option value='" + subject.id + "'>" + subject.subject_name + "</option>";
+        })
+        $("#sel_subject").append(data);
+    }
+</script>
+
+<script type='text/javascript'>
+    $(document).ready(function() {
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
         });
 
-        function getData() {
-            var cl = document.getElementById("txtSerachByClass");
-            var sl = document.getElementById("txtSerachBySection");
-            var dl = document.getElementById("download");
-            var tt = document.getElementById("timetable");
-            var del = document.getElementById("submit");
-            var url = "{{ route('list.filtertimetable') }}";
-
-            if (cl.value == "") {
-                cl.focus();
-                return false;
-            } else if (sl.value == "") {
-                sl.focus();
-                return false;
-            } else {
+        $('body').on('click', '#delete-timetable', function() {
+            var post_id = $(this).data("id");
+            //alert(post_id);
+            if (confirm("Are you sure want to delete this?")) {
                 $.ajax({
-
-                    url    : url,
-                    type   : "POST",
-                    data   : {
-                        txtclass  : cl.value,
-                        txtsubject: sl.value
+                    type: "GET",
+                    url: "{{ url('timetable/delete')}}" + '/' + post_id,
+                    success: function(data) {
+                        //$("#student_id_" + post_id).remove();
+                        location.reload(true);
+                        $.fn.notifyMe('success', 10, "Deleted Successfully");
                     },
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    /* contentType: false,
-                    cache: false,
-                    processData:false, */
-                    success: function (data) {
-                        dl.style.display = "none";
-                        del.style.display = "none";
-                        tt.innerHTML = data["html"];
-                        if (data["data"]) {
-                            dl.href = "{{ url('/dl-timetable') }}" + "/" + cl.value + "_" + sl
-                                .value + "_timetable.pdf";
-                            dl.style.display = "block";
-                            del.style.display = "block";
-                        }
+                    error: function(data) {
+                        console.log('Error:', data);
                     }
                 });
             }
-        }
-
-        function setTeacherData(teachers) {
-            $("#sel_teacher option").remove();
-            var data = "<option value=''> Select Teacher</option>";
-            // console.log(response);
-            teachers.forEach(function (teacher) {
-                data += "<option value='" + teacher.id + "'>" + teacher.name + "</option>";
-            })
-            $("#sel_teacher").append(data);
-        }
-
-        function setSubjectData(subjects) {
-            $("#sel_subject option").remove();
-            var data = "<option value=''> Select Subject</option>";
-            // console.log(response);
-            subjects.forEach(function (subject) {
-                data += "<option value='" + subject.id + "'>" + subject.subject_name + "</option>";
-            })
-            $("#sel_subject").append(data);
-        }
-
-</script>
-
-    <script type='text/javascript'>
-  $(document).ready(function () {
-    
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-     $('body').on('click', '#delete-timetable', function () {
-        var post_id = $(this).data("id");
-        //alert(post_id);
-        if(confirm("Are you sure want to delete this?"))
-        {
-        $.ajax({
-            type: "GET",
-             url: "{{ url('timetable/delete')}}"+'/'+post_id,
-            success: function (data) {
-                //$("#student_id_" + post_id).remove();
-                location.reload(true);
-                $.fn.notifyMe('success', 10, "Deleted Successfully");
-            },
-            error: function (data) {
-                console.log('Error:', data);
-            }
         });
-       } 
     });
-   });
 </script>
 
 
 <script>
-function confirmDelete() 
- {
- return confirm('Are you sure want to delete this all?');
-}
+    function confirmDelete() {
+        return confirm('Are you sure want to delete this all?');
+    }
 </script>
 
 @endsection
