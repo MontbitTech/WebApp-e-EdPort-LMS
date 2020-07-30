@@ -60,9 +60,9 @@
                </div>
 
                <div class="form-group row">
-                 <label for="colFormLabel" class="col-md-4 col-form-label">Academic URL:</label>
+                 <label for="colFormLabel" class="col-md-4 col-form-label">My School URL:</label>
                  <div class="col-md-5">
-                   {!! Form::text('khan_academy', "", array('placeholder' => 'Academic URL','class' => 'form-control')) !!}
+                   {!! Form::text('khan_academy', "", array('placeholder' => 'My School URL','class' => 'form-control')) !!}
                  </div>
                </div>
 

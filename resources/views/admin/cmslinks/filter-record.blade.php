@@ -4,15 +4,14 @@
                       @if(count($getResult)>0)
                       <th width="50px"><input type="checkbox" class="master" id="master"></th>
                       @endif
-                      <th>#</th>
                       <th>Class</th>
                       <th>Subject</th>
                       <th>Topic</th>
-                      <th>Link 1</th>
-                      <th>Link 2</th>
-                      <th>Link 3</th>
-                      <th>Link 4</th>
-                      <th>Link 5</th>
+                      <th>e-EdPort</th>
+                      <th>Youtube</th>
+                      <th>Wikipedia</th>
+                      <th>My School</th>
+                      <th>Assignment</th>
                       <th>Action</th>
                   </tr>
               </thead>
@@ -27,44 +26,55 @@
 
                   <tr id="tr_{{$list->id}}">
                       <td><input type="checkbox" class="sub_chk" data-id="{{$list->id}}"></td>
-                      <td>{{++$i}}</td>
                       <td class="text-center">{{$list->class}}</td>
                       <td>{{$list->Subject->subject_name}}</td>
                       <td>{{$list->topic}}</td>
-                      <td>
-                          @if(empty($list->link))
-                          <?= "" ?>
-                          @else
-                          <a href='{{$list->link}}' target="_blank">Open Link</a>
-                          @endif
+                       
+                       @if($list->link)
+                      <td class="text-center">
+                        <a href="{{$list->link}}" target="_blank">Link</a>
                       </td>
+                      @else
+                      <td class="text-center">
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                      </td>
+                      @endif
 
-                      <td>
-                          @if(empty($list->youtube))
-                          <?= "" ?>
-                          @else
-                          <a href='{{$list->youtube}}' target="_blank">Open Link</a>
-                          @endif
+                     @if($list->youtube)
+                      <td class="text-center">
+                        <a href="{{$list->youtube}}" target="_blank">Link</a>
                       </td>
-                      <td>
-                          @if(empty($list->others))
-                          <?= "" ?>
-                          @else
-                          <a href='{{$list->others}}' target="_blank">Open Link</a>
-                          @endif
+                      @else
+                      <td class="text-center">
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
                       </td>
-                      <td>
-                          @if(empty($list->khan_academy))
-                          <?= "" ?>
-                          @else
-                          <a href='{{$list->khan_academy}}' target="_blank">Open Link</a>
-                          @endif
+                      @endif
+                      @if($list->others)
+                      <td class="text-center">
+                        <a href="{{$list->others}}" target="_blank">Link</a>
                       </td>
-                      <td>
-                          @if(empty($list->assignment_link))
-                          <?= "" ?>
-                          @else
-                          <a href='{{$list->assignment_link}}' target="_blank">Open Assignment Link</a></td>
+                      @else
+                      <td class="text-center">
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                      </td>
+                      @endif
+                      @if($list->khan_academy)
+                      <td class="text-center">
+                        <a href="{{$list->khan_academy}}" target="_blank">Link</a>
+                      </td>
+                      @else
+                      <td class="text-center">
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                      </td>
+                      @endif
+                      @if($list->assignment_link)
+                      <td class="text-center">
+                        <a href="{{$list->assignment_link}}" target="_blank">Link</a>
+                      </td>
+                      @else
+                      <td class="text-center">
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                      </td>
                       @endif
                       <td>
                           <a href="{{route('cms.editlink', encrypt($list->id))}}">Edit</a> |

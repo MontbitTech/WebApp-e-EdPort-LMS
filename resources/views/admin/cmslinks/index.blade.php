@@ -35,7 +35,7 @@
                 </span>
               </!--div-->
               <div class="col-md-6 col-lg-6 text-md-left text-center mb-1" id="appenddata">
-                <button style="float: left;display:none;" id="deleteall" class="btn btn-sm btn-secondary delete_all" data-url="{{ url('admin/cmsDeleteAll') }}"> <i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete All Selected</button>
+                <button style="float: left;display:none;" id="deleteall" class="btn btn-sm btn-secondary delete_all" data-url="{{ url('admin/cmsDeleteAll') }}"> <i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete Selected</button>
 
               </div>
               <div class="col-md-6 col-lg-6 text-md-right text-center mb-1">
@@ -73,14 +73,93 @@
                 <table id="cmsrecords" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                   <thead>
                     <tr>
-                      <th>#</th>
                       <th>Class</th>
                       <th>Subject</th>
                       <th>Topic</th>
-                      <th>Link</th>
+                      <th>e-EdPort</th>
+                      <th>Youtube</th>
+                      <th>Wikipedia</th>
+                      <th>My School</th>
+                      <th>Assignment</th>
                       <th>Action</th>
                     </tr>
                   </thead>
+                  <tbody>
+                    @if(count($cms)>0)
+                    @php $i=0; @endphp
+
+                    @foreach($cms as $list)
+
+                    <tr>
+                      <td class="text-center">{{$list->class}}</td>
+                      <td>{{$list->Subject->subject_name}}</td>
+                      <td>{{$list->topic}}</td>
+
+                      @if($list->link)
+                      <td class="text-center">
+                        <a href="{{$list->link}}" target="_blank">Link</a>
+                      </td>
+                      @else
+                      <td class="text-center">
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                      </td>
+                      @endif
+
+                     @if($list->youtube)
+                      <td class="text-center">
+                        <a href="{{$list->youtube}}" target="_blank">Link</a>
+                      </td>
+                      @else
+                      <td class="text-center">
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                      </td>
+                      @endif
+                      
+                       @if($list->others)
+                      <td class="text-center">
+                        <a href="{{$list->others}}" target="_blank">Link</a>
+                      </td>
+                      @else
+                      <td class="text-center">
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                      </td>
+                      @endif
+
+                       @if($list->khan_academy)
+                      <td class="text-center">
+                        <a href="{{$list->khan_academy}}" target="_blank">Link</a>
+                      </td>
+                      @else
+                      <td class="text-center">
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                      </td>
+                      @endif      
+                      
+                      @if($list->assignment_link)
+                      <td class="text-center">
+                        <a href="{{$list->assignment_link}}" target="_blank">Link</a>
+                      </td>
+                      @else
+                      <td class="text-center">
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                      </td>
+                      @endif
+                        <td>
+                          <a href="{{route('cms.editlink', encrypt($list->id))}}">Edit</a> | 
+                          <a href="#"
+                          onclick="event.preventDefault();
+                          document.getElementById('delete-cms-form{{$list->id}}').submit();">
+                          {{ __('Delete') }}
+                        </a>
+
+                        <form id="delete-cms-form{{$list->id}}" action="{{ route('cms.deletelink', encrypt($list->id)) }}" method="POST" style="display: none;">
+                          @csrf
+                        </form>
+                      </td>
+                    </tr>
+                    @endforeach
+                    @endif
+                  </tbody>
                 </table>
               </div>
 
@@ -113,7 +192,7 @@
         $("#cms").show();
         $("#deleteall").show();
 
-        if (txtSerachSubject) {
+        if (txtSerachClass) {
           var table = $('#cmsrecords').DataTable({
             dom: 'Bfrtip',
             bFilter: false,
@@ -147,5 +226,22 @@
       }
     });
   }
+</script>
+
+<script>
+  $(document).ready(function() {
+  $('#cmsrecords').DataTable({
+      initComplete: function(settings, json) {
+        $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
+        $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+      }
+    });
+
+
+    $('.dateset').datepicker({
+      dateFormat: "yy/mm/dd"
+      // showAnim: "slide"
+    })
+  });
 </script>
 @endsection
