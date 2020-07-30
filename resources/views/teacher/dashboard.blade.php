@@ -149,29 +149,21 @@ $cls = 0;
                                         ?>
                                         <div class="m-auto">
 
-                                            @if($cms_link!="")
                                             <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                 Edport Content
                                             </a>
-                                            @endif
 
-                                            @if($youtube!="")
-                                            <a href="javascript:void(0);" data-topiclink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                            <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="youtube_{{$t->id}}" style="{{$display_style}}">
                                                 Youtube
                                             </a>
-                                            @endif
 
-                                            @if($other!="")
-                                            <a href="javascript:void(0);" data-topiclink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                            <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
                                                 Wikipedia
                                             </a>
-                                            @endif
 
-                                            @if($academy!="")
-                                            <a href="javascript:void(0);" data-topiclink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                            <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="academy_{{$t->id}}" style="{{$display_style}}">
                                                 My School
                                             </a>
-                                            @endif
 
                                         </div>
                                     </div>
@@ -867,6 +859,39 @@ $cls = 0;
             alert('No content url found!');
         }
     });
+
+    $(document).on('click', '[data-youtubelink]', function() {
+        var liveurl = $(this).attr("data-youtubelink");
+        if (liveurl != '') {
+            //$('#viewClassModal').modal('show');
+            //$("#thedialog").attr('src','https://google.com');
+            window.open(liveurl, "_blank"); //, "dialogWidth:400px;dialogHeight:300px");
+        } else {
+            alert('No content url found!');
+        }
+    });
+
+    $(document).on('click', '[data-wikipedialink]', function() {
+        var liveurl = $(this).attr("data-wikipedialink");
+        if (liveurl != '') {
+            //$('#viewClassModal').modal('show');
+            //$("#thedialog").attr('src','https://google.com');
+            window.open(liveurl, "_blank"); //, "dialogWidth:400px;dialogHeight:300px");
+        } else {
+            alert('No content url found!');
+        }
+    });
+
+    $(document).on('click', '[data-academylink]', function() {
+        var liveurl = $(this).attr("data-academylink");
+        if (liveurl != '') {
+            //$('#viewClassModal').modal('show');
+            //$("#thedialog").attr('src','https://google.com');
+            window.open(liveurl, "_blank"); //, "dialogWidth:400px;dialogHeight:300px");
+        } else {
+            alert('No content url found!');
+        }
+    });
     /*
     past calsses
     */
@@ -1095,6 +1120,12 @@ $cls = 0;
                         var response = JSON.parse(result);
                         $('#viewcontent_' + dateWork_id).attr('style', 'display:block');
                         $('#viewcontent_' + dateWork_id).attr('data-topiclink', response.topic_link);
+                        $('#youtube_' + dateWork_id).attr('style', 'display:block');
+                        $('#youtube_' + dateWork_id).attr('data-youtubelink', response.youtube_link );
+                        $('#wikipedia_' + dateWork_id).attr('style', 'display:block');
+                        $('#wikipedia_' + dateWork_id).attr('data-wikipedialink', response.wikipedia_link );
+                        $('#academy_' + dateWork_id).attr('style', 'display:block');
+                        $('#academy_' + dateWork_id).attr('data-academylink', response.academy_link );
                         $.fn.notifyMe('success', 4, response.message);
                     },
                     error: function() {
