@@ -116,7 +116,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 			<div class="float-right dropdown-user">
 				@if($t)
 
-				<a href="" class=" color-change mr-2 icon-lg align-middle">
+				<a href="{{route('admin.helplist')}}" class=" color-change mr-2 icon-lg align-middle">
 
 					<i class="fa fa-bell " style="font-size: 20px;" aria-hidden="true"></i>
 				</a>
@@ -221,7 +221,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 		</div>
 
 	</div>
-	<div class="text-center text-white mt-2 pb-1 mb-1" style="font-size: 10px;letter-spacing: 1px;">Powered By e-Edport</div>
+	<div class="text-center text-white mt-2 pb-5 mb-5" style="font-size: 10px;letter-spacing: 1px;">Powered by e-EdPort</div>
 </div>
 <p class="copyrights">&copy;{{date('YS')}} LM - All Rights Reserved</p>
 

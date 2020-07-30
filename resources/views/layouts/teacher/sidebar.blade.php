@@ -86,7 +86,9 @@ $photo = asset('images/teacher/'.$val->photo);
     $arr_section = array_unique($arr_section);
     @endphp
     @foreach($arr_section as $value)
-    <li>{{ isset($value)?$value : '-'}}</li>
+    <li>{{ isset($value)?$value : '-'}}
+
+    </li>
     @endforeach
 
   </ul>
@@ -95,8 +97,14 @@ $photo = asset('images/teacher/'.$val->photo);
     <img src="{{$slogo}}">
     <h5 class="m-0 text-white">{{$sname}}</h5>
   </div>
-  <div class="text-center text-white mt-2" style="font-size: 10px;letter-spacing: 1px;">Powered By e-Edport</div>
+
+  <div class=" text-white mb-2 ml-5 fixed-bottom" style="font-size: 10px;letter-spacing: 1px;">Powered by e-EdPort</div>
+
+
+
 </div>
+
+
 <div class="fullbody-cover"></div>
 <!-- End -->
 <script type="text/javascript">
