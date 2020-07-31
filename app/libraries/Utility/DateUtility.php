@@ -4,6 +4,7 @@ namespace App\libraries\Utility;
 
 use DateTime;
 use DateTimeZone;
+
 /**
  * Class DateUtility
  * @package App\libraries\Utility
@@ -93,7 +94,7 @@ class DateUtility
      * @param bool $date
      * @return bool|string
      */
-    public static function getFutureTime ($minutes, $date = false)
+    public static function getFutureDateTime ($minutes, $date = false)
     {
         if ( $date ) {
             return self::getDateTime(strtotime($date) + $minutes * 60);
@@ -119,7 +120,7 @@ class DateUtility
      * @param bool $date
      * @return bool|string
      */
-    public static function getPastTime ($minutes, $date = false)
+    public static function getPastDateTime ($minutes, $date = false)
     {
         if ( $date ) {
             return self::getDateTime(strtotime($date) - $minutes * 60);
@@ -157,5 +158,31 @@ class DateUtility
         $acst_date->setTimeZone(new DateTimeZone('America/Los_Angeles'));
 
         return $acst_date->format('Y-m-d H:i:s');
+    }
+
+    public static function getTime ($time = false)
+    {
+        if ( $time )
+            return date('H:i:s', $time);
+        else
+            return date('H:i:s');
+    }
+
+    public static function getFutureTime ($minutes ,$time = false)
+    {
+        if ( $time ) {
+            return self::getTime(strtotime($time) + $minutes * 60);
+        } else {
+            return self::getTime(strtotime("now") + $minutes * 60);
+        }
+    }
+
+    public static function getPastTime ($minutes , $time = false)
+    {
+        if ( $time ) {
+            return self::getTime(strtotime($time) - $minutes * 60);
+        } else {
+            return self::getTime(strtotime("now") - $minutes * 60);
+        }
     }
 }
