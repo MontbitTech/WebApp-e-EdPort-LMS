@@ -147,22 +147,31 @@ $cls = 0;
                                             $display_style = 'display: none;';
 
                                         ?>
-                                        <div class="m-auto">
+                                        <div class="m-auto mt-2 pt-2">
 
-                                            <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
-                                                Edport Content
+                                            <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                                <!-- Edport Content -->
+                                                <img src="{{asset('images/logo-1.png')}}" alt="" width="27px">
                                             </a>
 
-                                            <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="youtube_{{$t->id}}" style="{{$display_style}}">
-                                                Youtube
+                                            <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
+                                                <!-- Youtube -->
+                                                <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true"></i>
                                             </a>
 
-                                            <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
-                                                Wikipedia
+                                            <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
+                                                <!-- Wikipedia -->
+                                                <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true"></i>
                                             </a>
 
-                                            <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="btn btn-outline-primary btn-sm btn-block mt-2 border-0 btn-shadow" id="academy_{{$t->id}}" style="{{$display_style}}">
-                                                My School
+                                            <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline p-0 m-0 text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
+                                                <!-- My School -->
+                                                @foreach ($schoollogo as $logo)
+                                                @if($logo->item=="schoollogo")
+                                                <img src="{{$logo->value}}" alt="logo" width="27px">
+
+                                                @endif
+                                                @endforeach
                                             </a>
 
                                         </div>
@@ -1367,35 +1376,35 @@ $cls = 0;
     });
 
 
-            function viewAssignment(id) {
+    function viewAssignment(id) {
 
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ url("/teacher/class/assignments") }}',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    data: {
-                        'class_id': id,
-                    },
-                    success: function(result) {
-                        var response = JSON.parse(result);
-                        let data = '';
-                        response.data.forEach(function(classAssignment) {
-                            $('#assignmentList').find('tbody').find('tr').remove();
-                            data += '<tr>';
-                            data += '<td>' + classAssignment.g_title + '</td>';
-                            data += '<td><a href="' + classAssignment.g_live_link + '" class="text-decoration-none" target="_blank">Link</a></td>';
-                            data += '</tr>';
+        $.ajax({
+            type: 'POST',
+            url: '{{ url("/teacher/class/assignments") }}',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                'class_id': id,
+            },
+            success: function(result) {
+                var response = JSON.parse(result);
+                let data = '';
+                response.data.forEach(function(classAssignment) {
+                    $('#assignmentList').find('tbody').find('tr').remove();
+                    data += '<tr>';
+                    data += '<td>' + classAssignment.g_title + '</td>';
+                    data += '<td><a href="' + classAssignment.g_live_link + '" class="text-decoration-none" target="_blank">Link</a></td>';
+                    data += '</tr>';
 
-                            $('#assignmentList').find('tbody').append(data);
-                        });
-                    },
-                    error: function() {
-                        $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
-                    }
+                    $('#assignmentList').find('tbody').append(data);
                 });
+            },
+            error: function() {
+                $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
             }
+        });
+    }
 </script>
 
 @endsection
