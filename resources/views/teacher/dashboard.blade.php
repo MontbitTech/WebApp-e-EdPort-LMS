@@ -91,7 +91,7 @@ $cls = 0;
                                 <div class="row m-2">
                                     <div class="col-md-9">
                                         <div class="input-group text-editwrapper mt-1 mb-1">
-                                            <textarea class="form-control text-edit1" rows="3" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" id="class_description_{{$i}}" name="class_description" placeholder="Add a note">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+                                            <textarea class="form-control text-edit1" rows="3" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mt-1">
@@ -1121,11 +1121,11 @@ $cls = 0;
                         $('#viewcontent_' + dateWork_id).attr('style', 'display:block');
                         $('#viewcontent_' + dateWork_id).attr('data-topiclink', response.topic_link);
                         $('#youtube_' + dateWork_id).attr('style', 'display:block');
-                        $('#youtube_' + dateWork_id).attr('data-youtubelink', response.youtube_link );
+                        $('#youtube_' + dateWork_id).attr('data-youtubelink', response.youtube_link);
                         $('#wikipedia_' + dateWork_id).attr('style', 'display:block');
-                        $('#wikipedia_' + dateWork_id).attr('data-wikipedialink', response.wikipedia_link );
+                        $('#wikipedia_' + dateWork_id).attr('data-wikipedialink', response.wikipedia_link);
                         $('#academy_' + dateWork_id).attr('style', 'display:block');
-                        $('#academy_' + dateWork_id).attr('data-academylink', response.academy_link );
+                        $('#academy_' + dateWork_id).attr('data-academylink', response.academy_link);
                         $.fn.notifyMe('success', 4, response.message);
                     },
                     error: function() {
@@ -1364,79 +1364,246 @@ $cls = 0;
                 }
             });
         }
-    });
-    {{--$(document).on('change', '#addClassEndTime', function() {--}}
-    {{--    var startTime = $('#addClassStartTime').val();--}}
-    {{--    var endTime = $('#addClassEndTime').val();--}}
-    {{--    var date = $('#addClassDate').val();--}}
-
-    {{--    if (startTime == '') {--}}
-    {{--        $.fn.notifyMe('error', 4, 'Class Note can not be blank!');--}}
-    {{--    }--}}
-    {{--    if (date == '') {--}}
-    {{--        $.fn.notifyMe('error', 4, 'Class Note can not be blank!');--}}
-    {{--    }--}}
-    {{--    $.ajax({--}}
-    {{--        type: 'POST',--}}
-    {{--        url: '{{ url("available/classes") }}',--}}
-    {{--        headers: {--}}
-    {{--            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
-    {{--        },--}}
-    {{--        data: {--}}
-    {{--            'startTime': startTime,--}}
-    {{--            'endTime': endTime,--}}
-    {{--            'date': date--}}
-    {{--        },--}}
-    {{--        success: function(result) {--}}
-    {{--            var response = JSON.parse(result);--}}
-    {{--            if (response.status == 'success') {--}}
-    {{--                $("#class_id option").remove();--}}
-    {{--                var data = "<option value=''> Select Class</option>";--}}
-    {{--                // $.fn.notifyMe('success', 5, response.message);--}}
-    {{--                response.message.forEach(function(studentClass) {--}}
-    {{--                    data += "<option value='" + studentClass.id + "'> Class " + studentClass.class_name + " - " +--}}
-    {{--                        studentClass.section_name + " - " + studentClass.student_subject.subject_name + "</option>";--}}
-    {{--                })--}}
-    {{--                $("#class_id").append(data);--}}
-    {{--            } else {--}}
-    {{--                $.fn.notifyMe('error', 5, 'something went wrong');--}}
-    {{--            }--}}
-    {{--        },--}}
-    {{--        error: function() {--}}
-    {{--            $.fn.notifyMe('error', 4, 'There is some error while searching for available class!');--}}
-    {{--        }--}}
-    {{--    });--}}
-    {{--});--}}
-
-    function viewAssignment(id) {
-
-        $.ajax({
-            type: 'POST',
-            url: '{{ url("/teacher/class/assignments") }}',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            data: {
-                'class_id': id,
-            },
-            success: function(result) {
-                var response = JSON.parse(result);
-                let data = '';
-                response.data.forEach(function(classAssignment) {
-                    $('#assignmentList').find('tbody').find('tr').remove();
-                    data += '<tr>';
-                    data += '<td>'+ classAssignment.g_title+'</td>';
-                    data +='<td><a href="'+classAssignment.g_live_link+'" class="text-decoration-none" target="_blank">Link</a></td>';
-                    data +='</tr>';
-
-                    $('#assignmentList').find('tbody').append(data);
-                });
-            },
-            error: function() {
-                $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
+    }); {
+        {
+            --$(document).on('change', '#addClassEndTime', function() {
+                    --
+                }
+            } {
+                {
+                    --
+                    var startTime = $('#addClassStartTime').val();
+                    --
+                }
+            } {
+                {
+                    --
+                    var endTime = $('#addClassEndTime').val();
+                    --
+                }
+            } {
+                {
+                    --
+                    var date = $('#addClassDate').val();
+                    --
+                }
             }
-        });
-    }
+
+            {
+                {
+                    --
+                    if (startTime == '') {
+                        --
+                    }
+                } {
+                    {
+                        --$.fn.notifyMe('error', 4, 'Class Note can not be blank!');
+                        --
+                    }
+                } {
+                    {
+                        --
+                    }--
+                }
+            } {
+                {
+                    --
+                    if (date == '') {
+                        --
+                    }
+                } {
+                    {
+                        --$.fn.notifyMe('error', 4, 'Class Note can not be blank!');
+                        --
+                    }
+                } {
+                    {
+                        --
+                    }--
+                }
+            } {
+                {
+                    --$.ajax({
+                            --
+                        }
+                    } {
+                        {
+                            --type: 'POST', --
+                        }
+                    } {
+                        {
+                            --url: '{{ url("available/classes") }}', --
+                        }
+                    } {
+                        {
+                            --headers: {
+                                --
+                            }
+                        } {
+                            {
+                                --'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') --
+                            }
+                        } {
+                            {
+                                --
+                            }, --
+                        }
+                    } {
+                        {
+                            --data: {
+                                --
+                            }
+                        } {
+                            {
+                                --'startTime': startTime, --
+                            }
+                        } {
+                            {
+                                --'endTime': endTime, --
+                            }
+                        } {
+                            {
+                                --'date': date--
+                            }
+                        } {
+                            {
+                                --
+                            }, --
+                        }
+                    } {
+                        {
+                            --success: function(result) {
+                                --
+                            }
+                        } {
+                            {
+                                --
+                                var response = JSON.parse(result);
+                                --
+                            }
+                        } {
+                            {
+                                --
+                                if (response.status == 'success') {
+                                    --
+                                }
+                            } {
+                                {
+                                    --$("#class_id option").remove();
+                                    --
+                                }
+                            } {
+                                {
+                                    --
+                                    var data = "<option value=''> Select Class</option>";
+                                    --
+                                }
+                            } {
+                                {
+                                    -- // $.fn.notifyMe('success', 5, response.message);--}}
+                                    {
+                                        {
+                                            --response.message.forEach(function(studentClass) {
+                                                    --
+                                                }
+                                            } {
+                                                {
+                                                    --data += "<option value='" + studentClass.id + "'> Class " + studentClass.class_name + " - " + --
+                                                }
+                                            } {
+                                                {
+                                                    --studentClass.section_name + " - " + studentClass.student_subject.subject_name + "</option>";
+                                                    --
+                                                }
+                                            } {
+                                                {
+                                                    --
+                                                }) --
+                                        }
+                                    } {
+                                        {
+                                            --$("#class_id").append(data);
+                                            --
+                                        }
+                                    } {
+                                        {
+                                            --
+                                        } else {
+                                            --
+                                        }
+                                    } {
+                                        {
+                                            --$.fn.notifyMe('error', 5, 'something went wrong');
+                                            --
+                                        }
+                                    } {
+                                        {
+                                            --
+                                        }--
+                                    }
+                                } {
+                                    {
+                                        --
+                                    }, --
+                                }
+                            } {
+                                {
+                                    --error: function() {
+                                        --
+                                    }
+                                } {
+                                    {
+                                        --$.fn.notifyMe('error', 4, 'There is some error while searching for available class!');
+                                        --
+                                    }
+                                } {
+                                    {
+                                        --
+                                    }--
+                                }
+                            } {
+                                {
+                                    --
+                                });
+                            --
+                        }
+                    } {
+                        {
+                            --
+                        });
+                    --
+                }
+            }
+
+            function viewAssignment(id) {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url("/teacher/class/assignments") }}',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        'class_id': id,
+                    },
+                    success: function(result) {
+                        var response = JSON.parse(result);
+                        let data = '';
+                        response.data.forEach(function(classAssignment) {
+                            $('#assignmentList').find('tbody').find('tr').remove();
+                            data += '<tr>';
+                            data += '<td>' + classAssignment.g_title + '</td>';
+                            data += '<td><a href="' + classAssignment.g_live_link + '" class="text-decoration-none" target="_blank">Link</a></td>';
+                            data += '</tr>';
+
+                            $('#assignmentList').find('tbody').append(data);
+                        });
+                    },
+                    error: function() {
+                        $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
+                    }
+                });
+            }
 </script>
 
 @endsection

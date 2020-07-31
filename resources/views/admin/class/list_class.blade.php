@@ -11,7 +11,7 @@
             <div class="float-right ml-1">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('classes.add')}}">
                 <i class="fa fa-upload mr-1" aria-hidden="true"></i>
-                Import Class
+                Import Class Details
               </a>
             </div>
             <div class="float-right">
@@ -85,9 +85,9 @@
                       <td>{{$cls->class_name}}</td>
                       <td>{{$cls->section_name}}</td>
                       <td>{{$cls->studentSubject->subject_name}}</td>
-                      <td class="text-center"><a href="{{ $cls->g_link }}" target="_blank" >Class Link </a></td>
-                      <td  class="text-center">
-                        <a href="javascript:void(0);"  data-deleteModal="{{$cls->id}}" >{{ __('Delete') }}</a>
+                      <td class="text-center"><a href="{{ $cls->g_link }}" target="_blank">Class Link </a></td>
+                      <td class="text-center">
+                        <a href="javascript:void(0);" data-deleteModal="{{$cls->id}}">{{ __('Delete') }}</a>
                       </td>
                     </tr>
                     @endforeach
@@ -202,7 +202,7 @@
               extend: 'csvHtml5',
               autoFilter: true,
               sheetName: 'Exported data',
-              text: '<i class="fa fa-download mr-1 " aria-hidden="true"></i>Export CMS Details',
+              text: '<i class="fa fa-download mr-1 " aria-hidden="true"></i>Export Class Details',
               className: 'btn btn-secondary btn-sm',
               init: function(api, node, config) {
                 $(node).removeClass('dt-button')
@@ -231,7 +231,7 @@
 
 <script>
   $(document).ready(function() {
-  $('#subjectlist').DataTable({
+    $('#subjectlist').DataTable({
       initComplete: function(settings, json) {
         $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
         $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))

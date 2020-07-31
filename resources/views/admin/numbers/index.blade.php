@@ -200,7 +200,7 @@
               extend: 'csvHtml5',
               autoFilter: true,
               sheetName: 'Exported data',
-              text: '<i class="fa fa-download mr-1 " aria-hidden="true"></i>Export CMS Details',
+              text: '<i class="fa fa-download mr-1 " aria-hidden="true"></i>Export Student  Details',
               className: 'btn btn-secondary btn-sm ml-2',
               init: function(api, node, config) {
                 $(node).removeClass('dt-button')

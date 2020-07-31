@@ -3,8 +3,8 @@
 $s = \App\Http\Helpers\CustomHelper::getSchool();
 @endphp
 <nav class="navbar fixed-top navbar-expand-xl bg-light">
-  <div class="menu-bars">
-    <svg class="icon">
+  <div class="menu-bars ">
+    <svg class="icon mr-4 pr-5">
       <use xlink:href="{{asset('images/icons.svg#icon_bars')}}"></use>
     </svg>
   </div>

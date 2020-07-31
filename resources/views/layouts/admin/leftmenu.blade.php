@@ -22,7 +22,7 @@
 		}
 
 		25% {
-			color: yellow;
+			color: red;
 		}
 
 		50% {
@@ -69,6 +69,35 @@
 			transform: translate(-100%, 0);
 		}
 	}
+
+	@media(max-width: 992px) {
+		.leftmenu-section {
+			left: -260px;
+		}
+
+		.menu-open .leftmenu-section {
+			left: 0;
+		}
+	}
+
+	@media(min-width: 1200px) {
+		.menu-open .leftmenu-section {
+			left: -260px;
+		}
+
+		.menu-open .main-section {
+			padding-left: 0;
+		}
+	}
+
+	.menu-bars {
+		cursor: pointer;
+		padding-right: 8px;
+	}
+
+	.menu-bars svg {
+		font-size: x-large;
+	}
 </style>
 @php
 $student = "disabled";
@@ -103,11 +132,16 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 		<div class="row" style="display: inline;">
 			<div class=" float-left">
 
-				<a href="/" class="btn-menu btn text-white" style="background-color:#253372;" id="menu-bar">
+				<!-- <a href="#" class="btn-menu btn text-white menu-bars" style="background-color:#253372;" id="menu-bar">
+				</a> -->
+				<!-- <i class="fa fa-bars menu-bars align-baseline pt-2 text-dark icon-4x" aria-hidden="true"></i> -->
+
+				<div class="menu-bars d-inline">
 					<svg class="icon">
-						<use xlink:href="{{asset('images/icons.svg#icon_arrowdown')}}"></use>
+						<use xlink:href="{{asset('images/icons.svg#icon_bars')}}"></use>
 					</svg>
-				</a>
+				</div>
+
 				<a class="navbar-logo align-middle font-weight-bold" href="./">
 					{{$s[0]->value}}
 				</a>
