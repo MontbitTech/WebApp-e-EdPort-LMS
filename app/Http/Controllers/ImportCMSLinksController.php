@@ -115,19 +115,21 @@ class ImportCMSLinksController extends Controller
 	
      public function listTopics()
     {
+    	$cms      = CmsLink::get();
         $classes  = ClassSection::select('class_name')->distinct()->get();
 		$subjects = StudentSubject::get();
-        return view('admin.cmslinks.index',compact('classes','subjects'));
+        return view('admin.cmslinks.index',compact('classes','subjects','cms'));
     }
 
     public function filterRecord(Request $request, CmsLink $cmslink)
     {
     	$rec = $cmslink->newQuery();
-		
-		if(!empty($request->txtSerachClass && $request->txtSerachSubject)){
-			$getResult = $rec->where('class', $request->txtSerachClass)->where('subject', $request->txtSerachSubject)->get();
-		}
-	    else $getResult="";
+    	if(!empty($request->txtSerachClass)){
+    		$getResult = $rec->where('class', $request->txtSerachClass)->get();
+    		if(!empty($request->txtSerachSubject )){
+    			$getResult = $rec->where('subject', $request->txtSerachSubject)->get();
+    		}
+    	}
 
 	    return view('admin.cmslinks.filter-record',compact('getResult'));
     }
