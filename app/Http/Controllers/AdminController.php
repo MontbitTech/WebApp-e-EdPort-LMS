@@ -12,45 +12,44 @@ use App\Teacher;
 
 class AdminController extends Controller
 {
-    public function index ()
+    public function index()
     {
         return view('admin.welcome');
     }
 
-    public function updateSchoolLogo (Request $request)
+    public function updateSchoolLogo(Request $request)
     {
         try {
-            if ( $request->file('profile_picture') ) {
+            if ($request->file('profile_picture')) {
                 $image = $request->file('profile_picture');
                 $ext = $image->getClientOriginalExtension();
                 $name = $image->getClientOriginalName();
 
                 $supportedFileTypes = array('gif', 'jpeg', 'png', 'jpg');
 
-                if ( in_array(strtolower($ext), $supportedFileTypes) ) {
+                if (in_array(strtolower($ext), $supportedFileTypes)) {
                     $destinationPath = public_path('/images');
 
-                    if ( file_exists($destinationPath . "/" . $name) )
+                    if (file_exists($destinationPath . "/" . $name))
                         unlink($destinationPath . "/" . $name);
 
                     $sst = $image->move($destinationPath, $name);
                     $a = asset("images/" . $name);
 
 
-                    $st = \Db::table('tbl_settings')->where('item', 'schoollogo')->update(["value" => $a]);
+                    $st = \DB::table('tbl_settings')->where('item', 'schoollogo')->update(["value" => $a]);
 
                     return back()->with('success', Config::get('constants.WebMessageCode.112'));
                 }
             }
-        } catch ( \Exception $e ) {
+        } catch (\Exception $e) {
             return back()->with('error', Config::get('constants.WebMessageCode.121'));
         }
-
     }
 
-    public function addSetting (Request $request)
+    public function addSetting(Request $request)
     {
-        if ( $request->isMethod('post') ) {
+        if ($request->isMethod('post')) {
             $request->validate([
                 'item'   => 'required',
                 'ivalue' => 'required',
@@ -58,7 +57,7 @@ class AdminController extends Controller
 
             $settings = \DB::table('tbl_settings')->where('item', $request->item);
 
-            if ( $settings->count() > 0 ) {
+            if ($settings->count() > 0) {
                 return redirect()->route('setting.add')->with('error', "Item already exists !.");
             } else {
                 $settings = \DB::table('tbl_settings')->insert(['item' => $request->item, 'value' => $request->ivalue]);
@@ -70,13 +69,13 @@ class AdminController extends Controller
         return view('admin.settings.add');
     }
 
-    public function editSetting (Request $request, $id)
+    public function editSetting(Request $request, $id)
     {
-        if ( $request->isMethod('post') ) {
+        if ($request->isMethod('post')) {
             $id = decrypt($id);
 
             $setting = \DB::table('tbl_settings')->find($id);
-            if ( str_contains($setting->item, 'year') )
+            if (str_contains($setting->item, 'year'))
                 $request->ivalue = date('Y');
             $settings = \DB::table('tbl_settings')->where('id', $id)->update(["value" => $request->ivalue]);
 
@@ -89,7 +88,7 @@ class AdminController extends Controller
         return view('admin.settings.edit', compact('settings'));
     }
 
-    public function deleteSetting (Request $request)
+    public function deleteSetting(Request $request)
     {
         $id = $request->txt_setting_id;
         //dd($id);
@@ -98,7 +97,7 @@ class AdminController extends Controller
         return redirect()->route('admin.settings')->with('success', "Item deleted successfully !.");
     }
 
-    public function listSetting (Request $request)
+    public function listSetting(Request $request)
     {
         $settings = \DB::select('SELECT * FROM `tbl_settings` ORDER BY `id` ASC');
 
@@ -106,22 +105,21 @@ class AdminController extends Controller
     }
 
 
-    public function admin_login_post (Request $request)
+    public function admin_login_post(Request $request)
     {
         $session_token = Session::get('access_token');
 
-        if ( isset($session_token['access_token']) && $session_token['access_token'] ) {
+        if (isset($session_token['access_token']) && $session_token['access_token']) {
             $res = $this->verify_email_DB();
-            if ( $res == 101 ) {
+            if ($res == 101) {
                 return back()->with('error', Config::get('constants.WebMessageCode.118'));
                 $this->logout();
-            } else if ( $res == 102 ) {
+            } else if ($res == 102) {
                 return back()->with('error', "Invalid Token");
                 $this->logout();
             } else {
                 return redirect()->route('admin.dashboard');
             }
-
         } else {
             $auth_url = CustomHelper::set_token_admin();
 
@@ -129,9 +127,9 @@ class AdminController extends Controller
         }
     }
 
-    public function admin_login_get ()
+    public function admin_login_get()
     {
-        if ( !isset($_GET['code']) ) {
+        if (!isset($_GET['code'])) {
             $auth_url = CustomHelper::set_token_admin();
 
             return redirect($auth_url);
@@ -145,10 +143,10 @@ class AdminController extends Controller
             /*  echo $code;*/
             //echo  $responce->email;
 
-            if ( $res == 101 ) {
+            if ($res == 101) {
                 return back()->with('error', Config::get('constants.WebMessageCode.118'));
                 $this->logout();
-            } else if ( $res == 102 ) {
+            } else if ($res == 102) {
                 return back()->with('error', "Invalid Token");
                 $this->logout();
             } else {
@@ -163,7 +161,7 @@ class AdminController extends Controller
         }
     }
 
-    public function adminDashboard (Request $request)
+    public function adminDashboard(Request $request)
     {
         $teacher = Teacher::all();
         $currentYear = CustomHelper::getCurrentYear()->pluck('value');
@@ -172,7 +170,7 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('teacher', 'currentYear', 'onGoingClasses'))->with('i', 0);
     }
 
-    public function logout (Request $request)
+    public function logout(Request $request)
     {
         Session::forget('access_token');
         Session::forget('admin_session');
@@ -180,16 +178,16 @@ class AdminController extends Controller
         return redirect(url('/admin'));
     }
 
-    public function adminProfile (Request $request)
+    public function adminProfile(Request $request)
     {
         $admin_id = Session::get('admin_session');
-        if ( Request()->post() ) {
+        if (Request()->post()) {
             $request->validate([
                 'fname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
                 'lname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
                 // 'email' => 'required',
             ]);
-            if ( $request->input('phone_no') ) {
+            if ($request->input('phone_no')) {
                 $request->validate([
                     'phone_no' => 'numeric|digits:10',
                 ]);
@@ -210,7 +208,7 @@ class AdminController extends Controller
         return view('admin.profile', $data);
     }
 
-    public function verify_email_DB ()
+    public function verify_email_DB()
     {
         $session_token = Session::get('access_token');
 
@@ -220,20 +218,19 @@ class AdminController extends Controller
         //$responce = json_decode($responce,true);
         $resData = array_merge($array, json_decode($responce, true));
 
-        if ( $resData['error'] != '' ) {
+        if ($resData['error'] != '') {
             return 102;
         } else {
 
             $credentials = $resData['email'];
             $admin = Admin::where('email', $credentials)->first();
-            if ( !empty($admin) ) {
+            if (!empty($admin)) {
                 Session::put('admin_session', array('admin_id' => $admin['id'], 'admin_email' => $admin['email']));
 
                 return 100;
             } else {
                 return 101;
             }
-
         }
     }
 }
