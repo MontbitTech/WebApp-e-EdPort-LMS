@@ -55,7 +55,6 @@
                   <select id="txtSerachBySection" name="txtSerachBySection" class="form-control form-control-sm" onchange="getSubject()">
                     <option value=''>Select Section</option>
                     @if(count($section)>0)
-                    <option value='all'>All</option>
                     @foreach($section as $sl)
                     <option value='{{$sl->section_name}}'>{{$sl->section_name}}</option>
                     @endforeach
@@ -71,7 +70,6 @@
                 <table id="subjectlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                   <thead>
                     <tr>
-                      <th>#</th>
                       <th>Class</th>
                       <th>Section</th>
                       <th>Subject</th>
@@ -79,6 +77,22 @@
                       <th class="text-center">Action</th>
                     </tr>
                   </thead>
+                  <tbody>
+                    @if($studentClasses)
+                    @php $i=1; @endphp
+                    @foreach($studentClasses as $cls)
+                    <tr>
+                      <td>{{$cls->class_name}}</td>
+                      <td>{{$cls->section_name}}</td>
+                      <td>{{$cls->studentSubject->subject_name}}</td>
+                      <td class="text-center"><a href="{{ $cls->g_link }}" target="_blank" >Class Link </a></td>
+                      <td  class="text-center">
+                        <a href="javascript:void(0);"  data-deleteModal="{{$cls->id}}" >{{ __('Delete') }}</a>
+                      </td>
+                    </tr>
+                    @endforeach
+                    @endif
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -141,21 +155,6 @@
 
 
   });
-  $(document).ready(function() {
-    $('#teacherlist').DataTable({
-
-      initComplete: function(settings, json) {
-        $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
-        $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
-      }
-    });
-
-
-    $('.dateset').datepicker({
-      dateFormat: "yy/mm/dd"
-      // showAnim: "slide"
-    })
-  });
 
   $(document).on('click', '[data-deleteModal]', function() {
     var val = $(this).data('deletemodal');
@@ -196,7 +195,7 @@
         $("#subject").show();
 
         $(".buttons-csv").remove();
-        if (txtSerachBySection) {
+        if (txtSerachByClass) {
           var table = $('#subjectlist').DataTable({
             'dom': 'Btp',
             buttons: [{
@@ -228,5 +227,21 @@
       }
     });
   }
+</script>
+
+<script>
+  $(document).ready(function() {
+  $('#subjectlist').DataTable({
+      initComplete: function(settings, json) {
+        $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
+        $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+      }
+    });
+
+
+    $('.dateset').datepicker({
+      dateFormat: "yy/mm/dd"
+    })
+  });
 </script>
 @endsection

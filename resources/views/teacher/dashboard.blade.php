@@ -91,7 +91,7 @@ $cls = 0;
                                 <div class="row m-2">
                                     <div class="col-md-9">
                                         <div class="input-group text-editwrapper mt-1 mb-1">
-                                            <textarea class="form-control text-edit1" rows="3" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+                                            <textarea class="form-control text-edit1" rows="3" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" id="class_description_{{$i}}" name="class_description" placeholder="Add a note">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mt-1">

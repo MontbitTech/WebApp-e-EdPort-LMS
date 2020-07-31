@@ -41,24 +41,23 @@ class ClassController extends Controller
      */
     public function list_class ()
     {
-        $classes = ClassSection::select('class_name')->distinct()->get();
-        $section = ClassSection::select('section_name')->distinct()->get();
-
-        return view('admin.class.list_class', compact('classes', 'section'));
+        $studentClasses = StudentClass::orderBy('class_name','ASC')->get();
+        $classes        = ClassSection::select('class_name')->distinct()->get();
+        $section        = ClassSection::select('section_name')->distinct()->get();
+        
+        return view('admin.class.list_class', compact('classes', 'section', 'studentClasses'));
     }
 
 
     public function filterSubject (Request $request, StudentClass $StudentClass)
     {
         $rec = $StudentClass->newQuery();
-        if ( !empty($request->txtSerachByClass && $request->txtSerachBySection) ) {
-            if ( $request->txtSerachByClass && $request->txtSerachBySection == 'all' ) {
-                $getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
-            } else {
-                $getResult = $rec->where('class_name', $request->txtSerachByClass)->where('section_name', $request->txtSerachBySection)->get();
+        if(!empty($request->txtSerachByClass)){
+            $getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
+            if(!empty($request->txtSerachBySection )){
+                $getResult = $rec->where('section_name', $request->txtSerachBySection)->get();
             }
-        } else $getResult = "";
-
+        }
         return view('admin.class.filter-subject', compact('getResult'));
     }
 
