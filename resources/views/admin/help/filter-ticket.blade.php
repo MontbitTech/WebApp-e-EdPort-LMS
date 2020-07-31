@@ -58,7 +58,7 @@
                         {{isset($help->description)?$help->description:''}}</td>
                     <td style="width: 15%">
                         <select name="status" class="form-control"
-                                data-selectStatus="{{ $help->id }}">
+                                data-selectStatus="{{ $help->id }}" {{($help->status == 3)?'disabled':''}}>
                             <option value="1" {{($help->status == 1)?'selected':''}} >
                                 Pending
                             </option>
