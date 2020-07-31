@@ -47,29 +47,14 @@ $timing=$ar["timing"];
 
                                 <form method="post" action="{{route('timetable-deleteAll')}}">
                                     @csrf
-                                    <button type="submit" id="submit" style="float:left;display:none;" class="btn btn-secondary btn-sm" onclick="return confirmDelete()"><i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete all
+                                    <button type="submit" id="submit" style="float:right;display:none;" class="btn btn-secondary btn-sm" onclick="return confirmDelete()"><i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete all
                                     </button>
-                                    <span data-dtlist="#teacherlist" style="float:left;" class="ml-2">
+                                    <span data-dtlist="#teacherlist" style="float:right;" class="mr-2">
                                         <!--  <div class="spinner-border spinner-border-sm text-secondary" role="status"></div> -->
                                         <a href='' class="btn btn-secondary btn-sm" target='_blank' id='download' style='display:none;'><i class="fa fa-download mr-1 " aria-hidden="true"></i>Download/View</a>
                                     </span>
-                                    <span data-dtfilter="" style="float:right;">
-                                        <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
-                  <input type="text"  id="txtSerachBySection" class="form-control form-control-sm" placeholder="Search By Section..." />-->
 
-                                        <select id="txtSerachBySection" name="txtSerachBySection" class="form-control form-control-sm" onchange="getData()">
-                                            <option value=''>Select Section</option>
-                                            @if(count($section)>0)
-                                            @foreach($section as $sl)
-                                            <option value='{{ $sl->section_name }}'>
-                                                {{ $sl->section_name }}
-                                            </option>
-                                            @endforeach
-                                            @endif
-                                        </select>
-
-                                    </span>
-                                    <span data-dtfilter="" class="mr-2" style="float:right;">
+                                    <span data-dtfilter="" class="mr-3" style="float:left;">
 
 
                                         <select id="txtSerachByClass" name="txtSerachByClass" class="form-control form-control-sm" onchange="getData()">
@@ -84,7 +69,22 @@ $timing=$ar["timing"];
 
                                     </span>
 
+                                    <span data-dtfilter="" style="float:left;">
+                                        <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
+                                        <input type="text"  id="txtSerachBySection" class="form-control form-control-sm" placeholder="Search By Section..." />-->
 
+                                        <select id="txtSerachBySection" name="txtSerachBySection" class="form-control form-control-sm" onchange="getData()">
+                                            <option value=''>Select Section</option>
+                                            @if(count($section)>0)
+                                            @foreach($section as $sl)
+                                            <option value='{{ $sl->section_name }}'>
+                                                {{ $sl->section_name }}
+                                            </option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+
+                                    </span>
 
 
 

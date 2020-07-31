@@ -91,7 +91,7 @@ $cls = 0;
                                 <div class="row m-2">
                                     <div class="col-md-9">
                                         <div class="input-group text-editwrapper mt-1 mb-1">
-                                            <textarea class="form-control text-edit1" rows="3" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+                                            <textarea class="form-control text-edit1" rows="3" placeholder="Add a note" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-3 mt-1">
@@ -750,20 +750,21 @@ $cls = 0;
                         {!! Form::textarea('edit_description', null, array('id'=>'edit_description','placeholder' => 'Class Description','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live
-                        <small>(Link)</small>:</label>
-                    <div class="col-md-6">
-                        {!! Form::textarea('edit_join_liveUrl',$teacherData->g_meet_url, array('id'=>'edit_join_liveUrl','placeholder' => 'Enter Live class url','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
-                    </div>
-                </div>
                 <div class="form-group row">
                     <label for="inputNotifystd" class="col-md-4 col-form-label text-md-right">Notify
                         Students:</label>
                     <div class="col-md-6">
 
                         {!! Form::textarea('edit_notify_stdMessage', null, array('id'=>'edit_notify_stdMessage','placeholder' => 'Enter Notify Message','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live
+                        <small>(Link)</small>:</label>
+                    <div class="col-md-6">
+                        {!! Form::text('edit_join_liveUrl',$teacherData->g_meet_url, array('id'=>'edit_join_liveUrl','placeholder' => 'Enter Live class url','class' => 'form-control','readonly' )) !!}
 
                     </div>
                 </div>

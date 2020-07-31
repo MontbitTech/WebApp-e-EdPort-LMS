@@ -199,7 +199,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 </header>
 
 <!-- Start | Left Menu Bar -->
-<div class="leftmenu-section">
+<div class="leftmenu-section pb-4">
 	<div class="left-accordion" id="parentAccordion">
 		<div class="left-card">
 			<div class="left-link {{ Request::segment(1) == 'list-setting'?'active':''}}"><a href="{{route('admin.settings')}}" class="pl-3">
@@ -255,7 +255,9 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 		</div>
 
 	</div>
-	<div class="text-center text-white mt-2 pb-5 mb-5" style="font-size: 10px;letter-spacing: 1px;">Powered by e-EdPort</div>
+	<div class="text-center text-white  pb-5 mb-5" style="font-size: 10px;letter-spacing: 1px;">
+		<!-- <img src="{{asset('images/logo-1.png')}}" alt="e-edport" class="d-block text-center ml-5" width="27px"> -->
+		Powered by e-EdPort</div>
 </div>
 <p class="copyrights">&copy;{{date('YS')}} LM - All Rights Reserved</p>
 
