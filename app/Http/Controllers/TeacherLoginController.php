@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\HelpTicketCategory;
 use App\Http\Helpers\CustomHelper;
+use App\libraries\Utility\DateUtility;
 use Illuminate\Support\Facades\Config;
 use App\Teacher;
 use Illuminate\Http\Request;
@@ -127,7 +128,6 @@ class TeacherLoginController extends Controller
 		 
 		 $TodayLiveData = DateClass::with('studentClass','studentSubject','cmsLink')->where('teacher_id',$logged_teacher_id)
 																			->where(function($query) use($currentTime,$currentDay) {
-																				//$query->where('to_timing','>',$currentTime);
 																				$query->where('class_date','=',$currentDay);
 																			})->orderBy('from_timing','asc')
 																			->get();
@@ -142,11 +142,8 @@ class TeacherLoginController extends Controller
 		$data['classData'] = DB::table('tbl_student_classes as c')->select('c.id','c.class_name','c.section_name','c.subject_id','s.subject_name')->join('tbl_student_subjects as s','c.subject_id','s.id')->join('tbl_class_timings as ct','ct.class_id','c.id')->where('ct.teacher_id',$logged_teacher_id)->get()->unique();
 		 
 		$pastClassData = DateClass::with('studentClass','studentSubject','cmsLink')->where('teacher_id',$logged_teacher_id)
-												/* ->where(function($query) use($currentTime,$currentDay) {
-													$query->where('to_timing','<',$currentTime);
-													$query->where('class_date','=',$currentDay);
-												}) */
 												->Where('class_date','<',$currentDay)
+                                                ->where('class_date','>',DateUtility::getPastDate(7))
 												->orderBy('class_date','desc')
 												->orderBy('from_timing','desc')
 												->limit(20)

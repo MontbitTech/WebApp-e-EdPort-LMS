@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\CustomHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
@@ -563,8 +564,24 @@ class ImportTimetableController extends Controller
                                         $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
                                         if ( $inv_resData['error'] != '' ) {
                                             //return back()->with('error', "error 04");//Config::get('constants.WebMessageCode.119'));
+                                            Log::error('UNAUTHENTICATED, Error In ROW - ' . $period_name);
+                                            if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                                                CustomHelper::get_refresh_token();
+                                                $token = CommonHelper::varify_Admintoken();
+                                                $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // access Google api craete Cource
+
+                                                $inv_resData = array('error' => '');
+                                                $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
+//                                                return redirect()->route('admin.logout');
+                                            }
+                                        }
+
+                                        if ( $inv_resData['error'] != '' ) {
+                                            //return back()->with('error', "error 04");//Config::get('constants.WebMessageCode.119'));
                                             Log::error('Invitation has not send to teacher for class, Error In ROW - ' . $period_name);
-                                            if ( $inv_resData['error']['message'] == 'Invalid Credentials' ) {
+
+
+                                            if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
                                                 return redirect()->route('admin.logout');
                                             }else {
                                                 $error = "found";
