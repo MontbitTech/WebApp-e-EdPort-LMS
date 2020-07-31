@@ -24,10 +24,10 @@ class ImportCMSLinksController extends Controller
 {
     public function addLink(Request $request)
     {
-		$error = "";
-         if($request->isMethod('post')) 
+	    $error = "";
+        if($request->isMethod('post')) 
 		 {
-			$regex = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+		  $regex  = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)([\/\w \.?]*)([\/\w \.=]*)*\/?$/';
 
             $request->validate([ 
               'subject' => 'required',
@@ -37,7 +37,7 @@ class ImportCMSLinksController extends Controller
 			  'khan_academy' => 'required_without_all:link,youtube,others,alink|nullable|regex:'.$regex,
 			  'youtube'   => 'required_without_all:khan_academy,link,others,alink|nullable|regex:'.$regex,
 		      'others'  => 'required_without_all:khan_academy,link,youtube,alink|nullable|regex:'.$regex,
-			  'alink'  => 'required_without_all:khan_academy,link,youtube,others|nullable|regex:'.$regex
+			  'alink'   => 'required_without_all:khan_academy,link,youtube,others|nullable|regex:'.$regex
             ]);
 			
 			$studentClassExist=\DB::select('select id from tbl_cmslinks where class=? and subject=? and topic=? and link=? and assignment_link=?',
@@ -67,9 +67,10 @@ class ImportCMSLinksController extends Controller
     }
      public function editLink (Request $request, $id)
     {
-		$regex = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+	    # $regex  = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';  
+		$regex  = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)([\/\w \.?]*)([\/\w \.=]*)*\/?$/';
 
-        if($request->isMethod('post')) 
+	   if($request->isMethod('post')) 
 		{
             $request->validate([ 
             'subject' => 'required|max:100',
