@@ -45,8 +45,5 @@ class DeleteStudents implements ShouldQueue
 
             $student->delete();
         }
-
-
-
     }
 }
