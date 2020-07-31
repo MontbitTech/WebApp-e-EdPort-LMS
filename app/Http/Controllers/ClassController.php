@@ -41,9 +41,9 @@ class ClassController extends Controller
      */
     public function list_class ()
     {
-        $studentClasses = StudentClass::orderBy('class_name','ASC')->get();
-        $classes        = ClassSection::select('class_name')->distinct()->get();
-        $section        = ClassSection::select('section_name')->distinct()->get();
+        $studentClasses = StudentClass::get();
+        $classes        = ClassSection::orderByRaw("CAST(class_name as UNSIGNED) ASC")->get();
+        $section        = ClassSection::orderBy('section_name','ASC')->get();
         
         return view('admin.class.list_class', compact('classes', 'section', 'studentClasses'));
     }

@@ -42,7 +42,7 @@
                   <select id="txtSerachByClass" name="txtSerachByClass" class="form-control form-control-sm" onchange="getSubject()">
                     <option value=''>Select Class</option>
                     @if(count($classes)>0)
-                    @foreach($classes as $cl)
+                    @foreach($classes->unique('class_name') as $cl)
                     <option value='{{$cl->class_name}}'>{{$cl->class_name}}</option>
                     @endforeach
                     @endif
@@ -55,7 +55,7 @@
                   <select id="txtSerachBySection" name="txtSerachBySection" class="form-control form-control-sm" onchange="getSubject()">
                     <option value=''>Select Section</option>
                     @if(count($section)>0)
-                    @foreach($section as $sl)
+                    @foreach($section->unique('section_name') as $sl)
                     <option value='{{$sl->section_name}}'>{{$sl->section_name}}</option>
                     @endforeach
                     @endif
@@ -67,7 +67,7 @@
               </div>
 
               <div class="col-sm-12" id='subject'>
-                <table id="subjectlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                <table id="subjectlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 0, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                   <thead>
                     <tr>
                       <th>Class</th>
