@@ -154,7 +154,7 @@ $cls = 0;
                                                 <img src="{{asset('images/logo-1.png')}}" alt="" width="27px">
                                             </a>
 
-                                            <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
+                                            <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
                                                 <!-- Youtube -->
                                                 <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true"></i>
                                             </a>

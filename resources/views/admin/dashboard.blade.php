@@ -77,11 +77,7 @@
                           {{ __('Delete') }}
                         </a>
 
-                        <!--  <form id="delete-teacher-form" action="{{ route('teacher.delete', encrypt($user->id)) }}" method="POST" style="display: none;">
-                @csrf
-				 onclick="event.preventDefault();
-                        document.getElementById('delete-teacher-form').submit();"
-              </form> -->
+
                       </td>
                     </tr>
                     @endforeach
@@ -156,7 +152,7 @@
             <h4>Type "delete" to confirm</h4>
           </div>
           <div class="form-group text-center ">
-            <input type="text" name="delete" class="form-control" id="delete">
+            <input type="text" name="delete" class="form-control" id="delete" required>
 
           </div>
           <div class="form-group text-center">

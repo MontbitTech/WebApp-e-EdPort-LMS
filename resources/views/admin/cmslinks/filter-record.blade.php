@@ -29,70 +29,99 @@
                       <td class="text-center">{{$list->class}}</td>
                       <td>{{$list->Subject->subject_name}}</td>
                       <td>{{$list->topic}}</td>
-                       
-                       @if($list->link)
+
+                      @if($list->link)
                       <td class="text-center">
-                        <a href="{{$list->link}}" target="_blank">Link</a>
+                          <a href="{{$list->link}}" target="_blank">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
                       </td>
                       @endif
 
-                     @if($list->youtube)
+                      @if($list->youtube)
                       <td class="text-center">
-                        <a href="{{$list->youtube}}" target="_blank">Link</a>
+                          <a href="{{$list->youtube}}" target="_blank">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
                       </td>
                       @endif
                       @if($list->others)
                       <td class="text-center">
-                        <a href="{{$list->others}}" target="_blank">Link</a>
+                          <a href="{{$list->others}}" target="_blank">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
                       </td>
                       @endif
                       @if($list->khan_academy)
                       <td class="text-center">
-                        <a href="{{$list->khan_academy}}" target="_blank">Link</a>
+                          <a href="{{$list->khan_academy}}" target="_blank">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
                       </td>
                       @endif
                       @if($list->assignment_link)
                       <td class="text-center">
-                        <a href="{{$list->assignment_link}}" target="_blank">Link</a>
+                          <a href="{{$list->assignment_link}}" target="_blank">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
                       </td>
                       @endif
                       <td>
                           <a href="{{route('cms.editlink', encrypt($list->id))}}">Edit</a> |
-                          <a href="#" onclick="event.preventDefault();
-						document.getElementById('delete-cms-form{{$list->id}}').submit();">
-                              {{ __('Delete') }}
-                          </a>
+                          <a href="javascript:void(0);" data-deleteModal="{{$list->id}}">{{ __('Delete') }}</a>
 
-                          <form id="delete-cms-form{{$list->id}}" action="{{ route('cms.deletelink', encrypt($list->id)) }}" method="POST" style="display: none;">
-                              @csrf
-                          </form>
+
                       </td>
                   </tr>
                   @endforeach
                   @endif
               </tbody>
           </table>
+          <div class="modal fade" id="studentdeletModal" data-backdrop="static" tabindex="-1" role="dialog">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header bg-light d-flex align-items-center">
+                          <h5 class="modal-title font-weight-bold">Delete Class</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <svg class="icon">
+                                  <use xlink:href="../images/icons.svg#icon_times2"></use>
+                              </svg>
+                          </button>
+                      </div>
+                      <div class="modal-body pt-4">
+                          <form id="deleteform" method="POST">
+                              @csrf
+                              <input type="hidden" name="txt_student_id" id="txt_student_id" />
+                              <div class="form-group text-center">
+                                  <h4>Type "delete" to confirm</h4>
+                              </div>
+                              <div class="form-group text-center ">
+                                  <input type="text" name="delete" class="form-control" id="delete" required>
 
+                              </div>
+                              <div class="form-group text-center">
+                                  <button type="submit" class="btn btn-danger px-4">
+                                      Delete
+                                  </button>
+                                  <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
+                                      Cancel
+                                  </button>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+          </div>
           <script type="text/javascript">
               $(document).ready(function() {
 
@@ -198,5 +227,13 @@
 
                       return false;
                   });
+              });
+              $(document).on('click', '[data-deleteModal]', function() {
+                  var val = $(this).data('deletemodal');
+
+                  $('#studentdeletModal').modal('show');
+                  var route = "{{url('admin/delete-link')}}" + "/" + val;
+                  $("#deleteform").attr('action', route);
+
               });
           </script>

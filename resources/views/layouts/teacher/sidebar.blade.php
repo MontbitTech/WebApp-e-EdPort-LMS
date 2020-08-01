@@ -96,9 +96,14 @@ $photo = asset('images/teacher/'.$val->photo);
   <div class="profile-school">
     <img src="{{$slogo}}">
     <h5 class="m-0 text-white">{{$sname}}</h5>
+
+
   </div>
 
-  <div class=" text-white mb-2 ml-5 fixed-bottom" style="font-size: 10px;letter-spacing: 1px;">Powered by e-EdPort</div>
+  <div class="  text-dark mb-2 ml-5 fixed-bottom" style="font-size: 10px;letter-spacing: 1px;   display: flex;">
+    <img src="{{asset('images/logo-1.png')}}" alt="" class="d-block ml-5 fixed-bottom" width="27px" style=" display: flex;">
+    Powered by e-EdPort
+  </div>
 
 
 
