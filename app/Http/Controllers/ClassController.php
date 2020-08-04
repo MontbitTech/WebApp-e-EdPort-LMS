@@ -49,13 +49,26 @@ class ClassController extends Controller
     }
 
 
-    public function filterSubject (Request $request, StudentClass $StudentClass)
+     public function filterSubject (Request $request, StudentClass $StudentClass)
     {
         $rec = $StudentClass->newQuery();
-        if(!empty($request->txtSerachByClass)){
-            $getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
-            if(!empty($request->txtSerachBySection )){
+
+        if(!empty($request->txtSerachByClass=='all-class')){
+            $getResult = $rec->get();
+            if($request->txtSerachBySection && $request->txtSerachBySection!='all-section'){
                 $getResult = $rec->where('section_name', $request->txtSerachBySection)->get();
+            }          
+        }
+        else if($request->txtSerachByClass && $request->txtSerachBySection == 'all-section' ){
+            $getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
+        }
+        else if(!empty($request->txtSerachByClass) &&($request->txtSerachByClass!='all-class')){
+            $getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
+            if(!empty($request->txtSerachBySection && $request->txtSerachBySection != 'all-section' )){
+                $getResult = $rec->where('section_name', $request->txtSerachBySection)->get();
+            }
+            if(!empty($request->txtSerachBySection && $request->txtSerachBySection == 'all-section' )){
+                $getResult = $rec->where('class_name', $request->txtSerachBySection)->get();
             }
         }
         return view('admin.class.filter-subject', compact('getResult'));

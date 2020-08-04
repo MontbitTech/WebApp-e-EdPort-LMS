@@ -42,6 +42,7 @@
                   <select id="txtSerachByClass" name="txtSerachByClass" class="form-control form-control-sm" onchange="getSubject()">
                     <option value=''>Select Class</option>
                     @if(count($classes)>0)
+                    <option value='all-class'>All</option>
                     @foreach($classes->unique('class_name') as $cl)
                     <option value='{{$cl->class_name}}'>{{$cl->class_name}}</option>
                     @endforeach
@@ -55,6 +56,7 @@
                   <select id="txtSerachBySection" name="txtSerachBySection" class="form-control form-control-sm" onchange="getSubject()">
                     <option value=''>Select Section</option>
                     @if(count($section)>0)
+                     <option value='all-section'>All</option>
                     @foreach($section->unique('section_name') as $sl)
                     <option value='{{$sl->section_name}}'>{{$sl->section_name}}</option>
                     @endforeach
@@ -208,7 +210,7 @@
                 $(node).removeClass('dt-button')
               },
               exportOptions: {
-                columns: [1, 2, 3]
+                columns: [0,1, 2]
               }
 
             }],
