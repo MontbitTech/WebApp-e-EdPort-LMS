@@ -1,13 +1,12 @@
-<table id="studentlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+<table id="studentlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
     <thead>
         <tr>
             @if($getResult)
             <th width="50px"><input type="checkbox" class="master" id="master"></th>
             @endif
-            <th>#</th>
-            <th>Name</th>
             <th>Class</th>
             <th>Section</th>
+            <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
             <th>Notify</th>
@@ -21,10 +20,9 @@
         @foreach($getResult as $list)
         <tr id="tr_{{$list->id}}">
             <td><input type="checkbox" class="sub_chk" data-id="{{$list->id}}"></td>
-            <td>{{++$i}}</td>
-            <td>{{$list->name}}</td>
             <td>{{$list->class_name}}</td>
             <td>{{$list->section_name}}</td>
+            <td>{{$list->name}}</td>
             <td>{{$list->email}}</td>
             <td>{{$list->phone}}</td>
             <td>
