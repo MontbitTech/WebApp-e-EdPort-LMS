@@ -121,7 +121,7 @@ class ImportCMSLinksController extends Controller
 	public function listTopics()
 	{
 		$cms      = CmsLink::get();
-		$classes  = ClassSection::select('class_name')->distinct()->get();
+		$classes  = ClassSection::orderByRaw("CAST(class_name as UNSIGNED) ASC")->get();
 		$subjects = StudentSubject::get();
 		return view('admin.cmslinks.index', compact('classes', 'subjects', 'cms'));
 	}
@@ -129,12 +129,24 @@ class ImportCMSLinksController extends Controller
 	public function filterRecord(Request $request, CmsLink $cmslink)
 	{
 		$rec = $cmslink->newQuery();
-		if (!empty($request->txtSerachClass)) {
-			$getResult = $rec->where('class', $request->txtSerachClass)->get();
-			if (!empty($request->txtSerachSubject)) {
-				$getResult = $rec->where('subject', $request->txtSerachSubject)->get();
-			}
-		}
+       if(!empty($request->txtSerachClass=='all-class')){
+            $getResult = $rec->get();
+            if($request->txtSerachSubject && $request->txtSerachSubject!='all-subject'){
+                $getResult = $rec->where('subject', $request->txtSerachSubject)->get();
+            }          
+        }
+        else if($request->txtSerachClass && $request->txtSerachSubject == 'all-subject' ){
+            $getResult = $rec->where('class', $request->txtSerachClass)->get();
+        }
+        else if(!empty($request->txtSerachClass) &&($request->txtSerachClass!='all-class')){
+            $getResult = $rec->where('class', $request->txtSerachClass)->get();
+            if(!empty($request->txtSerachSubject && $request->txtSerachSubject != 'all-subject' )){
+                $getResult = $rec->where('subject', $request->txtSerachSubject)->get();
+            }
+            if(!empty($request->txtSerachSubject && $request->txtSerachSubject == 'all-subject' )){
+                $getResult = $rec->where('class', $request->txtSerachSubject)->get();
+            }
+        }
 
 		return view('admin.cmslinks.filter-record', compact('getResult'));
 	}

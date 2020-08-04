@@ -45,7 +45,8 @@
                   <select id="txtSerachClass" name="txtSerachClass" class="form-control form-control-sm" onchange="getRecord()">
                     <option value=''>Select Class</option>
                     @if(count($classes)>0)
-                    @foreach($classes as $cl)
+                    <option value='all-class'>All</option>
+                    @foreach($classes->unique('class_name') as $cl)
                     <option value='{{$cl->class_name}}'>{{$cl->class_name}}</option>
                     @endforeach
                     @endif
@@ -58,6 +59,7 @@
                   <select id="txtSerachSubject" name="txtSerachSubject" class="form-control form-control-sm" onchange="getRecord()">
                     <option value=''>Select Subject</option>
                     @if(count($subjects)>0)
+                    <option value='all-subject'>All</option>
                     @foreach($subjects->unique('subject_name') as $sl)
                     <option value='{{$sl->id}}'>{{$sl->subject_name}}</option>
                     @endforeach
@@ -70,7 +72,7 @@
               </div>
 
               <div class="col-sm-12" id="cms">
-                <table id="cmsrecords" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                <table id="cmsrecords" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 0, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                   <thead>
                     <tr>
                       <th>Class</th>
@@ -233,7 +235,7 @@
                 $(node).removeClass('dt-button')
               },
               exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9]
+                columns: [1, 2, 3, 4, 5, 6, 7, 8]
               }
 
             }],
