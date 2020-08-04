@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\libraries\Utility\DateUtility;
 use App\Teacher;
 use App\Teacher_Class;
 use Illuminate\Http\Request;
@@ -175,6 +176,8 @@ class TeacherClassController extends Controller
            return back()->with('error','Please add valid live url.');
        }  */
 
+        if ( $class_date == date('Y-m-d') && date('h:i', strtotime($from_time)) <= date('h:i') )
+            return back()->with('error', "You can't add a class in the past. Class date time should not be less than current date and time.");
 
         $obj_class = StudentClass::where('id', $class_id)->get()->first();
 
@@ -193,15 +196,26 @@ class TeacherClassController extends Controller
 
         $g_teacher_id = $g_teacher_data->g_user_id;
 
-
-        $TimeTableExist = ClassTiming::where('class_id', $class_id)->where('teacher_id', $teacher_id)->where('subject_id', $subject_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
+        $TimeTableExist = ClassTiming::where('class_id', $class_id)
+            ->where('teacher_id', $teacher_id)
+            ->where('subject_id', $subject_id)
+            ->where('class_day', $class_day)
+            ->where('from_timing', '<=', DateUtility::getPastTime(1, $to_time))
+            ->where('to_timing', '>=', DateUtility::getFutureTime(1, $from_time))
+            ->first();
 
         $classTimingExist = ClassTiming::where('class_id', $class_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
 
         $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
 
 
-        $dateClassExist = DateClass::where('class_id', $class_id)->where('teacher_id', $teacher_id)->where('subject_id', $subject_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
+        $dateClassExist = DateClass::where('class_id', $class_id)
+            ->where('teacher_id', $teacher_id)
+            ->where('subject_id', $subject_id)
+            ->where('class_date', $class_date)
+            ->where('from_timing', '<=', DateUtility::getPastTime(1, $to_time))
+            ->where('to_timing', '>=', DateUtility::getFutureTime(1, $from_time))
+            ->get()->first();
 
         $dateClassTimeExist = DateClass::where('class_id', $class_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
 

@@ -18,7 +18,7 @@ $value =  "teachername@" . $domain->value;
             {!! Form::open(array('route' => ['teacher.add'],'method'=>'POST','autocomplete'=>'off')) !!}
             <div class="form-group row">
               <label for="colFormLabel" class="col-md-4 col-form-label">Teacher Name:</label>
-              <div class="col-md-5">
+              <div class="col-md-6">
                 {!! Form::text('fname', null, array('placeholder' => "Teacher's Name",'class' => 'form-control','required'=>'required')) !!}
               </div>
             </div>
@@ -32,15 +32,15 @@ $value =  "teachername@" . $domain->value;
 
             <div class="form-group row">
               <label for="colFormLabel" class="col-md-4 col-form-label">Email:</label>
-              <div class="col-md-5">
-                {!! Form::email('email', $value, array('placeholder' => $value,'class' => 'form-control','required'=>'required')) !!}
+              <div class="col-md-6">
+                {!! Form::email('email', null, array('placeholder' => $value,'class' => 'form-control','required'=>'required')) !!}
               </div>
 
             </div>
 
             <div class="form-group row">
               <label for="colFormLabel" class="col-md-4 col-form-label">Phone:</label>
-              <div class="col-md-5">
+              <div class="col-md-6">
                 {!! Form::text('phone', null, array('placeholder' => 'Phone','class' => 'form-control','required'=>'required','pattern'=>'[0-9]+')) !!}
               </div>
             </div>

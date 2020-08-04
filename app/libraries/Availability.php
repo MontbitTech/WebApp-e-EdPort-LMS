@@ -3,6 +3,7 @@
 namespace App\libraries;
 
 use App\ClassTiming;
+use App\libraries\Utility\DateUtility;
 use App\StudentClass;
 use App\StudentSubject;
 use App\Teacher;
@@ -23,8 +24,8 @@ class Availability
     public static function getAvailableTeacher ($timings, $day)
     {
         return Teacher::whereDoesntHave('class_timing', function ($q) use ($timings, $day) {
-            $q->where('from_timing', '<=', $timings[1]);
-            $q->where('to_timing', '>=', $timings[0]);
+            $q->where('from_timing', '<=', DateUtility::getPastTime(1,$timings[1]));
+            $q->where('to_timing', '>=', DateUtility::getFutureTime(1,$timings[0]));
             $q->where('class_day', '=', $day);
         })->get();
     }

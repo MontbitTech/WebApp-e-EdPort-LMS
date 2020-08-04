@@ -18,13 +18,15 @@ use App\StudentClass;
 use App\StudentSubject;
 
 
-class HelpController extends Controller {
+class HelpController extends Controller
+{
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct () {
+    public function __construct ()
+    {
         //$this->middleware('auth');
         //return Auth::guard('admin');
     }
@@ -35,18 +37,20 @@ class HelpController extends Controller {
      * @return list view
      */
 
-    public function helpList (Request $request) {
+    public function helpList (Request $request)
+    {
         $categories = HelpTicketCategory::get();
 
         return view('admin.help.list', compact('categories'));
     }
 
-    public function filterTicket (Request $request) {
+    public function filterTicket (Request $request)
+    {
 
         $categories = HelpTicketCategory::get();
 
         $selectedCategory = null;
-        if ( isset($request->category) ) {
+        if ( isset($request->category) && $request->category != 'all' ) {
             $support_help = \App\SupportHelp::orderBy('status', 'DESC')
                 ->where('help_ticket_category_id', $request->category)->get();
             $selectedCategory = $request->category;
@@ -58,19 +62,24 @@ class HelpController extends Controller {
         return view('admin.help.filter-ticket', compact('support_help', 'categories', 'selectedCategory'))->with('i', 0);
     }
 
-    public function updateStatus (Request $request) {
-        $help_id = $request->help_id;
-        $status_id = $request->status_id;
+    public function updateStatus (Request $request)
+    {
+        $supportHelp = SupportHelp::find($request->help_id);
+        $supportHelp->status = $request->status_id;
+        if ( $request->status_id == 3 ) {
+            $supportHelp->comments = $request->comment . ' ( Closed at :' . date('d/m/Y h:i:sa') . ' )';
+            $message = 'Your ticket has been closed. Reason : ' . $supportHelp->comments;
+            CommonHelper::send_sms($supportHelp->teacher->phone, $message);
+        }
 
-        $support_help = SupportHelp::find($help_id);
-        $support_help->status = $status_id;
-        $support_help->save();
+        $supportHelp->save();
 
         echo json_encode(array('status' => 'success', 'message' => Config::get('constants.WebMessageCode.134')));
     }
 
 
-    public function generateHelpTicket (Request $request) {
+    public function generateHelpTicket (Request $request)
+    {
 
         $logged_teacher = Session::get('teacher_session');
         $logged_teacher_id = $logged_teacher['teacher_id'];
@@ -93,15 +102,16 @@ class HelpController extends Controller {
             } */
 
 
-            $support_help = new SupportHelp;
+            $support_help = new SupportHelp();
 
             $support_help->teacher_id = $logged_teacher_id;
-            // $support_help->description = isset($request->description)?$request->description:'';
+            $support_help->description = isset($request->description) ? $request->description : '';
             $support_help->help_type = $request->help_type;
             $support_help->class_id = $request->class_id;
             $support_help->subject_id = $request->subject_id;
             $support_help->read_status = 0;
             $support_help->class_join_link = isset($request->joinlive) ? $request->joinlive : '';
+            $support_help->help_ticket_category_id = null;
             $support_help->save();
 
 
@@ -131,7 +141,8 @@ class HelpController extends Controller {
 
     }
 
-    public function genericHelpTicket (Request $request) {
+    public function genericHelpTicket (Request $request)
+    {
         $logged_teacher = Session::get('teacher_session');
         $logged_teacher_id = $logged_teacher['teacher_id'];
 

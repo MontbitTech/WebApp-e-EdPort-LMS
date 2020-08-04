@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\libraries\Utility\StudentUtility;
+use App\Models\StudentCourseInvitation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
@@ -27,11 +29,7 @@ class ImportStudentsController extends Controller
 
     public function addStudent (Request $request)
     {
-
-
-        $domain = CustomHelper::getDomain();
         $from = CustomHelper::getFromMail();
-        $domain_name = $domain->value;
 
         if ( $request->isMethod('post') ) {
             $request->validate([
@@ -39,15 +37,15 @@ class ImportStudentsController extends Controller
                 // 'lname' => 'required|max:100|alpha_num',
                 'class'   => 'required',
                 'section' => 'required',
-                'email'   => 'required|email',
-                'phone'   => 'required|numeric|digits:10',
+                'email'   => 'required|email|unique:tbl_students|ends_with:gmail.com',
+                'phone'   => 'required|numeric|digits:10|unique:tbl_students',
                 // 'pin' => 'required|min:4|unique:tbl_techers',
             ], [
                 'fname.regex' => 'The name must be letters.',
                 //'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
 
             ]);
-            //dd($request->all());
+
             if ( $request->notify == true ) {
                 if ( isset($request->phone) || isset($request->email) )
                     $n = "yes";
@@ -67,7 +65,7 @@ class ImportStudentsController extends Controller
 
             $obj_class = StudentClass::where('class_name', $request->class)->where('section_name', $request->section)->get();
 
-
+            $inv_responce = null;
             if ( count($obj_class) > 0 ) {
                 $token = CommonHelper::varify_Admintoken(); // verify admin token
                 foreach ( $obj_class as $row ) {
@@ -101,8 +99,29 @@ class ImportStudentsController extends Controller
                             $inv_res_code = $inv_resData['id'];
                         }
                     }
+
+                    $courseInvitation = new StudentCourseInvitation();
+                    $courseInvitation->course_code = $g_class_id;
+                    $courseInvitation->invitation_code = $inv_resData['id'];
+                    $courseInvitation->student_email = $request->email;
+                    $courseInvitation->save();
                 }
-                \DB::insert('insert into tbl_students (name, class_id, phone, email, notify) values (?, ?, ?, ?, ?)', [$request->fname, $student[0], $request->phone, $request->email, $n]);
+
+                StudentUtility::createStudent([
+                    'name'     => $request->fname,
+                    'class_id' => $student[0],
+                    'phone'    => $request->phone,
+                    'email'    => $request->email,
+                    'notify'   => $n,
+                ]);
+//                $student = new Student();
+//                $student->name = $request->name;
+//                $student->class_id = $student[0];
+//                $student->phone = $request->phone;
+//                $student->email = $request->email;
+//                $student->invitation_code = isset($inv_responce->id) ?? null;
+//                $student->save();
+//                \DB::insert('insert into tbl_students (name, class_id, phone, email, notify) values (?, ?, ?, ?, ?)', [$request->fname, $student[0], $request->phone, $request->email, $n]);
 
                 $class = encrypt($request->class);
                 $section = encrypt($request->section);
@@ -183,17 +202,21 @@ class ImportStudentsController extends Controller
         if ( $request->delete == 'Delete' || $request->delete == 'delete' ) {
             $sid = $request->txt_student_id;
 
-            /**/
+//            $student = \DB::select('select * from tbl_students s, tbl_classes c where s.class_id = c.id and s.id=' . $sid);
+            $student = Student::with('class')->find($sid);
 
-            $student = \DB::select('select class_name, section_name, email from tbl_students s, tbl_classes c where s.class_id = c.id and s.id=' . $sid);
-
-            if ( count($student) > 0 ) {
-                $student = $student[0];
-
-                $obj_class = StudentClass::where('class_name', $student->class_name)->where('section_name', $student->section_name)->get();
+            if ( $student ) {
+                $obj_class = StudentClass::where('class_name', $student->class->class_name)->where('section_name', $student->class->section_name)->get();
 
                 $token = CommonHelper::varify_Admintoken(); // verify admin token
                 foreach ( $obj_class as $row ) {
+
+                    $courseInvitations = StudentCourseInvitation::where('student_email', $student->email)->get();
+
+                    foreach ( $courseInvitations as $courseInvitation ) {
+                        CommonHelper::teacher_invitation_delete($token, $courseInvitation->invitation_code);
+                        $courseInvitation->delete();
+                    }
 
                     $inv_responce = CommonHelper::student_course_delete($token, $student->email, $row->g_class_id); // Invite Student
 
@@ -210,12 +233,12 @@ class ImportStudentsController extends Controller
                         }
                     }
                 }
+                $student->delete();
             }
             /**/
-            $student = Student::find($sid);
-            $student->delete();
+//            $student = Student::find($sid);
 
-            $lists = \DB::select('select s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id');
+//            $lists = \DB::select('select s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id');
 
             return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.139'));
         } else {
@@ -225,26 +248,33 @@ class ImportStudentsController extends Controller
 
     public function listStudents ()
     {
-        $classes = ClassSection::select('class_name')->distinct()->get();
-        $sections = ClassSection::select('section_name')->distinct()->get();
+        $students = Student::get();
+        $classes  = ClassSection::orderByRaw("CAST(class_name as UNSIGNED) ASC")->get();
+        $sections = ClassSection::orderBy('section_name','ASC')->get();
 
-        return view('admin.numbers.index', compact('classes', 'sections'));
+        return view('admin.numbers.index', compact('classes', 'sections', 'students'));
     }
 
-    public function filterStudent (Request $request)
+     public function filterStudent (Request $request)
     {
-        $class_name = $request->txtSerachClass;
-        $section_name = $request->txtSerachSection;
-        if ( !empty($request->txtSerachClass && $request->txtSerachSection) ){
-            if( $request->txtSerachClass && $request->txtSerachSection == 'all'){
-            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$class_name]);
+        if(!empty($request->txtSerachClass=='all-class')){
+            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id");
+            if($request->txtSerachSection && $request->txtSerachSection!='all-section'){
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
             }
-        else{
-             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=? and c.section_name=?", [$class_name, $section_name]);
+        }
+        else if($request->txtSerachClass && $request->txtSerachSection == 'all-section'){
+            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
+        }
+        else if(!empty($request->txtSerachClass) &&($request->txtSerachClass!='all-class')){
+            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
+            if(!empty($request->txtSerachSection && $request->txtSerachSection != 'all-section' )){
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
             }
-        } 
-        else $getResult = "";
-
+            if(!empty($request->txtSerachSection && $request->txtSerachSection == 'all-section' )){
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
+            }
+        }
         return view('admin.numbers.filter-student', compact('getResult'));
     }
 
@@ -259,22 +289,17 @@ class ImportStudentsController extends Controller
     /*Import no of students in a class*/
     public function importClassStudentNumber (Request $request)
     {
-
-
-        $domain = CustomHelper::getDomain();
         $from = CustomHelper::getFromMail();
-        $domain_name = $domain->value;
 
-        $student_class = \App\StudentClass::all();
+        $student_class = StudentClass::all();
         $error = "";
         $rows = "";
-
         if ( Request()->post() ) {
+
+            $request->validate([
+                'file' => 'required',
+            ]);
             try {
-                $request->validate([
-                    'file' => 'required'
-                    //   'class' => 'required'
-                ]);
 
                 $extensions = array("csv", "xlsx");
                 $file_validate = strtolower($request->file('file')->getClientOriginalExtension());
@@ -312,7 +337,6 @@ class ImportStudentsController extends Controller
                     if ( !isset($reader["class"]) || !isset($reader["name"]) || !isset($reader["phone"]) || !isset($reader["email"]) || !isset($reader["class"]) ) {
                         $error = "Header mismatch";
                         Log::error('Header mismatch!!');
-                        //return back()->with('error',Config::get('constants.WebMessageCode.137'));
                     } elseif ( $reader["name"] == "" || $reader["class"] == "" || $reader["section"] == "" || $reader["email"] == "" || $reader["phone"] == "" ) {
                         Log::error('Student details missing : ROW - ' . $i);
                         $error = "true";
@@ -333,19 +357,26 @@ class ImportStudentsController extends Controller
                         Log::error('Invalid Email : ROW - ' . $i);
                         $error = 'found';
                         $rows .= $i . ",";
+                    } else if(CustomHelper::getDomainFromEmail($reader['email']) != 'gmail.com' ){
+                        Log::error('Email with invalid domain : ROW - ' . $i);
+                        $errorString = 'Email with invalid domain : ROW - ' . $i;
+                        $error = 'found';
+                        $rows .= $i . ",";
                     } else {
                         $studentClassExist = \DB::select('select id from tbl_classes where class_name="' . $reader["class"] . '" and section_name="' . $reader["section"] . '"');
 
-
                         $obj_class = StudentClass::where('class_name', $reader["class"])->where('section_name', $reader["section"])->get();
-
 
                         if ( count($obj_class) > 0 ) {
                             $class_id = $studentClassExist[0]->id;
 
                             $studenExist = \DB::select('select * from tbl_students where email="' . $reader["email"] . '" and phone="' . $reader["phone"] . '" and name="' . $reader["name"] . '" and class_id="' . $class_id . '"');
-
-                            if ( count($studenExist) > 0 ) {
+                            $emailAndPhoneCheck = Student::where('email', $reader["email"])->orWhere('phone', $reader["phone"])->count();
+                            if ( $emailAndPhoneCheck ) {
+                                Log::error('Either mobile number or Email already registered : ROW - ' . $i);
+                                $rows .= $i . ",";
+                                $error = "true";
+                            } else if ( count($studenExist) > 0 ) {
                                 Log::error('Duplicate entry : ROW - ' . $i);
                                 $rows .= $i . ",";
                                 $error = "true";
@@ -378,9 +409,23 @@ class ImportStudentsController extends Controller
                                             $inv_res_code = $inv_resData['id'];
                                         }
                                     }
+
+                                    $courseInvitation = new StudentCourseInvitation();
+                                    $courseInvitation->course_code = $g_class_id;
+                                    $courseInvitation->invitation_code = $inv_resData['id'];
+                                    $courseInvitation->student_email = $reader["email"];
+                                    $courseInvitation->save();
+
                                 }
-                                $s = \DB::table('tbl_students')->insert([
-                                    ['name' => $reader["name"], 'class_id' => $class_id, 'email' => $reader["email"], 'phone' => $reader["phone"], 'notify' => $reader["notify"]],
+//                                $s = \DB::table('tbl_students')->insert([
+//                                    ['name' => $reader["name"], 'class_id' => $class_id, 'email' => $reader["email"], 'phone' => $reader["phone"], 'notify' => $reader["notify"]],
+//                                ]);
+                                $s = StudentUtility::createStudent([
+                                    'name'     => $reader["name"],
+                                    'class_id' => $class_id,
+                                    'phone'    => $reader["phone"],
+                                    'email'    => $reader["email"],
+                                    'notify'   => $reader["notify"],
                                 ]);
 
                                 $c = $reader["class"];
@@ -433,9 +478,12 @@ class ImportStudentsController extends Controller
         return view('admin.numbers.import', compact('student_class'));
     }
 
-    function deleteAllStudent(Request $request)
+    function deleteAllStudent (Request $request)
     {
-    	Student::whereIn('id',explode(",",$request->ids))->delete();
-    	return response()->json(['success'=>"Deleted successfully."]);
+        $students = Student::with('class')->whereIn('id', explode(",", $request->ids))->get();
+
+        StudentUtility::removeStudentsFromClassroom($students);
+
+        return response()->json(['success' => "Deleted successfully."]);
     }
 }

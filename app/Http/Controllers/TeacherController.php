@@ -49,7 +49,7 @@ class TeacherController extends Controller
                 'fname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
                 // 'lname' => 'required|max:100|alpha_num',
                 'email' => 'required|email|ends_with:' . $domain->value . '|max:100|unique:tbl_techers',
-                'phone' => 'required|numeric|digits:10',
+                'phone' => 'required|numeric|digits:10|unique:tbl_techers',
                 // 'pin' => 'required|min:4|unique:tbl_techers',
             ], [
                 'fname.regex' => 'The name must be letters.',
@@ -107,7 +107,7 @@ class TeacherController extends Controller
                         $number = $phone;
                     }
 
-                    $message = "Your school created an account for you. Gmail ID: $email and your mobile number as password..";
+                    $message = "Your school created an account for you. Gmail ID: $email and  “t#” followed by phone number as password..";
 
                     $s = CommonHelper::send_sms($number, $message);
 
@@ -134,7 +134,7 @@ class TeacherController extends Controller
                 // 'lname' => 'required|max:100|alpha_num',
                 'email'      => 'required|email|ends_with:' . $domain->value . '|max:100|unique:tbl_techers,email,' . $id,
                 'phone'      => 'required|numeric|digits:10',
-                'g_meet_url' => "required|url",
+                'g_meet_url' => "required|url|unique:tbl_techers",
             ], [
                 'fname.regex' => 'The name must be letters.',
                 //'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
@@ -287,11 +287,10 @@ class TeacherController extends Controller
         $logged_admin = Session::get('admin_session');
         $logged_admin_email = $logged_admin['admin_email'];
         if ( Request()->post() ) {
+            $request->validate([
+                'file' => 'required',
+            ]);
             try {
-                $request->validate([
-                    'file' => 'required'
-                    //   'class' => 'required'
-                ]);
 
                 $extensions = array("csv", "xlsx");
                 $file_validate = strtolower($request->file('file')->getClientOriginalExtension());
@@ -316,6 +315,7 @@ class TeacherController extends Controller
                 $supplierAdded = 0;
                 $i = 1;
                 $error = '';
+                $errorString = '';
                 $rows = "";
 
                 $collection = ( new FastExcel )->import($path);
@@ -331,7 +331,7 @@ class TeacherController extends Controller
                 foreach ( $collection as $key => $reader ) {
                     if ( Teacher::count() >= env('TEACHER_UPPERCAP') ) {
                         return back()->with('error',
-                            'Maximum limit of ' . env('TEACHER_UPPERCAP') . 'teacher reached. 
+                            'Maximum limit of ' . env('TEACHER_UPPERCAP') . 'teacher reached.
                                 Contact administrator for extending limit');
                     }
                     if ( !isset($reader["name"]) || !isset($reader["email"]) || !isset($reader["phone"]) ) {
@@ -339,35 +339,42 @@ class TeacherController extends Controller
                         Log::error('Header mismatch!!');
                     } else if ( $reader["name"] == "" || $reader["email"] == "" || $reader["phone"] == "" ) {
                         Log::error('Teacher details missing : ROW - ' . $i);
+                        $errorString = 'Teacher details missing : ROW - ' . $i;
                         $error = 'found';
                         $rows .= $i . ",";
                     } else if ( $reader["email"] == "" && $reader["phone"] == "" ) {
                         Log::error('Teacher details missing for Registration : ROW - ' . $i);
+                        $errorString = 'Teacher details missing for Registration : ROW - ' . $i;
                         $error = 'found';
                         $rows .= $i . ",";
                     } else if ( $reader["email"] == "" ) {
                         Log::error('Teacher email missing : ROW - ' . $i);
+                        $errorString = 'Teacher email missing : ROW - ' . $i;
                         $error = 'found';
                         $rows .= $i . ",";
                     } else if ( $reader["phone"] == "" ) {
                         Log::error('Teacher phone number missing : ROW - ' . $i);
+                        $errorString = 'Teacher phone number missing : ROW - ' . $i;
                         $error = 'found';
                         $rows .= $i . ",";
                     } else if ( !preg_match("/^[a-zA-Z0-9 ]*$/", $reader['name']) ) {
                         Log::error('Teacher name must contain only charachters : ROW - ' . $i);
+                        $errorString = 'Teacher name must contain only charachters : ROW - ' . $i;
                         $error = 'found';
                         $rows .= $i . ",";
                     } else if ( !preg_match("/^[0-9]{10}$/", $reader['phone']) ) {
                         Log::error('Phone number must have 10 digits only : ROW - ' . $i);
-
+                        $errorString = 'Phone number must have 10 digits only : ROW - ' . $i;
                         $error = 'found';
                         $rows .= $i . ",";
                     } else if ( !CustomHelper::is_email($reader['email']) ) {
                         Log::error('Invalid Email : ROW - ' . $i);
+                        $errorString = 'Invalid Email : ROW - ' . $i;
                         $error = 'found';
                         $rows .= $i . ",";
                     } else if ( CustomHelper::getDomainFromEmail($reader['email']) != $domain->value ) {
                         Log::error('Email with invalid domain : ROW - ' . $i);
+                        $errorString = 'Email with invalid domain : ROW - ' . $i;
                         $error = 'found';
                         $rows .= $i . ",";
                     } else {
@@ -382,14 +389,17 @@ class TeacherController extends Controller
 
                         if ( $TeacherExist ) {
                             Log::error('Teacher already register : ROW - ' . $i);
+                            $errorString = 'Teacher already register : ROW - ' . $i;
                             $error = 'found';
                             $rows .= $i . ",";
                         } else if ( $TeacherEmailExist ) {
                             Log::error('Teacher email already exists : ROW - ' . $i);
+                            $errorString = 'Teacher email already exists : ROW - ' . $i;
                             $error = 'found';
                             $rows .= $i . ",";
                         } else if ( $TeacherPhoneExist ) {
                             Log::error('Teacher phone already exists : ROW - ' . $i);
+                            $errorString = 'Teacher phone already exists : ROW - ' . $i;
                             $error = 'found';
                             $rows .= $i . ",";
                         } else {
@@ -399,7 +409,7 @@ class TeacherController extends Controller
                                     "givenName"  => $name,
                                     "fullName"   => $name, //.' '.$request->lname
                                 ),
-                                "password"      => $phone,
+                                "password"      => 't#' . $phone,
                                 "primaryEmail"  => $email,
                                 "recoveryEmail" => $logged_admin_email,
                             );
@@ -413,6 +423,7 @@ class TeacherController extends Controller
 
                             if ( $responce == 101 ) {
                                 Log::error('Teacher not created in Gsuite : ROW - ' . $i . '.Something went wrong! Please Try again!');
+                                $errorString = 'Teacher not created in Gsuite : ROW - ' . $i . '.Something went wrong! Please Try again!';
                                 $error = 'found';
                                 $rows .= $i . ",";
                                 //return back()->with('error', );
@@ -420,6 +431,7 @@ class TeacherController extends Controller
                                 $resData = array_merge($resData, json_decode($responce, true));
                                 if ( $resData['error'] ) {
                                     Log::error($resData['error']['message'] . " Something went wrong with : ROW - " . $i);
+                                    $errorString = $resData['error']['message'] . " Something went wrong with : ROW - " . $i;
                                     $error = 'found';
                                     //return back()->with('error', $resData['error']['message']." Something went wrong with : ROW - " . $i );
                                     if ( $resData['error']['message'] == 'Invalid Credentials' ) {
@@ -446,7 +458,7 @@ class TeacherController extends Controller
                                         $number = $phone;
                                     }
 
-                                    $message = "Your school created an account for you. Gmail ID: $email and your mobile number as password..";
+                                    $message = "Your school created an account for you. Gmail ID: $email and  “t#” followed by phone number as password..";
 
                                     $s = CommonHelper::send_sms($number, $message);
 
@@ -462,9 +474,9 @@ class TeacherController extends Controller
                     $i += 1;
                 }
                 Log::info('File processing done ');
-
+                @unlink($path);
                 if ( $error == 'found' ) {
-                    return back()->with('success', 'Teacher details processed, check log file, errors in rows - ' . $rows);
+                    return back()->with('error', 'Teacher details processed, ' . $errorString . ', errors in rows - ' . $rows);
                 } else {
                     return back()->with('success', 'Teacher details processed successfully.');
                 }
@@ -475,9 +487,8 @@ class TeacherController extends Controller
                 } else {
                     return back()->with('error', Config::get('constants.WebMessageCode.121'));
                 }
+                @unlink($path);
             }
-
-            @unlink($path);
         }
 
         return view('admin.teacher.import'); //,compact('student_class'));

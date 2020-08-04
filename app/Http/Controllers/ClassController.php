@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\CustomHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 
 //use Auth;
+use Illuminate\Support\Facades\Log;
 use Validator;
 use App\Http\Helpers\CommonHelper;
 use App\StudentClass;
@@ -39,24 +41,36 @@ class ClassController extends Controller
      */
     public function list_class ()
     {
-        $classes = ClassSection::select('class_name')->distinct()->get();
-        $section = ClassSection::select('section_name')->distinct()->get();
-
-        return view('admin.class.list_class', compact('classes', 'section'));
+        $studentClasses = StudentClass::get();
+        $classes        = ClassSection::orderByRaw("CAST(class_name as UNSIGNED) ASC")->get();
+        $section        = ClassSection::orderBy('section_name','ASC')->get();
+        
+        return view('admin.class.list_class', compact('classes', 'section', 'studentClasses'));
     }
 
 
-    public function filterSubject (Request $request, StudentClass $StudentClass)
+     public function filterSubject (Request $request, StudentClass $StudentClass)
     {
         $rec = $StudentClass->newQuery();
-        if ( !empty($request->txtSerachByClass && $request->txtSerachBySection) ) {
-            if ( $request->txtSerachByClass && $request->txtSerachBySection == 'all' ) {
-                $getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
-            } else {
-                $getResult = $rec->where('class_name', $request->txtSerachByClass)->where('section_name', $request->txtSerachBySection)->get();
-            }
-        } else $getResult = "";
 
+        if(!empty($request->txtSerachByClass=='all-class')){
+            $getResult = $rec->get();
+            if($request->txtSerachBySection && $request->txtSerachBySection!='all-section'){
+                $getResult = $rec->where('section_name', $request->txtSerachBySection)->get();
+            }          
+        }
+        else if($request->txtSerachByClass && $request->txtSerachBySection == 'all-section' ){
+            $getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
+        }
+        else if(!empty($request->txtSerachByClass) &&($request->txtSerachByClass!='all-class')){
+            $getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
+            if(!empty($request->txtSerachBySection && $request->txtSerachBySection != 'all-section' )){
+                $getResult = $rec->where('section_name', $request->txtSerachBySection)->get();
+            }
+            if(!empty($request->txtSerachBySection && $request->txtSerachBySection == 'all-section' )){
+                $getResult = $rec->where('class_name', $request->txtSerachBySection)->get();
+            }
+        }
         return view('admin.class.filter-subject', compact('getResult'));
     }
 
@@ -102,8 +116,21 @@ class ClassController extends Controller
                 $response = CommonHelper::create_class($token, $data); // access Google api craete Cource
 
                 if ( !$response['success'] ) {
-                    if ( $response['data']->status == 'UNAUTHENTICATED' )
+                    if ( $response['data']->status == 'UNAUTHENTICATED' ) {
+                        Log::error($response['data']->message);
+                        CustomHelper::get_refresh_token();
+                        $token = CommonHelper::varify_Admintoken(); // verify admin token
+
+                        $response = CommonHelper::create_class($token, $data); // access Google api craete Cource
+//                        return redirect()->route('admin.logout');
+                    }
+                }
+
+                if ( !$response['success'] ) {
+                    if ( $response['data']->status == 'UNAUTHENTICATED' ) {
+                        Log::error($response['data']->message);
                         return redirect()->route('admin.logout');
+                    }
 
                     return back()->with('error', $response['data']->message);
                 } else {
@@ -126,7 +153,7 @@ class ClassController extends Controller
         }
 
         $data['subject'] = StudentSubject::orderBy('subject_name', 'ASC')->pluck('subject_name', 'id');
-        $data['subject']->prepend('Select Subject', '');
+        //$data['subject']->prepend('Select Subject', '');
         $data['section'] = DB::table('tbl_classes')->select('section_name')->distinct()->get()->pluck('section_name', 'section_name');
         $data['class'] = DB::table('tbl_classes')->select('class_name')->distinct()->get()->pluck('class_name', 'class_name');
         $data['class']->prepend('Select Class', '');

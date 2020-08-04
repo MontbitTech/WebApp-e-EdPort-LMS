@@ -74,7 +74,7 @@
                         <h4>Type "delete" to confirm</h4>
                     </div>
                     <div class="form-group text-center ">
-                        <input type="text" name="delete" class="form-control text-lowercase" id="delete">
+                        <input type="text" name="delete" class="form-control text-lowercase" id="delete" required>
 
                     </div>
                     <div class="form-group text-center">

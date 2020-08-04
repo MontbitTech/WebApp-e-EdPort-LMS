@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Helpers\CustomHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
@@ -259,10 +260,10 @@ class ImportTimetableController extends Controller
         $class_name = '';
         $section_name = '';
         if ( $request->isMethod('post') ) {
-            try {
-                $request->validate([
+            $request->validate([
                     'file' => 'required',
                 ]);
+            try {
                 $extensions = array("csv", "xls", "xlsx");
                 $file_validate = strtolower($request->file('file')->getClientOriginalExtension());
                 if ( !in_array($file_validate, $extensions) ) {
@@ -563,11 +564,30 @@ class ImportTimetableController extends Controller
                                         $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
                                         if ( $inv_resData['error'] != '' ) {
                                             //return back()->with('error', "error 04");//Config::get('constants.WebMessageCode.119'));
-                                            Log::error('Invitation has not send to teacher for class, Error In ROW - ' . $period_name);
-                                            $error = "found";
-                                            $rows_period .= $period_name . ",";
-                                            $error_msg = 'Invitation has not send to teacher for class, ' . $inv_resData['error']['message'] . ' Error In ROW - ' . $period_name;
+                                            Log::error('UNAUTHENTICATED, Error In ROW - ' . $period_name);
+                                            if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                                                CustomHelper::get_refresh_token();
+                                                $token = CommonHelper::varify_Admintoken();
+                                                $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // access Google api craete Cource
 
+                                                $inv_resData = array('error' => '');
+                                                $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
+//                                                return redirect()->route('admin.logout');
+                                            }
+                                        }
+
+                                        if ( $inv_resData['error'] != '' ) {
+                                            //return back()->with('error', "error 04");//Config::get('constants.WebMessageCode.119'));
+                                            Log::error('Invitation has not send to teacher for class, Error In ROW - ' . $period_name);
+
+
+                                            if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                                                return redirect()->route('admin.logout');
+                                            }else {
+                                                $error = "found";
+                                                $rows_period .= $period_name . ",";
+                                                $error_msg = 'Invitation has not send to teacher for class, ' . $inv_resData['error']['message'] . ' Error In ROW - ' . $period_name;
+                                            }
                                         } else {
                                             $inv_res_code = $inv_resData['id'];
                                             $obj_inv = new InvitationClass;
@@ -666,7 +686,7 @@ class ImportTimetableController extends Controller
                                     }
                                 }
                             } else {
-                                Log::error('Something went wrong while Createting time table for  ROW - ' . $period_name);
+                                Log::error('Something went wrong while Creating time table for  ROW - ' . $period_name);
                                 $error = "found";
                                 $rows_period .= $period_name . ",";
                                 //$error_msg = 'Something went wrong while Createting time table for  ROW - ' .$period_name;
@@ -711,7 +731,7 @@ class ImportTimetableController extends Controller
 
         $ttime = \DB::select('SELECT DISTINCT from_timing FROM `tbl_class_timings` ORDER by from_timing');
 
-
+        $data = false;
         $days = "";
         $htmla = "";
         $html = "
@@ -821,6 +841,7 @@ class ImportTimetableController extends Controller
 													and from_timing = ?", [$class_name, $section_name, $t->from_timing]);
 
             if ( count($days) > 0 ) {
+                $data=true;
                 foreach ( $days as $d ) {
                     if ( $p % 2 == 0 )
                         $x = "even";
@@ -830,7 +851,7 @@ class ImportTimetableController extends Controller
                     if ( $i == 1 ) {
                         $ef ='<br><a href="javascript:void(0)" id="delete-timetable" data-id='.$d->id.'>'.'Delete </a>';
 
-                                        $html .= "<tr class='$x'><td><strong>Period $p</strong>".$ef."</td><td>".date('H:i',strtotime($d->from_timing))."-".date('H:i',strtotime($d->to_timing))."</td>";
+                                        $html .= "<tr class='$x'><td><strong>Period $p</strong></td><td>".date('H:i',strtotime($d->from_timing))."-".date('H:i',strtotime($d->to_timing))."</td>";
                                         $htmla .= "<tr class='$x'><td>Period $p".$ef."</td><td style='width:100px;'>".date('H:i',strtotime($d->from_timing))."-".date('H:i',strtotime($d->to_timing))."</td>";
                     }
 
@@ -880,7 +901,7 @@ class ImportTimetableController extends Controller
         //$pdf = PDF::loadHTML($html);
         $pdf = PDF::loadHTML($html)->setPaper('a3', 'landscape')->setWarnings(false)->save($name);
 
-        return array("html" => $htmla, "data" => $days);
+        return array("html" => $htmla, "data" => $data);
     }
 
     public function listTimetable ()
@@ -1073,7 +1094,7 @@ class ImportTimetableController extends Controller
                     if ( $inv_resData['error'] != '' ) {
 
                         if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
-                            return redirect()->route('admin.logout');
+                            return redirect()->route('admin.login.post');
                         } else {
                             //Log::error($inv_resData['error']['message']);
                             return back()->with('error', $inv_resData['error']['message']);
@@ -1350,6 +1371,4 @@ class ImportTimetableController extends Controller
 
         return response()->download($name);
     }
-
-
 }

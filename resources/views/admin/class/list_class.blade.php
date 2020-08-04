@@ -8,6 +8,12 @@
         <div class="card card-common mb-3">
           <div class="card-header">
             <span class="topic-heading">Class List</span>
+            <div class="float-right ml-1">
+              <a type="button" class="btn btn-sm btn-secondary" href="{{route('classes.add')}}">
+                <i class="fa fa-upload mr-1" aria-hidden="true"></i>
+                Import Class Details
+              </a>
+            </div>
             <div class="float-right">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('classes.add')}}">
                 <i class="fa fa-user-plus mr-1" aria-hidden="true"></i>
@@ -17,18 +23,18 @@
           </div>
           <div class="card-body pt-3">
             <div class="row justify-content-center">
-              <div class="col-md-4 col-lg-3 text-md-left text-center mb-1">
-                <!-- <span data-dtlist="#subjectlist" class="mb-1">
+              <!--div class="col-md-4 col-lg-3 text-md-left text-center mb-1">
+                <span data-dtlist="#subjectlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                </span> -->
-              </div>
-              <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
-                <!-- <span data-dtfilter="#subjectlist" class="mb-1">
+                </span>
+              </!--div>
+              <div-- class="col-md-8 col-lg-9 text-md-right text-center mb-1">
+                <span data-dtfilter="#subjectlist" class="mb-1">
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-                </span> -->
-              </div>
+                </span> 
+              </div-->
 
-              <div class="col-md-8 col-lg-9 text-md-right text-center mb-1">
+              <div class="col-md-12 col-lg-12 text-md-right text-center mb-1" id="appenddata">
                 <span data-dtfilter="" class="mb-1">
                   <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
           <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
@@ -36,7 +42,8 @@
                   <select id="txtSerachByClass" name="txtSerachByClass" class="form-control form-control-sm" onchange="getSubject()">
                     <option value=''>Select Class</option>
                     @if(count($classes)>0)
-                    @foreach($classes as $cl)
+                    <option value='all-class'>All</option>
+                    @foreach($classes->unique('class_name') as $cl)
                     <option value='{{$cl->class_name}}'>{{$cl->class_name}}</option>
                     @endforeach
                     @endif
@@ -49,8 +56,8 @@
                   <select id="txtSerachBySection" name="txtSerachBySection" class="form-control form-control-sm" onchange="getSubject()">
                     <option value=''>Select Section</option>
                     @if(count($section)>0)
-                    <option value='all'>All</option>
-                    @foreach($section as $sl)
+                     <option value='all-section'>All</option>
+                    @foreach($section->unique('section_name') as $sl)
                     <option value='{{$sl->section_name}}'>{{$sl->section_name}}</option>
                     @endforeach
                     @endif
@@ -62,10 +69,9 @@
               </div>
 
               <div class="col-sm-12" id='subject'>
-                <table id="subjectlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                <table id="subjectlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 0, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                   <thead>
                     <tr>
-                      <th>#</th>
                       <th>Class</th>
                       <th>Section</th>
                       <th>Subject</th>
@@ -73,6 +79,22 @@
                       <th class="text-center">Action</th>
                     </tr>
                   </thead>
+                  <tbody>
+                    @if($studentClasses)
+                    @php $i=1; @endphp
+                    @foreach($studentClasses as $cls)
+                    <tr>
+                      <td>{{$cls->class_name}}</td>
+                      <td>{{$cls->section_name}}</td>
+                      <td>{{$cls->studentSubject->subject_name}}</td>
+                      <td class="text-center"><a href="{{ $cls->g_link }}" target="_blank">Class Link </a></td>
+                      <td class="text-center">
+                        <a href="javascript:void(0);" data-deleteModal="{{$cls->id}}">{{ __('Delete') }}</a>
+                      </td>
+                    </tr>
+                    @endforeach
+                    @endif
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -107,7 +129,7 @@
             <h4>Type "delete" to confirm</h4>
           </div>
           <div class="form-group text-center ">
-            <input type="text" name="delete" class="form-control" id="delete">
+            <input type="text" name="delete" class="form-control" id="delete" required>
 
           </div>
           <div class="form-group text-center">
@@ -134,18 +156,6 @@
     $("#txt_class_id").val(val);
 
 
-  });
-  $(document).ready(function() {
-    $('#teacherlist').DataTable({
-      initComplete: function(settings, json) {
-        $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
-        $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
-      }
-    });
-    $('.dateset').datepicker({
-      dateFormat: "yy/mm/dd"
-      // showAnim: "slide"
-    })
   });
 
   $(document).on('click', '[data-deleteModal]', function() {
@@ -185,13 +195,32 @@
       success: function(info) {
         $("#subject").html(info);
         $("#subject").show();
-        if (txtSerachBySection) {
-          $('#subjectlist').DataTable({
+
+        $(".buttons-csv").remove();
+        if (txtSerachByClass) {
+          var table = $('#subjectlist').DataTable({
+            'dom': 'Btp',
+            buttons: [{
+              extend: 'csvHtml5',
+              autoFilter: true,
+              sheetName: 'Exported data',
+              text: '<i class="fa fa-download mr-1 " aria-hidden="true"></i>Export Class Details',
+              className: 'btn btn-secondary btn-sm',
+              init: function(api, node, config) {
+                $(node).removeClass('dt-button')
+              },
+              exportOptions: {
+                columns: [0,1, 2]
+              }
+
+            }],
             initComplete: function(settings, json) {
               $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
               $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
             }
           });
+          table.buttons().container()
+            .appendTo('#appenddata');
           $('.dateset').datepicker({
             dateFormat: "yy/mm/dd"
             // showAnim: "slide"
@@ -200,5 +229,21 @@
       }
     });
   }
+</script>
+
+<script>
+  $(document).ready(function() {
+    $('#subjectlist').DataTable({
+      initComplete: function(settings, json) {
+        $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
+        $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+      }
+    });
+
+
+    $('.dateset').datepicker({
+      dateFormat: "yy/mm/dd"
+    })
+  });
 </script>
 @endsection

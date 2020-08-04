@@ -28,6 +28,8 @@ Route::get('/create_user','GtestController@create_user'); */
 Route::get('/timeTable/{class}/{section}', 'GtestController@TestFilterTimetable');
 Route::get('/test_email_timetable', 'GtestController@send_email_timeTable');
 Route::get('/get_token', 'GtestController@get_token')->name('get_token');
+Route::get('/test','TestController@test');
+Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 // ------ //
 
@@ -161,10 +163,10 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/update-classNotes', 'ClassWorkController@ajaxUpdateClassNotes')->name('update-classNotes');
 
     Route::post('/available/classes','AvailabilityController@availableClasses');
-
+    Route::post('/teacher/class/assignments','ClassWorkController@getClassAssignments');
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
 });
 
-Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass');
+Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass')->name('reload-timetable');
 Route::get('/timeTable/{class}/{section}', 'ImportTimetableController@download_Timetable');
 //Reload Timetable URL - http://<domain>/addData_pastClass

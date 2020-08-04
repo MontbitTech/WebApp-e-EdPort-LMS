@@ -29,33 +29,59 @@
               </div>
 
             </form>
-            @else
-            @if((strpos($se->permission, 'E') !== false))
-            <form id="year" action="{{route('setting.edit',encrypt($se->id))}}" method="POST">
-              @csrf
+            @endif
+            @if($se->item=="domain")
+            <form id="year">
+
               <div class="form-group">
-                <label for="new" class="text-uppercase">{{$se->item}}</label>
-                <input class="form-control" type="text" id="new" value="{{$se->value}}" name="ivalue">
+                <label for="new">Domain Name</label>
+                <input class="form-control" type="text" id="new" value="{{$se->value}}" readonly>
               </div>
 
             </form>
-            @else
+            @endif
+            @if($se->item=="year")
+            <form>
 
-            <div class="form-group">
-              <label class="text-uppercase">{{$se->item}}</label>
+              <div class="form-group">
+                <label for="new">Year</label>
+                <input class="form-control" type="text" id="new" value="{{$se->value}}" readonly>
+              </div>
 
-              <strong class="form-control bg-light">
-                @if($se->item=="domain")
-                <a href="https://lms.{{$se->value}}" target="_blank">{{$se->value}}</a>
-                @else
-                {{$se->value}}
-                @endif
+            </form>
+            @endif
+            @if($se->item=="mailfrom")
+            <form>
 
-              </strong>
-            </div>
+              <div class="form-group">
+                <label for="new">Email</label>
+                <input class="form-control" type="text" id="new" value="{{$se->value}}" readonly>
+              </div>
+
+            </form>
+            @endif
+            @if($se->item=="schoolname")
+            <form>
+
+              <div class="form-group">
+                <label for="new">School Name</label>
+                <input class="form-control" type="text" id="new" value="{{$se->value}}" readonly>
+              </div>
+
+            </form>
+            @endif
+            @if($se->item=="schooladdress")
+            <form>
+
+              <div class="form-group">
+                <label for="new">School Address</label>
+                <input class="form-control" type="text" id="new" value="{{$se->value}}" readonly>
+              </div>
+
+            </form>
             @endif
 
-            @endif
+
             @endforeach
           </div>
         </div>

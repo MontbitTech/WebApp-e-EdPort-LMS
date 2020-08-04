@@ -1,6 +1,11 @@
 @extends('layouts.admin.app')
 
 @section('content')
+<style>
+  #ongoing_wrapper .row:first-child {
+    display: flex;
+  }
+</style>
 <section class="main-section">
   <div class="container-fluid">
     <div class="row justify-content-center">
@@ -9,11 +14,8 @@
 
           <div class="card-header">
             <span class="topic-heading">Teachers List</span>
-            <div class="float-right">
-              <a type="button" class="btn btn-sm btn-secondary" href="{{route('admin.sampleTeacherDownload')}}">
-                <i class="fa fa-download mr-1 " aria-hidden="true"></i>
-                Download Sample File
-              </a>
+            <div class="float-right mr-3" id="appenddata">
+
             </div>
             <div class="float-right mr-3">
               <a type="button" class="btn btn-sm btn-secondary" href="{{ route('admin.teacherimport') }}">
@@ -28,6 +30,7 @@
                 Add Teacher
               </a>
             </div>
+
           </div>
           <div class="card-body pt-3">
             <div class="row justify-content-center">
@@ -45,7 +48,7 @@
                 <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                   <thead>
                     <tr>
-                      <th>#</th>
+
                       <th>Name</th>
                       <th>Email</th>
                       <th>Phone No</th>
@@ -56,27 +59,25 @@
                   <tbody>
                     @foreach($teacher as $user)
                     <tr>
-                      <td>{{++$i}}</td>
+
                       <td>{{$user->name}}</td>
                       <td>{{$user->email}}</td>
                       <td>{{$user->phone}}</td>
+                      @if($user->g_meet_url)
                       <td class="text-center">
-                        @if($user->g_meet_url)
                         <a href="{{$user->g_meet_url}}" target="_blank">gMeet URL</a>
-                        @else
-                        <a href="javascript:void(0)"></a>
-                        @endif
                       </td>
+                      @else
+                      <td class="text-center ">
+                        <a href="{{route('teacher.edit', encrypt($user->id))}}" class="text-danger w-100"> Insert URL</a>
+                      </td>
+                      @endif
                       <td><a href="{{route('teacher.edit', encrypt($user->id))}}">Edit</a> |
                         <a href="javascript:void(0);" data-deleteModal="{{$user->id}}">
                           {{ __('Delete') }}
                         </a>
 
-                        <!--  <form id="delete-teacher-form" action="{{ route('teacher.delete', encrypt($user->id)) }}" method="POST" style="display: none;">
-                @csrf
-				 onclick="event.preventDefault();
-                        document.getElementById('delete-teacher-form').submit();"
-              </form> -->
+
                       </td>
                     </tr>
                     @endforeach
@@ -96,7 +97,7 @@
           </div>
           <div class="card-body pt-3">
             <div class="col-sm-12">
-              <table id="ongoing" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120">
+              <table id="ongoing" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                 <thead>
                   <tr class="text-center">
                     <th width="20%">Name</th>
@@ -151,7 +152,7 @@
             <h4>Type "delete" to confirm</h4>
           </div>
           <div class="form-group text-center ">
-            <input type="text" name="delete" class="form-control" id="delete">
+            <input type="text" name="delete" class="form-control" id="delete" required>
 
           </div>
           <div class="form-group text-center">
@@ -169,16 +170,33 @@
 </div>
 <script type="text/javascript">
   $(document).ready(function() {
+    var table = $('#teacherlist').DataTable({
 
+      buttons: [{
+        extend: 'csvHtml5',
+        autoFilter: true,
+        sheetName: 'Exported data',
+        text: '<i class="fa fa-download mr-1 " aria-hidden="true"></i>Export Teacher Details',
+        className: 'btn btn-secondary btn-sm',
+        init: function(api, node, config) {
+          $(node).removeClass('dt-button')
+        },
+        exportOptions: {
+          columns: [0, 1, 2]
+        }
 
-    $('#teacherlist').DataTable({
+      }],
       initComplete: function(settings, json) {
         $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
         $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
-      }
+      },
+      "columnDefs": [{
+        "width": "16%",
+        "targets": 0
+      }]
     });
-
-
+    table.buttons().container()
+      .appendTo('#appenddata');
     $('#ongoing').DataTable({
       initComplete: function(settings, json) {
         $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
