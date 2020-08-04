@@ -15,7 +15,7 @@ $timing=$ar["timing"];
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-sm-12">
-                <a href="{{ route('reload-timetable') }}" target="_blank">
+                <a href="{{ route('reload-timetable') }}" target="_self">
                     Reload today's timetable for
                     all teachers
                 </a>

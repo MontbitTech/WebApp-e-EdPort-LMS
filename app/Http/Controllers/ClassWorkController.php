@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\HelpTicketCategory;
 use App\Http\Helpers\CustomHelper;
+use App\libraries\Utility\DateUtility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 
@@ -334,9 +335,9 @@ class ClassWorkController extends Controller
         if ( count($res) > 0 ) {
             foreach ( $res as $val ) {
                 $res_link = $val->link;
-                $youtube_link  = $val->youtube;
-                $khan_academy  = $val->khan_academy;
-                $others        = $val->others;
+                $youtube_link = $val->youtube;
+                $khan_academy = $val->khan_academy;
+                $others = $val->others;
             }
 
             $obj = DateClass::find($dateWork_id);
@@ -344,7 +345,7 @@ class ClassWorkController extends Controller
             $obj->save();
 
 
-            return json_encode(array('status' => 'success', 'topic_link' => $res_link, 'youtube_link' => $youtube_link, 'academy_link' => $khan_academy, 'wikipedia_link' => $others,'message' => Config::get('constants.WebMessageCode.131')));
+            return json_encode(array('status' => 'success', 'topic_link' => $res_link, 'youtube_link' => $youtube_link, 'academy_link' => $khan_academy, 'wikipedia_link' => $others, 'message' => Config::get('constants.WebMessageCode.131')));
             exit;
         } else {
             return json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.113')));
@@ -381,47 +382,32 @@ class ClassWorkController extends Controller
         }
     }
 
-    public function addData_DateClass () // Cron JOb Function add data timing table to Past Class
+    public function addData_DateClass (Request $request) // Cron JOb Function add data timing table to Past Class
     {
-        $days = date('l');
+        $teacherData = ClassTiming::with('studentClass')->where('class_day', DateUtility::getDay())->get();
 
-        $todaysDate = date("Y-m-d");
-        $teacherData = ClassTiming::with('studentClass')->where('class_day', $days)->get();
-        // $todaysDate = date("d M");
+        if ( !count($teacherData) )
+            return back()->with('error', 'No record found on class timming.');
 
+        foreach ( $teacherData as $value ) {
+            $pastClassExist = DateClass::where('class_date', DateUtility::getDate())->where('from_timing', $value->from_timing)->where('to_timing', $value->to_timing)->where('class_id', $value->class_id)->where('subject_id', $value->subject_id)->where('teacher_id', $value->teacher_id)->first();
 
-        if ( count($teacherData) > 0 ) {
-            foreach ( $teacherData as $value ) {
+            if ( !$pastClassExist ) {
+                $obj_dataClass = new DateClass;
 
-                $pastClassExist = DateClass::where('class_date', $todaysDate)->where('from_timing', $value->from_timing)->where('to_timing', $value->to_timing)->where('class_id', $value->class_id)->where('subject_id', $value->subject_id)->where('teacher_id', $value->teacher_id)->first();
-
-                //print_r($pastClassExist);
-                //exit;
-                if ( $pastClassExist ) {
-                    //$res['id'] = $value->id;
-                    return back()->with('success','No record foucnd on class timming.');
-                } else {
-                    $obj_dataClass = new DateClass;
-
-                    $obj_dataClass->class_id = $value->class_id;
-                    $obj_dataClass->subject_id = $value->subject_id;
-                    $obj_dataClass->teacher_id = $value->teacher_id;
-                    $obj_dataClass->from_timing = $value->from_timing;
-                    $obj_dataClass->to_timing = $value->to_timing;
-                    $obj_dataClass->class_date = $todaysDate;
-                    $obj_dataClass->timetable_id = $value->id;
-                    $obj_dataClass->live_link = $value->studentClass->g_link;
-                    $obj_dataClass->save();
-
-                    //$res['id'] = '';
-                    return back()->with('success','No record foucnd on class timming.');
-                }
+                $obj_dataClass->class_id = $value->class_id;
+                $obj_dataClass->subject_id = $value->subject_id;
+                $obj_dataClass->teacher_id = $value->teacher_id;
+                $obj_dataClass->from_timing = $value->from_timing;
+                $obj_dataClass->to_timing = $value->to_timing;
+                $obj_dataClass->class_date = DateUtility::getDate();
+                $obj_dataClass->timetable_id = $value->id;
+                $obj_dataClass->live_link = $value->studentClass->g_link;
+                $obj_dataClass->save();
             }
-        } else {
-            return back()->with('error','No record foucnd on class timming.');
         }
-        // echo "<pre>";
-        //	 print_r($res);
+
+        return back()->with('success', "Time table for today's class reloaded successfully.");
     }
 
     public function getClassAssignments (Request $request)

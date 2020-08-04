@@ -168,7 +168,7 @@ class DateUtility
             return date('H:i:s');
     }
 
-    public static function getFutureTime ($minutes ,$time = false)
+    public static function getFutureTime ($minutes, $time = false)
     {
         if ( $time ) {
             return self::getTime(strtotime($time) + $minutes * 60);
@@ -177,12 +177,21 @@ class DateUtility
         }
     }
 
-    public static function getPastTime ($minutes , $time = false)
+    public static function getPastTime ($minutes, $time = false)
     {
         if ( $time ) {
             return self::getTime(strtotime($time) - $minutes * 60);
         } else {
             return self::getTime(strtotime("now") - $minutes * 60);
+        }
+    }
+
+    public static function getDay ($date = false)
+    {
+        if ( $date ) {
+            return date('l', strtotime($date));
+        } else {
+            return date('l');
         }
     }
 }

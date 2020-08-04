@@ -37,7 +37,7 @@ class ImportStudentsController extends Controller
                 // 'lname' => 'required|max:100|alpha_num',
                 'class'   => 'required',
                 'section' => 'required',
-                'email'   => 'required|email|unique:tbl_students',
+                'email'   => 'required|email|unique:tbl_students|ends_with:gmail.com',
                 'phone'   => 'required|numeric|digits:10|unique:tbl_students',
                 // 'pin' => 'required|min:4|unique:tbl_techers',
             ], [
@@ -346,6 +346,11 @@ class ImportStudentsController extends Controller
                         $rows .= $i . ",";
                     } else if ( !CustomHelper::is_email($reader['email']) ) {
                         Log::error('Invalid Email : ROW - ' . $i);
+                        $error = 'found';
+                        $rows .= $i . ",";
+                    } else if(CustomHelper::getDomainFromEmail($reader['email']) != 'gmail.com' ){
+                        Log::error('Email with invalid domain : ROW - ' . $i);
+                        $errorString = 'Email with invalid domain : ROW - ' . $i;
                         $error = 'found';
                         $rows .= $i . ",";
                     } else {
