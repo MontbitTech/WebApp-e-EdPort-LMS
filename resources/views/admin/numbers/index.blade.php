@@ -46,7 +46,8 @@
                   <select id="txtSerachClass" name="txtSerachClass" class="form-control form-control-sm" onchange="getStudent()">
                     <option value=''>Select Class</option>
                     @if(count($classes)>0)
-                    @foreach($classes as $cl)
+                    <option value='all-class'>All</option>
+                    @foreach($classes->unique('class_name') as $cl)
                     <option value='{{$cl->class_name}}'>{{$cl->class_name}}</option>
                     @endforeach
                     @endif
@@ -59,8 +60,8 @@
                   <select id="txtSerachSection" name="txtSerachSection" class="form-control form-control-sm" onchange="getStudent()">
                     <option value=''>Select Section</option>
                     @if(count($sections)>0)
-                    <option value='all'>All</option>
-                    @foreach($sections as $sl)
+                    <option value='all-section'>All</option>
+                    @foreach($sections->unique('section_name') as $sl)
                     <option value='{{$sl->section_name}}'>{{$sl->section_name}}</option>
                     @endforeach
                     @endif
@@ -71,19 +72,43 @@
 
               </div>
               <div class="col-sm-12" id="student">
-                <table id="studentlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                <table id="studentlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 0, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                   <thead>
                     <tr>
-                      <th>#</th>
-                      <th>Name</th>
                       <th>Class</th>
                       <th>Section</th>
+                      <th>Name</th>
                       <th>Email</th>
                       <th>Phone</th>
                       <th>Notify</th>
                       <th>Action</th>
                     </tr>
                   </thead>
+                   <tbody>
+              @php $i=0; @endphp
+                @foreach($students as $list)
+                  <tr>
+                    <td>{{$list->class->class_name}}</td>
+                    <td>{{$list->class->section_name}}</td>
+                    <td>{{$list->name}}</td>
+                    <td>{{$list->email}}</td>
+                    <td>{{$list->phone}}</td>
+                    <td>
+            @if ($list->notify=="yes")
+              <input type="checkbox" checked disabled>
+            @else
+              <input type="checkbox"  disabled>
+            @endif
+          </td>
+          <td>
+            <a href="{{route('student.edit', encrypt($list->id))}}">Edit</a> | 
+            <a href="#" data-deleteModal="{{$list->id}}" class='deleteStudent' value='{{$list->id}}'>
+            {{ __('Delete') }}
+            </a>
+                  </td>
+                  </tr>
+                @endforeach
+            </tbody>
                 </table>
               </div>
             </div>
@@ -136,7 +161,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 <script type="text/javascript">
   $(document).ready(function() {
-    $('#teacherlist').DataTable({
+    $('#studentlist').DataTable({
       initComplete: function(settings, json) {
         $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
         $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
@@ -193,7 +218,7 @@
         $("#student").html(info);
         $("#student").show();
         $("#deleteall").show();
-        if (txtSerachSection) {
+        if (txtSerachClass) {
           var table = $('#studentlist').DataTable({
             'dom': 'Brtip',
             buttons: [{
@@ -206,7 +231,7 @@
                 $(node).removeClass('dt-button')
               },
               exportOptions: {
-                columns: [2, 3, 4, 5, 6]
+                columns: [1,2, 3, 4, 5]
               }
 
             }],

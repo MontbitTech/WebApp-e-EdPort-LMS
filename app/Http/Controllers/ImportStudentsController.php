@@ -248,24 +248,33 @@ class ImportStudentsController extends Controller
 
     public function listStudents ()
     {
-        $classes = ClassSection::select('class_name')->distinct()->get();
-        $sections = ClassSection::select('section_name')->distinct()->get();
+        $students = Student::get();
+        $classes  = ClassSection::orderByRaw("CAST(class_name as UNSIGNED) ASC")->get();
+        $sections = ClassSection::orderBy('section_name','ASC')->get();
 
-        return view('admin.numbers.index', compact('classes', 'sections'));
+        return view('admin.numbers.index', compact('classes', 'sections', 'students'));
     }
 
-    public function filterStudent (Request $request)
+     public function filterStudent (Request $request)
     {
-        $class_name = $request->txtSerachClass;
-        $section_name = $request->txtSerachSection;
-        if ( !empty($request->txtSerachClass && $request->txtSerachSection) ) {
-            if ( $request->txtSerachClass && $request->txtSerachSection == 'all' ) {
-                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$class_name]);
-            } else {
-                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=? and c.section_name=?", [$class_name, $section_name]);
+        if(!empty($request->txtSerachClass=='all-class')){
+            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id");
+            if($request->txtSerachSection && $request->txtSerachSection!='all-section'){
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
             }
-        } else $getResult = "";
-
+        }
+        else if($request->txtSerachClass && $request->txtSerachSection == 'all-section'){
+            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
+        }
+        else if(!empty($request->txtSerachClass) &&($request->txtSerachClass!='all-class')){
+            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
+            if(!empty($request->txtSerachSection && $request->txtSerachSection != 'all-section' )){
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
+            }
+            if(!empty($request->txtSerachSection && $request->txtSerachSection == 'all-section' )){
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
+            }
+        }
         return view('admin.numbers.filter-student', compact('getResult'));
     }
 
