@@ -37,8 +37,8 @@ class ImportStudentsController extends Controller
                 // 'lname' => 'required|max:100|alpha_num',
                 'class'   => 'required',
                 'section' => 'required',
-                'email'   => 'required|email',
-                'phone'   => 'required|numeric|digits:10',
+                'email'   => 'required|email|unique:tbl_students',
+                'phone'   => 'required|numeric|digits:10|unique:tbl_students',
                 // 'pin' => 'required|min:4|unique:tbl_techers',
             ], [
                 'fname.regex' => 'The name must be letters.',
@@ -285,7 +285,6 @@ class ImportStudentsController extends Controller
         $student_class = StudentClass::all();
         $error = "";
         $rows = "";
-
         if ( Request()->post() ) {
 
             $request->validate([
@@ -352,16 +351,18 @@ class ImportStudentsController extends Controller
                     } else {
                         $studentClassExist = \DB::select('select id from tbl_classes where class_name="' . $reader["class"] . '" and section_name="' . $reader["section"] . '"');
 
-
                         $obj_class = StudentClass::where('class_name', $reader["class"])->where('section_name', $reader["section"])->get();
-
 
                         if ( count($obj_class) > 0 ) {
                             $class_id = $studentClassExist[0]->id;
 
                             $studenExist = \DB::select('select * from tbl_students where email="' . $reader["email"] . '" and phone="' . $reader["phone"] . '" and name="' . $reader["name"] . '" and class_id="' . $class_id . '"');
-
-                            if ( count($studenExist) > 0 ) {
+                            $emailAndPhoneCheck = Student::where('email', $reader["email"])->orWhere('phone', $reader["phone"])->count();
+                            if ( $emailAndPhoneCheck ) {
+                                Log::error('Either mobile number or Email already registered : ROW - ' . $i);
+                                $rows .= $i . ",";
+                                $error = "true";
+                            } else if ( count($studenExist) > 0 ) {
                                 Log::error('Duplicate entry : ROW - ' . $i);
                                 $rows .= $i . ",";
                                 $error = "true";

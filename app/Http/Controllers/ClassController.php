@@ -114,10 +114,10 @@ class ClassController extends Controller
                 }
 
                 if ( !$response['success'] ) {
-//                    if ( $response['data']->status == 'UNAUTHENTICATED' ) {
-//                        Log::error($response['data']->message);
-////                        return redirect()->route('admin.logout');
-//                    }
+                    if ( $response['data']->status == 'UNAUTHENTICATED' ) {
+                        Log::error($response['data']->message);
+                        return redirect()->route('admin.logout');
+                    }
 
                     return back()->with('error', $response['data']->message);
                 } else {
