@@ -147,7 +147,8 @@ $cls = 0;
                                             $display_style = 'display: none;';
 
                                         ?>
-                                        <div class="m-auto mt-2 pt-2">
+                                        <!--new changes -->
+                                        <div class="m-auto mt-2 pt-2" id="icon{{$t->id}}">
 
                                             <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                 <!-- Edport Content -->
@@ -1113,6 +1114,7 @@ $cls = 0;
     $(document).on('change', '[data-selecttopic]', function() {
         var getid = $(this).attr('data-selecttopic');
         if ($(this).val() != '') {
+            $('#icon' + getid).show();
             var topic_id = $(this).val();
             var dateWork_id = getid;
             if (dateWork_id != '') {
@@ -1144,7 +1146,7 @@ $cls = 0;
                 });
             }
         } else {
-            $('#' + getid).hide();
+            $('#icon' + getid).hide();
         }
     });
     /*help ajax */

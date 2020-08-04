@@ -129,15 +129,15 @@ header {
 .user-profilepic {
   width: 30px;
   height: 30px;
-  overflow: hidden;
-  border-radius: 50px;
+  /* overflow: hidden; */
+  /* border-radius: 50px; */
   position: relative;
   display: inline-block;
   vertical-align: middle;
   margin-right: 10px;
-  margin-top: 1px;
+  /* margin-top: 1px; */
   color: #ccc;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(0, 0, 0, 0.25);
+  /* box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.25), inset 0 0 0 1px rgba(0, 0, 0, 0.25); */
 }
 
 .user-profilepic svg.icon {
@@ -621,12 +621,12 @@ table [contenteditable="true"]:focus {
   transform: scale(0);
 }
 
-.btn-switch input:checked ~ .switch-before {
+.btn-switch input:checked~.switch-before {
   opacity: 0;
   transform: scale(0);
 }
 
-.btn-switch input:checked ~ .switch-after {
+.btn-switch input:checked~.switch-after {
   opacity: 1;
   transform: scale(1);
 }
@@ -881,7 +881,7 @@ li.active span {
 .btn-primary.focus,
 .btn-primary:focus,
 .btn-primary:not(:disabled):not(.disabled):active:focus,
-.show > .btn-primary.dropdown-toggle:focus {
+.show>.btn-primary.dropdown-toggle:focus {
   /*box-shadow: 0 0 0 0.2rem rgba(11,105,112,.5);*/
 }
 
@@ -918,17 +918,17 @@ li.active span {
   box-shadow: 0 0 0 0.2rem rgba(11,105,112,.25);*/
 }
 
-.custom-control-input:checked ~ .custom-control-label::before {
+.custom-control-input:checked~.custom-control-label::before {
   /*border-color: #0b6970;*/
   /*background-color: rgba(11,105,112,0.80);*/
 }
 
-.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+.custom-control-input:not(:disabled):active~.custom-control-label::before {
   /*background-color: rgba(11,105,112,.25);*/
   /*border-color: rgba(11,105,112,0.5);*/
 }
 
-.custom-control-input:focus ~ .custom-control-label::before {
+.custom-control-input:focus~.custom-control-label::before {
   /*box-shadow: 0 0 0 0.2rem rgba(11,105,112,.25);*/
 }
 
@@ -1073,7 +1073,7 @@ li.active span {
     margin-right: 0px;
   }
 
-  .dropdown-user .dropdown-toggle > span {
+  .dropdown-user .dropdown-toggle>span {
     display: none;
   }
 }

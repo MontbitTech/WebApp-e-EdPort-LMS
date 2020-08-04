@@ -4,13 +4,13 @@
                       @if(count($getResult)>0)
                       <th width="50px"><input type="checkbox" class="master" id="master"></th>
                       @endif
-                      <th>Class</th>
+                      <th>Division</th>
                       <th>Subject</th>
                       <th>Topic</th>
                       <th>e-EdPort</th>
                       <th>Youtube</th>
                       <th>Wikipedia</th>
-                      <th>My School</th>
+                      <th>Expert Pick</th>
                       <th>Assignment</th>
                       <th>Action</th>
                   </tr>

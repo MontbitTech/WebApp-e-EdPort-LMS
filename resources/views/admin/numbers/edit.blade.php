@@ -55,7 +55,7 @@
                   @endif
                   <label for="colFormLabel" class="ml-2">
                     <small> <strong class="text-secondary">
-                        Notification For Student
+                        SMS notification for student
                       </strong>
                     </small>
                   </label>

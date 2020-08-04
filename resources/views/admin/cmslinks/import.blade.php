@@ -6,7 +6,7 @@
       <div class="col-md-8 mt-5">
         <div class="card card-common mb-3 mt-5">
           <div class="card-header">
-            <span class="topic-heading">Import CMS Topics/Links</span>
+            <span class="topic-heading">Import Content</span>
             <div class="float-right">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('cms.sampleCMSLinksDownload')}}">
                 <i class="fa fa-download mr-1" aria-hidden="true"></i>

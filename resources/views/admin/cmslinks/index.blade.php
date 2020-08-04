@@ -7,18 +7,18 @@
       <div class="col-sm-12">
         <div class="card card-common mb-3">
           <div class="card-header">
-            <span class="topic-heading">CMS Details</span>
+            <span class="topic-heading">Content</span>
 
             <div class="float-right mr-3">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('cms.cmslinksimport')}}">
-                <i class="fa fa-upload mr-1 " aria-hidden="true"></i>
-                Import CMS Details
+                <i class="fa fa-download mr-1 " aria-hidden="true"></i>
+                Import Content
               </a>
             </div>
             <div class="float-right mr-3">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('cms.addlink')}}">
-                <i class="fa fa-user-plus mr-1" aria-hidden="true"></i>
-                Add CMS Details
+                <i class="fa fa-book-open mr-1" aria-hidden="true"></i>
+                Add Content
               </a>
             </div>
           </div>
@@ -35,7 +35,7 @@
                 </span>
               </!--div-->
               <div class="col-md-6 col-lg-6 text-md-left text-center mb-1" id="appenddata">
-                <button style="float: left;display:none;" id="deleteall" class="btn btn-sm btn-secondary delete_all" data-url="{{ url('admin/cmsDeleteAll') }}"> <i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete Selected</button>
+                <button style="float: left;display:none;" id="deleteall" class="btn btn-sm btn-secondary delete_all" data-url="{{ url('admin/cmsDeleteAll') }}"> <i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete </button>
 
               </div>
               <div class="col-md-6 col-lg-6 text-md-right text-center mb-1">
@@ -43,7 +43,7 @@
           <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
                 <span data-dtfilter="" class="mb-1">
                   <select id="txtSerachClass" name="txtSerachClass" class="form-control form-control-sm" onchange="getRecord()">
-                    <option value=''>Select Class</option>
+                    <option value=''>Select Division</option>
                     @if(count($classes)>0)
                     <option value='all-class'>All</option>
                     @foreach($classes->unique('class_name') as $cl)
@@ -75,13 +75,13 @@
                 <table id="cmsrecords" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 0, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                   <thead>
                     <tr>
-                      <th>Class</th>
+                      <th>Division</th>
                       <th>Subject</th>
                       <th>Topic</th>
                       <th>e-EdPort</th>
                       <th>Youtube</th>
                       <th>Wikipedia</th>
-                      <th>My School</th>
+                      <th>Expert Pick</th>
                       <th>Assignment</th>
                       <th>Action</th>
                     </tr>
@@ -229,7 +229,7 @@
               extend: 'csvHtml5',
               autoFilter: true,
               sheetName: 'Exported data',
-              text: '<i class="fa fa-download mr-1 " aria-hidden="true"></i>Export CMS Details',
+              text: '<i class="fa fa-upload mr-1 " aria-hidden="true"></i>Export Content',
               className: 'btn btn-secondary btn-sm ml-2',
               init: function(api, node, config) {
                 $(node).removeClass('dt-button')

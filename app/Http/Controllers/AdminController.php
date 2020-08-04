@@ -99,9 +99,12 @@ class AdminController extends Controller
 
     public function listSetting(Request $request)
     {
-        $settings = \DB::select('SELECT * FROM `tbl_settings` ORDER BY `id` ASC');
-
+        $settings = \DB::table('tbl_settings')->get()->keyBy('item');
+        //dd($settings);
         return view('admin.settings.list_settings', compact('settings'));
+        // $settings = \DB::select('SELECT * FROM `tbl_settings` ORDER BY `id` ASC');
+
+        // return view('admin.settings.list_settings', compact('settings'));
     }
 
 
