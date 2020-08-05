@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Response;
 
 class DeployController extends Controller
 {
-    public function deploy (Request $request)
+    public function deployStagingServer (Request $request)
     {
         $githubPayload = $request->getContent();
         $githubHash = $request->header('X-Hub-Signature');
@@ -18,12 +18,22 @@ class DeployController extends Controller
         $localHash = 'sha1=' . hash_hmac('sha1', $githubPayload, $localToken, false);
 
         if ( hash_equals($githubHash, $localHash) ) {
-//            $root_path = base_path();
-//            $process = new Process(array('cd ' . $root_path . '; ./deploy.sh'));
-//            $process->run(function ($type, $buffer) {
-//                echo $buffer;
-//            });
-            echo shell_exec(base_path() . '/deploy.sh');
+            if ( strpos($request->ref, 'feature-in-house') !== false )
+                echo shell_exec(base_path() . '/deploy.sh');
+        }
+    }
+
+    public function deployDevelopmentServer (Request $request)
+    {
+        $githubPayload = $request->getContent();
+        $githubHash = $request->header('X-Hub-Signature');
+
+        $localToken = config('app.deploy_secret');
+        $localHash = 'sha1=' . hash_hmac('sha1', $githubPayload, $localToken, false);
+
+        if ( hash_equals($githubHash, $localHash) ) {
+            if ( strpos($request->ref, 'development') !== false )
+                echo shell_exec(base_path() . '/deploy.sh');
 
         }
     }
