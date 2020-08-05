@@ -1,16 +1,16 @@
-          <table id="cmsrecords" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+          <table id="cmsrecords" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
               <thead>
                   <tr>
                       @if(count($getResult)>0)
                       <th width="50px"><input type="checkbox" class="master" id="master"></th>
                       @endif
-                      <th>Class</th>
+                      <th>Division</th>
                       <th>Subject</th>
                       <th>Topic</th>
                       <th>e-EdPort</th>
                       <th>Youtube</th>
                       <th>Wikipedia</th>
-                      <th>My School</th>
+                      <th>Expert Pick</th>
                       <th>Assignment</th>
                       <th>Action</th>
                   </tr>

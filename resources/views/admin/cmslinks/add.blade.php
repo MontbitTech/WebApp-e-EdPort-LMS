@@ -7,12 +7,12 @@
          <div class="col-md-10">
            <div class="card card-common mb-3 mt-5">
              <div class="card-header">
-               <span class="topic-heading">Add CMS Link</span>
+               <span class="topic-heading">Add Conetnt</span>
              </div>
              <div class="card-body pt-4">
                {!! Form::open(array('route' => ['cms.addlink'],'method'=>'POST','autocomplete'=>'off')) !!}
                <div class="form-group row">
-                 <label for="colFormLabel" class="col-md-4 col-form-label">Class:</label>
+                 <label for="colFormLabel" class="col-md-4 col-form-label">Division:</label>
                  <div class="col-md-5">
                    {!! Form::select('class', $data['class'], null,array('class' => 'form-control','required'=>'required')) !!}
                  </div>
@@ -39,9 +39,9 @@
                </div>
 
                <div class="form-group row">
-                 <label for="colFormLabel" class="col-md-4 col-form-label">URL:</label>
+                 <label for="colFormLabel" class="col-md-4 col-form-label">e-Edport URL:</label>
                  <div class="col-md-5">
-                   {!! Form::text('link', "", array('placeholder' => 'URL','class' => 'form-control')) !!}
+                   {!! Form::text('link', "", array('placeholder' => 'e-Edport URL','class' => 'form-control')) !!}
                  </div>
                </div>
 
@@ -77,7 +77,7 @@
                <div class="form-group row">
                  <div class="col-md-6 offset-md-4">
                    <button type="submit" class="btn btn-secondary btn-w140">Submit</button>
-                 <a href="{{route('admincms.listtopics')}}" class="btn btn-danger ml-5"><i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>Back</a>
+                   <a href="{{route('admincms.listtopics')}}" class="btn btn-danger ml-5"><i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>Back</a>
                  </div>
                </div>
              </div>

@@ -7,17 +7,17 @@
       <div class="col-sm-12">
         <div class="card card-common mb-3">
           <div class="card-header">
-            <span class="topic-heading">Class List</span>
+            <span class="topic-heading">Classroom List</span>
             <div class="float-right ml-1">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('admin.class.import')}}">
                 <i class="fa fa-upload mr-1" aria-hidden="true"></i>
-                Import Class Details
+                Import Classroom
               </a>
             </div>
             <div class="float-right">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('classes.add')}}">
-                <i class="fa fa-user-plus mr-1" aria-hidden="true"></i>
-                Create Class
+                <i class="fas fa-book-reader mr-1" aria-hidden="true"></i>
+                Add Classroom
               </a>
             </div>
           </div>
@@ -34,13 +34,14 @@
                 </span> 
               </div-->
 
-              <div class="col-md-12 col-lg-12 text-md-right text-center mb-1" id="appenddata">
+              <div class="col-md-6 col-lg-6 text-md-left text-center mb-1">
+                <!-- id="appenddata"> -->
                 <span data-dtfilter="" class="mb-1">
                   <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
-          <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
+                     <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
 
                   <select id="txtSerachByClass" name="txtSerachByClass" class="form-control form-control-sm" onchange="getSubject()">
-                    <option value=''>Select Class</option>
+                    <option value=''>Select Division</option>
                     @if(count($classes)>0)
                     <option value='all-class'>All</option>
                     @foreach($classes->unique('class_name') as $cl)
@@ -56,7 +57,7 @@
                   <select id="txtSerachBySection" name="txtSerachBySection" class="form-control form-control-sm" onchange="getSubject()">
                     <option value=''>Select Section</option>
                     @if(count($section)>0)
-                     <option value='all-section'>All</option>
+                    <option value='all-section'>All</option>
                     @foreach($section->unique('section_name') as $sl)
                     <option value='{{$sl->section_name}}'>{{$sl->section_name}}</option>
                     @endforeach
@@ -67,15 +68,19 @@
 
 
               </div>
+              <div class="col-md-6 col-lg-6 text-md-right text-center mb-1">
+                <span id="appenddata" style="float: right;">
 
+                </span>
+              </div>
               <div class="col-sm-12" id='subject'>
                 <table id="subjectlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 0, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                   <thead>
                     <tr>
-                      <th>Class</th>
+                      <th>Division</th>
                       <th>Section</th>
                       <th>Subject</th>
-                      <th class="text-center">Link</th>
+                      <th class="text-center">Classroom URL</th>
                       <th class="text-center">Action</th>
                     </tr>
                   </thead>
@@ -87,7 +92,7 @@
                       <td>{{$cls->class_name}}</td>
                       <td>{{$cls->section_name}}</td>
                       <td>{{$cls->studentSubject->subject_name}}</td>
-                      <td class="text-center"><a href="{{ $cls->g_link }}" target="_blank">Class Link </a></td>
+                      <td class="text-center"><a href="{{ $cls->g_link }}" target="_blank">Classroom Link </a></td>
                       <td class="text-center">
                         <a href="javascript:void(0);" data-deleteModal="{{$cls->id}}">{{ __('Delete') }}</a>
                       </td>
@@ -204,13 +209,13 @@
               extend: 'csvHtml5',
               autoFilter: true,
               sheetName: 'Exported data',
-              text: '<i class="fa fa-download mr-1 " aria-hidden="true"></i>Export Class Details',
+              text: '<i class="fa fa-upload mr-1 " aria-hidden="true"></i>Export Classroom',
               className: 'btn btn-secondary btn-sm',
               init: function(api, node, config) {
                 $(node).removeClass('dt-button')
               },
               exportOptions: {
-                columns: [0,1, 2]
+                columns: [0, 1, 2]
               }
 
             }],

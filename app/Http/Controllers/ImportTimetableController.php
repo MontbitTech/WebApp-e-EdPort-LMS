@@ -27,7 +27,7 @@ class ImportTimetableController extends Controller
      *
      * @return void
      */
-    public function __construct ()
+    public function __construct()
     {
         //$this->middleware('auth');
         // return Auth::guard('admin');
@@ -39,7 +39,7 @@ class ImportTimetableController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-    public function editTimetable (Request $request)
+    public function editTimetable(Request $request)
     {
         //dd($request->all());
         /*  if($request->isMethod('post'))
@@ -73,7 +73,7 @@ class ImportTimetableController extends Controller
         $cur_g_class_id = $obj_class->g_class_id;
 
 
-        if ( $teacher_id != null || $teacher_id != '' ) {
+        if ($teacher_id != null || $teacher_id != '') {
 
             $obj_teacher = Teacher::where('id', $teacher_id)->get()->first();
 
@@ -91,26 +91,25 @@ class ImportTimetableController extends Controller
             //$dateClassTeacherExist = DateClass::where('teacher_id',$teacher_id)->where('from_timing',$cur_from_timing)->get()->first();
             //	dd($dateClassTeacherExist);
 
-            if ( $teacherTimeExist ) {
+            if ($teacherTimeExist) {
                 return back()->with('error', "Teacher have already assigned lecture at selected time.");
             } /* else if($dateClassTeacherExist)
 			{
 				return back()->with('error',"Teacher have already assigned lecture at selected time.");
-			} */
-            else {
+			} */ else {
                 $prve_g_code = '';
                 // Previous Teacher Data
                 $obj_prev_teacher = InvitationClass::where('class_id', $cur_class_ID)->where('subject_id', $cur_subject_id)->where('teacher_id', $teacher_id)->get()->first();
                 $token = CommonHelper::varify_Admintoken(); // verify admin token
-                if ( $obj_prev_teacher ) {
+                if ($obj_prev_teacher) {
                     $prve_g_code = $obj_prev_teacher->g_code;
 
-                    if ( $prve_g_code != '' ) {
+                    if ($prve_g_code != '') {
                         $inv_delete = CommonHelper::teacher_invitation_delete($token, $prve_g_code); // cancel invitation
                     }
                 }
                 /// Send SMS to Teacher for assigned new Class
-                if ( strlen($phone) <= 10 ) {
+                if (strlen($phone) <= 10) {
                     $number = '91' . $phone;
                 } else {
                     $number = $phone;
@@ -132,17 +131,17 @@ class ImportTimetableController extends Controller
 
                 $inv_resData = array('error' => '');
 
-                if ( $inv_responce == 101 ) {
+                if ($inv_responce == 101) {
                     return back()->with('error', Config::get('constants.WebMessageCode.119'));
                 } else {
                     $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
                     //dd($inv_responce);
 
-                    if ( $inv_resData['error'] != '' ) {
+                    if ($inv_resData['error'] != '') {
 
-                        if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                        if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
                             return redirect()->route('admin.logout');
-                        } else if ( $inv_resData['error']['status'] == 'FAILED_PRECONDITION' ) {
+                        } else if ($inv_resData['error']['status'] == 'FAILED_PRECONDITION') {
                             return back()->with('error', 'The requested user\'s account is disabled or if the user already has this role');
                         } else {
                             //Log::error($inv_resData['error']['message']);
@@ -171,10 +170,10 @@ class ImportTimetableController extends Controller
             }
         }
 
-        if ( $subject_id != null || $subject_id != '' ) {
+        if ($subject_id != null || $subject_id != '') {
             $studentClassExist = StudentClass::where('class_name', $cur_class_name)->where('section_name', $cur_section_name)->where('subject_id', $subject_id)->get()->first();
 
-            if ( !$studentClassExist ) {
+            if (!$studentClassExist) {
                 return back()->with('error', "Selected subject class does not exists...");
             } else {
 
@@ -191,7 +190,7 @@ class ImportTimetableController extends Controller
                 $g_class_id = $studentClassExist->g_class_id;
 
                 /// Send SMS to Teacher for assigned new Class
-                if ( strlen($phone) <= 10 ) {
+                if (strlen($phone) <= 10) {
                     $number = '91' . $phone;
                 } else {
                     $number = $phone;
@@ -215,13 +214,13 @@ class ImportTimetableController extends Controller
 
                 $inv_resData = array('error' => '');
 
-                if ( $inv_responce == 101 ) {
+                if ($inv_responce == 101) {
                     return back()->with('error', Config::get('constants.WebMessageCode.119'));
                 } else {
                     $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                    if ( $inv_resData['error'] != '' ) {
+                    if ($inv_resData['error'] != '') {
 
-                        if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                        if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
                             return redirect()->route('admin.logout');
                         } else {
                             //Log::error($inv_resData['error']['message']);
@@ -245,28 +244,25 @@ class ImportTimetableController extends Controller
                         return back()->with('success', "TimeTable updated successfully..");
                     }
                 }
-
-
             }
         }
-
     }
 
 
-    public function timeTableImport (Request $request)
+    public function timeTableImport(Request $request)
     {
         $g_class_id = '';
         $g_teacher_id = '';
         $class_name = '';
         $section_name = '';
-        if ( $request->isMethod('post') ) {
+        if ($request->isMethod('post')) {
             $request->validate([
-                    'file' => 'required',
-                ]);
+                'file' => 'required',
+            ]);
             try {
                 $extensions = array("csv", "xls", "xlsx");
                 $file_validate = strtolower($request->file('file')->getClientOriginalExtension());
-                if ( !in_array($file_validate, $extensions) ) {
+                if (!in_array($file_validate, $extensions)) {
                     return back()->with('error', sprintf(Config::get('constants.WebMessageCode.103'), implode(",", $extensions)));
                 }
                 $file = $request->file('file');
@@ -274,7 +270,7 @@ class ImportTimetableController extends Controller
                 $filename = $file->getClientOriginalName();
 
 
-                if ( file_exists($destinationPath . '/' . $filename) )
+                if (file_exists($destinationPath . '/' . $filename))
                     unlink($destinationPath . '/' . $filename);
                 $file->move($destinationPath, $filename);
                 $path = $destinationPath . '/' . $filename;
@@ -282,12 +278,12 @@ class ImportTimetableController extends Controller
                 $headerMissing = array();
                 $supplierAdded = 0;
                 $ipAdded = 0;
-                $collection = ( new FastExcel )->import($path);
+                $collection = (new FastExcel)->import($path);
                 /*
                    echo "<pre>";
                   print_r($collection);
                   exit; */
-                if ( !isset($collection[0]) ) {
+                if (!isset($collection[0])) {
                     return back()->with('error', Config::get('constants.WebMessageCode.104'));
                 }
                 $teacher_subjects = array();
@@ -295,7 +291,7 @@ class ImportTimetableController extends Controller
 
                 $token = CommonHelper::varify_Admintoken(); // verify admin token
                 Log::info('Filename processing - ' . $filename);
-                foreach ( $collection as $key => $reader ) {
+                foreach ($collection as $key => $reader) {
                     // echo "<pre>";
                     $reader_keys = array_keys($reader);
                     $reader_values = array_values($reader);
@@ -303,7 +299,7 @@ class ImportTimetableController extends Controller
                     $error = '';
                     $rows = '';
                     $error_message = '';
-                    for ( $i = 0; $i < 8; $i++ ) {
+                    for ($i = 0; $i < 8; $i++) {
                         $j++;
                         $class_section_str = $reader_keys[0];
                         $time = $reader_values[1];
@@ -314,55 +310,55 @@ class ImportTimetableController extends Controller
                         $end_time = isset($time_splitted_arr[1]) ? trim($time_splitted_arr[1]) : '';     // End Time
 
 
-                        if ( $i == 0 ) {
-                            if ( $period == '' ) {
-                                Log::error('Period Name missing : ROW - ' . $j);
-                                $error_message = 'Period Name missing : ROW - ' . $j;
+                        if ($i == 0) {
+                            if ($period == '') {
+                                Log::error('Lecture Name missing : ROW - ' . $j);
+                                $error_message = 'Lecture Name missing : ROW - ' . $j;
                                 $error = 'found';
                                 $rows .= $j . ",";
                             }
                         }
-                        if ( $i == 1 ) {
+                        if ($i == 1) {
 
-                            if ( $start_time == '' ) {
+                            if ($start_time == '') {
                                 Log::error('Start time missing : ROW - ' . $period);
                                 $error_message = 'Start time missing : ROW - ' . $period;
                                 $error = 'found';
                                 $rows .= $j . ",";
-                            } else if ( $end_time == '' ) {
+                            } else if ($end_time == '') {
                                 Log::error('End time missing : ROW - ' . $period);
                                 $error_message = 'End time missing : ROW - ' . $period;
                                 $error = 'found';
                                 $rows .= $j . ",";
-                            } else if ( strtotime($start_time) > strtotime($end_time) ) {
+                            } else if (strtotime($start_time) > strtotime($end_time)) {
                                 Log::error('End time is earlier than start time : ROW - ' . $period);
                                 $error_message = 'End time is earlier than start time : ROW - ' . $period;
                                 $error = 'found';
                                 $rows .= $j . ",";
                             }
                         }
-                        if ( $i > 1 ) {
+                        if ($i > 1) {
                             $day_array = array("monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
-                            $teacher_subjects_arr = explode("/", $reader_values[ $i ]);
+                            $teacher_subjects_arr = explode("/", $reader_values[$i]);
                             $teacher_name = isset($teacher_subjects_arr[0]) ? trim($teacher_subjects_arr[0]) : '';   // Teacher Name
                             $subject_name = isset($teacher_subjects_arr[1]) ? trim($teacher_subjects_arr[1]) : '';     // subject_name
-                            if ( strtolower($teacher_name) != 'lunch' ) {
-                                if ( $reader_keys[ $i ] == '' ) {
+                            if (strtolower($teacher_name) != 'lunch') {
+                                if ($reader_keys[$i] == '') {
                                     Log::error('Day missing : ROW - ' . $period);
                                     $error_message = 'Day missing : ROW - ' . $period;
                                     $error = 'found';
                                     $rows .= $j . ",";
-                                } else if ( !in_array(strtolower($reader_keys[ $i ]), $day_array) ) {
+                                } else if (!in_array(strtolower($reader_keys[$i]), $day_array)) {
                                     Log::error('Invalid Day Name : ROW - ' . $period);
                                     $error_message = 'Invalid Day Name : ROW - ' . $period;
                                     $error = 'found';
                                     $rows .= $j . ",";
-                                } else if ( $teacher_name == '' ) {
+                                } else if ($teacher_name == '') {
                                     Log::error('Teacher Name missing : ROW - ' . $period);
                                     $error_message = 'Teacher Name missing : ROW - ' . $period;
                                     $error = 'found';
                                     $rows .= $j . ",";
-                                } else if ( $subject_name == '' ) {
+                                } else if ($subject_name == '') {
                                     Log::error('Subject Name missing : ROW - ' . $period);
                                     $error_message = 'Subject Name missing : ROW - ' . $period;
                                     $error = 'found';
@@ -370,36 +366,34 @@ class ImportTimetableController extends Controller
                                 }
 
                                 $studentSubjectExist = StudentSubject::where('subject_name', $subject_name)->first();
-                                if ( !$studentSubjectExist ) {
+                                if (!$studentSubjectExist) {
 
                                     Log::error('Invalid Subject Name or Not Found : ROW - ' . $period);
                                     $error_message = 'Invalid Subject Name or Not Found : ROW - ' . $period;
                                     $error = 'found';
                                     $rows .= $j . ",";
-
                                 }
                                 $teacherExist = Teacher::where('name', $teacher_name)->first();
 
-                                if ( !$teacherExist ) {
+                                if (!$teacherExist) {
                                     Log::error('Invalid Teacher Name or Not Found : ROW - ' . $period);
                                     $error_message = 'Invalid Teacher Name or Not Found : ROW - ' . $period;
                                     $error = 'found';
                                     $rows .= $j . ",";
                                 }
                             }
-                            $period_array[] = $period . ',' . $reader_keys[ $i ] . ',' . $teacher_name . ',' . $subject_name . ',' . $start_time . ',' . $end_time;
+                            $period_array[] = $period . ',' . $reader_keys[$i] . ',' . $teacher_name . ',' . $subject_name . ',' . $start_time . ',' . $end_time;
                         }
                     }
 
-                    if ( $error == "found" ) {
+                    if ($error == "found") {
                         return back()->with('error', 'Import time table has not processed, ' . $error_message);
                         exit;
                     }
-
                 }
 
 
-                if ( $class_section_str != '' ) {
+                if ($class_section_str != '') {
                     $class_spliited_arr = explode(":", $class_section_str);
 
                     $class_section_name = isset($class_spliited_arr[1]) ? $class_spliited_arr[1] : '';
@@ -408,7 +402,7 @@ class ImportTimetableController extends Controller
 
                     $class_name = isset($class_section_array[0]) ? trim($class_section_array[0]) : '';
                     $section_name = isset($class_section_array[1]) ? trim($class_section_array[1]) : '';
-                    if ( $class_name == '' || $section_name == '' ) {
+                    if ($class_name == '' || $section_name == '') {
                         return back()->with('error', Config::get('constants.WebMessageCode.120'));
                     }
                 } else {
@@ -416,11 +410,11 @@ class ImportTimetableController extends Controller
                 }
 
 
-                if ( count($period_array) > 0 ) {
+                if (count($period_array) > 0) {
                     $rows_period = '';
                     $error_msg = '';
                     $g_live_link = '';
-                    foreach ( $period_array as $period ) {
+                    foreach ($period_array as $period) {
 
                         //echo $period;
                         //print_r(explode(",",$period));
@@ -431,19 +425,19 @@ class ImportTimetableController extends Controller
                         /* $teacher_spillted_arr = $period[2];
                         $teacher_subjects_arr = explode("/",$teacher_spillted_arr); */
 
-                        $teacher_name = $period[2];///isset($teacher_subjects_arr[0])?trim($teacher_subjects_arr[0]):'';   // Teacher Name
-                        $subject_name = $period[3];//isset($teacher_subjects_arr[1])?trim($teacher_subjects_arr[1]):'';     // subject_name
+                        $teacher_name = $period[2]; ///isset($teacher_subjects_arr[0])?trim($teacher_subjects_arr[0]):'';   // Teacher Name
+                        $subject_name = $period[3]; //isset($teacher_subjects_arr[1])?trim($teacher_subjects_arr[1]):'';     // subject_name
 
                         /* $time_array = $period[3];
                         $time_splitted_arr = explode("-",$time_array); */
 
-                        $start_time = $period[4];//isset($time_splitted_arr[0])?trim($time_splitted_arr[0]):'';   // Start Time
-                        $end_time = $period[5];//isset($time_splitted_arr[1])?trim($time_splitted_arr[1]):'';     // End Time
+                        $start_time = $period[4]; //isset($time_splitted_arr[0])?trim($time_splitted_arr[0]):'';   // Start Time
+                        $end_time = $period[5]; //isset($time_splitted_arr[1])?trim($time_splitted_arr[1]):'';     // End Time
 
-                        if ( strtolower($teacher_name) != 'lunch' ) {
+                        if (strtolower($teacher_name) != 'lunch') {
                             //Check Subject
                             $studentSubjectExist = StudentSubject::where('subject_name', $subject_name)->first();
-                            if ( $studentSubjectExist ) {
+                            if ($studentSubjectExist) {
                                 $studentSubjectDetail = $studentSubjectExist;
                             } else {
                                 // $studentSubjectDetail = new StudentSubject;
@@ -451,7 +445,6 @@ class ImportTimetableController extends Controller
                                 $error = "found";
                                 $rows_period .= $period_name . ",";
                                 $error_msg = 'Invalid subject name in ROW -  ' . $period_name;
-
                             }
                             //$studentSubjectDetail->subject_name = $subject_name;
                             //$studentSubjectDetail->save();
@@ -459,9 +452,8 @@ class ImportTimetableController extends Controller
 
 
                             $teacherExist = Teacher::where('name', $teacher_name)->first();
-                            if ( $teacherExist ) {
+                            if ($teacherExist) {
                                 $user = $teacherExist;
-
                             } else {
                                 Log::error('Teacher does not exist For ROW - ' . $period_name);
                                 $error = "found";
@@ -478,7 +470,7 @@ class ImportTimetableController extends Controller
 
                             //---------------------------- Check Class exits or not
                             $studentClassExist = StudentClass::where('class_name', $class_name)->where('section_name', $section_name)->where('subject_id', $subject_id)->first();
-                            if ( $studentClassExist ) {
+                            if ($studentClassExist) {
                                 $studentClassDetail = $studentClassExist;
                                 $class_id = $studentClassDetail->id;                        //-----------------------------Class Id
                                 $g_class_id = $studentClassDetail->g_class_id;            //-----------------------------Google Class ID
@@ -503,13 +495,13 @@ class ImportTimetableController extends Controller
                                 $response = CommonHelper::create_class($token, $data); //------------------------------------access Google api craete Cource
                                 $resData = array('error' => '');
 
-                                if ( !$response['success'] ) {
+                                if (!$response['success']) {
                                     Log::error('Class has not create in Google ClassRoom for ROW -  ' . $period_name);
                                     $error = "found";
                                     $rows_period .= $period_name . ",";
                                     $error_msg = 'Class has not create in Google ClassRoom for ROW -  ' . $period_name;
 
-                                    if ( $response['data']->status == 'UNAUTHENTICATED' )
+                                    if ($response['data']->status == 'UNAUTHENTICATED')
                                         return redirect()->route('admin.logout');
                                 } else {
                                     $resData = array_merge($resData, json_decode($response, true));
@@ -536,10 +528,10 @@ class ImportTimetableController extends Controller
 
                             //dd($teacherTimeExist);
 
-                            if ( !$teacherTimeExist ) {
+                            if (!$teacherTimeExist) {
                                 // Invitation send to teacher for class
                                 $inviteExist = InvitationClass::where('class_id', $class_id)->where('subject_id', $subject_id)->where('teacher_id', $teacher_id)->get()->first();
-                                if ( $inviteExist ) {
+                                if ($inviteExist) {
                                     $obj_inv = $inviteExist;
                                 } else {
                                     $inv_data = array(
@@ -554,7 +546,7 @@ class ImportTimetableController extends Controller
                                     $inv_resData = array('error' => '');
 
 
-                                    if ( $inv_responce == 101 ) {
+                                    if ($inv_responce == 101) {
                                         ////return back()->with('error',"Error 03");// Config::get('constants.WebMessageCode.119'));
                                         Log::error('Invitation has not send to teacher for class, Error In ROW - ' . $period_name);
                                         $error = "found";
@@ -562,28 +554,28 @@ class ImportTimetableController extends Controller
                                         $error_msg = 'Invitation has not send to teacher for class, Error In ROW - ' . $period_name;
                                     } else {
                                         $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                                        if ( $inv_resData['error'] != '' ) {
+                                        if ($inv_resData['error'] != '') {
                                             //return back()->with('error', "error 04");//Config::get('constants.WebMessageCode.119'));
                                             Log::error('UNAUTHENTICATED, Error In ROW - ' . $period_name);
-                                            if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                                            if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
                                                 CustomHelper::get_refresh_token();
                                                 $token = CommonHelper::varify_Admintoken();
                                                 $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // access Google api craete Cource
 
                                                 $inv_resData = array('error' => '');
                                                 $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-//                                                return redirect()->route('admin.logout');
+                                                //                                                return redirect()->route('admin.logout');
                                             }
                                         }
 
-                                        if ( $inv_resData['error'] != '' ) {
+                                        if ($inv_resData['error'] != '') {
                                             //return back()->with('error', "error 04");//Config::get('constants.WebMessageCode.119'));
                                             Log::error('Invitation has not send to teacher for class, Error In ROW - ' . $period_name);
 
 
-                                            if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                                            if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
                                                 return redirect()->route('admin.logout');
-                                            }else {
+                                            } else {
                                                 $error = "found";
                                                 $rows_period .= $period_name . ",";
                                                 $error_msg = 'Invitation has not send to teacher for class, ' . $inv_resData['error']['message'] . ' Error In ROW - ' . $period_name;
@@ -598,13 +590,11 @@ class ImportTimetableController extends Controller
                                             $obj_inv->g_responce = '';
                                             $obj_inv->is_accept = 0;
                                             $obj_inv->save();
-
-
                                         }
                                     }
 
                                     /// Send SMS to Teacher for assigned new Class
-                                    if ( strlen($phone) <= 10 ) {
+                                    if (strlen($phone) <= 10) {
                                         $number = '91' . $phone;
                                     } else {
                                         $number = $phone;
@@ -613,8 +603,6 @@ class ImportTimetableController extends Controller
                                     $message = "You are invited for a new class $class_name - $section_name - $subject_name.";
 
                                     $s = CommonHelper::send_sms($number, $message);
-
-
                                 }
                             } else {
                                 Log::error('Teacher have already assigned lecture at selected time, for  ROW - ' . $period_name);
@@ -622,16 +610,14 @@ class ImportTimetableController extends Controller
                                 $rows_period .= $period_name . ",";
                                 $error_msg = 'Teacher have already assigned lecture at selected time, for  ROW - ' . $period_name;
                             }
-
-
                         } else {
                             $teacher_id = 0;
                         }
 
 
-                        if ( !$teacherTimeExist )         // check teacher availability
+                        if (!$teacherTimeExist)         // check teacher availability
                         {
-                            if ( $class_id > 0 && $subject_id > 0 && $error == '' ) {
+                            if ($class_id > 0 && $subject_id > 0 && $error == '') {
                                 //Adding or updating timetable
                                 //$day = date("l",strtotime($day));
                                 $from_timing = date("H:i:s", strtotime($start_time));
@@ -643,17 +629,16 @@ class ImportTimetableController extends Controller
 
 
                                 $lunch = 0;
-                                if ( $teacher_id == 0 ) {
+                                if ($teacher_id == 0) {
                                     $lunch = 1;
                                 }
 
-                                if ( $studentTimingExist ) {
+                                if ($studentTimingExist) {
                                     //$studentTimingDetail = $studentTimingExist;
                                     Log::error('Class have already assigned lecture at selected time, for  ROW - ' . $period_name);
                                     $error = "found";
                                     $rows_period .= $period_name . ",";
                                     $error_msg = 'Class have already assigned lecture at selected time, for  ROW - ' . $period_name;
-
                                 } else {
                                     $studentTimingDetail = new ClassTiming;
                                     $studentTimingDetail->class_id = $class_id;
@@ -670,7 +655,7 @@ class ImportTimetableController extends Controller
                                     // Today's  Lecture add on dateClass table
                                     $Tdays = date('l');
                                     $todaysDate = date("Y-m-d");
-                                    if ( $Tdays == $day ) {
+                                    if ($Tdays == $day) {
                                         $obj_dataClass = new DateClass;
 
                                         $obj_dataClass->class_id = $class_id;
@@ -682,7 +667,6 @@ class ImportTimetableController extends Controller
                                         $obj_dataClass->timetable_id = $timetableId;
                                         $obj_dataClass->live_link = $g_live_link;
                                         $obj_dataClass->save();
-
                                     }
                                 }
                             } else {
@@ -693,19 +677,17 @@ class ImportTimetableController extends Controller
                                 ///return back()->with('error',Config::get('constants.WebMessageCode.121'));
                             }
                         }
-                        if ( $error == "found" ) {
+                        if ($error == "found") {
                             return back()->with('error', $error_msg);
                         }
                     }
                 }
                 Log::info('File processing done ');
-                if ( $error == "found" )
+                if ($error == "found")
                     return back()->with('error', 'Import time table processed, check log file, errors in rows - ' . $period_name);
                 else
                     return back()->with('success', Config::get('constants.WebMessageCode.122'));
-
-
-            } catch ( \Exception $e ) {
+            } catch (\Exception $e) {
                 //dd($e);
                 return back()->with('error', $e->getMessage() . '  check log file, errors in rows - ' . $period_name);
             }
@@ -719,7 +701,7 @@ class ImportTimetableController extends Controller
         return view('admin.timetable.import');
     }
 
-    public function filterTimetable (Request $request)  // if any update in this function, then same changes we have to update in download_Timetable function
+    public function filterTimetable(Request $request)  // if any update in this function, then same changes we have to update in download_Timetable function
     {
         $class_name = $request->txtclass;
         $section_name = $request->txtsubject;
@@ -730,7 +712,7 @@ class ImportTimetableController extends Controller
         $cl = $class_name . " " . $section_name;
 
         $ttime = \DB::select('SELECT DISTINCT from_timing FROM `tbl_class_timings` ORDER by from_timing');
-
+        $year = \DB::table('tbl_settings')->where('item', 'year')->first();
         $data = false;
         $days = "";
         $htmla = "";
@@ -819,19 +801,19 @@ class ImportTimetableController extends Controller
 
         $html .= "<table class='timecard'>
 					<tbody>
-						<tr><td colspan=8 class='caption'>TimeTable 2020-21</td></tr>
+						<tr><td colspan=8 class='caption'>TimeTable " . $year->value . "-" . (($year->value) + 1) . "</td></tr>
 						<tr style='font-weight:900;font-size:22px;'>
 							<td class='special'>CLASS $cl</td><td >Time</td><td>Monday</td><td>Tuesday</td><td>Wednesday</td> <td>Thursday</td><td>Friday</td><td>Saturday</td>
 						</tr>";
 
         $htmla .= "<table id='teacherlist' class='table table-sm table-bordered display' style='width:100%' data-page-length='25' data-order='[[ 2, &quot;asc&quot; ]]' data-col1='60' data-collast='120' data-filterplaceholder='Search Records ...'>
 					<tbody>
-						<tr><td colspan=8>TimeTable 2020-21</td></tr>
+					<tr><td colspan=8>TimeTable " . $year->value . "-" . (($year->value) + 1) . "</td></tr>
 						<tr style='font-weight:600;font-size:14px;'>
 							<td style='width:120px;background:#222 !important;color:white;font-size:20px;'>CLASS $cl</td><td>Time</td><td>Monday</td><td>Tuesday</td><td>Wednesday</td> <td>Thursday</td><td>Friday</td><td>Saturday</td>
 						</tr>";
 
-        foreach ( $ttime as $t ) {
+        foreach ($ttime as $t) {
             $days = \DB::select("SELECT t.id, t.from_timing, t.to_timing, t.class_day, r.name, s.subject_name , t.is_lunch, r.g_meet_url
 													FROM tbl_class_timings t
 													left join tbl_student_subjects s on s.id = t.subject_id
@@ -840,25 +822,25 @@ class ImportTimetableController extends Controller
 													where c.class_name = ? and c.section_name=?
 													and from_timing = ?", [$class_name, $section_name, $t->from_timing]);
 
-            if ( count($days) > 0 ) {
-                $data=true;
-                foreach ( $days as $d ) {
-                    if ( $p % 2 == 0 )
+            if (count($days) > 0) {
+                $data = true;
+                foreach ($days as $d) {
+                    if ($p % 2 == 0)
                         $x = "even";
                     else
                         $x = "odd";
 
-                    if ( $i == 1 ) {
-                        $ef ='<br><a href="javascript:void(0)" id="delete-timetable" data-id='.$d->id.'>'.'Delete </a>';
+                    if ($i == 1) {
+                        $ef = '<br><a href="javascript:void(0)" id="delete-timetable" data-id=' . $d->id . '>' . 'Delete </a>';
 
-                                        $html .= "<tr class='$x'><td><strong>Period $p</strong></td><td>".date('H:i',strtotime($d->from_timing))."-".date('H:i',strtotime($d->to_timing))."</td>";
-                                        $htmla .= "<tr class='$x'><td>Period $p".$ef."</td><td style='width:100px;'>".date('H:i',strtotime($d->from_timing))."-".date('H:i',strtotime($d->to_timing))."</td>";
+                        $html .= "<tr class='$x'><td><strong>Period $p</strong></td><td>" . date('H:i', strtotime($d->from_timing)) . "-" . date('H:i', strtotime($d->to_timing)) . "</td>";
+                        $htmla .= "<tr class='$x'><td>Period $p" . $ef . "</td><td style='width:100px;'>" . date('H:i', strtotime($d->from_timing)) . "-" . date('H:i', strtotime($d->to_timing)) . "</td>";
                     }
 
-                    if ( empty($d->g_meet_url) )
-                        $e = $d->name . " (<strong>" . $d->subject_name . "</strong>)";
+                    if (empty($d->g_meet_url))
+                        $e = $d->subject_name . " (" .  $d->name . ")";
                     else
-                        $e = "<a target='_blank' href='" . $d->g_meet_url . "'>" . $d->name . " (<strong>" . $d->subject_name . "</strong>)</a>";
+                        $e = "<a target='_blank' href='" . $d->g_meet_url . "'><strong>" . $d->subject_name . " </strong><br>(" . $d->name . ")</a>";
 
                     $cc = array();
                     parse_str("details=" . $d->id . "/" . $d->name . "/" . $d->subject_name . "/" . $d->class_day . "/" . date('H:i', strtotime($d->from_timing)) . "-" . date('H:i', strtotime($d->to_timing)), $cc);
@@ -872,10 +854,10 @@ class ImportTimetableController extends Controller
 									data-class_day='" . $d->class_day . "' 
 									data-timing='" . date('H:i', strtotime($d->from_timing)) . "-" . date('H:i', strtotime($d->to_timing)) . "' 
 									data-deleteModal=" . $d->id . "
-									href='javascript:void(0)' onclick='editTimetable(" . $d->id . "," . json_encode($cc) . ")'>Edit</a>";
+									href='javascript:void(0)' onclick='editTimetable(" . $d->id . "," . json_encode($cc) . ")'><small>Edit</small></a>";
 
-                    $html .= "<td>" . ( $d->is_lunch == 1 ? "LUNCH" : $e ) . "</td>";
-                    $htmla .= "<td>" . ( $d->is_lunch == 1 ? "LUNCH" : $e ) . $ed . "</td>";
+                    $html .= "<td>" . ($d->is_lunch == 1 ? "LUNCH" : $e) . "</td>";
+                    $htmla .= "<td>" . ($d->is_lunch == 1 ? "LUNCH" : $e) . $ed . "</td>";
                     //$html .= "<td>".$d->name."</td>";
                     $i++;
                 }
@@ -895,7 +877,7 @@ class ImportTimetableController extends Controller
 
         $name = public_path('dl-timetable') . "/" . $class_name . "_" . $section_name . "_timetable.pdf";
 
-        if ( file_exists($name) )
+        if (file_exists($name))
             unlink($name);
 
         //$pdf = PDF::loadHTML($html);
@@ -904,7 +886,7 @@ class ImportTimetableController extends Controller
         return array("html" => $htmla, "data" => $data);
     }
 
-    public function listTimetable ()
+    public function listTimetable()
     {
         $timetables = ClassTiming::join('tbl_techers', 'tbl_techers.id', '=', 'tbl_class_timings.teacher_id')->get();
 
@@ -921,50 +903,50 @@ class ImportTimetableController extends Controller
         return view('admin.timetable.index', compact('timetables', 'ar'));
     }
 
-    public function deleteTimetable(Request $request,$id)
+    public function deleteTimetable(Request $request, $id)
     {
-        $classTiming = ClassTiming::find($id);  
+        $classTiming = ClassTiming::find($id);
         $objTeacher  = InvitationClass::where('class_id', $classTiming->class_id)->where('subject_id', $classTiming->teacher_id)->where('teacher_id', $classTiming->subject_id)->get()->first();
         $token = CommonHelper::varify_Admintoken(); // verify admin token
         if ($objTeacher) {
             $gCode = $objTeacher->g_code;
-            if($gCode != '') {
-                $invDelete = CommonHelper::teacher_invitation_delete($token, $gCode); 
+            if ($gCode != '') {
+                $invDelete = CommonHelper::teacher_invitation_delete($token, $gCode);
             }
         }
         $timeTables = ClassTiming::where('from_timing', $classTiming->from_timing)->get();
-        foreach($timeTables as $timeTable){
+        foreach ($timeTables as $timeTable) {
             $timeTable->delete();
         }
-        return redirect()->back()->with('success',"Deleted Successfully");
+        return redirect()->back()->with('success', "Deleted Successfully");
     }
 
     public function deleteAllTimetable(Request $request)
     {
-        $timeTables = \DB::select ("SELECT t.class_id, t.subject_id,t.id,t.teacher_id
+        $timeTables = \DB::select("SELECT t.class_id, t.subject_id,t.id,t.teacher_id
         FROM tbl_class_timings t
         left join tbl_student_subjects s on s.id = t.subject_id
         left join tbl_student_classes c on c.id = t.class_id
-        where c.class_name = ? and c.section_name=?", [$request->txtSerachByClass,$request->txtSerachBySection]);
-        foreach($timeTables as $timeTable){
+        where c.class_name = ? and c.section_name=?", [$request->txtSerachByClass, $request->txtSerachBySection]);
+        foreach ($timeTables as $timeTable) {
             $objTeacher = InvitationClass::where('class_id', $timeTable->class_id)->where('subject_id', $timeTable->subject_id)->where('teacher_id', $timeTable->teacher_id)->get()->first();
             $token = CommonHelper::varify_Admintoken(); // verify admin token
-            if($objTeacher){
+            if ($objTeacher) {
                 $gCode = $objTeacher->g_code;
-                if($gCode != ''){
-                    $invDelete = CommonHelper::teacher_invitation_delete($token, $gCode); 
+                if ($gCode != '') {
+                    $invDelete = CommonHelper::teacher_invitation_delete($token, $gCode);
                 }
             }
-        $classTime = ClassTiming::where('class_id', $timeTable->class_id)->where("subject_id",$timeTable->subject_id)->where("teacher_id",$timeTable->teacher_id);
-        $classTime->delete();
-          }
-        return redirect()->back()->with('success',"Deleted Successfully");
+            $classTime = ClassTiming::where('class_id', $timeTable->class_id)->where("subject_id", $timeTable->subject_id)->where("teacher_id", $timeTable->teacher_id);
+            $classTime->delete();
+        }
+        return redirect()->back()->with('success', "Deleted Successfully");
     }
 
-    public function addExtraClass (Request $request)
+    public function addExtraClass(Request $request)
     {
 
-        if ( $request->isMethod('post') ) {
+        if ($request->isMethod('post')) {
 
 
             $request->validate([
@@ -1024,17 +1006,17 @@ class ImportTimetableController extends Controller
 
             $dateClassTeacherExist = DateClass::where('teacher_id', $teacher_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
 
-            if ( $TimeTableExist ) {
+            if ($TimeTableExist) {
                 return back()->with('error', "Class already allocated to selected teacher at selected time!.");
-            } else if ( $classTimingExist ) {
+            } else if ($classTimingExist) {
                 return back()->with('error', "Class have already assigned lecture at selected time.");
-            } else if ( $teacherTimeExist ) {
+            } else if ($teacherTimeExist) {
                 return back()->with('error', "Teacher have already assigned lecture at selected time.");
-            } else if ( $dateClassExist ) {
+            } else if ($dateClassExist) {
                 return back()->with('error', "Class already allocated to selected teacher at selected time!.");
-            } else if ( $dateClassTimeExist ) {
+            } else if ($dateClassTimeExist) {
                 return back()->with('error', "Class have already assigned lecture at selected time.");
-            } else if ( $dateClassTeacherExist ) {
+            } else if ($dateClassTeacherExist) {
                 return back()->with('error', "Teacher have already assigned lecture at selected time.");
             } else {
 
@@ -1065,7 +1047,7 @@ class ImportTimetableController extends Controller
 
 
                 /// Send SMS to Teacher for assigned new Class
-                if ( strlen($phone) <= 10 ) {
+                if (strlen($phone) <= 10) {
                     $number = '91' . $phone;
                 } else {
                     $number = $phone;
@@ -1087,13 +1069,13 @@ class ImportTimetableController extends Controller
                 $inv_resData = array('error' => '');
 
 
-                if ( $inv_responce == 101 ) {
+                if ($inv_responce == 101) {
                     return back()->with('error', Config::get('constants.WebMessageCode.119'));
                 } else {
                     $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                    if ( $inv_resData['error'] != '' ) {
+                    if ($inv_resData['error'] != '') {
 
-                        if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                        if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
                             return redirect()->route('admin.login.post');
                         } else {
                             //Log::error($inv_resData['error']['message']);
@@ -1114,10 +1096,7 @@ class ImportTimetableController extends Controller
                 }
 
                 return redirect()->route('add.extracalss')->with('success', "Extra class created successfully.");
-
             }
-
-
         }
 
         $data['classData'] = DB::table('tbl_student_classes as c')->select('c.id', 'c.class_name', 'c.section_name', 'c.subject_id', 's.subject_name')->join('tbl_student_subjects as s', 'c.subject_id', 's.id')->get();
@@ -1138,7 +1117,7 @@ class ImportTimetableController extends Controller
     }
 
 
-    public function sampleDownload (Request $request)
+    public function sampleDownload(Request $request)
     {
         $path = public_path('timetable-excels/sample/') . '/Sample-TimeTable-format.csv';
 
@@ -1146,10 +1125,10 @@ class ImportTimetableController extends Controller
     }
 
     /*Import no of students in a class*/
-    public function importClassStudentNumber (Request $request)
+    public function importClassStudentNumber(Request $request)
     {
         $student_class = \App\StudentClass::all();
-        if ( Request()->post() ) {
+        if (Request()->post()) {
             try {
                 $request->validate([
                     'file'  => 'required',
@@ -1157,7 +1136,7 @@ class ImportTimetableController extends Controller
                 ]);
                 $extensions = array("csv", "xlsx");
                 $file_validate = strtolower($request->file('file')->getClientOriginalExtension());
-                if ( !in_array($file_validate, $extensions) ) {
+                if (!in_array($file_validate, $extensions)) {
                     return back()->with('error', sprintf(Config::get('constants.WebMessageCode.103'), implode(",", $extensions)));
                 }
                 $file = $request->file('file');
@@ -1169,18 +1148,18 @@ class ImportTimetableController extends Controller
                 $headerMissing = array();
                 $supplierAdded = 0;
                 $ipAdded = 0;
-                $collection = ( new FastExcel )->import($path);
-                if ( !isset($collection[0]) ) {
+                $collection = (new FastExcel)->import($path);
+                if (!isset($collection[0])) {
                     return back()->with('error', Config::get('constants.WebMessageCode.104'));
                 }
                 $numbers = array();
-                foreach ( $collection as $key => $reader ) {
-                    if ( !ctype_digit(array_values($reader)[0]) ) {
+                foreach ($collection as $key => $reader) {
+                    if (!ctype_digit(array_values($reader)[0])) {
                         continue;
                     }
                     $numbers[] = array_values($reader);
                 }
-                if ( count($numbers) > 0 ) {
+                if (count($numbers) > 0) {
                     $mobile_numbers = implode(',', array_unique(array_merge(...$numbers)));
                     $studentClass = \App\StudentClass::where('id', $request->class)->update(['student_numbers' => $mobile_numbers]);
                 } else {
@@ -1188,7 +1167,7 @@ class ImportTimetableController extends Controller
                 }
 
                 return back()->with('success', Config::get('constants.WebMessageCode.112'));
-            } catch ( \Exception $e ) {
+            } catch (\Exception $e) {
                 return back()->with('error', Config::get('constants.WebMessageCode.121'));
             }
             @unlink($path);
@@ -1199,10 +1178,10 @@ class ImportTimetableController extends Controller
 
 
     //DownLoad Time table same funciton as time table filter
-    public function download_Timetable ($class, $section)
+    public function download_Timetable($class, $section)
     {
-        $class_name = decrypt($class);//$request->txtclass;
-        $section_name = decrypt($section);// $request->txtsubject;
+        $class_name = decrypt($class); //$request->txtclass;
+        $section_name = decrypt($section); // $request->txtsubject;
 
         /* echo $class_name;
         echo $section_name;
@@ -1215,7 +1194,7 @@ class ImportTimetableController extends Controller
         $cl = $class_name . " " . $section_name;
 
         $ttime = \DB::select('SELECT DISTINCT from_timing FROM `tbl_class_timings` ORDER by from_timing');
-
+        $year = \DB::table('tbl_settings')->where('item', 'year')->first();
 
         $days = "";
         $htmla = "";
@@ -1304,19 +1283,19 @@ class ImportTimetableController extends Controller
 
         $html .= "<table class='timecard'>
 					<tbody>
-						<tr><td colspan=8 class='caption'>TimeTable 2020-21</td></tr>
+						<tr><td colspan=8 class='caption'>TimeTable " . $year->value . "-" . (($year->value) + 1) . "</td></tr>
 						<tr style='font-weight:900;font-size:22px;'>
 							<td class='special'>CLASS $cl</td><td >Time</td><td>Monday</td><td>Tuesday</td><td>Wednesday</td> <td>Thursday</td><td>Friday</td><td>Saturday</td>
 						</tr>";
 
         $htmla .= "<table id='teacherlist' class='table table-sm table-bordered display' style='width:100%' data-page-length='25' data-order='[[ 2, &quot;asc&quot; ]]' data-col1='60' data-collast='120' data-filterplaceholder='Search Records ...'>
 					<tbody>
-						<tr><td colspan=8>TimeTable 2020-21</td></tr>
+						<tr><td colspan=8>TimeTable " . $year->value . "-" . (($year->value) + 1) . "</td></tr>
 						<tr style='font-weight:600;font-size:14px;'>
 							<td style='width:120px;background:#222 !important;color:white;font-size:20px;'>CLASS $cl</td><td>Time</td><td>Monday</td><td>Tuesday</td><td>Wednesday</td> <td>Thursday</td><td>Friday</td><td>Saturday</td>
 						</tr>";
 
-        foreach ( $ttime as $t ) {
+        foreach ($ttime as $t) {
             $days = \DB::select("SELECT t.from_timing, t.to_timing, r.name, s.subject_name , t.is_lunch, r.g_meet_url
 													FROM tbl_class_timings t
 													left join tbl_student_subjects s on s.id = t.subject_id
@@ -1325,25 +1304,25 @@ class ImportTimetableController extends Controller
 													where c.class_name = ? and c.section_name=?
 													and from_timing = ?", [$class_name, $section_name, $t->from_timing]);
 
-            if ( count($days) > 0 ) {
-                foreach ( $days as $d ) {
-                    if ( $p % 2 == 0 )
+            if (count($days) > 0) {
+                foreach ($days as $d) {
+                    if ($p % 2 == 0)
                         $x = "even";
                     else
                         $x = "odd";
 
-                    if ( $i == 1 ) {
+                    if ($i == 1) {
                         $html .= "<tr class='$x'><td><strong>Period $p</strong></td><td>" . date('H:i', strtotime($d->from_timing)) . "-" . date('H:i', strtotime($d->to_timing)) . "</td>";
                         $htmla .= "<tr class='$x'><td>Period $p</td><td style='width:100px;'>" . date('H:i', strtotime($d->from_timing)) . "-" . date('H:i', strtotime($d->to_timing)) . "</td>";
                     }
 
-                    if ( empty($d->g_meet_url) )
+                    if (empty($d->g_meet_url))
                         $e = $d->name . "(<strong>" . $d->subject_name . "</strong>)";
                     else
                         $e = "<a target='_blank' href='" . $d->g_meet_url . "'>" . $d->name . "(<strong>" . $d->subject_name . "</strong>)</a>";
 
-                    $html .= "<td>" . ( $d->is_lunch == 1 ? "LUNCH" : $e ) . "</td>";
-                    $htmla .= "<td>" . ( $d->is_lunch == 1 ? "LUNCH" : $e ) . "</td>";
+                    $html .= "<td>" . ($d->is_lunch == 1 ? "LUNCH" : $e) . "</td>";
+                    $htmla .= "<td>" . ($d->is_lunch == 1 ? "LUNCH" : $e) . "</td>";
                     //$html .= "<td>".$d->name."</td>";
                     $i++;
                 }
@@ -1363,7 +1342,7 @@ class ImportTimetableController extends Controller
 
         $name = public_path('dl-timetable') . "/" . $class_name . "_" . $section_name . "_timetable.pdf";
 
-        if ( file_exists($name) )
+        if (file_exists($name))
             unlink($name);
 
         //$pdf = PDF::loadHTML($html);

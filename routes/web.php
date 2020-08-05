@@ -28,7 +28,7 @@ Route::get('/create_user','GtestController@create_user'); */
 Route::get('/timeTable/{class}/{section}', 'GtestController@TestFilterTimetable');
 Route::get('/test_email_timetable', 'GtestController@send_email_timeTable');
 Route::get('/get_token', 'GtestController@get_token')->name('get_token');
-Route::get('/test','TestController@test');
+Route::get('/test', 'TestController@test');
 Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
 // ------ //
@@ -62,6 +62,8 @@ Route::group(['middleware' => 'adminsession'], function () {
 
     Route::match(array('GET', 'POST'), '/teacher-import', 'TeacherController@importClassTeacher')->name('admin.teacherimport');
     Route::get('/download-teacher', 'TeacherController@sampleTeacherDownload')->name('admin.sampleTeacherDownload');
+    /* on going class */
+    Route::get('admin/ongoingclass', 'OngoingClassController@index')->name('ongoing.index');
 
     /*Support Help*/
 
@@ -115,16 +117,15 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::match(array('GET', 'POST'), '/admin/edit-link/{id}', 'ImportCMSLinksController@editLink')->name('cms.editlink');
     Route::match(array('GET', 'POST'), '/admin/add-link', 'ImportCMSLinksController@addLink')->name('cms.addlink');
     Route::post('/admin/delete-link/{id}', 'ImportCMSLinksController@deleteLink')->name('cms.deletelink');
-    Route::post('filter-record','ImportCMSLinksController@filterRecord')->name('filter-record');
+    Route::post('filter-record', 'ImportCMSLinksController@filterRecord')->name('filter-record');
     Route::delete('admin/cmsDeleteAll', 'ImportCMSLinksController@deleteAll');
 
     Route::match(array('GET', 'POST'), '/cmslinks-import', 'ImportCMSLinksController@cmsLinksImport')->name('cms.cmslinksimport');
     Route::get('/download-cmslinkssample', 'ImportCMSLinksController@sampleCMSLinksDownload')->name('cms.sampleCMSLinksDownload');
-    Route::post('filter-subject','ClassController@filterSubject')->name('filter-subject');
-	Route::post('filter-student','ImportStudentsController@filterStudent')->name('filter-student');
-    Route::post('/available/teacher','AvailabilityController@availableTeacherAndSubject');
+    Route::post('filter-subject', 'ClassController@filterSubject')->name('filter-subject');
+    Route::post('filter-student', 'ImportStudentsController@filterStudent')->name('filter-student');
+    Route::post('/available/teacher', 'AvailabilityController@availableTeacherAndSubject');
 });
-
 
 /*  Teacher  */
 Route::group(['middleware' => 'AuthCheck'], function () {
@@ -154,7 +155,7 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/get-assignment', 'ClassWorkController@ajaxGetAssignment');
     Route::post('/give-assignment', 'ClassWorkController@ajaxGiveAssignment');
 
-	Route::get('/test_email', 'TeacherClassController@html_email'); //->name('teacher.acceptClass');
+    Route::get('/test_email', 'TeacherClassController@html_email'); //->name('teacher.acceptClass');
 
     Route::get('/teacher/report', 'ReportController@index')->name('teacher.report');
     Route::match(array('GET', 'POST'), '/student-notify', 'TeacherClassController@notifyStudents')->name('student-notify');
@@ -168,10 +169,15 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/class-topic-update', 'ClassWorkController@classTopicUpdate')->name('classtopic.update');
     Route::post('/update-classNotes', 'ClassWorkController@ajaxUpdateClassNotes')->name('update-classNotes');
 
-    Route::post('/available/classes','AvailabilityController@availableClasses');
-    Route::post('/teacher/class/assignments','ClassWorkController@getClassAssignments');
+    Route::post('/available/classes', 'AvailabilityController@availableClasses');
+    Route::post('/teacher/class/assignments', 'ClassWorkController@getClassAssignments');
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
 });
+
+
+
+
+
 
 Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass')->name('reload-timetable');
 Route::get('/timeTable/{class}/{section}', 'ImportTimetableController@download_Timetable');

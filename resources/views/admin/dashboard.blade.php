@@ -45,14 +45,14 @@
                 </span>
               </div>
               <div class="col-sm-12">
-                <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="10" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                   <thead>
                     <tr>
 
                       <th>Name</th>
                       <th>Email</th>
                       <th>Phone No</th>
-                      <th class="text-center">gMeet URL</th>
+                      <th class="text-center">Google Meet </th>
                       <th>Action</th>
                     </tr>
                   </thead>
@@ -65,7 +65,7 @@
                       <td>{{$user->phone}}</td>
                       @if($user->g_meet_url)
                       <td class="text-center">
-                        <a href="{{$user->g_meet_url}}" target="_blank">gMeet URL</a>
+                        <a href="{{$user->g_meet_url}}" target="_blank">Join Link</a>
                       </td>
                       @else
                       <td class="text-center ">
@@ -89,7 +89,7 @@
           </div>
         </div>
 
-        <div class="card card-common mb-3">
+        <!-- <div class="card card-common mb-3">
           @if(count($onGoingClasses) > 0)
 
           <div class="card-header">
@@ -126,7 +126,7 @@
             </div>
           </div>
           @endif
-        </div>
+        </div> -->
 
 
       </div>
@@ -193,16 +193,21 @@
       "columnDefs": [{
         "width": "16%",
         "targets": 0
-      }]
+      }],
+      "lengthMenu": [
+        [10, 25, 50, -1],
+        [10, 25, 50, "All"]
+      ]
+
     });
     table.buttons().container()
       .appendTo('#appenddata');
-    $('#ongoing').DataTable({
-      initComplete: function(settings, json) {
-        $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
-        $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
-      }
-    });
+    // $('#ongoing').DataTable({
+    //   initComplete: function(settings, json) {
+    //     $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
+    //     $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+    //   }
+    // });
 
 
     $('.dateset').datepicker({

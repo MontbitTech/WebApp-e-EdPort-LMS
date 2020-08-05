@@ -26,11 +26,11 @@
 		}
 
 		50% {
-			color: green;
+			color: lightgoldenrodyellow;
 		}
 
 		75% {
-			color: brown;
+			color: lightgoldenrodyellow;
 		}
 
 		100% {
@@ -98,6 +98,11 @@
 	.menu-bars svg {
 		font-size: x-large;
 	}
+
+	.dropdown-toggle::after {
+		display: none !important;
+
+	}
 </style>
 @php
 $student = "disabled";
@@ -125,7 +130,16 @@ if($s["student"] > 0)
 $cmslinks ="enabled";
 $s = \App\Http\Helpers\CustomHelper::getSchool();
 @endphp
+@php
+$s = \App\Http\Helpers\CustomHelper::getSchool();
 
+foreach($s as $logo)
+{
+if($logo->item == "schoollogo"){
+$slogo = $logo->value;
+}
+}
+@endphp
 <header>
 
 	<div class="container-fluid">
@@ -143,22 +157,23 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 				</div>
 
 				<a class="navbar-logo align-middle font-weight-bold" href="./">
-					{{$s[0]->value}}
+
+					<img src="{{$slogo}}" alt="" width="50px">
 				</a>
 
 			</div>
-			<div class="float-right dropdown-user">
+			<div class="float-right dropdown-user ">
 				@if($t)
 
 				<a href="{{route('admin.helplist')}}" class=" color-change mr-2 icon-lg align-middle">
 
-					<i class="fa fa-bell " style="font-size: 20px;" aria-hidden="true"></i>
+					<i class="fa fa-bell " style="font-size:1.3125rem; padding-top: 0.75rem;" aria-hidden="true"></i>
 				</a>
 
 				@else
-				<a href="" class="text-success mr-3 icon-lg align-bottom">
-
-					<i class="fa fa-bell" style="font-size: 20px;" aria-hidden="true"></i>
+				<a href="{{route('admin.helplist')}}" class=" text-success mr-3 icon-lg align-bottom">
+					<!-- Notifiction -->
+					<i class="fa fa-bell" style="font-size:1.3125rem; padding-top: 0.75rem;" aria-hidden="true"></i>
 
 
 				</a>
@@ -167,7 +182,10 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 				<div class="dropdown d-inline-block">
 
 					<div class="dropdown-toggle" data-toggle="dropdown">
-						<div class="user-profilepic"><img src="{{asset('images/user.jpg')}}" width="31px"></div><span>My Profile</span>
+						<div class="user-profilepic" style="font-size: 25px;">
+							<i class="fas fa-user icon-4x"></i>
+						</div>
+						<!-- <img src="{{asset('images/user.jpg')}}" width="31px"></div><span>My Profile</span> -->
 					</div>
 					<div class="dropdown-menu dropdown-menu-right">
 						<a class="dropdown-item" href="{{route('admin.profile')}}"><svg class="icon">
@@ -183,14 +201,15 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 						</a>
 
 						<!--  <a class="dropdown-item" href="#"
-		                onclick="event.preventDefault();
-		                document.getElementById('logout-form').submit();">
-		                {{ __('Logout') }}
-		              </a>
+															onclick="event.preventDefault();
+															document.getElementById('logout-form').submit();">
+															{{ __('Logout') }}
+														</a>
 
-		              <form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
-		                @csrf
-		              </form> -->
+												<form id="logout-form" action="{{ route('admin.logout') }}" method="POST" style="display: none;">
+													@csrf
+												</form> 
+										-->
 					</div>
 				</div>
 			</div>
@@ -205,7 +224,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 			<div class="left-link {{ Request::segment(1) == 'list-setting'?'active':''}}"><a href="{{route('admin.settings')}}" class="pl-3">
 
 					<i class="fas fa-cogs icon icon-4x"></i>
-					School Settings</a>
+					My Institution</a>
 			</div>
 		</div>
 
@@ -221,7 +240,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 			<div class="left-link {{ Request::segment(2) == 'classes'?'active':''}}"><a href="{{route('admin.listClass')}}" class="{{$classes}} pl-3">
 
 					<i class="fas fa-book-reader icon-4x icon"></i>
-					Classes</a></div>
+					Classroom</a></div>
 		</div>
 
 		<div class="left-card">
@@ -239,8 +258,9 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 
 		<div class="left-card">
 			<div class="left-link {{ Request::segment(1) == 'list-topics'?'active':''}}"><a href="{{route('cms.listtopics')}}" class="{{$cmslinks}} pl-3">
-					<i class="fas fa-clipboard-list icon icon-4x"></i>
-					CMS Topics</a></div>
+
+					<i class="fas fa-book icon icon-4x"></i>
+					Content</a></div>
 		</div>
 
 		<div class="left-card">
@@ -253,11 +273,19 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 					<i class="fa fa-code-fork icon icon-4x" aria-hidden="true"></i>
 					Help Category</a></div>
 		</div>
+		<div class="left-card">
+			<div class="left-link {{ Request::segment(2) == 'help-category'?'active':''}}"><a href="{{route('ongoing.index')}}" class="{{$support}} pl-3">
+					<i class="fab fa-readme icon icon-4x" aria-hidden="true"></i>
 
+					Ongoing Class</a></div>
+		</div>
+		<div class="text-center text-white w-100 " style="position:absolute;bottom:0;font-size: 10px;letter-spacing: 1px;">
+			<img src="{{asset('images/logo-1.png')}}" alt="e-edport" width="27px">
+			<div>Powered by e-EdPort</div>
+
+		</div>
 	</div>
-	<div class="text-center text-white  pb-5 mb-5" style="font-size: 10px;letter-spacing: 1px;">
-		<!-- <img src="{{asset('images/logo-1.png')}}" alt="e-edport" class="d-block text-center ml-5" width="27px"> -->
-		Powered by e-EdPort</div>
+
 </div>
 <p class="copyrights">&copy;{{date('YS')}} LM - All Rights Reserved</p>
 

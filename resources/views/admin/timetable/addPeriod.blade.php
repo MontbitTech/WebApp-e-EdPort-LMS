@@ -11,7 +11,7 @@
 			<div class="col-md-10">
 				<div class="card card-common mb-3 mt-5">
 					<div class="card-header">
-						<span class="topic-heading">Create Extra Class</span>
+						<span class="topic-heading">Create Extra Lecture</span>
 					</div>
 					<div class="card-body pt-4">
 						{!! Form::open(array('route' => ['add.extracalss'],'method'=>'POST','autocomplete'=>'off')) !!}
@@ -21,11 +21,11 @@
 
 
 						<div class="form-group row">
-							<label for="colFormLabel" class="col-md-4 col-form-label">Class Name:</label>
+							<label for="colFormLabel" class="col-md-4 col-form-label">Division:</label>
 							<div class="col-md-6">
 
 								<select name="class_id" id="class_id" class="form-control" required>
-									<option value=""> Select Class </option>
+									<option value=""> Select Division </option>
 									<?php
 									foreach ($data['classData'] as $row) {
 									?>
@@ -39,15 +39,9 @@
 							</div>
 						</div>
 
-						<div class="form-group row">
-							<label for="colFormLabel" class="col-md-4 col-form-label">Select Teacher:</label>
-							<div class="col-md-6">
-								{!! Form::select('teacher',$data['teacher'], null,array('class' => 'form-control','required'=>'required')) !!}
-							</div>
-						</div>
 
 						<div class="form-group row">
-							<label for="colFormLabel" class="col-md-4 col-form-label">Select Date:</label>
+							<label for="colFormLabel" class="col-md-4 col-form-label">Date:</label>
 							<div class="col-md-6">
 								<!--  {!! Form::select('days', $days, null,array('class' => 'form-control','required'=>'required')) !!} -->
 								{!! Form::text('class_date', null, array('placeholder' => 'DD MM YYYY','class' => 'form-control ac-datepicker','required'=>'required',"onkeydown"=>"return false;")) !!}
@@ -69,7 +63,12 @@
 								{!! Form::text('end_time', null, array('placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
 							</div>
 						</div>
-
+						<div class="form-group row">
+							<label for="colFormLabel" class="col-md-4 col-form-label">Teacher:</label>
+							<div class="col-md-6">
+								{!! Form::select('teacher',$data['teacher'], null,array('class' => 'form-control','required'=>'required')) !!}
+							</div>
+						</div>
 						<!--	<div class="form-group row">
 												<label for="colFormLabel" class="col-md-4 col-form-label">Is Lunch:</label>
 												<div class="col-md-8">
