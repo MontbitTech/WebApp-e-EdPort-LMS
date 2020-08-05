@@ -84,6 +84,12 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::match(array('GET', 'POST'), '/admin/create-classes', 'ClassController@addClasses')->name('classes.add');
     //Route::match(array('GET','POST'),'/admin/edit-classes/{id}','ClassController@editClasses')->name('classes.edit');
     Route::match(array('GET', 'POST'), '/admin/delete-classes', 'ClassController@deleteClasses')->name('classes.delete');
+    Route::get('/class-import', function () {
+        return view('admin.class.import');
+    })->name('admin.class.import');
+    Route::post('/class-import', 'ClassController@importClassroom')->name('admin.class.import');
+    Route::get('/classroom-import-sample', 'ClassController@sampleClassroomImportFile')->name('admin.sampleClassroomDownload');
+
 
     Route::match(array('GET', 'POST'), '/add-extraclass', 'ImportTimetableController@addExtraClass')->name('add.extracalss');
 

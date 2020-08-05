@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Helpers\CustomHelper;
+use App\Http\Requests\FileRequestValidation;
+use App\libraries\Classroom;
+use App\libraries\Utility\FileUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
@@ -42,35 +45,34 @@ class ClassController extends Controller
     public function list_class ()
     {
         $studentClasses = StudentClass::get();
-        $classes        = ClassSection::orderByRaw("CAST(class_name as UNSIGNED) ASC")->get();
-        $section        = ClassSection::orderBy('section_name','ASC')->get();
-        
+        $classes = ClassSection::orderByRaw("CAST(class_name as UNSIGNED) ASC")->get();
+        $section = ClassSection::orderBy('section_name', 'ASC')->get();
+
         return view('admin.class.list_class', compact('classes', 'section', 'studentClasses'));
     }
 
 
-     public function filterSubject (Request $request, StudentClass $StudentClass)
+    public function filterSubject (Request $request, StudentClass $StudentClass)
     {
         $rec = $StudentClass->newQuery();
 
-        if(!empty($request->txtSerachByClass=='all-class')){
+        if ( !empty($request->txtSerachByClass == 'all-class') ) {
             $getResult = $rec->get();
-            if($request->txtSerachBySection && $request->txtSerachBySection!='all-section'){
-                $getResult = $rec->where('section_name', $request->txtSerachBySection)->get();
-            }          
-        }
-        else if($request->txtSerachByClass && $request->txtSerachBySection == 'all-section' ){
-            $getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
-        }
-        else if(!empty($request->txtSerachByClass) &&($request->txtSerachByClass!='all-class')){
-            $getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
-            if(!empty($request->txtSerachBySection && $request->txtSerachBySection != 'all-section' )){
+            if ( $request->txtSerachBySection && $request->txtSerachBySection != 'all-section' ) {
                 $getResult = $rec->where('section_name', $request->txtSerachBySection)->get();
             }
-            if(!empty($request->txtSerachBySection && $request->txtSerachBySection == 'all-section' )){
+        } else if ( $request->txtSerachByClass && $request->txtSerachBySection == 'all-section' ) {
+            $getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
+        } else if ( !empty($request->txtSerachByClass) && ( $request->txtSerachByClass != 'all-class' ) ) {
+            $getResult = $rec->where('class_name', $request->txtSerachByClass)->get();
+            if ( !empty($request->txtSerachBySection && $request->txtSerachBySection != 'all-section') ) {
+                $getResult = $rec->where('section_name', $request->txtSerachBySection)->get();
+            }
+            if ( !empty($request->txtSerachBySection && $request->txtSerachBySection == 'all-section') ) {
                 $getResult = $rec->where('class_name', $request->txtSerachBySection)->get();
             }
         }
+
         return view('admin.class.filter-subject', compact('getResult'));
     }
 
@@ -129,6 +131,7 @@ class ClassController extends Controller
                 if ( !$response['success'] ) {
                     if ( $response['data']->status == 'UNAUTHENTICATED' ) {
                         Log::error($response['data']->message);
+
                         return redirect()->route('admin.logout');
                     }
 
@@ -197,5 +200,54 @@ class ClassController extends Controller
 
             return redirect()->route('admin.listClass')->with('success', "Class Deleted Successfully.");
         }
+    }
+
+    public function sampleClassroomImportFile (Request $request)
+    {
+        $path = public_path('classroom') . '/sample/sample-classroom-format.csv';
+
+        return response()->download($path);
+    }
+
+    public function importClassroom (FileRequestValidation $request)
+    {
+        set_time_limit(0);
+        $rows = ' ';
+        $error = false;
+        $fileExtension = strtolower($request->file('file')->getClientOriginalExtension());
+
+        if ( !in_array($fileExtension, array('csv', 'xlsx')) ) {
+            return back()->with('error', sprintf(Config::get('constants.WebMessageCode.103'), implode(",", array('csv', 'xlsx'))));
+        }
+
+        $collection = FileUpload::uploadFile(public_path('classroom'), $request->file('file'));
+        if ( !$collection['success'] )
+            return back()->with('error', $collection['message']);
+
+        $rowCount = 1;
+        foreach ( $collection['data'] as $row ) {
+            if ( !isset($row['division']) || !isset($row['section']) || !isset($row['subjects']) )
+                return back()->with('error', 'Header Mismatch at row: ' . $rowCount);
+
+            $subjects = explode('|', $row['subjects']);
+
+            foreach ( $subjects as $subject ) {
+                $response = Classroom::checkClassroomAndCreate($row, $subject);
+
+                if ( !$response['success'] ) {
+                    if($response['data'] == 'UNAUTHENTICATED')
+                        return redirect()->route('admin.logout');
+                    Log::error($response['data']);
+                    $error = true;
+                    $rows = $rowCount . ' ';
+                }
+            }
+        }
+
+        unlink(public_path('classroom').'/'.$request->file('file')->getClientOriginalName());
+        if ( $error )
+            return back()->with('error', 'Teacher details processed, Please check logs for detailed error, errors in rows - ' . $rows);
+
+        return back()->with('success', 'Classroom details processed successfully.');
     }
 }

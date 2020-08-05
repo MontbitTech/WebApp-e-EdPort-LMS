@@ -9,7 +9,7 @@
           <div class="card-header">
             <span class="topic-heading">Class List</span>
             <div class="float-right ml-1">
-              <a type="button" class="btn btn-sm btn-secondary" href="{{route('classes.add')}}">
+              <a type="button" class="btn btn-sm btn-secondary" href="{{route('admin.class.import')}}">
                 <i class="fa fa-upload mr-1" aria-hidden="true"></i>
                 Import Class Details
               </a>
