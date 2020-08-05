@@ -2,14 +2,16 @@
     <thead>
         <tr>
             @if($getResult)
-            <th width="50px"><input type="checkbox" class="master" id="master"></th>
+            <th><input type="checkbox" class="master" id="master"></th>
+            @else
+            <th></th>
             @endif
-            <th>Class</th>
+            <th>Division</th>
             <th>Section</th>
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
-            <th>Notify</th>
+            <th>SMS Notification</th>
             <th>Action</th>
         </tr>
     </thead>

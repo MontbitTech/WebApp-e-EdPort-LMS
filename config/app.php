@@ -182,6 +182,8 @@ return [
         App\Providers\RouteServiceProvider::class,
 		Laravel\Passport\PassportServiceProvider::class,
 
+        Rap2hpoutre\LaravelLogViewer\LaravelLogViewerServiceProvider::class,
+
     ],
 
     /*

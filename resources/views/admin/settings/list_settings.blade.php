@@ -10,79 +10,68 @@
 
         <div class="card ">
           <div class="card-header bg-secondary text-white">
-            Setting
+            My Institution's information
           </div>
           <div class="card-body">
-            @foreach($settings as $se)
-            @if($se->item=="schoollogo")
+            <form>
+
+              <div class="form-group">
+                <label for="new">Academic Year</label>
+                <input class="form-control" type="text" id="new" value="{{$settings['year']->value}}" readonly>
+              </div>
+
+            </form>
+            <form>
+
+              <div class="form-group">
+                <label for="new">Institution Name</label>
+                <input class="form-control" type="text" id="new" value="{{$settings['schoolname']->value}}" readonly>
+              </div>
+
+            </form>
+            <form>
+
+              <div class="form-group">
+                <label for="new">Institution Address</label>
+                <textarea id="new" cols="10" class="form-control w-100" readonly>{{$settings['schooladdress']->value}}</textarea>
+
+              </div>
+
+            </form>
+
+            <form id="year">
+
+              <div class="form-group">
+                <label for="new">Institution Domain</label>
+                <input class="form-control" type="text" id="new" value="{{$settings['domain']->value}}" readonly>
+              </div>
+
+            </form>
+
+            <form>
+
+              <div class="form-group">
+                <label for="new">Institution Email</label>
+                <input class="form-control" type="text" id="new" value="{{$settings['mailfrom']->value}}" readonly>
+              </div>
+
+            </form>
+
             <form method="post" id="profile_form" action="{{route('admin.school_logo')}}" enctype="multipart/form-data">
               @csrf
               <div class="media">
 
                 <div class="media-body">
                   <div class="custom-file">
-                    <label for="uploadphoto" class="text-uppercase custom-file-label">{{$se->item}}</label>
+                    <label for="uploadphoto" class=" custom-file-label">Institution Logo</label>
                     <input type="file" class="custom-file-input" name="profile_picture" id="uploadphoto" onchange="readURL(this);" accept=".jpg,.jpeg,.png,.gif">
                   </div>
                 </div>
-                <img src="{{$se->value }}" class="align-self-center ml-2" id="img-preview" width="50px">
+                <img src="{{$settings['schoollogo']->value }}" class="align-self-center ml-2" id="img-preview" width="50px">
               </div>
 
             </form>
-            @endif
-            @if($se->item=="domain")
-            <form id="year">
 
-              <div class="form-group">
-                <label for="new">Domain Name</label>
-                <input class="form-control" type="text" id="new" value="{{$se->value}}" readonly>
-              </div>
-
-            </form>
-            @endif
-            @if($se->item=="year")
-            <form>
-
-              <div class="form-group">
-                <label for="new">Year</label>
-                <input class="form-control" type="text" id="new" value="{{$se->value}}" readonly>
-              </div>
-
-            </form>
-            @endif
-            @if($se->item=="mailfrom")
-            <form>
-
-              <div class="form-group">
-                <label for="new">Email</label>
-                <input class="form-control" type="text" id="new" value="{{$se->value}}" readonly>
-              </div>
-
-            </form>
-            @endif
-            @if($se->item=="schoolname")
-            <form>
-
-              <div class="form-group">
-                <label for="new">School Name</label>
-                <input class="form-control" type="text" id="new" value="{{$se->value}}" readonly>
-              </div>
-
-            </form>
-            @endif
-            @if($se->item=="schooladdress")
-            <form>
-
-              <div class="form-group">
-                <label for="new">School Address</label>
-                <input class="form-control" type="text" id="new" value="{{$se->value}}" readonly>
-              </div>
-
-            </form>
-            @endif
-
-
-            @endforeach
           </div>
         </div>
 

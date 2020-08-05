@@ -8,18 +8,18 @@
       <div class="col-sm-12">
         <div class="card card-common mb-3">
           <div class="card-header">
-            <span class="topic-heading">Student Details</span>
+            <span class="topic-heading">Student List</span>
 
             <div class="float-right mr-3">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('admin.studentsimport')}}">
-                <i class="fa fa-upload mr-1 " aria-hidden="true"></i>
-                Import Student Details
+                <i class="fa fa-download mr-1 " aria-hidden="true"></i>
+                Import Students
               </a>
             </div>
             <div class="float-right mr-3">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('student.add')}}">
-                <i class="fa fa-user-plus mr-1" aria-hidden="true"></i>
-                Add Student Details
+                <i class="fa fa-user-graduate mr-1" aria-hidden="true"></i>
+                Add Student
               </a>
             </div>
           </div>
@@ -35,16 +35,14 @@
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
                 </span> 
               </div-->
-              <div class="col-md-6 col-lg-6 text-md-left text-center mb-1" id="appenddata">
-                <button style="float: left;display:none;" id="deleteall" class="btn btn-sm btn-secondary delete_all"" data-url=" {{ url('admin/deleteAllStudent') }}"><i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete All Selected</button>
-              </div>
-              <div class="col-md-6 col-lg-6 text-md-right text-center mb-1">
+
+              <div class="col-md-6 col-lg-6 text-md-left text-center mb-1">
                 <span data-dtfilter="" class="mb-1">
                   <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
-          <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
+                     <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
 
                   <select id="txtSerachClass" name="txtSerachClass" class="form-control form-control-sm" onchange="getStudent()">
-                    <option value=''>Select Class</option>
+                    <option value=''>Select Division</option>
                     @if(count($classes)>0)
                     <option value='all-class'>All</option>
                     @foreach($classes->unique('class_name') as $cl)
@@ -71,44 +69,49 @@
 
 
               </div>
+              <div class="col-md-6 col-lg-6 text-md-right text-center mb-1">
+                <!-- id="appenddata"> -->
+                <button style="display:none;" id="deleteall" class="btn btn-sm btn-secondary float-right delete_all"" data-url=" {{ url('admin/deleteAllStudent') }}"><i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete</button>
+                <span class="float-right mr-2" id="appenddata"></span>
+              </div>
               <div class="col-sm-12" id="student">
                 <table id="studentlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 0, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                   <thead>
                     <tr>
-                      <th>Class</th>
+                      <th>Division</th>
                       <th>Section</th>
                       <th>Name</th>
                       <th>Email</th>
                       <th>Phone</th>
-                      <th>Notify</th>
+                      <th>SMS Notification</th>
                       <th>Action</th>
                     </tr>
                   </thead>
-                   <tbody>
-              @php $i=0; @endphp
-                @foreach($students as $list)
-                  <tr>
-                    <td>{{$list->class->class_name}}</td>
-                    <td>{{$list->class->section_name}}</td>
-                    <td>{{$list->name}}</td>
-                    <td>{{$list->email}}</td>
-                    <td>{{$list->phone}}</td>
-                    <td>
-            @if ($list->notify=="yes")
-              <input type="checkbox" checked disabled>
-            @else
-              <input type="checkbox"  disabled>
-            @endif
-          </td>
-          <td>
-            <a href="{{route('student.edit', encrypt($list->id))}}">Edit</a> | 
-            <a href="#" data-deleteModal="{{$list->id}}" class='deleteStudent' value='{{$list->id}}'>
-            {{ __('Delete') }}
-            </a>
-                  </td>
-                  </tr>
-                @endforeach
-            </tbody>
+                  <tbody>
+                    @php $i=0; @endphp
+                    @foreach($students as $list)
+                    <tr>
+                      <td>{{$list->class->class_name}}</td>
+                      <td>{{$list->class->section_name}}</td>
+                      <td>{{$list->name}}</td>
+                      <td>{{$list->email}}</td>
+                      <td>{{$list->phone}}</td>
+                      <td>
+                        @if ($list->notify=="yes")
+                        <input type="checkbox" checked disabled>
+                        @else
+                        <input type="checkbox" disabled>
+                        @endif
+                      </td>
+                      <td>
+                        <a href="{{route('student.edit', encrypt($list->id))}}">Edit</a> |
+                        <a href="#" data-deleteModal="{{$list->id}}" class='deleteStudent' value='{{$list->id}}'>
+                          {{ __('Delete') }}
+                        </a>
+                      </td>
+                    </tr>
+                    @endforeach
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -225,13 +228,23 @@
               extend: 'csvHtml5',
               autoFilter: true,
               sheetName: 'Exported data',
-              text: '<i class="fa fa-download mr-1 " aria-hidden="true"></i>Export Student  Details',
+              text: '<i class="fa fa-upload mr-1 " aria-hidden="true"></i>Export Student  Details',
               className: 'btn btn-secondary btn-sm ml-2',
               init: function(api, node, config) {
                 $(node).removeClass('dt-button')
               },
               exportOptions: {
-                columns: [1,2, 3, 4, 5]
+                columns: [3, 1, 2, 4, 5]
+              },
+
+              customize:function(csv){
+                var csvRows = csv.split();
+                csvRows[0] = csvRows[0].replace('"Name"','"name"')
+                csvRows[0] = csvRows[0].replace('"Division"','"class"')
+                 csvRows[0] = csvRows[0].replace('"Section"','"section"')
+                csvRows[0] = csvRows[0].replace('"Email"','"email"')
+                csvRows[0] = csvRows[0].replace('"Phone"','"phone"')
+                return csvRows;
               }
 
             }],
