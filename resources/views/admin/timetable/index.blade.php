@@ -24,14 +24,14 @@ $timing=$ar["timing"];
                         <span class="topic-heading">Time Table</span>
                         <div class="float-right">
                             <a type="button" class="btn btn-sm btn-secondary" href="{{ route('admin.timetableimport') }}">
-                                <i class="fa fa-upload mr-1" aria-hidden="true"></i>
+                                <i class="fa fa-download mr-1" aria-hidden="true"></i>
                                 Import Time Table
                             </a>
                         </div>
                         <div class="float-right  mr-3">
                             <a type="button" class="btn btn-sm btn-secondary" href="{{ route('add.extracalss') }}">
-                                <i class="fa fa-user-plus mr-1" aria-hidden="true"></i>
-                                Add ExtraClass
+                                <i class="fas fa-calendar-alt mr-1" aria-hidden="true"></i>
+                                Add Extra Lecture
                             </a>
                         </div>
                         <!-- <div class="float-right mr-3">
@@ -47,7 +47,7 @@ $timing=$ar["timing"];
 
                                 <form method="post" action="{{route('timetable-deleteAll')}}">
                                     @csrf
-                                    <button type="submit" id="submit" style="float:right;display:none;" class="btn btn-secondary btn-sm" onclick="return confirmDelete()"><i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete all
+                                    <button type="submit" id="submit" style="float:right;display:none;" class="btn btn-secondary btn-sm" onclick="return confirmDelete()"><i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete
                                     </button>
                                     <span data-dtlist="#teacherlist" style="float:right;" class="mr-2">
                                         <!--  <div class="spinner-border spinner-border-sm text-secondary" role="status"></div> -->

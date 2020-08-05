@@ -115,7 +115,7 @@ class TeacherLoginController extends Controller
             ->where(function ($query) use ($currentTime, $currentDay) {
                 //$query->where('to_timing','>',$currentTime);
                 $query->where('class_date', '=', $currentDay);
-            })->orderBy('from_timing', 'asc')
+            })->orderBy('from_timing', 'desc')
             ->get();
 
         $todaysDate = date("d M");

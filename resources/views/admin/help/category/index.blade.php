@@ -16,7 +16,7 @@
                             <div class="col-md-8 col-lg-4 text-md-right ">
                                 <a href="{{route('admin.help-category-add')}}" class="btn bg-secondary  text-white m-0 btn-sm">
                                     <i class="fa fa-plus mr-2" aria-hidden="true"></i>
-                                    add Category
+                                    Add Category
                                 </a>
                             </div>
                         </div>
@@ -25,7 +25,7 @@
                         <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                             <thead>
                                 <tr class="text-center">
-                                    <th>SNO</th>
+                                    <th>#</th>
                                     <th>Category</th>
                                     <th>Action</th>
 
