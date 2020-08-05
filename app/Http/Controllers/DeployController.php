@@ -29,7 +29,7 @@ class DeployController extends Controller
             if ( strpos($request->ref, 'feature-in-house') !== false )
                 echo shell_exec(base_path() . '/deploy.sh');
             else
-                echo "nothing updated ";
+                echo "nothing updated";
         }
     }
 
