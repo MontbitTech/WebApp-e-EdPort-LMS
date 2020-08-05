@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Response;
 class DeployController extends Controller
 {
     /**
+     * Deploy method for staging server
      * @param Request $request
      */
     public function deployStagingServer (Request $request)
