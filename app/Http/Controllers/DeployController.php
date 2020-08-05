@@ -50,7 +50,6 @@ class DeployController extends Controller
                 echo shell_exec(base_path() . '/deploy.sh');
             else
                 echo "nothing updated";
-
         }
     }
 
