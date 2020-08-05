@@ -28,6 +28,8 @@ class DeployController extends Controller
         if ( hash_equals($githubHash, $localHash) ) {
             if ( strpos($request->ref, 'feature-in-house') !== false )
                 echo shell_exec(base_path() . '/deploy.sh');
+            else
+                echo "nothing updated";
         }
     }
 
@@ -46,6 +48,8 @@ class DeployController extends Controller
         if ( hash_equals($githubHash, $localHash) ) {
             if ( strpos($request->ref, 'development') !== false )
                 echo shell_exec(base_path() . '/deploy.sh');
+            else
+                echo "nothing updated";
 
         }
     }
