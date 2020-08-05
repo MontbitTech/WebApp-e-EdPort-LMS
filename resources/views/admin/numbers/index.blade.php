@@ -234,7 +234,17 @@
                 $(node).removeClass('dt-button')
               },
               exportOptions: {
-                columns: [1, 2, 3, 4, 5]
+                columns: [3, 1, 2, 4, 5]
+              },
+
+              customize:function(csv){
+                var csvRows = csv.split();
+                csvRows[0] = csvRows[0].replace('"Name"','"name"')
+                csvRows[0] = csvRows[0].replace('"Division"','"class"')
+                 csvRows[0] = csvRows[0].replace('"Section"','"section"')
+                csvRows[0] = csvRows[0].replace('"Email"','"email"')
+                csvRows[0] = csvRows[0].replace('"Phone"','"phone"')
+                return csvRows;
               }
 
             }],

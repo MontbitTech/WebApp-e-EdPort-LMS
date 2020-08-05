@@ -183,6 +183,14 @@
         },
         exportOptions: {
           columns: [0, 1, 2]
+        },
+
+        customize:function(csv){
+          var csvRows = csv.split();
+          csvRows[0] = csvRows[0].replace('"Name"','"name"')
+          csvRows[0] = csvRows[0].replace('"Email"','"email"')
+          csvRows[0] = csvRows[0].replace('"Phone No"','"phone"')
+          return csvRows;
         }
 
       }],

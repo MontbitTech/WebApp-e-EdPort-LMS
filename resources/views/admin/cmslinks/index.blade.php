@@ -235,7 +235,20 @@
                 $(node).removeClass('dt-button')
               },
               exportOptions: {
-                columns: [1, 2, 3, 4, 5, 6, 7, 8]
+                columns: [1, 2, 3, 4, 5, 7, 8, 6]
+              },
+
+              customize:function(csv){
+                var csvRows = csv.split();
+                csvRows[0] = csvRows[0].replace('"Division"','"class"')
+                csvRows[0] = csvRows[0].replace('"Subject"','"subject"')
+                csvRows[0] = csvRows[0].replace('"Topic"','"topic"')
+                csvRows[0] = csvRows[0].replace('"e-EdPort"','"link"')
+                csvRows[0] = csvRows[0].replace('"Youtube"','"youtube"')
+                csvRows[0] = csvRows[0].replace('"Expert Pick"','"khan_academy"')
+                csvRows[0] = csvRows[0].replace('"Assignment"','"assignment"')
+                csvRows[0] = csvRows[0].replace('"Wikipedia"','"others"')
+                return csvRows;
               }
 
             }],
