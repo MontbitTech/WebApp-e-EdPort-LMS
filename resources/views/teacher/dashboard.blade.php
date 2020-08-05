@@ -149,36 +149,53 @@ $cls = 0;
                                         ?>
                                         <!--new changes -->
                                         <div class="m-auto mt-2 pt-2" id="icon{{$t->id}}">
-
+                                            <div class="row">
+                                            
+                                            @if($cms_link!=null)
+                                            <div class="col-2">
                                             <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                 <!-- Edport Content -->
-                                                <img src="{{asset('images/logo-1.png')}}" alt="" width="27px">
+                                                <img src="{{asset('images/logo-1.png')}}" alt="" width="27px" style="{{$display_style}}">
                                             </a>
-
+                                            </div>
+                                            @endif
+                                            
+                                            @if($youtube!=null)
+                                            <div class="col-2">
                                             <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
                                                 <!-- Youtube -->
-                                                <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true"></i>
+                                                <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
                                             </a>
+                                        </div>
+                                            @endif
 
+                                            @if($other!=null)
+                                            <div class="col-2">
                                             <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
                                                 <!-- Wikipedia -->
-                                                <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true"></i>
+                                                <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
                                             </a>
+                                           </div>
+                                            @endif
 
+                                           @if($academy!=null)
+                                           <div class="col-2">
                                             <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline p-0 m-0 text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
                                                 <!-- My School -->
                                                 @foreach ($schoollogo as $logo)
                                                 @if($logo->item=="schoollogo")
-                                                <img src="{{$logo->value}}" alt="logo" width="27px">
+                                                <img src="{{$logo->value}}" alt="logo" width="27px" style="{{$display_style}}">
 
                                                 @endif
                                                 @endforeach
                                             </a>
-
                                         </div>
+                                            @endif
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
                             <div class="card-footer p-1" style="background:#fff;">
                                 <div class="d-flex justify-content-between flex-wrap">
                                     <div class="m-auto">
@@ -1130,14 +1147,21 @@ $cls = 0;
                     },
                     success: function(result) {
                         var response = JSON.parse(result);
-                        $('#viewcontent_' + dateWork_id).attr('style', 'display:block');
-                        $('#viewcontent_' + dateWork_id).attr('data-topiclink', response.topic_link);
-                        $('#youtube_' + dateWork_id).attr('style', 'display:block');
-                        $('#youtube_' + dateWork_id).attr('data-youtubelink', response.youtube_link);
+                        location.reload(true);
+                       if(response.youtube_link!=null){
+                           $('#youtube_' + dateWork_id).attr('style', 'display:block');
+                            $('#youtube_' + dateWork_id).attr('data-youtubelink', response.youtube_link);
+                       }
+
+                       if(response.wikipedia_link!=null){
                         $('#wikipedia_' + dateWork_id).attr('style', 'display:block');
                         $('#wikipedia_' + dateWork_id).attr('data-wikipedialink', response.wikipedia_link);
+                        }
+
+                        if(response.academy_link!=null){
                         $('#academy_' + dateWork_id).attr('style', 'display:block');
                         $('#academy_' + dateWork_id).attr('data-academylink', response.academy_link);
+                        }
                         $.fn.notifyMe('success', 4, response.message);
                     },
                     error: function() {

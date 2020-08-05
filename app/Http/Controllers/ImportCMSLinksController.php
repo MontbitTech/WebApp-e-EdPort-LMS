@@ -105,9 +105,9 @@ class ImportCMSLinksController extends Controller
 	public function deleteLink(Request $request, $id)
 	{
 		if (strtolower($request->delete) == 'delete') {
-			$sid = decrypt($id);
+			//$sid = decrypt($id);
 			//dd($sid);
-			$student = \DB::table('tbl_cmslinks')->where('id', $sid)->delete();
+			$student = \DB::table('tbl_cmslinks')->where('id', $id)->delete();
 
 			$lists = \DB::select('select c.id, c.class, c.subject, s.subject_name, c.topic, c.link from tbl_cmslinks c, tbl_student_subjects s where c.subject = s.id');
 
