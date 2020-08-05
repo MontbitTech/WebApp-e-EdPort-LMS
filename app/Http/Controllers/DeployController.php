@@ -7,8 +7,15 @@ use App\StudentClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
 
+/**
+ * Class DeployController
+ * @package App\Http\Controllers
+ */
 class DeployController extends Controller
 {
+    /**
+     * @param Request $request
+     */
     public function deployStagingServer (Request $request)
     {
         $githubPayload = $request->getContent();
@@ -23,6 +30,10 @@ class DeployController extends Controller
         }
     }
 
+    /**
+     * Deploy method for development server
+     * @param Request $request
+     */
     public function deployDevelopmentServer (Request $request)
     {
         $githubPayload = $request->getContent();
@@ -38,7 +49,10 @@ class DeployController extends Controller
         }
     }
 
-    public function createJsonFilesForGoogleAuth ()
+    /**
+     * @param Request $request
+     */
+    public function createJsonFilesForGoogleAuth (Request $request)
     {
         $result = 'already exist';
         if ( !file_exists(base_path() . '/credentials.json') ) {
