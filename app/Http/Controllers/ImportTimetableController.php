@@ -19,6 +19,7 @@ use PDF;
 use DB;
 use Log;
 use App\DateClass;
+use App\libraries\Utility\DateUtility;
 
 class ImportTimetableController extends Controller
 {
@@ -993,14 +994,26 @@ class ImportTimetableController extends Controller
             $today = date("Y-m-d");
 
 
-            $TimeTableExist = ClassTiming::where('class_id', $class_id)->where('teacher_id', $teacher_id)->where('subject_id', $subject_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
+            $TimeTableExist = ClassTiming::where('class_id', $class_id)
+            ->where('teacher_id', $teacher_id)
+            ->where('subject_id', $subject_id)
+            ->where('class_day', $class_day)
+            ->where('from_timing', '<=', DateUtility::getPastTime(1, $to_time))
+            ->where('to_timing', '>=', DateUtility::getFutureTime(1, $from_time))
+            ->get()->first();
 
             $classTimingExist = ClassTiming::where('class_id', $class_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
 
             $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
 
 
-            $dateClassExist = DateClass::where('class_id', $class_id)->where('teacher_id', $teacher_id)->where('subject_id', $subject_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
+            $dateClassExist = DateClass::where('class_id', $class_id)
+            ->where('teacher_id', $teacher_id)
+            ->where('subject_id', $subject_id)
+            ->where('class_date', $class_date)
+            ->where('from_timing', '<=', DateUtility::getPastTime(1, $to_time))
+            ->where('to_timing', '>=', DateUtility::getFutureTime(1, $from_time))
+            ->get()->first();
 
             $dateClassTimeExist = DateClass::where('class_id', $class_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
 
