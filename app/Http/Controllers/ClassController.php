@@ -222,7 +222,7 @@ class ClassController extends Controller
 
         $collection = FileUpload::uploadFile(public_path('classroom'), $request->file('file'));
         if ( !$collection['success'] )
-            return back()->with('error', $collection['message']);
+            return back()->with('error', $collection['data']);
 
         $rowCount = 1;
         foreach ( $collection['data'] as $row ) {
