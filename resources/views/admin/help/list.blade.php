@@ -219,7 +219,9 @@
             var help_id = $(this).attr("data-selectStatus");
             if ($(this).val != '') {
                 var status_id = $(this).val();
+                console.log(status_id);
                 if (status_id == 3) {
+                    console.log(status_id);
                     $('#addCommentModal').modal('show');
                     $('#help_id').val(help_id);
                     $('#status_id').val(status_id);
@@ -235,8 +237,8 @@
                 status_id = $('#status_id').val();
                 comment = $('#close_ticket').val();
             }
-
-            if (help_id == 3) {
+            
+            if (status_id == 3) {
                 if (comment == '') {
                     $.fn.notifyMe('error', 4, 'Comment field cannot be empty!');
                     return;
