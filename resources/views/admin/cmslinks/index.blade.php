@@ -34,13 +34,9 @@
                   <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
                 </span>
               </!--div-->
-              <div class="col-md-6 col-lg-6 text-md-left text-center mb-1" id="appenddata">
-                <button style="float: left;display:none;" id="deleteall" class="btn btn-sm btn-secondary delete_all" data-url="{{ url('admin/cmsDeleteAll') }}"> <i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete </button>
-
-              </div>
-              <div class="col-md-6 col-lg-6 text-md-right text-center mb-1">
+              <div class="col-md-6 col-lg-6 text-md-left text-center mb-1">
                 <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
-          <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
+                      <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
                 <span data-dtfilter="" class="mb-1">
                   <select id="txtSerachClass" name="txtSerachClass" class="form-control form-control-sm" onchange="getRecord()">
                     <option value=''>Select Division</option>
@@ -70,6 +66,11 @@
 
 
               </div>
+              <div class="col-md-6 col-lg-6 text-md-right  mb-1">
+                <button style="float: right;display:none;" id="deleteall" class="btn btn-sm btn-secondary delete_all" data-url="{{ url('admin/cmsDeleteAll') }}"> <i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete </button>
+                <span id="appenddata" style="float: right;"></span>
+              </div>
+
 
               <div class="col-sm-12" id="cms">
                 <table id="cmsrecords" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 0, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
@@ -230,7 +231,7 @@
               autoFilter: true,
               sheetName: 'Exported data',
               text: '<i class="fa fa-upload mr-1 " aria-hidden="true"></i>Export Content',
-              className: 'btn btn-secondary btn-sm ml-2',
+              className: 'btn btn-secondary mr-3 btn-sm text-md-right float-right ml-2',
               init: function(api, node, config) {
                 $(node).removeClass('dt-button')
               },
@@ -238,16 +239,16 @@
                 columns: [1, 2, 3, 4, 5, 7, 8, 6]
               },
 
-              customize:function(csv){
+              customize: function(csv) {
                 var csvRows = csv.split();
-                csvRows[0] = csvRows[0].replace('"Division"','"class"')
-                csvRows[0] = csvRows[0].replace('"Subject"','"subject"')
-                csvRows[0] = csvRows[0].replace('"Topic"','"topic"')
-                csvRows[0] = csvRows[0].replace('"e-EdPort"','"link"')
-                csvRows[0] = csvRows[0].replace('"Youtube"','"youtube"')
-                csvRows[0] = csvRows[0].replace('"Expert Pick"','"khan_academy"')
-                csvRows[0] = csvRows[0].replace('"Assignment"','"assignment"')
-                csvRows[0] = csvRows[0].replace('"Wikipedia"','"others"')
+                csvRows[0] = csvRows[0].replace('"Division"', '"class"')
+                csvRows[0] = csvRows[0].replace('"Subject"', '"subject"')
+                csvRows[0] = csvRows[0].replace('"Topic"', '"topic"')
+                csvRows[0] = csvRows[0].replace('"e-EdPort"', '"link"')
+                csvRows[0] = csvRows[0].replace('"Youtube"', '"youtube"')
+                csvRows[0] = csvRows[0].replace('"Expert Pick"', '"khan_academy"')
+                csvRows[0] = csvRows[0].replace('"Assignment"', '"assignment"')
+                csvRows[0] = csvRows[0].replace('"Wikipedia"', '"others"')
                 return csvRows;
               }
 
