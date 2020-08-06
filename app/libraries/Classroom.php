@@ -37,7 +37,13 @@ class Classroom
         if ( $classroomsExist )
             return failure_message('Classroom already Exist :' . $row['division'] . ' ' . $row['section'] . ' ' . $subjectName);
 
-        $subject = StudentSubject::firstOrCreate(['subject_name' => $subjectName]);
+        if($subjectName == '')
+            return failure_message('Please add subject');
+           
+        $subject = StudentSubject::firstOrCreate(['subject_name' => $subjectName]);    
+
+        if($row['division'] == '' && $row['section'] == '')
+            return failure_message('Please add division and section');
 
         $class = ClassSection::firstOrCreate([
             'class_name'   => $row['division'],

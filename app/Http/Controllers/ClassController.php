@@ -229,12 +229,12 @@ class ClassController extends Controller
             if ( !isset($row['division']) || !isset($row['section']) || !isset($row['subjects']) )
                 return back()->with('error', 'Header Mismatch at row: ' . $rowCount);
 
-
             if($row['subjects'] == ''){
-                ClassSection::firstOrCreate([
-                    'class_name'   => $row['division'],
-                    'section_name' => $row['section'],
-                ]);
+                if($row['division'] != '' && $row['section'] != '')
+                    ClassSection::firstOrCreate([
+                        'class_name'   => $row['division'],
+                        'section_name' => $row['section'],
+                    ]);
                 Log::error('subject is empty');
                 continue;
             }
