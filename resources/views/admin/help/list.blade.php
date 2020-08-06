@@ -38,7 +38,7 @@
                                 </div>
 
                                 <div class="col-sm-12" id="getticket">
-                                    <table id="ticket" class="table table-sm table-bordered display"
+                                    <table id="ticketlist" class="table table-sm table-bordered display"
                                            data-page-length="100" data-order="[[0, &quot;desc&quot; ]]"
                                            style="width:100%" data-page-length="10" data-col1="60" data-collast="120"
                                            data-filterplaceholder="Search Records ...">
@@ -52,6 +52,72 @@
                                             <th>Create Date</th>
                                         </tr>
                                         </thead>
+
+                                        @if(count($helpTickets) > 0)
+                                            @php
+                                                $n = count($helpTickets);
+                                                $n-=1;
+                                                $i = 0;
+                                            @endphp
+                                            <tbody>
+
+                                            @foreach($helpTickets as $help)
+                                                <tr>
+                                                    <td>{{++$i}}</td>
+                                                    <td>
+                                                        @if($help->teacher)
+                                                        {{$help->teacher->name}} </br> ( <span
+                                                                style="font-weight:600;font-size:12px;color:#007bff">{{$help->teacher->phone}} </span>)
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <b>Category</b> :
+                                                        @if($help->studentClass)
+                                                            {{($help->help_type == 2)?$help->studentClass->class_name:''}}
+                                                        @endif
+                                                        @if($help->studentClass)
+                                                            {{($help->help_type == 2)?$help->studentClass->section_name:''}}
+                                                        @endif
+
+                                                        @if($help->studentSubject)
+                                                            {{($help->help_type == 2)?$help->studentSubject->subject_name:''}}
+                                                        @endif
+                                                        @foreach($categories as $category)
+                                                            @if($category->id == $help->help_ticket_category_id)
+                                                                {{$category->category}}
+                                                            @endif
+                                                        @endforeach
+                                                        <br>
+                                                        <b>Description</b> :
+                                                        @if($help->class_join_link)
+                                                            <a href="javascript:void(0);"
+                                                               data-helplink="{{$help->class_join_link}}"
+                                                               id="{{ $help->id}}">Join Live</a>
+                                                        @endif
+                                                        {{isset($help->description)?$help->description:''}}</td>
+                                                    <td style="width: 15%">
+                                                        <select name="status" class="form-control"
+                                                                data-selectStatus="{{ $help->id }}" {{($help->status == 3)?'disabled':''}}>
+                                                            <option value="1" {{($help->status == 1)?'selected':''}} >
+                                                                Pending
+                                                            </option>
+                                                            <option value="2" {{($help->status == 2)?'selected':''}} >In
+                                                                Progress
+                                                            </option>
+                                                            <option value="3" {{($help->status == 3)?'selected':''}} >
+                                                                Closed
+                                                            </option>
+                                                        </select>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        {{isset($help->comments)?$help->comments:''}}                    </td>
+                                                    <td>
+                                                        <span style="font-size:14px;">{{date("d/m/Y h:i a",strtotime($help->created_at))}} </span>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                            </tbody>
+                                        @endif
                                     </table>
                                 </div>
                             </div>
@@ -169,6 +235,14 @@
                 status_id = $('#status_id').val();
                 comment = $('#close_ticket').val();
             }
+
+            if (help_id == 3) {
+                if (comment == '') {
+                    $.fn.notifyMe('error', 4, 'Comment field cannot be empty!');
+                    return;
+                }
+            }
+
             if (help_id != '') {
                 $.ajax({
                     type   : 'POST',
@@ -178,7 +252,7 @@
                     success: function (data) {
                         var res = JSON.parse(data);
                         $.fn.notifyMe('success', 4, res.message);
-                        window.open("{{ url('/admin/support-help') }}","_self");
+                        window.open("{{ url('/admin/support-help') }}", "_self");
                     },
                     error  : function () {
                         $.fn.notifyMe('error', 4, 'There is some error while update status!');
