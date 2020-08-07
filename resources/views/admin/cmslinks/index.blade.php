@@ -236,7 +236,21 @@
                 $(node).removeClass('dt-button')
               },
               exportOptions: {
-                columns: [1, 2, 3, 4, 5, 7, 8, 6]
+                columns: [1, 2, 3, 4, 5, 7, 8, 6],
+                format:{
+                  body:function(data,row,column,node){
+                 if( column === 3 || column === 4 || column === 5 || column === 6 || column === 7){
+                 data = data.split("\"");
+                 var linkUrl = data[1];
+                 linkUrl=data[1].trim("");
+                 if(linkUrl.includes("admin/edit-link")){
+                    linkUrl="";
+                  }
+                }
+               return column === 3 || column === 4 || column === 5 || column === 6 || column === 7?
+                        linkUrl.replace("",""):data;
+                  }
+                }
               },
 
               customize: function(csv) {
