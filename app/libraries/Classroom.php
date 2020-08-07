@@ -25,7 +25,7 @@ class Classroom
         return $classroom->save();
     }
 
-    public static function checkClassroomAndCreate ($row, $subjectName)
+    public static function validateClassroom ($row, $subjectName)
     {
         $classroomsExist = StudentClass::with('studentSubject')->where('class_name', $row['division'])
             ->where('section_name', $row['section'])
@@ -39,30 +39,11 @@ class Classroom
 
         if($subjectName == '')
             return failure_message('Please add subject');
-           
-        $subject = StudentSubject::firstOrCreate(['subject_name' => $subjectName]);    
 
         if($row['division'] == '' && $row['section'] == '')
             return failure_message('Please add division and section');
 
-        $class = ClassSection::firstOrCreate([
-            'class_name'   => $row['division'],
-            'section_name' => $row['section'],
-        ]);
-
-        $response = self::createGoogleClassroom($row['division'], $row['section'], $subjectName);
-
-        if ( !$response['success'] )
-            return $response;
-
-        return success_message(Classroom::createClassroom([
-            'class_name'   => $row['division'],
-            'section_name' => $row['section'],
-            'subject_id'   => $subject->id,
-            'g_class_id'   => $response['data']->id,
-            'g_link'       => $response['data']->alternateLink,
-            'g_response'   => serialize($response['data']),
-        ]));
+        return success_message('validated successfully');
     }
 
     public static function createSubject ($params)

@@ -22,6 +22,8 @@ use App\ClassTiming;
 use App\InvitationClass;
 use App\DateClass;
 use App\ClassWork;
+use App\Jobs\CreateClassroomsJob;
+use App\libraries\Utility\DateUtility;
 use App\Models\ClassSection;
 
 class ClassController extends Controller
@@ -211,6 +213,7 @@ class ClassController extends Controller
 
     public function importClassroom (FileRequestValidation $request)
     {
+        $time = DateUtility::getDateTime();
         set_time_limit(0);
         $rows = ' ';
         $error = false;
@@ -225,16 +228,14 @@ class ClassController extends Controller
             return back()->with('error', $collection['data']);
 
         $rowCount = 1;
+
         foreach ( $collection['data'] as $row ) {
             if ( !isset($row['division']) || !isset($row['section']) || !isset($row['subjects']) )
                 return back()->with('error', 'Header Mismatch at row: ' . $rowCount);
 
             if($row['subjects'] == ''){
-                if($row['division'] != '' && $row['section'] != '')
-                    ClassSection::firstOrCreate([
-                        'class_name'   => $row['division'],
-                        'section_name' => $row['section'],
-                    ]);
+                $error = true;
+                $rows = $rowCount . ' ';
                 Log::error('subject is empty');
                 continue;
             }
@@ -242,22 +243,25 @@ class ClassController extends Controller
             $subjects = explode('|', $row['subjects']);
 
             foreach ( $subjects as $subject ) {
-                $response = Classroom::checkClassroomAndCreate($row, $subject);
+                $response = Classroom::validateClassroom($row, $subject);
 
                 if ( !$response['success'] ) {
-                    if($response['data'] == 'UNAUTHENTICATED')
-                        return redirect()->route('admin.logout');
                     Log::error($response['data']);
                     $error = true;
                     $rows = $rowCount . ' ';
                 }
             }
+
+            $rowCount++;
         }
 
         unlink(public_path('classroom').'/'.$request->file('file')->getClientOriginalName());
         if ( $error )
             return back()->with('error', 'Teacher details processed, Please check logs for detailed error, errors in rows - ' . $rows);
 
+        Log::info('No error found');
+        dispatch(new CreateClassroomsJob($collection['data'], encrypt(CommonHelper::varify_Admintoken())));
+        Log::info(DateUtility::getDateTimeDifference($time,DateUtility::getDateTime()));
         return back()->with('success', 'Classroom details processed successfully.');
     }
 }
