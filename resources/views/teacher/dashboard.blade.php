@@ -154,52 +154,52 @@ $cls = 0;
                                         <!--new changes -->
                                         <div class="m-auto mt-2 pt-2" id="icon{{$t->id}}">
                                             <div class="row">
-                                            
-                                            @if($cms_link!=null)
-                                            <div class="col-2">
-                                            <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
-                                                <!-- Edport Content -->
-                                                <img src="{{asset('images/logo-1.png')}}" alt="" width="27px" style="{{$display_style}}">
-                                            </a>
-                                            </div>
-                                            @endif
-                                            
-                                            @if($youtube!=null)
-                                            <div class="col-2">
-                                            <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
-                                                <!-- Youtube -->
-                                                <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
-                                            </a>
-                                        </div>
-                                            @endif
 
-                                            @if($other!=null)
-                                            <div class="col-2">
-                                            <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
-                                                <!-- Wikipedia -->
-                                                <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
-                                            </a>
-                                           </div>
-                                            @endif
-
-                                           @if($academy!=null)
-                                           <div class="col-2">
-                                            <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline p-0 m-0 text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
-                                                <!-- My School -->
-                                                @foreach ($schoollogo as $logo)
-                                                @if($logo->item=="schoollogo")
-                                                <img src="{{$logo->value}}" alt="logo" width="27px" style="{{$display_style}}">
-
+                                                @if($cms_link!=null)
+                                                <div class="col-2">
+                                                    <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Edport Content -->
+                                                        <img src="{{asset('images/logo-1.png')}}" alt="" width="27px" style="{{$display_style}}">
+                                                    </a>
+                                                </div>
                                                 @endif
-                                                @endforeach
-                                            </a>
+
+                                                @if($youtube!=null)
+                                                <div class="col-2">
+                                                    <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Youtube -->
+                                                        <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
+                                                    </a>
+                                                </div>
+                                                @endif
+
+                                                @if($other!=null)
+                                                <div class="col-2">
+                                                    <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Wikipedia -->
+                                                        <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
+                                                    </a>
+                                                </div>
+                                                @endif
+
+                                                @if($academy!=null)
+                                                <div class="col-2">
+                                                    <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline p-0 m-0 text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- My School -->
+                                                        @foreach ($schoollogo as $logo)
+                                                        @if($logo->item=="schoollogo")
+                                                        <img src="{{$logo->value}}" alt="logo" width="27px" style="{{$display_style}}">
+
+                                                        @endif
+                                                        @endforeach
+                                                    </a>
+                                                </div>
+                                                @endif
+                                            </div>
                                         </div>
-                                            @endif
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
                             <div class="card-footer p-1" style="background:#fff;">
                                 <div class="d-flex justify-content-between flex-wrap">
                                     <div class="m-auto">
@@ -447,7 +447,7 @@ $cls = 0;
                         @endif
                     </div>
 
-                     <div class="tab-pane fade" id="upcomingclasses">
+                    <div class="tab-pane fade" id="upcomingclasses">
 
 
                         @if(count($futureClassData) > 0)
@@ -525,16 +525,16 @@ $cls = 0;
                             <div class="d-flex justify-content-between flex-wrap py-2">
                                 <div>
 
-                                    
+
 
                                 </div>
                                 <div>
-        
+
                                 </div>
                             </div>
 
 
-                            
+
                         </div>
                         @php
                         $i++;
@@ -558,19 +558,20 @@ $cls = 0;
                     <div class="tab-pane fade" id="newInvitationclasses">
 
                         <div class="col-sm-12">
-                            <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Class</th>
-                                        <th>Section</th>
-                                        <th>Subject</th>
-                                        <th>Link</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    if (count($inviteClassData) > 0) {
+                            <?php if (count($inviteClassData) > 0) { ?>
+                                <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Class</th>
+                                            <th>Section</th>
+                                            <th>Subject</th>
+                                            <th>Link</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+
                                         $i = 0;
                                         foreach ($inviteClassData as $row) {
                                             $section_name = '';
@@ -585,7 +586,7 @@ $cls = 0;
                                             if ($row->studentSubject) {
                                                 $subject_name = $row->studentSubject->subject_name;
                                             }
-                                    ?>
+                                        ?>
                                             <tr>
                                                 <td>{{++$i}}</td>
                                                 <td>{{ $cls }} Std</td>
@@ -614,8 +615,8 @@ $cls = 0;
                                     <?php
                                     }
                                     ?>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
                         </div>
                     </div>
                     <!-- ./Teacher-AssignedClasses -->
@@ -1266,19 +1267,19 @@ $cls = 0;
                     success: function(result) {
                         var response = JSON.parse(result);
                         location.reload(true);
-                       if(response.youtube_link!=null){
-                           $('#youtube_' + dateWork_id).attr('style', 'display:block');
+                        if (response.youtube_link != null) {
+                            $('#youtube_' + dateWork_id).attr('style', 'display:block');
                             $('#youtube_' + dateWork_id).attr('data-youtubelink', response.youtube_link);
-                       }
-
-                       if(response.wikipedia_link!=null){
-                        $('#wikipedia_' + dateWork_id).attr('style', 'display:block');
-                        $('#wikipedia_' + dateWork_id).attr('data-wikipedialink', response.wikipedia_link);
                         }
 
-                        if(response.academy_link!=null){
-                        $('#academy_' + dateWork_id).attr('style', 'display:block');
-                        $('#academy_' + dateWork_id).attr('data-academylink', response.academy_link);
+                        if (response.wikipedia_link != null) {
+                            $('#wikipedia_' + dateWork_id).attr('style', 'display:block');
+                            $('#wikipedia_' + dateWork_id).attr('data-wikipedialink', response.wikipedia_link);
+                        }
+
+                        if (response.academy_link != null) {
+                            $('#academy_' + dateWork_id).attr('style', 'display:block');
+                            $('#academy_' + dateWork_id).attr('data-academylink', response.academy_link);
                         }
                         $.fn.notifyMe('success', 4, response.message);
                     },

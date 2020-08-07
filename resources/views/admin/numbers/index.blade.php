@@ -12,7 +12,8 @@
 
             <div class="float-right mr-3">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('admin.studentsimport')}}">
-                <i class="fa fa-download mr-1 " aria-hidden="true"></i>
+
+                <i class="fas fa-file-import icon-4x mr-1"></i>
                 Import Students
               </a>
             </div>
@@ -228,7 +229,7 @@
               extend: 'csvHtml5',
               autoFilter: true,
               sheetName: 'Exported data',
-              text: '<i class="fa fa-upload mr-1 " aria-hidden="true"></i>Export Student  Details',
+              text: '<i class="fas fa-file-export mr-1 icon-2x"  ></i>Export Student  Details',
               className: 'btn btn-secondary btn-sm ml-2',
               init: function(api, node, config) {
                 $(node).removeClass('dt-button')
@@ -237,13 +238,13 @@
                 columns: [3, 1, 2, 4, 5]
               },
 
-              customize:function(csv){
+              customize: function(csv) {
                 var csvRows = csv.split();
-                csvRows[0] = csvRows[0].replace('"Name"','"name"')
-                csvRows[0] = csvRows[0].replace('"Division"','"class"')
-                 csvRows[0] = csvRows[0].replace('"Section"','"section"')
-                csvRows[0] = csvRows[0].replace('"Email"','"email"')
-                csvRows[0] = csvRows[0].replace('"Phone"','"phone"')
+                csvRows[0] = csvRows[0].replace('"Name"', '"name"')
+                csvRows[0] = csvRows[0].replace('"Division"', '"class"')
+                csvRows[0] = csvRows[0].replace('"Section"', '"section"')
+                csvRows[0] = csvRows[0].replace('"Email"', '"email"')
+                csvRows[0] = csvRows[0].replace('"Phone"', '"phone"')
                 return csvRows;
               }
 

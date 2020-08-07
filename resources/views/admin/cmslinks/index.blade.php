@@ -11,7 +11,7 @@
 
             <div class="float-right mr-3">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('cms.cmslinksimport')}}">
-                <i class="fa fa-download mr-1 " aria-hidden="true"></i>
+                <i class="fas fa-file-import icon-4x mr-1"></i>
                 Import Content
               </a>
             </div>
@@ -230,7 +230,7 @@
               extend: 'csvHtml5',
               autoFilter: true,
               sheetName: 'Exported data',
-              text: '<i class="fa fa-upload mr-1 " aria-hidden="true"></i>Export Content',
+              text: '<i class="fas fa-file-export mr-1 icon-2x"  ></i>Export Content',
               className: 'btn btn-secondary mr-3 btn-sm text-md-right float-right ml-2',
               init: function(api, node, config) {
                 $(node).removeClass('dt-button')
