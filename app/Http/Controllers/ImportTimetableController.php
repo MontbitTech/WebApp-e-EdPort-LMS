@@ -834,8 +834,8 @@ class ImportTimetableController extends Controller
                     if ($i == 1) {
                         $ef = '<br><a href="javascript:void(0)" id="delete-timetable" data-id=' . $d->id . '>' . 'Delete </a>';
 
-                        $html .= "<tr class='$x'><td><strong>Period $p</strong></td><td>" . date('H:i', strtotime($d->from_timing)) . "-" . date('H:i', strtotime($d->to_timing)) . "</td>";
-                        $htmla .= "<tr class='$x'><td>Period $p" . $ef . "</td><td style='width:100px;'>" . date('H:i', strtotime($d->from_timing)) . "-" . date('H:i', strtotime($d->to_timing)) . "</td>";
+                        $html .= "<tr class='$x'><td><strong>Period $p</strong></td><td>" . date('h:i a', strtotime($d->from_timing)) . "-" . date('h:i a', strtotime($d->to_timing)) . "</td>";
+                        $htmla .= "<tr class='$x'><td>Period $p" . $ef . "</td><td style='width:100px;'>" . date('h:i a', strtotime($d->from_timing)) . "-" . date('h:i a', strtotime($d->to_timing)) . "</td>";
                     }
 
                     if (empty($d->g_meet_url))
