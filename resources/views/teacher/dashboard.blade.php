@@ -76,7 +76,7 @@ $cls = 0;
                                     <div class="d-flex align-items-center col-md-4">
                                         <div class="cls-date font-weight-bold">{{ $todaysDate }}</div>
                                         <div class="cls-from pt-1">
-                                            {{ date('G:i',strtotime($t->from_timing))}} to {{ date('G:i',strtotime($t->to_timing))}}</div>
+                                            {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between col-md-8">
                                         <div class="font-weight-bold pt-1">
@@ -313,9 +313,9 @@ $cls = 0;
 
                             <div class="classes-datetime">
                                 <div class="cls-date">{{ $class_date }}</div>
-                                <div class="cls-from">{{$t->from_timing}}</div>
+                                <div class="cls-from">{{ date('h:i a',strtotime($t->from_timing))}}</div>
                                 <div class="cls-separater">to</div>
-                                <div class="cls-to">{{$t->to_timing}}</div>
+                                <div class="cls-to">{{ date('h:i a',strtotime($t->to_timing))}}</div>
                             </div>
                             <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
                                 <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span>
@@ -492,9 +492,9 @@ $cls = 0;
 
                             <div class="classes-datetime">
                                 <div class="cls-date">{{ $class_date }}</div>
-                                <div class="cls-from">{{$t->from_timing}}</div>
+                                <div class="cls-from">{{ date('h:i a',strtotime($t->from_timing))}}</div>
                                 <div class="cls-separater">to</div>
-                                <div class="cls-to">{{$t->to_timing}}</div>
+                                <div class="cls-to">{{ date('h:i a',strtotime($t->to_timing))}}</div>
                             </div>
                             <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
                                 <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span>
@@ -802,6 +802,8 @@ $cls = 0;
                 </div>
             </div>
 
+
+
             <div class="form-group row">
                 <label class="col-md-12 text-danger text-center" style="font-size: 12px;padding-left: 130px;">*Extra
                     classes for regular assigned classes can be created here</label>
@@ -953,6 +955,8 @@ $cls = 0;
 </div>
 <!-- End -->
 
+
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('.ac-datepicker').datepicker({
@@ -962,8 +966,9 @@ $cls = 0;
         $('.ac-time').timepicker({
             controlType: 'select',
             oneLine: true,
-            timeFormat: 'HH:mm:ss'
+            timeFormat: 'hh:mm:ss tt'
         });
+
     });
     $(document).on('click', '[data-LiveLink]', function() {
         var liveurl = $(this).attr("data-LiveLink");

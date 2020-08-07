@@ -216,6 +216,14 @@
               },
               exportOptions: {
                 columns: [0, 1, 2]
+              },
+
+              customize: function(csv) {
+                var csvRows = csv.split();
+                csvRows[0] = csvRows[0].replace('"Division"', '"division"')
+                csvRows[0] = csvRows[0].replace('"Section"', '"section"')
+                csvRows[0] = csvRows[0].replace('"Subject"', '"subjects"')
+                return csvRows;
               }
 
             }],

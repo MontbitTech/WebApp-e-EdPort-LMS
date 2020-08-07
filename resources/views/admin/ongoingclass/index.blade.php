@@ -34,7 +34,7 @@
                                         <td>{{$ongoing->name}}</td>
                                         <td>{{$ongoing->class_name . " " . $ongoing->section_name}}</td>
                                         <td>{{$ongoing->subject_name}}</td>
-                                        <td>{{date('H:i',strtotime($ongoing->from_timing)) . "-" . date('H:i',strtotime($ongoing->to_timing)) }}</td>
+                                        <td>{{date('h:i a',strtotime($ongoing->from_timing)) . "-" . date('h:i a',strtotime($ongoing->to_timing)) }}</td>
                                         <td>
                                             @if($ongoing->g_meet_url)
                                             <a href="{{$ongoing->g_meet_url}}" target="_blank">Join Link</a>
