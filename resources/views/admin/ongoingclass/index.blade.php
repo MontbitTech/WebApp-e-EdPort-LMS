@@ -5,13 +5,22 @@
     #ongoing_wrapper .row:first-child {
         display: flex;
     }
+
+    .classes-box {
+        position: relative;
+        border: 1px solid transparent;
+        overflow: hidden;
+        background-color: #fff;
+        box-shadow: 0px 1px 7px gainsboro;
+        transition: 300ms;
+    }
 </style>
 <section class="main-section">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
+                @if(count($onGoingClasses) > 0)
                 <div class="card card-common mb-3">
-                    @if(count($onGoingClasses) > 0)
 
                     <div class="card-header">
                         <span class="topic-heading">Ongoing lectures</span>
@@ -46,8 +55,15 @@
                             </table>
                         </div>
                     </div>
-                    @endif
                 </div>
+                @else
+                <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
+                    <svg class="icon icon-4x mr-3">
+                        <use xlink:href="../images/icons.svg#icon_nodate"></use>
+                    </svg>
+                    No Record Found!
+                </div>
+                @endif
             </div>
 
         </div>

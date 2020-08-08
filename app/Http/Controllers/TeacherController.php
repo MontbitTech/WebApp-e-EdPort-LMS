@@ -134,12 +134,20 @@ class TeacherController extends Controller
                 // 'lname' => 'required|max:100|alpha_num',
                 'email'      => 'required|email|ends_with:' . $domain->value . '|max:100|unique:tbl_techers,email,' . $id,
                 'phone'      => 'required|numeric|digits:10',
-                'g_meet_url' => "required|url|unique:tbl_techers",
             ], [
                 'fname.regex' => 'The name must be letters.',
                 //'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
 
             ]);
+
+            $teacher = Teacher::find($id);
+
+            if($request->g_meet_url != $teacher->g_meet_url)
+            {
+                $this->validate($request, [          
+                     'g_meet_url' => "url|unique:tbl_techers",
+                ]);
+            }
 
             $TeacherExist = Teacher::where('email', $request->email)->where('id', $id)->get()->first();
             if ( $TeacherExist ) {

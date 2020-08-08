@@ -158,7 +158,7 @@ $slogo = $logo->value;
 
 				<a class="navbar-logo align-middle font-weight-bold" href="./">
 
-					<img src="{{$slogo}}" alt="" width="50px">
+					<img src="{{$slogo}}" alt="" width="40px">
 				</a>
 
 			</div>
@@ -274,7 +274,7 @@ $slogo = $logo->value;
 					Help Category</a></div>
 		</div>
 		<div class="left-card">
-			<div class="left-link {{ Request::segment(2) == 'help-category'?'active':''}}"><a href="{{route('ongoing.index')}}" class="{{$support}} pl-3">
+			<div class="left-link {{ Request::segment(2) == 'ongoingclass'?'active':''}}"><a href="{{route('ongoing.index')}}" class="{{$support}} pl-3">
 					<i class="fab fa-readme icon icon-4x" aria-hidden="true"></i>
 
 					Ongoing Class</a></div>
