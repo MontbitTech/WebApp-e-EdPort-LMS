@@ -48,13 +48,14 @@ class CreateClassroomsJob implements ShouldQueue
 
             foreach ( $subjects as $subject ) {
                 $response = $this->createClassroom($row, $subject);
-
+                Log::info($subject);
                 if ( !$response['success'] ) {
                     Log::error($response['data'].' at row :'.$rowCount);
                 }
             }
         }
         $rowCount++;
+        Log::info('job finished');
     }
 
 
@@ -122,7 +123,7 @@ class CreateClassroomsJob implements ShouldQueue
         return $response;
     }
 
-    public function createClassInGoogleClassroom($token,$data)
+    public function createClassInGoogleClassroom($token, $data)
     {
         $url = "https://classroom.googleapis.com/v1/courses";
         $headers = array(
@@ -132,11 +133,10 @@ class CreateClassroomsJob implements ShouldQueue
 
         $response = RemoteRequest::postJsonRequest($url, $headers, $data);
 
-        Log::info($response['success']);
         if (!$response['success']) {
             if ($response['data']->status == 'UNAUTHENTICATED') {
                 $token = CustomHelper::get_refresh_token($this->token);
-
+                Log::info($response['data']->status);
                 $response = $this->createClassInGoogleClassroom($token['access_token'], $data); // access Google api craete Cource
             }
         }
