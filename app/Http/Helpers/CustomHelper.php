@@ -5,7 +5,6 @@ namespace App\Http\Helpers;
 use Google_Client;
 use Session;
 use App\ClassTopic;
-use App\DateClass;
 use DB;
 
 class CustomHelper
@@ -82,6 +81,8 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
 
         $client->authenticate($code);
         //dd($client->getAccessToken());
@@ -90,17 +91,23 @@ class CustomHelper
         return true;//redirect()->route('/');
     }
 
-    public static function get_refresh_token ()
+    public static function get_refresh_token ($token = false)
     {
         $client = new Google_Client();
-        $client->setAuthConfig('../credentials.json');
+        $client->setAuthConfig(base_path().'/credentials.json');
         $client->addScope('https://www.googleapis.com/auth/classroom.courses');
         $client->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
         $client->addScope('https://www.googleapis.com/auth/classroom.rosters');
         $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
-        $client->setAccessToken(Session::get('access_token'));
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
+        
+        if($token)
+            $client->setAccessToken($token);
+        else
+            $client->setAccessToken(Session::get('access_token'));
         if ( $client->isAccessTokenExpired() ) {
             if ( $client->getRefreshToken() ) {
                 $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());

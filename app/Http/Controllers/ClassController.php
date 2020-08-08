@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 //use Auth;
 use Illuminate\Support\Facades\Log;
+use Session;
 use Validator;
 use App\Http\Helpers\CommonHelper;
 use App\StudentClass;
@@ -260,8 +261,8 @@ class ClassController extends Controller
             return back()->with('error', 'Teacher details processed, Please check logs for detailed error, errors in rows - ' . $rows);
 
         Log::info('No error found');
-        dispatch(new CreateClassroomsJob($collection['data'], encrypt(CommonHelper::varify_Admintoken())));
+        dispatch(new CreateClassroomsJob($collection['data'], encrypt(Session::get('access_token'))));
         Log::info(DateUtility::getDateTimeDifference($time,DateUtility::getDateTime()));
-        return back()->with('success', 'Classroom details processed successfully.');
+        return back()->with('success', 'Classroom details processed successfully. Please wait while your classsrooms are uploading.');
     }
 }
