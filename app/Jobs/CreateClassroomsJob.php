@@ -136,7 +136,7 @@ class CreateClassroomsJob implements ShouldQueue
             if ($response['data']->status == 'UNAUTHENTICATED') {
                 $token = CustomHelper::get_refresh_token($this->token);
 
-                $response = CommonHelper::create_class($token['access_token'], $data); // access Google api craete Cource
+                $response = $this->createClassInGoogleClassroom($token['access_token'], $data); // access Google api craete Cource
             }
         }
         return $response;
