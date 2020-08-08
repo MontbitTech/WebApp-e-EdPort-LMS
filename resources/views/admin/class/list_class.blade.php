@@ -239,6 +239,21 @@
             // showAnim: "slide"
           })
         }
+        else{
+
+      $('#subjectlist').DataTable({
+      initComplete: function(settings, json) {
+        $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
+        $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+      }
+    });
+
+
+    $('.dateset').datepicker({
+      dateFormat: "yy/mm/dd"
+    })
+
+        }
       }
     });
   }

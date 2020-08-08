@@ -111,7 +111,7 @@ class HelpController extends Controller
             $support_help->subject_id = $request->subject_id;
             $support_help->read_status = 0;
             $support_help->class_join_link = isset($request->joinlive) ? $request->joinlive : '';
-            $support_help->help_ticket_category_id = null;
+            $support_help->help_ticket_category_id = 1;
             $support_help->save();
 
 

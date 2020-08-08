@@ -68,6 +68,7 @@
                                             </td>
                                             <td class="text-center">
                                                 <b>Category</b> :
+                                                @if($help->help_ticket_category_id==null)
                                                 @if($help->studentClass)
                                                 {{($help->help_type == 2)?$help->studentClass->class_name:''}}
                                                 @endif
@@ -78,17 +79,23 @@
                                                 @if($help->studentSubject)
                                                 {{($help->help_type == 2)?$help->studentSubject->subject_name:''}}
                                                 @endif
+                                                @endif
                                                 @foreach($categories as $category)
                                                 @if($category->id == $help->help_ticket_category_id)
                                                 {{$category->category}}
                                                 @endif
                                                 @endforeach
+
                                                 <br>
+                                                @if($help->description)
                                                 <b>Description</b> :
+                                                {{isset($help->description)?$help->description:''}}
+                                                <br>
+                                                @endif
                                                 @if($help->class_join_link)
                                                 <a href="javascript:void(0);" data-helplink="{{$help->class_join_link}}" id="{{ $help->id}}">Join Live</a>
                                                 @endif
-                                                {{isset($help->description)?$help->description:''}}</td>
+                                            </td>
                                             <td style="width: 15%">
                                                 <select name="status" class="form-control" data-selectStatus="{{ $help->id }}" {{($help->status == 3)?'disabled':''}}>
                                                     <option value="1" {{($help->status == 1)?'selected':''}}>
