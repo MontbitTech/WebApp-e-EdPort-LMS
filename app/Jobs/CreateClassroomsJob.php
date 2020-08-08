@@ -93,7 +93,7 @@ class CreateClassroomsJob implements ShouldQueue
 
     public function createGoogleClassroom ($className, $sectionName, $subjectName)
     {
-
+        Log::info('creating classroom');
         $data = array(
             "name"               => $className . ' ' . $subjectName,
             "section"            => $sectionName,
@@ -132,6 +132,7 @@ class CreateClassroomsJob implements ShouldQueue
 
         $response = RemoteRequest::postJsonRequest($url, $headers, $data);
 
+        Log::info($response['success']);
         if (!$response['success']) {
             if ($response['data']->status == 'UNAUTHENTICATED') {
                 $token = CustomHelper::get_refresh_token($this->token);
