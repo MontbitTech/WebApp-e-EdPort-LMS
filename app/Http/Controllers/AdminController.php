@@ -9,6 +9,7 @@ use Google_Client;
 use Session;
 use App\Admin;
 use App\Teacher;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -175,9 +176,11 @@ class AdminController extends Controller
 
     public function logout(Request $request)
     {
-        Session::forget('access_token');
-        Session::forget('admin_session');
-
+        $request->session()->forget('access_token');
+        $request->session()->forget('admin_session');
+        // Session::forget('access_token');
+        // Session::forget('admin_session');
+        Auth::logout();
         return redirect(url('/admin'));
     }
 
@@ -229,7 +232,7 @@ class AdminController extends Controller
             $admin = Admin::where('email', $credentials)->first();
             if (!empty($admin)) {
                 Session::put('admin_session', array('admin_id' => $admin['id'], 'admin_email' => $admin['email']));
-
+                Auth::loginUsingId($admin->id);
                 return 100;
             } else {
                 return 101;

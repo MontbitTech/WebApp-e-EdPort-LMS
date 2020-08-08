@@ -24,8 +24,11 @@ use App\InvitationClass;
 use App\DateClass;
 use App\ClassWork;
 use App\Jobs\CreateClassroomsJob;
+use App\libraries\EventManager;
 use App\libraries\Utility\DateUtility;
+use App\libraries\Utility\Utility;
 use App\Models\ClassSection;
+use Illuminate\Console\Scheduling\Event;
 
 class ClassController extends Controller
 {
@@ -119,17 +122,6 @@ class ClassController extends Controller
                 $token = CommonHelper::varify_Admintoken(); // verify admin token
 
                 $response = CommonHelper::create_class($token, $data); // access Google api craete Cource
-
-                if (!$response['success']) {
-                    if ($response['data']->status == 'UNAUTHENTICATED') {
-                        Log::error($response['data']->message);
-                        CustomHelper::get_refresh_token();
-                        $token = CommonHelper::varify_Admintoken(); // verify admin token
-
-                        $response = CommonHelper::create_class($token, $data); // access Google api craete Cource
-                        //                        return redirect()->route('admin.logout');
-                    }
-                }
 
                 if (!$response['success']) {
                     if ($response['data']->status == 'UNAUTHENTICATED') {
@@ -261,8 +253,13 @@ class ClassController extends Controller
             return back()->with('error', 'Teacher details processed, Please check logs for detailed error, errors in rows - ' . $rows);
 
         Log::info('No error found');
+        EventManager::createEvent([
+            'event_name'=>'classroom csv upload',
+            'job_id'=>Utility::getNextJobId(),
+            'payload'=>$collection['data'],
+        ]);
         dispatch(new CreateClassroomsJob($collection['data'], encrypt(Session::get('access_token'))));
-        Log::info(DateUtility::getDateTimeDifference($time,DateUtility::getDateTime()));
+
         return back()->with('success', 'Classroom details processed successfully. Please wait while your classsrooms are uploading.');
     }
 }

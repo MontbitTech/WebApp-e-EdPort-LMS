@@ -61,7 +61,8 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
-
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
         //$client->setRedirectUri('http://lms.schooltimes.ca/public/admin/login');
 
         $auth_url = $client->createAuthUrl();
@@ -103,11 +104,12 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
-        
+
         if($token)
             $client->setAccessToken($token);
         else
             $client->setAccessToken(Session::get('access_token'));
+
         if ( $client->isAccessTokenExpired() ) {
             if ( $client->getRefreshToken() ) {
                 $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
@@ -130,6 +132,8 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
 
         // $client->setRedirectUri('http://lms.schooltimes.ca/public/teacher/login');
 
@@ -156,6 +160,8 @@ class CustomHelper
         $c->addScope('https://www.googleapis.com/auth/admin.directory.user');
         $c->addScope('https://www.googleapis.com/auth/userinfo.email');
         $c->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
 
         $c->authenticate($code);
 
@@ -163,6 +169,34 @@ class CustomHelper
         Session::put('access_token_teacher', $c->getAccessToken());
 
         return true;//redirect()->route('/');
+    }
+
+    public static function get_refresh_teacher_token ($token = false)
+    {
+        $client = new Google_Client();
+        $client->setAuthConfig(base_path().'/credentials_teacher.json');
+        $client->addScope('https://www.googleapis.com/auth/classroom.courses');
+        $client->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
+        $client->addScope('https://www.googleapis.com/auth/classroom.rosters');
+        $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.email');
+        $client->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
+
+        if($token)
+            $client->setAccessToken($token);
+        else
+            $client->setAccessToken(Session::get('access_token_teacher'));
+
+        if ( $client->isAccessTokenExpired() ) {
+            if ( $client->getRefreshToken() ) {
+                $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+            }
+            Session::put('access_token_teacher', $client->getAccessToken());
+        }
+
+        return $client->getAccessToken();
     }
 
 

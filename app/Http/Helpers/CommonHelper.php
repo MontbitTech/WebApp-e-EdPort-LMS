@@ -9,6 +9,7 @@ use Session;
 use Google_Service_Classroom;
 use Google_Service_Classroom_Course;
 use App\Admin;
+use Illuminate\Support\Facades\Log;
 
 class CommonHelper
 {
@@ -88,7 +89,6 @@ class CommonHelper
 
     public static function create_new_user ($token, $data)
     {
-
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -108,14 +108,19 @@ class CommonHelper
         ));
 
         $response = curl_exec($curl);
+        curl_close($curl);
+
         if ( $response === false ) {
             return 101;
         }
+        
+        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
+            $token = CustomHelper::get_refresh_token();
+
+           $response =  CommonHelper::create_new_user($token['access_token'], $data);
+        }
 
         return $response;
-
-        curl_close($curl);
-
     }
 
     public static function update_user ($token, $data, $userKey)
@@ -139,10 +144,17 @@ class CommonHelper
         ));
 
         $response = curl_exec($curl);
+        curl_close($curl);
+
         if ( $response === false ) {
             return 101;
         }
-        curl_close($curl);
+
+        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
+            $token = CustomHelper::get_refresh_token();
+
+           $response =  CommonHelper::update_user($token['access_token'], $data, $userKey);
+        }
 
         return $response;
     }
@@ -166,10 +178,17 @@ class CommonHelper
         ));
 
         $response = curl_exec($curl);
+        curl_close($curl);
+
         if ( $response === false ) {
             return 101;
         }
-        curl_close($curl);
+
+        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
+            $token = CustomHelper::get_refresh_token();
+
+           $response =  CommonHelper::user_delete($token['access_token'], $userKey);
+        }
 
         return $response;
 
@@ -183,7 +202,17 @@ class CommonHelper
             "Content-Type: application/json",
         );
 
-        return RemoteRequest::postJsonRequest($url, $headers, $data);
+        $response = RemoteRequest::postJsonRequest($url, $headers, $data);
+
+        if (!$response['success']) {
+            if ($response['data']->status == 'UNAUTHENTICATED') {
+                $token = CustomHelper::get_refresh_token();
+
+                $response = CommonHelper::create_class($token['access_token'], $data); // access Google api craete Cource
+                //                        return redirect()->route('admin.logout');
+            }
+        }
+        return $response;
 //				$curl = curl_init();
 //
 //				curl_setopt_array($curl, array(
@@ -217,7 +246,17 @@ class CommonHelper
             "Authorization: Bearer $token",
         );
 
-        return RemoteRequest::deleteJsonRequest($url, $headers);
+        $response = RemoteRequest::deleteJsonRequest($url, $headers);
+
+        if (!$response['success']) {
+            if ($response['data']->status == 'UNAUTHENTICATED') {
+                $token = CustomHelper::get_refresh_token();
+
+                $response = CommonHelper::delete_class($token['access_token'], $g_id); // access Google api craete Cource
+            }
+        }
+
+        return $response;
 //        $curl = curl_init();
 //
 //        curl_setopt_array($curl, array(
@@ -264,10 +303,17 @@ class CommonHelper
         ));
 
         $response = curl_exec($curl);
+        curl_close($curl);
+
         if ( $response === false ) {
             return 101;
         }
-        curl_close($curl);
+
+        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
+            $token = CustomHelper::get_refresh_token();
+
+           $response =  CommonHelper::teacher_invitation_forClass($token['access_token'], $inv_data);
+        }
 
         return $response;
 
@@ -293,13 +339,19 @@ class CommonHelper
         ));
 
         $response = curl_exec($curl);
+        curl_close($curl);
+
         if ( $response === false ) {
             return 101;
         }
-        curl_close($curl);
+
+        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
+            $token = CustomHelper::get_refresh_token();
+
+           $response =  CommonHelper::student_course_delete($token['access_token'], $student, $class_g_code);
+        }
 
         return $response;
-
     }
 
     public static function teacher_invitation_delete ($token, $prve_g_code)
@@ -321,13 +373,19 @@ class CommonHelper
         ));
 
         $response = curl_exec($curl);
+        curl_close($curl);
+
         if ( $response === false ) {
             return 101;
         }
-        curl_close($curl);
+
+        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
+            $token = CustomHelper::get_refresh_token();
+
+           $response =  CommonHelper::teacher_invitation_delete($token['access_token'], $prve_g_code);
+        }
 
         return $response;
-
     }
 
     // used in teacher module
@@ -365,10 +423,17 @@ class CommonHelper
         ));
 
         $response = curl_exec($curl);
+        curl_close($curl);
+
         if ( $response === false ) {
             return 101;
         }
-        curl_close($curl);
+        
+        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
+            $token = CustomHelper::get_refresh_teacher_token();
+
+           $response =  CommonHelper::create_topic($token['access_token'], $g_class_id, $data);
+        }
 
         return $response;
     }
@@ -394,10 +459,17 @@ class CommonHelper
         ));
 
         $response = curl_exec($curl);
+        curl_close($curl);
+
         if ( $response === false ) {
             return 101;
         }
-        curl_close($curl);
+
+        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
+            $token = CustomHelper::get_refresh_token();
+
+           $response =  CommonHelper::create_courcework($token['access_token'], $g_class_id, $data);
+        }
 
         return $response;
     }
@@ -422,12 +494,18 @@ class CommonHelper
         ));
 
         $response = curl_exec($curl);
+        curl_close($curl);
+
         if ( $response === false ) {
             return 101;
         }
-        curl_close($curl);
+        
+        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
+            $token = CustomHelper::get_refresh_teacher_token();
+
+           $response =  CommonHelper::acceptClassInvitation($token['access_token'], $code);
+        }
 
         return $response;
     }
-
 }

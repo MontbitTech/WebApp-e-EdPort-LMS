@@ -88,16 +88,6 @@ class Classroom
         if ( !$response['success'] ) {
             if ( $response['data']->status == 'UNAUTHENTICATED' ) {
                 Log::error($response['data']->message);
-                CustomHelper::get_refresh_token();
-                $token = CommonHelper::varify_Admintoken(); // verify admin token
-
-                $response = CommonHelper::create_class($token, $data); // access Google api craete Cource
-            }
-        }
-
-        if ( !$response['success'] ) {
-            if ( $response['data']->status == 'UNAUTHENTICATED' ) {
-                Log::error($response['data']->message);
 
                 return failure_message('UNAUTHENTICATED');
             }
