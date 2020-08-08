@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Http\Helpers\CommonHelper;
 use App\Http\Helpers\CustomHelper;
 use App\libraries\Classroom;
+use App\libraries\Utility\RemoteRequest;
 use App\Models\ClassSection;
 use App\StudentClass;
 use App\StudentSubject;
@@ -105,7 +106,7 @@ class CreateClassroomsJob implements ShouldQueue
         );
         $data = json_encode($data);
 
-        $response = CommonHelper::create_class($this->token['access_token'], $data); // access Google api craete Cource
+        $response = $this->createClassInGoogleClassroom($this->token['access_token'], $data); // access Google api craete Cource
 
         if ( !$response['success'] ) {
             if ( $response['data']->status == 'UNAUTHENTICATED' ) {
@@ -118,6 +119,26 @@ class CreateClassroomsJob implements ShouldQueue
             return $response;
         }
 
+        return $response;
+    }
+
+    public function createClassInGoogleClassroom($token,$data)
+    {
+        $url = "https://classroom.googleapis.com/v1/courses";
+        $headers = array(
+            "Authorization: Bearer $token",
+            "Content-Type: application/json",
+        );
+
+        $response = RemoteRequest::postJsonRequest($url, $headers, $data);
+
+        if (!$response['success']) {
+            if ($response['data']->status == 'UNAUTHENTICATED') {
+                $token = CustomHelper::get_refresh_token($this->token);
+
+                $response = CommonHelper::create_class($token['access_token'], $data); // access Google api craete Cource
+            }
+        }
         return $response;
     }
 }
