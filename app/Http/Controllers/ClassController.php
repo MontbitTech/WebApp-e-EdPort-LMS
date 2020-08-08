@@ -78,6 +78,8 @@ class ClassController extends Controller
                 $getResult = $rec->where('class_name', $request->txtSerachBySection)->get();
             }
         }
+         else
+            $getResult = $rec->get();
 
         return view('admin.class.filter-subject', compact('getResult'));
     }
