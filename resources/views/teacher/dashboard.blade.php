@@ -792,13 +792,13 @@ $cls = 0;
                     <label for="addinputFtime" class="col-md-4 col-form-label text-md-right">Class From
                         Time:</label>
                     <div class="col-md-6">
-                        {!! Form::text('start_time', null, array('id'=>'addClassStartTime','placeholder' => '00:00:00','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                        {!! Form::text('start_time', null, array('id'=>'addClassStartTime','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="addinputTtime" class="col-md-4 col-form-label text-md-right">Class To Time:</label>
                     <div class="col-md-6">
-                        {!! Form::text('end_time', null, array('id'=>'addClassEndTime','placeholder' => '00:00:00','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                        {!! Form::text('end_time', null, array('id'=>'addClassEndTime','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
                     </div>
                 </div>
             </div>
@@ -967,7 +967,7 @@ $cls = 0;
         $('.ac-time').timepicker({
             controlType: 'select',
             oneLine: true,
-            timeFormat: 'hh:mm:ss tt'
+            timeFormat: 'hh:mm tt'
         });
 
     });
