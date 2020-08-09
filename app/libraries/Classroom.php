@@ -25,7 +25,7 @@ class Classroom
         return $classroom->save();
     }
 
-    public static function checkClassroomAndCreate ($row, $subjectName)
+    public static function validateClassroom ($row, $subjectName)
     {
         $classroomsExist = StudentClass::with('studentSubject')->where('class_name', $row['division'])
             ->where('section_name', $row['section'])
@@ -37,26 +37,13 @@ class Classroom
         if ( $classroomsExist )
             return failure_message('Classroom already Exist :' . $row['division'] . ' ' . $row['section'] . ' ' . $subjectName);
 
-        $subject = StudentSubject::firstOrCreate(['subject_name' => $subjectName]);
+        if($subjectName == '')
+            return failure_message('Please add subject');
 
-        $class = ClassSection::firstOrCreate([
-            'class_name'   => $row['division'],
-            'section_name' => $row['section'],
-        ]);
+        if($row['division'] == '' && $row['section'] == '')
+            return failure_message('Please add division and section');
 
-        $response = self::createGoogleClassroom($row['division'], $row['section'], $subjectName);
-
-        if ( !$response['success'] )
-            return $response;
-
-        return success_message(Classroom::createClassroom([
-            'class_name'   => $row['division'],
-            'section_name' => $row['section'],
-            'subject_id'   => $subject->id,
-            'g_class_id'   => $response['data']->id,
-            'g_link'       => $response['data']->alternateLink,
-            'g_response'   => serialize($response['data']),
-        ]));
+        return success_message('validated successfully');
     }
 
     public static function createSubject ($params)
@@ -97,16 +84,6 @@ class Classroom
         $token = CommonHelper::varify_Admintoken();
 
         $response = CommonHelper::create_class($token, $data); // access Google api craete Cource
-
-        if ( !$response['success'] ) {
-            if ( $response['data']->status == 'UNAUTHENTICATED' ) {
-                Log::error($response['data']->message);
-                CustomHelper::get_refresh_token();
-                $token = CommonHelper::varify_Admintoken(); // verify admin token
-
-                $response = CommonHelper::create_class($token, $data); // access Google api craete Cource
-            }
-        }
 
         if ( !$response['success'] ) {
             if ( $response['data']->status == 'UNAUTHENTICATED' ) {

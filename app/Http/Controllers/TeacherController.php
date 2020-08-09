@@ -134,12 +134,20 @@ class TeacherController extends Controller
                 // 'lname' => 'required|max:100|alpha_num',
                 'email'      => 'required|email|ends_with:' . $domain->value . '|max:100|unique:tbl_techers,email,' . $id,
                 'phone'      => 'required|numeric|digits:10',
-                'g_meet_url' => "required|url|unique:tbl_techers",
             ], [
                 'fname.regex' => 'The name must be letters.',
                 //'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
 
             ]);
+
+            $teacher = Teacher::find($id);
+
+            if($request->g_meet_url != $teacher->g_meet_url)
+            {
+                $this->validate($request, [          
+                     'g_meet_url' => "url|unique:tbl_techers",
+                ]);
+            }
 
             $TeacherExist = Teacher::where('email', $request->email)->where('id', $id)->get()->first();
             if ( $TeacherExist ) {
@@ -429,6 +437,42 @@ class TeacherController extends Controller
                                 //return back()->with('error', );
                             } else {
                                 $resData = array_merge($resData, json_decode($responce, true));
+
+                                if($resData['error']){
+                                    if($resData['error']['message'] == 'Invalid Credentials' || $resData['error']['status'] == 'UNAUTHENTICATED'){
+                                        Log::error($resData['error']['message']);
+                                        CustomHelper::get_refresh_token();
+                                        $token = CommonHelper::varify_Admintoken(); // verify admin token
+                                        $responce = CommonHelper::create_new_user($token, $data);  // access Google api craete user
+                                        $resData = array('error' => '');
+                                        if ( $responce == 101 ) {
+                                            Log::error('Teacher not created in Gsuite : ROW - ' . $i . '.Something went wrong! Please Try again!');
+                                            $errorString = 'Teacher not created in Gsuite : ROW - ' . $i . '.Something went wrong! Please Try again!';
+                                            $error = 'found';
+                                            $rows .= $i . ",";
+                                            //return back()->with('error', );
+                                        } else 
+                                        $resData = array_merge($resData, json_decode($responce, true));
+                                    }
+                                }
+                                Log::info($responce);
+
+                                if ( $resData['error'] ) {
+                                    Log::error($resData['error']['message'] . " Something went wrong with : ROW - " . $i);
+                                    $errorString = $resData['error']['message'] . " Something went wrong with : ROW - " . $i;
+                                    $error = 'found';
+                                    //return back()->with('error', $resData['error']['message']." Something went wrong with : ROW - " . $i );
+                                    if ( $resData['error']['message'] == 'Invalid Credentials' || $resData['error']['status'] == 'UNAUTHENTICATED') {
+                                        Log::error($resData['error']['message']);
+                                        return redirect()->route('admin.logout');
+                                    } else {
+                                        dd();
+                                        return redirect()->route('admin.dashboard')->with('error', $resData['error']['message']);
+                                    }
+                                }
+
+
+
                                 if ( $resData['error'] ) {
                                     Log::error($resData['error']['message'] . " Something went wrong with : ROW - " . $i);
                                     $errorString = $resData['error']['message'] . " Something went wrong with : ROW - " . $i;

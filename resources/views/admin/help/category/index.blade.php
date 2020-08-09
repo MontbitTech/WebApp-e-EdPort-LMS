@@ -37,10 +37,17 @@
                                     <td>{{$cl->id}}</td>
                                     <td class="text-center">{{$cl->category}}</td>
                                     <td>
+                                        @if($cl->category=='Live Class')
+                                        <a href="{{route('admin.help-category-edit', encrypt($cl->id))}}" style="color:white" class="disabled">Edit</a> |
+                                        <a href="javascript:void(0);" data-deleteModal="{{$cl->id}}" style="color:white" class="disabled">
+                                            {{ __('Delete') }}
+                                        </a>
+                                        @else
                                         <a href="{{route('admin.help-category-edit', encrypt($cl->id))}}">Edit</a> |
                                         <a href="javascript:void(0);" data-deleteModal="{{$cl->id}}">
                                             {{ __('Delete') }}
                                         </a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

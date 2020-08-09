@@ -21,6 +21,10 @@ $cls = 0;
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assigned
                             Class</a>
                     </li>
+                    <!-- <li class="nav-item mb-1">
+                        <a class="nav-link shadow-sm" data-toggle="tab" href="#upcomingclasses" role="tab">Future
+                            Classes</a>
+                    </li> -->
                     <li class="nav-item mb-1 ml-md-auto">
                         <a class="nav-link shadow-sm mr-0" data-toggle="modal" href="#addClassModal" role="modal">
                             <svg class="icon mr-1">
@@ -72,7 +76,7 @@ $cls = 0;
                                     <div class="d-flex align-items-center col-md-4">
                                         <div class="cls-date font-weight-bold">{{ $todaysDate }}</div>
                                         <div class="cls-from pt-1">
-                                            {{ date('G:i',strtotime($t->from_timing))}} to {{ date('G:i',strtotime($t->to_timing))}}</div>
+                                            {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between col-md-8">
                                         <div class="font-weight-bold pt-1">
@@ -150,52 +154,52 @@ $cls = 0;
                                         <!--new changes -->
                                         <div class="m-auto mt-2 pt-2" id="icon{{$t->id}}">
                                             <div class="row">
-                                            
-                                            @if($cms_link!=null)
-                                            <div class="col-2">
-                                            <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
-                                                <!-- Edport Content -->
-                                                <img src="{{asset('images/logo-1.png')}}" alt="" width="27px" style="{{$display_style}}">
-                                            </a>
-                                            </div>
-                                            @endif
-                                            
-                                            @if($youtube!=null)
-                                            <div class="col-2">
-                                            <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
-                                                <!-- Youtube -->
-                                                <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
-                                            </a>
-                                        </div>
-                                            @endif
 
-                                            @if($other!=null)
-                                            <div class="col-2">
-                                            <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
-                                                <!-- Wikipedia -->
-                                                <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
-                                            </a>
-                                           </div>
-                                            @endif
-
-                                           @if($academy!=null)
-                                           <div class="col-2">
-                                            <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline p-0 m-0 text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
-                                                <!-- My School -->
-                                                @foreach ($schoollogo as $logo)
-                                                @if($logo->item=="schoollogo")
-                                                <img src="{{$logo->value}}" alt="logo" width="27px" style="{{$display_style}}">
-
+                                                @if($cms_link!=null)
+                                                <div class="col-2">
+                                                    <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Edport Content -->
+                                                        <img src="{{asset('images/logo-1.png')}}" alt="" width="27px" style="{{$display_style}}">
+                                                    </a>
+                                                </div>
                                                 @endif
-                                                @endforeach
-                                            </a>
+
+                                                @if($youtube!=null)
+                                                <div class="col-2">
+                                                    <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Youtube -->
+                                                        <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
+                                                    </a>
+                                                </div>
+                                                @endif
+
+                                                @if($other!=null)
+                                                <div class="col-2">
+                                                    <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Wikipedia -->
+                                                        <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
+                                                    </a>
+                                                </div>
+                                                @endif
+
+                                                @if($academy!=null)
+                                                <div class="col-2">
+                                                    <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline p-0 m-0 text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- My School -->
+                                                        @foreach ($schoollogo as $logo)
+                                                        @if($logo->item=="schoollogo")
+                                                        <img src="{{$logo->value}}" alt="logo" width="27px" style="{{$display_style}}">
+
+                                                        @endif
+                                                        @endforeach
+                                                    </a>
+                                                </div>
+                                                @endif
+                                            </div>
                                         </div>
-                                            @endif
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
                             <div class="card-footer p-1" style="background:#fff;">
                                 <div class="d-flex justify-content-between flex-wrap">
                                     <div class="m-auto">
@@ -309,9 +313,9 @@ $cls = 0;
 
                             <div class="classes-datetime">
                                 <div class="cls-date">{{ $class_date }}</div>
-                                <div class="cls-from">{{$t->from_timing}}</div>
+                                <div class="cls-from">{{ date('h:i a',strtotime($t->from_timing))}}</div>
                                 <div class="cls-separater">to</div>
-                                <div class="cls-to">{{$t->to_timing}}</div>
+                                <div class="cls-to">{{ date('h:i a',strtotime($t->to_timing))}}</div>
                             </div>
                             <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
                                 <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span>
@@ -443,6 +447,110 @@ $cls = 0;
                         @endif
                     </div>
 
+                    <div class="tab-pane fade" id="upcomingclasses">
+
+
+                        @if(count($futureClassData) > 0)
+
+                        @php
+                        $i=1;
+                        @endphp
+                        @foreach ($futureClassData as $t)
+                        <?php
+                        $cls = 0;
+                        $section_name = '';
+                        $g_class_id = '';
+                        $class_name = '';
+                        $subject_name = '';
+                        if ($t->studentClass) {
+                            $class_name = $t->studentClass->class_name;
+                            //$class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
+                            $section_name = $t->studentClass->section_name;
+                            $g_class_id = $t->studentClass->g_class_id;
+                        }
+                        if ($t->studentSubject) {
+                            $subject_name = $t->studentSubject->subject_name;
+                        }
+                        ?>
+
+
+                        <div class="classes-box">
+
+                            <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
+                            <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
+                            <input type="hidden" id="past_subject_id{{$i}}" value="{{$t->subject_id}}">
+
+
+                            <input type="hidden" id="past_desc{{$i}}" value="{{$t->class_description}}">
+                            <input type="hidden" id="past_gMeetURL{{$i}}" value="{{$t->g_meet_url}}">
+                            <input type="hidden" id="past_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
+                            <input type="hidden" id="past_recURL{{$i}}" value="{{$t->recording_url}}">
+                            <input type="hidden" id="pastg_class_id_{{$i}}" value="{{ $g_class_id}}" />
+                            <?php
+                            $class_date = date("d M", strtotime($t->class_date));
+                            ?>
+
+                            <div class="classes-datetime">
+                                <div class="cls-date">{{ $class_date }}</div>
+                                <div class="cls-from">{{ date('h:i a',strtotime($t->from_timing))}}</div>
+                                <div class="cls-separater">to</div>
+                                <div class="cls-to">{{ date('h:i a',strtotime($t->to_timing))}}</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
+                                <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span>
+
+                                    {{$class_name}} Std
+                                </div>
+                                <div class="font-weight-bold pt-1"><span class="text-secondary">Section:</span> {{$section_name}}
+
+                                </div>
+                                <div class="font-weight-bold pt-1"><span class="text-secondary">Subject:</span>
+
+                                    {{$subject_name}}
+
+                                </div>
+                            </div>
+
+
+                            <p class="mt-0 mb-2 text-secondary text-edit" data-url="#" data-savedesc="{{$t->id}}" contenteditable="false" id="class_description_{{$i}}">
+                                @if($t->class_description!='')
+                                {{$t->class_description}}
+                                @else
+                                {{$t->class_description}}
+                                @endif
+                            </p>
+
+
+
+                            <div class="d-flex justify-content-between flex-wrap py-2">
+                                <div>
+
+
+
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        @php
+                        $i++;
+                        @endphp
+                        @endforeach
+                        @else
+
+                        <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
+                            <svg class="icon icon-4x mr-3">
+                                <use xlink:href="../images/icons.svg#icon_nodate"></use>
+                            </svg>
+                            No Record Found!
+                        </div>
+                        @endif
+                    </div>
+
 
                     <!---
                         Invitation
@@ -450,19 +558,20 @@ $cls = 0;
                     <div class="tab-pane fade" id="newInvitationclasses">
 
                         <div class="col-sm-12">
-                            <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Class</th>
-                                        <th>Section</th>
-                                        <th>Subject</th>
-                                        <th>Link</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    if (count($inviteClassData) > 0) {
+                            <?php if (count($inviteClassData) > 0) { ?>
+                                <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Class</th>
+                                            <th>Section</th>
+                                            <th>Subject</th>
+                                            <th>Link</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+
                                         $i = 0;
                                         foreach ($inviteClassData as $row) {
                                             $section_name = '';
@@ -477,7 +586,7 @@ $cls = 0;
                                             if ($row->studentSubject) {
                                                 $subject_name = $row->studentSubject->subject_name;
                                             }
-                                    ?>
+                                        ?>
                                             <tr>
                                                 <td>{{++$i}}</td>
                                                 <td>{{ $cls }} Std</td>
@@ -506,8 +615,8 @@ $cls = 0;
                                     <?php
                                     }
                                     ?>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
                         </div>
                     </div>
                     <!-- ./Teacher-AssignedClasses -->
@@ -694,6 +803,8 @@ $cls = 0;
                 </div>
             </div>
 
+
+
             <div class="form-group row">
                 <label class="col-md-12 text-danger text-center" style="font-size: 12px;padding-left: 130px;">*Extra
                     classes for regular assigned classes can be created here</label>
@@ -845,6 +956,8 @@ $cls = 0;
 </div>
 <!-- End -->
 
+
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('.ac-datepicker').datepicker({
@@ -854,8 +967,9 @@ $cls = 0;
         $('.ac-time').timepicker({
             controlType: 'select',
             oneLine: true,
-            timeFormat: 'HH:mm:ss'
+            timeFormat: 'hh:mm:ss tt'
         });
+
     });
     $(document).on('click', '[data-LiveLink]', function() {
         var liveurl = $(this).attr("data-LiveLink");
@@ -935,6 +1049,16 @@ $cls = 0;
     });
     $(document).on('click', '[data-pasttopiclink]', function() {
         var liveurl = $(this).attr("data-pasttopiclink");
+        if (liveurl != '') {
+            //$('#viewClassModal').modal('show');
+            //$("#thedialog").attr('src','https://google.com');
+            window.open(liveurl, "dialog name"); //, "dialogWidth:400px;dialogHeight:300px");
+        } else {
+            alert('No content url found!');
+        }
+    });
+    $(document).on('click', '[data-futuretopiclink]', function() {
+        var liveurl = $(this).attr("data-futuretopiclink");
         if (liveurl != '') {
             //$('#viewClassModal').modal('show');
             //$("#thedialog").attr('src','https://google.com');
@@ -1148,19 +1272,19 @@ $cls = 0;
                     success: function(result) {
                         var response = JSON.parse(result);
                         location.reload(true);
-                       if(response.youtube_link!=null){
-                           $('#youtube_' + dateWork_id).attr('style', 'display:block');
+                        if (response.youtube_link != null) {
+                            $('#youtube_' + dateWork_id).attr('style', 'display:block');
                             $('#youtube_' + dateWork_id).attr('data-youtubelink', response.youtube_link);
-                       }
-
-                       if(response.wikipedia_link!=null){
-                        $('#wikipedia_' + dateWork_id).attr('style', 'display:block');
-                        $('#wikipedia_' + dateWork_id).attr('data-wikipedialink', response.wikipedia_link);
                         }
 
-                        if(response.academy_link!=null){
-                        $('#academy_' + dateWork_id).attr('style', 'display:block');
-                        $('#academy_' + dateWork_id).attr('data-academylink', response.academy_link);
+                        if (response.wikipedia_link != null) {
+                            $('#wikipedia_' + dateWork_id).attr('style', 'display:block');
+                            $('#wikipedia_' + dateWork_id).attr('data-wikipedialink', response.wikipedia_link);
+                        }
+
+                        if (response.academy_link != null) {
+                            $('#academy_' + dateWork_id).attr('style', 'display:block');
+                            $('#academy_' + dateWork_id).attr('data-academylink', response.academy_link);
                         }
                         $.fn.notifyMe('success', 4, response.message);
                     },

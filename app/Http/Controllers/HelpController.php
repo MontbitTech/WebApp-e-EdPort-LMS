@@ -40,23 +40,23 @@ class HelpController extends Controller
     public function helpList (Request $request)
     {
         $categories = HelpTicketCategory::get();
+        $helpTickets =  SupportHelp::orderBy('status', 'DESC')->get();
 
-        return view('admin.help.list', compact('categories'));
+        return view('admin.help.list', compact('categories','helpTickets'));
     }
 
     public function filterTicket (Request $request)
     {
-
         $categories = HelpTicketCategory::get();
 
         $selectedCategory = null;
         if ( isset($request->category) && $request->category != 'all' ) {
-            $support_help = \App\SupportHelp::orderBy('status', 'DESC')
+            $support_help = SupportHelp::orderBy('status', 'DESC')
                 ->where('help_ticket_category_id', $request->category)->get();
             $selectedCategory = $request->category;
         } else {
-            $support_help = \App\SupportHelp::where('read_status', 0)->update(['read_status' => 1]);
-            $support_help = \App\SupportHelp::orderBy('status', 'DESC')->get();
+            SupportHelp::where('read_status', 0)->update(['read_status' => 1]);
+            $support_help = SupportHelp::orderBy('status', 'DESC')->get();
         }
 
         return view('admin.help.filter-ticket', compact('support_help', 'categories', 'selectedCategory'))->with('i', 0);
@@ -111,7 +111,7 @@ class HelpController extends Controller
             $support_help->subject_id = $request->subject_id;
             $support_help->read_status = 0;
             $support_help->class_join_link = isset($request->joinlive) ? $request->joinlive : '';
-            $support_help->help_ticket_category_id = null;
+            $support_help->help_ticket_category_id = 1;
             $support_help->save();
 
 

@@ -24,7 +24,7 @@ $timing=$ar["timing"];
                         <span class="topic-heading">Time Table</span>
                         <div class="float-right">
                             <a type="button" class="btn btn-sm btn-secondary" href="{{ route('admin.timetableimport') }}">
-                                <i class="fa fa-download mr-1" aria-hidden="true"></i>
+                                <i class="fas fa-file-import icon-4x mr-1"></i>
                                 Import Time Table
                             </a>
                         </div>

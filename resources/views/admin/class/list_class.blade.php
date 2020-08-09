@@ -10,7 +10,7 @@
             <span class="topic-heading">Classroom List</span>
             <div class="float-right ml-1">
               <a type="button" class="btn btn-sm btn-secondary" href="{{route('admin.class.import')}}">
-                <i class="fa fa-upload mr-1" aria-hidden="true"></i>
+                <i class="fas fa-file-import icon-4x mr-1"></i>
                 Import Classroom
               </a>
             </div>
@@ -209,13 +209,21 @@
               extend: 'csvHtml5',
               autoFilter: true,
               sheetName: 'Exported data',
-              text: '<i class="fa fa-upload mr-1 " aria-hidden="true"></i>Export Classroom',
+              text: '<i class="fas fa-file-export mr-1 icon-2x"  ></i>Export Classroom',
               className: 'btn btn-secondary btn-sm',
               init: function(api, node, config) {
                 $(node).removeClass('dt-button')
               },
               exportOptions: {
                 columns: [0, 1, 2]
+              },
+
+              customize: function(csv) {
+                var csvRows = csv.split();
+                csvRows[0] = csvRows[0].replace('"Division"', '"division"')
+                csvRows[0] = csvRows[0].replace('"Section"', '"section"')
+                csvRows[0] = csvRows[0].replace('"Subject"', '"subjects"')
+                return csvRows;
               }
 
             }],
@@ -230,6 +238,21 @@
             dateFormat: "yy/mm/dd"
             // showAnim: "slide"
           })
+        }
+        else{
+
+      $('#subjectlist').DataTable({
+      initComplete: function(settings, json) {
+        $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
+        $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+      }
+    });
+
+
+    $('.dateset').datepicker({
+      dateFormat: "yy/mm/dd"
+    })
+
         }
       }
     });
