@@ -61,6 +61,7 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
         //$client->setRedirectUri('http://lms.schooltimes.ca/public/admin/login');
@@ -82,6 +83,7 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 
@@ -102,6 +104,7 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 
@@ -132,6 +135,7 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 
@@ -160,6 +164,7 @@ class CustomHelper
         $c->addScope('https://www.googleapis.com/auth/admin.directory.user');
         $c->addScope('https://www.googleapis.com/auth/userinfo.email');
         $c->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $c->addScope('https://www.googleapis.com/auth/classroom.announcements');
         $c->setAccessType('offline');
         $c->setApprovalPrompt('force');
 
@@ -181,6 +186,7 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 
