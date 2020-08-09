@@ -39,8 +39,6 @@ class TeacherClassController extends Controller
 
     public function notifyStudents (Request $request)
     {
-
-
         $logged_teacher = Session::get('teacher_session');
         $logged_teacher_id = $logged_teacher['teacher_id'];
         $logged_teacher_name = $logged_teacher['teacher_name'];
@@ -63,7 +61,6 @@ class TeacherClassController extends Controller
             $start_time = $class_timing->from_timing;
             $std_message = $class_timing->class_student_msg;
 
-
             $subject_name = StudentSubject::where('id', $request->subject_id)->get()->first();
             $sub_name = $subject_name->subject_name;
 
@@ -71,25 +68,33 @@ class TeacherClassController extends Controller
             $cls_name = $class_name->class_name;
             $section_name = $class_name->section_name;
 
-            //dd($class_name);
             $classData = \DB::table('tbl_classes')->select('id')->where('class_name', $cls_name)->where('section_name', $section_name)->get()->first();
             $c_id = $classData->id;
+            
+            $token = CommonHelper::varify_Teachertoken();
+            $data = array(
+                        'text'=>'This class will start at '. $start_time.' Please join using '.$class_join_link
+                   );
+            $response = CommonHelper::createAnnouncement($token, $class_name->g_class_id, json_encode($data));
+            
+            if(!$response['success']){
+                return json_encode(array('status' => 'error', 'message' => $response['data']->message));
+            }
 
-
-            $student_phone = \DB::table('tbl_students')->select('name', 'email', 'phone')->where('class_id', $c_id)->where('notify', 'yes')->get(); // Phone Number
+            // $student_phone = \DB::table('tbl_students')->select('name', 'email', 'phone')->where('class_id', $c_id)->where('notify', 'yes')->get(); // Phone Number
             $student_email = \DB::table('tbl_students')->select('name', 'email', 'phone')->where('class_id', $c_id)->get(); // email
 
-            foreach ( $student_phone as $p ) {
-                $number[] = $p->phone;
-            }
+            // foreach ( $student_phone as $p ) {
+            //     $number[] = $p->phone;
+            // }
 
-            if ( count($student_phone) > 0 ) {
-                $numbers = implode(",", $number);
-                $msg = "You have $sub_name class at $start_time. Join using $class_join_link.";
+            // if ( count($student_phone) > 0 ) {
+            //     $numbers = implode(",", $number);
+            //     $msg = "You have $sub_name class at $start_time. Join using $class_join_link.";
 
-                $s = CommonHelper::send_sms($numbers, $msg);
-                $comm = "SMS ";
-            }
+            //     $s = CommonHelper::send_sms($numbers, $msg);
+            //     $comm = "SMS ";
+            // }
 
             if ( count($student_email) > 0 ) {
                 foreach ( $student_email as $e ) {

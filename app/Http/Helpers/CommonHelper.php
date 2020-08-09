@@ -204,7 +204,7 @@ class CommonHelper
 
         $response = RemoteRequest::postJsonRequest($url, $headers, $data);
 
-        if (!$response['success']) {
+        if (!$response['success'] && isset($response['data']->status)) {
             if ($response['data']->status == 'UNAUTHENTICATED') {
                 $token = CustomHelper::get_refresh_token();
 
@@ -248,7 +248,7 @@ class CommonHelper
 
         $response = RemoteRequest::deleteJsonRequest($url, $headers);
 
-        if (!$response['success']) {
+        if (!$response['success'] && isset($response['data']->status)) {
             if ($response['data']->status == 'UNAUTHENTICATED') {
                 $token = CustomHelper::get_refresh_token();
 
@@ -504,6 +504,27 @@ class CommonHelper
             $token = CustomHelper::get_refresh_teacher_token();
 
            $response =  CommonHelper::acceptClassInvitation($token['access_token'], $code);
+        }
+
+        return $response;
+    }
+
+    public static function createAnnouncement($token, $classId, $data){
+
+        $url = 'https://classroom.googleapis.com/v1/courses/'.$classId.'/announcements';
+        $headers = array(
+            "Authorization: Bearer $token",
+            "Content-Type: application/json",
+        );
+
+        $response = RemoteRequest::postJsonRequest($url, $headers,$data);
+
+        if (!$response['success'] && isset($response['data']->status)) {
+            if ($response['data']->status == 'UNAUTHENTICATED') {
+                $token = CustomHelper::get_refresh_token();
+
+                $response = CommonHelper::createAnnouncement($token['access_token'], $classId, $data); // access Google api craete Cource
+            }
         }
 
         return $response;
