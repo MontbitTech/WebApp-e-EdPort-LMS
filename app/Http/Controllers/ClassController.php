@@ -253,7 +253,7 @@ class ClassController extends Controller
         if(file_exists(public_path('classroom').'/'.str_replace(' ', '_', $request->file('file')->getClientOriginalName())))
             unlink(public_path('classroom').'/'.str_replace(' ', '_', $request->file('file')->getClientOriginalName()));
         if ( $error )
-            return back()->with('error', 'Teacher details processed, Please check logs for detailed error, errors in rows - ' . $rows);
+            return back()->with('error', 'Classroom details processed, Please check logs for detailed error, errors in rows - ' . $rows);
 
         Log::info('No error found');
         EventManager::createEvent([
