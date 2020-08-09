@@ -138,6 +138,10 @@ class ClassWorkController extends Controller
             return json_encode(array('status' => 'error', 'message' => 'Assignment Title Required.'));
         }
 
+        if ( $topic_name != '' && $sel_topic_id != '' ) {
+            return json_encode(array('status' => 'error', 'message' => 'Either select a topic or give a new topic fill both.'));
+        }
+
         $token = CommonHelper::varify_Teachertoken(); // verify Teacher token
         if ( ( $topic_name == '' && $sel_topic_id != '' ) || ( $topic_name != '' && $sel_topic_id != '' ) ) {
             $topic_id = $sel_topic_id;
