@@ -209,6 +209,10 @@ class ImportCMSLinksController extends Controller
 					$class = \DB::table('tbl_classes')->select('class_name')->where('class_name', $reader["class"])->get();
 					$subjects = \DB::table('tbl_student_subjects')->where('subject_name', $reader["subject"])->get();
 
+					if(!isset($reader["class"]) || !isset($reader["subject"]) || !isset($reader["topic"]) || !isset($reader["link"])
+					|| !isset($reader["youtube"]) || !isset($reader["khan_academy"]) || !isset($reader["others"]) || !isset($reader["assignment"]) ){
+						return back()->with('error', 'Header Mismatch at row: ' . $i);
+					}
 
 					if ($reader["class"] == "" || $reader["subject"] == "" || $reader["topic"] == "") {
 						Log::error('CMS details missing : ROW - ' . $i);
