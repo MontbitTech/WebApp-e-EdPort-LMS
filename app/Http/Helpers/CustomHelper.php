@@ -160,8 +160,8 @@ class CustomHelper
         $c->addScope('https://www.googleapis.com/auth/admin.directory.user');
         $c->addScope('https://www.googleapis.com/auth/userinfo.email');
         $c->addScope('https://www.googleapis.com/auth/classroom.topics');
-        $client->setAccessType('offline');
-        $client->setApprovalPrompt('force');
+        $c->setAccessType('offline');
+        $c->setApprovalPrompt('force');
 
         $c->authenticate($code);
 
