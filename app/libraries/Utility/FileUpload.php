@@ -15,7 +15,7 @@ class FileUpload
     public static function uploadFile ($destinationPath, $file)
     {
         $filename = strtolower($file->getClientOriginalName());
-
+        $filename = str_replace(' ', '_', $filename);
         if ( file_exists($destinationPath . '/' . $filename) )
             unlink($destinationPath . '/' . $filename);
 
