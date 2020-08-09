@@ -114,10 +114,12 @@ class CommonHelper
             return 101;
         }
         
-        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
-            $token = CustomHelper::get_refresh_token();
+        if(isset(json_decode($response)->error) && isset(json_decode($response)->error->status)){
+            if(json_decode($response)->error->status == 'UNAUTHENTICATED'){
+                $token = CustomHelper::get_refresh_token();
 
-           $response =  CommonHelper::create_new_user($token['access_token'], $data);
+                $response =  CommonHelper::create_new_user($token['access_token'], $data);
+            }
         }
 
         return $response;
@@ -150,10 +152,12 @@ class CommonHelper
             return 101;
         }
 
-        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
-            $token = CustomHelper::get_refresh_token();
+        if(isset(json_decode($response)->error) && isset(json_decode($response)->error->status)){
+            if(json_decode($response)->error->status == 'UNAUTHENTICATED'){
+                $token = CustomHelper::get_refresh_token();
 
-           $response =  CommonHelper::update_user($token['access_token'], $data, $userKey);
+                $response =  CommonHelper::update_user($token['access_token'], $data, $userKey);
+            }
         }
 
         return $response;
@@ -184,10 +188,12 @@ class CommonHelper
             return 101;
         }
 
-        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
-            $token = CustomHelper::get_refresh_token();
+        if(isset(json_decode($response)->error) && isset(json_decode($response)->error->status)){
+            if(json_decode($response)->error->status == 'UNAUTHENTICATED'){
+                $token = CustomHelper::get_refresh_token();
 
-           $response =  CommonHelper::user_delete($token['access_token'], $userKey);
+                $response =  CommonHelper::user_delete($token['access_token'], $userKey);
+            }
         }
 
         return $response;
@@ -309,10 +315,12 @@ class CommonHelper
             return 101;
         }
 
-        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
-            $token = CustomHelper::get_refresh_token();
+        if(isset(json_decode($response)->error) && isset(json_decode($response)->error->status)){
+            if(json_decode($response)->error->status == 'UNAUTHENTICATED'){
+                $token = CustomHelper::get_refresh_token();
 
-           $response =  CommonHelper::teacher_invitation_forClass($token['access_token'], $inv_data);
+                $response =  CommonHelper::teacher_invitation_forClass($token['access_token'], $inv_data);
+            }
         }
 
         return $response;
@@ -345,10 +353,12 @@ class CommonHelper
             return 101;
         }
 
-        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
-            $token = CustomHelper::get_refresh_token();
+        if(isset(json_decode($response)->error) && isset(json_decode($response)->error->status)){
+            if(json_decode($response)->error->status == 'UNAUTHENTICATED'){
+                $token = CustomHelper::get_refresh_token();
 
-           $response =  CommonHelper::student_course_delete($token['access_token'], $student, $class_g_code);
+                $response =  CommonHelper::student_course_delete($token['access_token'], $student, $class_g_code);
+            }
         }
 
         return $response;
@@ -379,10 +389,12 @@ class CommonHelper
             return 101;
         }
 
-        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
-            $token = CustomHelper::get_refresh_token();
+        if(isset(json_decode($response)->error) && isset(json_decode($response)->error->status)){
+            if(json_decode($response)->error->status == 'UNAUTHENTICATED'){
+                $token = CustomHelper::get_refresh_token();
 
-           $response =  CommonHelper::teacher_invitation_delete($token['access_token'], $prve_g_code);
+                $response =  CommonHelper::teacher_invitation_delete($token['access_token'], $prve_g_code);
+            }
         }
 
         return $response;
@@ -429,10 +441,12 @@ class CommonHelper
             return 101;
         }
         
-        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
-            $token = CustomHelper::get_refresh_teacher_token();
+        if(isset(json_decode($response)->error) && isset(json_decode($response)->error->status)){
+            if(json_decode($response)->error->status == 'UNAUTHENTICATED'){
+                $token = CustomHelper::get_refresh_teacher_token();
 
-           $response =  CommonHelper::create_topic($token['access_token'], $g_class_id, $data);
+                $response =  CommonHelper::create_topic($token['access_token'], $g_class_id, $data);
+            }
         }
 
         return $response;
@@ -465,10 +479,12 @@ class CommonHelper
             return 101;
         }
 
-        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
-            $token = CustomHelper::get_refresh_token();
+        if(isset(json_decode($response)->error) && isset(json_decode($response)->error->status)){
+            if(json_decode($response)->error->status == 'UNAUTHENTICATED'){
+                $token = CustomHelper::get_refresh_token();
 
-           $response =  CommonHelper::create_courcework($token['access_token'], $g_class_id, $data);
+                $response =  CommonHelper::create_courcework($token['access_token'], $g_class_id, $data);
+            }
         }
 
         return $response;
@@ -500,10 +516,12 @@ class CommonHelper
             return 101;
         }
         
-        if(isset(json_decode($response)->error) && json_decode($response)->error->status == 'UNAUTHENTICATED'){
-            $token = CustomHelper::get_refresh_teacher_token();
+        if(isset(json_decode($response)->error) && isset(json_decode($response)->error->status)){
+            if(json_decode($response)->error->status == 'UNAUTHENTICATED'){
+                $token = CustomHelper::get_refresh_teacher_token();
 
-           $response =  CommonHelper::acceptClassInvitation($token['access_token'], $code);
+                $response =  CommonHelper::acceptClassInvitation($token['access_token'], $code);
+            }
         }
 
         return $response;
