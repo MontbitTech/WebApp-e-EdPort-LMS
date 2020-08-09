@@ -290,7 +290,7 @@ class ImportStudentsController extends Controller
     public function importClassStudentNumber (Request $request)
     {
         $from = CustomHelper::getFromMail();
-
+        set_time_limit(0);
         $student_class = StudentClass::all();
         $error = "";
         $rows = "";
@@ -334,6 +334,7 @@ class ImportStudentsController extends Controller
 
                 Log::info('Filename processing - ' . $filename);
                 foreach ( $collection as $key => $reader ) {
+                    // $reader['name'] = trim($reader['name']);
                     if ( !isset($reader["class"]) || !isset($reader["name"]) || !isset($reader["phone"]) || !isset($reader["email"]) || !isset($reader["class"]) ) {
                         $error = "Header mismatch";
                         Log::error('Header mismatch!!');
