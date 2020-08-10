@@ -155,6 +155,9 @@ class ImportStudentsController extends Controller
 
     public function editStudent (Request $request, $id)
     {
+        set_time_limit(0);
+        $id = decrypt($id);
+        $error = ['status'=>false,'message'=>''];
 
         if ( $request->isMethod('post') ) {
             $request->validate([
@@ -182,13 +185,38 @@ class ImportStudentsController extends Controller
             if ( isset($request->phone) && !is_numeric($request->phone) && str_len($request->phone) != 10 )
                 return back()->with('error', Config::get('constants.WebMessageCode.133'));
 
-            $sid = decrypt($id);
-            $student = \DB::table('tbl_students')->where('id', $sid)->update(array('phone' => $request->phone, 'email' => $request->email, 'notify' => $n));
+            $student = Student::find($id);
+            
+            if(!$student)
+                return redirect()->route('adminlist.students')->with('error','Student does not exist');
 
-            return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.112'));
+            StudentUtility::removeStudentFromClassroom($student);
+            
+            $token = CommonHelper::varify_Admintoken();
+            $classrooms = StudentClass::where('class_name', $request->class)->where('section_name', $request->section)->get();
+
+            $response = StudentUtility::inviteStudentToClassroom($request->email,$token,$classrooms);
+            if(!$response['success']){
+                if($response['data'] == 'UNAUTHENTICATED')
+                    return redirect()->route('admin.logout');
+                
+                $error['status'] = true;
+                $error['message'] = $response['data'];
+            }
+
+            $student->email = $request->email;
+            $student->phone = $request->phone;
+            $student->notify = $n;
+            $student->save();
+            $student->refresh();
+
+            StudentUtility::sendTimeTableToStudentEmail($request->class, $request->section, $student);
+
+            if($error['status'])
+                return redirect()->route('adminlist.students')->with('error', $error['message']);
+            else
+                return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.112'));
         }
-
-        $id = decrypt($id);
 
         $student = \DB::select('select s.id, s.name, s.phone, s.email, s.notify, c.class_name, c.section_name from tbl_students s, tbl_classes c
 								where c.id = s.class_id and s.id=?', [$id]);
@@ -483,8 +511,10 @@ class ImportStudentsController extends Controller
     {
         $students = Student::with('class')->whereIn('id', explode(",", $request->ids))->get();
 
-        StudentUtility::removeStudentsFromClassroom($students);
-
+        foreach($students as $student){
+            StudentUtility::removeStudentFromClassroom($student);
+            $student->delete();
+        }
         return response()->json(['success' => "Deleted successfully."]);
     }
 }
