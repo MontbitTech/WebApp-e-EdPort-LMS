@@ -60,7 +60,7 @@ class ImportCMSLinksController extends Controller
 
 		$subjects = \DB::table('tbl_student_subjects')->get();
 		$data['class'] = \DB::table('tbl_classes')->select('class_name')->distinct()->get()->pluck('class_name', 'class_name');
-		$data['class']->prepend('Select Class', '');
+		$data['class']->prepend('Select Divison', '');
 
 		return view('admin.cmslinks.add', compact('subjects', 'data'));
 	}
@@ -98,7 +98,7 @@ class ImportCMSLinksController extends Controller
 		$link = \DB::select('select * from tbl_cmslinks where id=?', [$id]);
 		$subjects = \DB::table('tbl_student_subjects')->get();
 		$data['class'] = \DB::table('tbl_classes')->select('class_name')->distinct()->get()->pluck('class_name', 'class_name');
-		$data['class']->prepend('Select Class', '');
+		$data['class']->prepend('Select Divsion', '');
 		return view('admin.cmslinks.edit', compact('link', 'subjects', 'data'));
 	}
 
@@ -129,24 +129,22 @@ class ImportCMSLinksController extends Controller
 	public function filterRecord(Request $request, CmsLink $cmslink)
 	{
 		$rec = $cmslink->newQuery();
-       if(!empty($request->txtSerachClass=='all-class')){
-            $getResult = $rec->get();
-            if($request->txtSerachSubject && $request->txtSerachSubject!='all-subject'){
-                $getResult = $rec->where('subject', $request->txtSerachSubject)->get();
-            }          
-        }
-        else if($request->txtSerachClass && $request->txtSerachSubject == 'all-subject' ){
-            $getResult = $rec->where('class', $request->txtSerachClass)->get();
-        }
-        else if(!empty($request->txtSerachClass) &&($request->txtSerachClass!='all-class')){
-            $getResult = $rec->where('class', $request->txtSerachClass)->get();
-            if(!empty($request->txtSerachSubject && $request->txtSerachSubject != 'all-subject' )){
-                $getResult = $rec->where('subject', $request->txtSerachSubject)->get();
-            }
-            if(!empty($request->txtSerachSubject && $request->txtSerachSubject == 'all-subject' )){
-                $getResult = $rec->where('class', $request->txtSerachSubject)->get();
-            }
-        }
+		if (!empty($request->txtSerachClass == 'all-class')) {
+			$getResult = $rec->get();
+			if ($request->txtSerachSubject && $request->txtSerachSubject != 'all-subject') {
+				$getResult = $rec->where('subject', $request->txtSerachSubject)->get();
+			}
+		} else if ($request->txtSerachClass && $request->txtSerachSubject == 'all-subject') {
+			$getResult = $rec->where('class', $request->txtSerachClass)->get();
+		} else if (!empty($request->txtSerachClass) && ($request->txtSerachClass != 'all-class')) {
+			$getResult = $rec->where('class', $request->txtSerachClass)->get();
+			if (!empty($request->txtSerachSubject && $request->txtSerachSubject != 'all-subject')) {
+				$getResult = $rec->where('subject', $request->txtSerachSubject)->get();
+			}
+			if (!empty($request->txtSerachSubject && $request->txtSerachSubject == 'all-subject')) {
+				$getResult = $rec->where('class', $request->txtSerachSubject)->get();
+			}
+		}
 
 		return view('admin.cmslinks.filter-record', compact('getResult'));
 	}
@@ -209,8 +207,10 @@ class ImportCMSLinksController extends Controller
 					$class = \DB::table('tbl_classes')->select('class_name')->where('class_name', $reader["class"])->get();
 					$subjects = \DB::table('tbl_student_subjects')->where('subject_name', $reader["subject"])->get();
 
-					if(!isset($reader["class"]) || !isset($reader["subject"]) || !isset($reader["topic"]) || !isset($reader["link"])
-					|| !isset($reader["youtube"]) || !isset($reader["khan_academy"]) || !isset($reader["others"]) || !isset($reader["assignment"]) ){
+					if (
+						!isset($reader["class"]) || !isset($reader["subject"]) || !isset($reader["topic"]) || !isset($reader["link"])
+						|| !isset($reader["youtube"]) || !isset($reader["khan_academy"]) || !isset($reader["others"]) || !isset($reader["assignment"])
+					) {
 						return back()->with('error', 'Header Mismatch at row: ' . $i);
 					}
 
