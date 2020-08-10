@@ -654,11 +654,7 @@ $cls = 0;
                 </button>
             </div>
             <div class="modal-body pt-4">
-
-
                 <div class="form-group row">
-
-
                 </div>
                 <input type="hidden" id="row_id" value="">
                 <input type="hidden" id="new_assignment" value="">
@@ -666,47 +662,46 @@ $cls = 0;
                 <input type="hidden" id="ass_class_id" value="">
                 <input type="hidden" id="ass_subject_id" value="">
                 <input type="hidden" id="ass_teacher_id" value="">
-
-
-                <div class="form-group row">
-                    <label for="inputJoinlive" class="col-md-4 col-form-label text-md-right">Select Topic :</label>
-                    <div class="col-md-6">
-                        <select name="sel_topic" id="sel_topic" class="form-control">
-                            <option value="">Select Topic</option>
-                        </select>
+                <div class="row">
+                    <div class="form-group col-md-5">
+                        <input checked type="radio" id="t1radio" name="asgradio">
+                        <label for="t1radio" class="col-form-label text-md-left">Select Topic :</label>
+                        <div>
+                            <select name="sel_topic" id="sel_topic" class="form-control asg1">
+                                <option value="">Select Topic</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label for="inputJoinlive" class="col-md-4 col-form-label text-md-right">OR Enter New Topic
-                        :</label>
-                    <div class="col-md-6">
-                        <input type="text" id="txt_topin_name" class="form-control" placeholder="Topic Name" />
-
+                    <div class="col-md-2 text-center">
+                        OR
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="inputAddquiz" class="col-md-4 col-form-label text-md-right"> Assignment Title
-                        :</label>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="txt_aTitle" id="txt_aTitle" placeholder="Assigment Title">
-
+                    <div class="form-group col-md-5">
+                        <input type="radio" id="t2radio" name="asgradio">
+                        <label for="t2radio" class="col-form-label text-md-left">Enter New Topic
+                            :</label>
+                        <div>
+                            <input disabled type="text" id="txt_topin_name" class="form-control asg2" placeholder="Topic Name" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="txt_aTitle" class="col-form-label text-md-left"> Assignment Title:</label>
+                        <div>
+                            <input type="text" class="form-control" name="txt_aTitle" id="txt_aTitle" placeholder="Assigment Title">
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-md-8 offset-md-4">
                         <button type="button" id="assignment_create" class="btn btn-primary px-4">Next</button>
-
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
+                <p style="font-size: smaller;color: red;text-align: center;">Note: Please allow popup for the assignment functionality.</p>
             </div>
         </div>
     </div>
 </div>
 <!-- ./New Assignment Modal -->
-
-<!-- View Assignment Modal -->
 <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -1570,5 +1565,32 @@ $cls = 0;
         });
     }
 </script>
-
+<script>
+    // $('#sel_topic').blur(function() {
+    //     if ($(this).val().length != 0) {
+    //         $('#txt_topin_name').attr('disabled', 'disabled');
+    //     }
+    // });
+    // $('#txt_topin_name').blur(function() {
+    //     if ($(this).val().length != 0) {
+    //         $('#sel_topic').attr('disabled', 'disabled');
+    //     }
+    // });
+</script>
+<script>
+    $(document).ready(function() {
+        $('input[id=t1radio]').on('click',
+            function() {
+                $('.asg1').prop("disabled", false);
+                $('.asg2').prop("disabled", true);
+                $('.asg2').prop("value", "");
+            });
+        $('input[id=t2radio]').on('click',
+            function() {
+                $('.asg2').prop("disabled", false);
+                $('.asg1').prop("disabled", true);
+                $('.asg1').prop("value", "");
+            });
+    });
+</script>
 @endsection
