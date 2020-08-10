@@ -438,7 +438,7 @@ $cls = 0;
                         @endforeach
                         @else
 
-                        <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
+                        <!-- <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
                                     <svg class="icon icon-4x mr-3">
                                         <use xlink:href="../images/icons.svg#icon_nodate"></use>
                                     </svg>
@@ -456,7 +456,7 @@ $cls = 0;
                                         }
                                         reload_timetable()
                                     </script>
-                                </div>
+                                </div> -->
                         @endif
                     </div>
 
