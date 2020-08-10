@@ -439,11 +439,24 @@ $cls = 0;
                         @else
 
                         <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
-                            <svg class="icon icon-4x mr-3">
-                                <use xlink:href="../images/icons.svg#icon_nodate"></use>
-                            </svg>
-                            No Record Found!
-                        </div>
+                                    <svg class="icon icon-4x mr-3">
+                                        <use xlink:href="../images/icons.svg#icon_nodate"></use>
+                                    </svg>
+                                    No Lectures found for {{ date("d/m/Y") }}.
+                                    <br><br>
+                                    <a href="{{ route('reload-timetable') }}" target="_blank">
+                                        Click here to reload updated timetable again.
+                                    </a>
+                                    <script>
+                                        function reload_timetable() {
+                                            fetch("{{ route('reload-timetable') }}")
+                                                .then(function (response) {
+                                                    location.reload();
+                                                })
+                                        }
+                                        reload_timetable()
+                                    </script>
+                                </div>
                         @endif
                     </div>
 
