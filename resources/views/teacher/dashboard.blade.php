@@ -642,7 +642,6 @@ $cls = 0;
             </div>
             <div class="modal-body pt-4">
 
-
                 <div class="form-group row">
 
 
@@ -687,6 +686,7 @@ $cls = 0;
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
+                <p style="font-size: smaller;color: red;text-align: center;">Note: Please allow popup for the assignment functionality.</p>
             </div>
         </div>
     </div>
