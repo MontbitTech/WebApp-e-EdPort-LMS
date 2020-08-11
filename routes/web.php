@@ -65,6 +65,9 @@ Route::group(['middleware' => 'adminsession'], function () {
     /* on going class */
     Route::get('admin/ongoingclass', 'OngoingClassController@index')->name('ongoing.index');
 
+    /* csv uploads */
+    Route::get('admin/csv-uploads', 'EventDetailController@index')->name('csvuploads.index');
+
     /*Support Help*/
 
     Route::get('/admin/support-help', 'HelpController@helpList')->name('admin.helplist');
