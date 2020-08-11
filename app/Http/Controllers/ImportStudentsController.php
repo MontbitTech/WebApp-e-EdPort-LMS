@@ -265,7 +265,7 @@ class ImportStudentsController extends Controller
         return view('admin.numbers.index', compact('classes', 'sections', 'students'));
     }
 
-     public function filterStudent (Request $request)
+    public function filterStudent (Request $request)
     {
         if(!empty($request->txtSerachClass=='all-class')){
             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id");
