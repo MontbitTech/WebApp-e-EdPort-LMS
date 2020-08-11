@@ -80,7 +80,7 @@ class CreateClassroomsJob implements ShouldQueue
         $response = $this->createGoogleClassroom($row['division'], $row['section'], $subjectName);
 
         if ( !$response['success'] )
-            return $response;
+            return failure_message($response['data']->message);
 
         return success_message(Classroom::createClassroom([
             'class_name'   => $row['division'],
