@@ -78,11 +78,8 @@ class StudentUtility
                         return failure_message('UNAUTHENTICATED');
                     } else {
                         Log::error($inv_resData['error']['message']);
-                        Log::error( $classroom->g_class_id);
                         return failure_message($inv_resData['error']['message'].' in :'. $classroom->studentSubject->subject_name);
                     }
-                } else {
-                    $inv_res_code = $inv_resData['id'];
                 }
             }
 

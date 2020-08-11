@@ -21,7 +21,11 @@ use App\Models\Student;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use App\Http\Helpers\CustomHelper;
+use App\Jobs\CreateStudentJob;
+use App\libraries\EventManager;
+use App\libraries\Utility\Utility;
 use Mail;
+use Session;
 
 
 class ImportStudentsController extends Controller
@@ -71,9 +75,7 @@ class ImportStudentsController extends Controller
                 foreach ( $obj_class as $row ) {
 
                     $g_class_id = $row->g_class_id;
-
-                    //	dd($g_class_id);
-
+                    
                     $inv_data = array(
                         "courseId" => $g_class_id,
                         "role"     => "STUDENT",
@@ -107,37 +109,17 @@ class ImportStudentsController extends Controller
                     $courseInvitation->save();
                 }
 
-                StudentUtility::createStudent([
+               $student = StudentUtility::createStudent([
                     'name'     => $request->fname,
                     'class_id' => $student[0],
                     'phone'    => $request->phone,
                     'email'    => $request->email,
                     'notify'   => $n,
                 ]);
-//                $student = new Student();
-//                $student->name = $request->name;
-//                $student->class_id = $student[0];
-//                $student->phone = $request->phone;
-//                $student->email = $request->email;
-//                $student->invitation_code = isset($inv_responce->id) ?? null;
-//                $student->save();
+
 //                \DB::insert('insert into tbl_students (name, class_id, phone, email, notify) values (?, ?, ?, ?, ?)', [$request->fname, $student[0], $request->phone, $request->email, $n]);
-
-                $class = encrypt($request->class);
-                $section = encrypt($request->section);
-
-                $timeTable_url = env('APP_URL') . "/timeTable/" . $class . "/" . $section . "";
-
-                $data_mail = array('name' => $request->fname, 'timetable_url' => $timeTable_url);
-                $email = $request->email;
-
-                Mail::send('mail.mail_timetable', $data_mail, function ($message) use ($email, $from) {
-                    $message->to($email);
-                    $message->subject('New Time Table');
-                    //$message->from('noreply@montbit.com','MontBIt');
-                    $message->from($from->value, 'MontBIt');
-                });
-
+                
+                StudentUtility::sendTimeTableToStudentEmail($request->class, $request->section, $student);
 
                 return redirect()->route('adminlist.students')->with('success', 'Added Successfully');
             } else {
@@ -338,14 +320,14 @@ class ImportStudentsController extends Controller
 
                 $file = $request->file('file');
                 $destinationPath = public_path('student-excels');
-
+                
                 $filename = $file->getClientOriginalName();
 
                 if ( file_exists($destinationPath . '/' . $filename) )
                     unlink($destinationPath . '/' . $filename);
 
                 $file->move($destinationPath, $filename);
-
+                
                 $path = $destinationPath . '/' . $filename;
 
                 $headerMissing = array();
@@ -353,15 +335,14 @@ class ImportStudentsController extends Controller
                 $i = 1;
                 $collection = ( new FastExcel )->import($path);
 
-
-                //
                 if ( !isset($collection[0]) ) {
                     return back()->with('error', Config::get('constants.WebMessageCode.104'));
                 }
                 $numbers = array();
-
+                
                 Log::info('Filename processing - ' . $filename);
                 foreach ( $collection as $key => $reader ) {
+                    
                     // $reader['name'] = trim($reader['name']);
                     if ( !isset($reader["class"]) || !isset($reader["name"]) || !isset($reader["phone"]) || !isset($reader["email"]) || !isset($reader["class"]) ) {
                         $error = "Header mismatch";
@@ -392,6 +373,7 @@ class ImportStudentsController extends Controller
                         $error = 'found';
                         $rows .= $i . ",";
                     } else {
+                        
                         $studentClassExist = \DB::select('select id from tbl_classes where class_name="' . $reader["class"] . '" and section_name="' . $reader["section"] . '"');
 
                         $obj_class = StudentClass::where('class_name', $reader["class"])->where('section_name', $reader["section"])->get();
@@ -410,74 +392,6 @@ class ImportStudentsController extends Controller
                                 $rows .= $i . ",";
                                 $error = "true";
                             } else {
-                                $token = CommonHelper::varify_Admintoken(); // verify admin token
-                                foreach ( $obj_class as $row ) {
-
-                                    $g_class_id = $row->g_class_id;
-                                    $inv_data = array(
-                                        "courseId" => $g_class_id,
-                                        "role"     => "STUDENT",
-                                        "userId"   => $reader["email"],
-                                    );
-                                    $inv_data = json_encode($inv_data);
-                                    $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // Invite Student
-                                    $inv_resData = array('error' => '');
-                                    if ( $inv_responce == 101 ) {
-                                        return back()->with('error', Config::get('constants.WebMessageCode.119'));
-                                    } else {
-                                        $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                                        if ( $inv_resData['error'] != '' ) {
-
-                                            if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
-                                                return redirect()->route('admin.logout');
-                                            } else {
-                                                //Log::error($inv_resData['error']['message']);
-                                                return back()->with('error', $inv_resData['error']['message']);
-                                            }
-                                        } else {
-                                            $inv_res_code = $inv_resData['id'];
-                                        }
-                                    }
-
-                                    $courseInvitation = new StudentCourseInvitation();
-                                    $courseInvitation->course_code = $g_class_id;
-                                    $courseInvitation->invitation_code = $inv_resData['id'];
-                                    $courseInvitation->student_email = $reader["email"];
-                                    $courseInvitation->save();
-
-                                }
-//                                $s = \DB::table('tbl_students')->insert([
-//                                    ['name' => $reader["name"], 'class_id' => $class_id, 'email' => $reader["email"], 'phone' => $reader["phone"], 'notify' => $reader["notify"]],
-//                                ]);
-                                $s = StudentUtility::createStudent([
-                                    'name'     => $reader["name"],
-                                    'class_id' => $class_id,
-                                    'phone'    => $reader["phone"],
-                                    'email'    => $reader["email"],
-                                    'notify'   => $reader["notify"],
-                                ]);
-
-                                $c = $reader["class"];
-                                $s = $reader["section"];
-
-                                $class = encrypt($c);
-                                $section = encrypt($s);
-
-                                $name = $reader["name"];
-                                $email = $reader["email"];
-
-                                $timeTable_url = env('APP_URL') . "/timeTable/" . $class . "/" . $section . "";
-
-                                $data_mail = array('name' => $name, 'timetable_url' => $timeTable_url);
-
-                                Mail::send('mail.mail_timetable', $data_mail, function ($message) use ($email, $from) {
-                                    $message->to($email);
-                                    $message->subject('New Time Table');
-                                    //$message->from('noreply@montbit.com','MontBIt');
-                                    $message->from($from->value, 'MontBIt');
-                                });
-
-
                                 Log::error(Config::get('constants.WebMessageCode.130') . " : ROW - " . $i);
                             }
                         } else {
@@ -488,13 +402,23 @@ class ImportStudentsController extends Controller
                     }
                     $i += 1;
                 }
+                $event = EventManager::createEvent([
+                    'event_name'=>'Student csv upload',
+                    'job_id'=>Utility::getNextJobId(),
+                    'payload'=>$collection,
+                ]);
+                dispatch(new CreateStudentJob($collection, encrypt(Session::get('access_token'))));
                 Log::info('File processing done ');
 
+                @unlink($path);
                 if ( $error == "" )
                     return back()->with('success', 'Student details uploaded successfully!!');
                 else
                     return back()->with('error', 'Student details processed, check log file, error in rows - ' . $rows);
             } catch ( \Exception $e ) {
+                if(file_exists($path)){
+                    @unlink($path);
+                }
                 if ( $error == "Header mismatch" ) {
                     return back()->with('error', 'CSV file Header/(1st line) mismatch!!, check the file format!!');
                 } else {
@@ -507,7 +431,7 @@ class ImportStudentsController extends Controller
         return view('admin.numbers.import', compact('student_class'));
     }
 
-    function deleteAllStudent (Request $request)
+    public function deleteAllStudent (Request $request)
     {
         $students = Student::with('class')->whereIn('id', explode(",", $request->ids))->get();
 

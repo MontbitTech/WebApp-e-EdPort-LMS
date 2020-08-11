@@ -10,10 +10,6 @@ class TestController extends Controller
 {
     public function test (Request $request)
     {
-       $class = ClassSection::firstOrCreate([
-            'class_name'   => 12,
-            'section_name' => 'C',
-        ]);
-        return \response()->json(['success' => 'true', 'message' => 'rest in peace bro...','data'=>$class]);
+        return \response()->json(['success' => 'true', 'message' => 'rest in peace bro...','data'=>null]);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Jobs;
 
-use App\Http\Helpers\CommonHelper;
 use App\Http\Helpers\CustomHelper;
 use App\libraries\Classroom;
 use App\libraries\Utility\RemoteRequest;

@@ -29,7 +29,7 @@ Route::get('/timeTable/{class}/{section}', 'GtestController@TestFilterTimetable'
 Route::get('/test_email_timetable', 'GtestController@send_email_timeTable');
 Route::get('/get_token', 'GtestController@get_token')->name('get_token');
 Route::get('/test', 'TestController@test');
-Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
 
 // ------ //
 
@@ -128,6 +128,8 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::post('filter-subject', 'ClassController@filterSubject')->name('filter-subject');
     Route::post('filter-student', 'ImportStudentsController@filterStudent')->name('filter-student');
     Route::post('/available/teacher', 'AvailabilityController@availableTeacherAndSubject');
+
+    Route::get('/admin/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 });
 
 /*  Teacher  */
