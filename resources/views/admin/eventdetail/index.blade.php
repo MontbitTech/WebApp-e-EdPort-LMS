@@ -27,7 +27,7 @@
                     </div>
                     <div class="card-body pt-3">
                         <div class="col-sm-12">
-                            <table id="eventdetail" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                            <table id="eventdetail" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 2, &quot;desc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                                 <thead>
                                     <tr class="text-center">
                                         <th width="20%">Event</th>
