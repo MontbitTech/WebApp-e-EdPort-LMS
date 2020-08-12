@@ -285,6 +285,7 @@ class ImportStudentsController extends Controller
 
     public function filterStudent (Request $request)
     {
+        
         if(($request->txtSerachClass) && ($request->txtSerachClass=='all-class')){
             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id");
             if($request->txtSerachSection && $request->txtSerachSection!='all-section'){
@@ -304,7 +305,8 @@ class ImportStudentsController extends Controller
             }
         }
         else
-            $getResult = $rec->get();
+            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id");
+
         return view('admin.numbers.filter-student', compact('getResult'));
     }
 
