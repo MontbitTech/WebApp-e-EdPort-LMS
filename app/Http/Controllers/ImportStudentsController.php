@@ -267,7 +267,7 @@ class ImportStudentsController extends Controller
 
     public function filterStudent (Request $request)
     {
-        if(!empty($request->txtSerachClass=='all-class')){
+        if(($request->txtSerachClass) && ($request->txtSerachClass=='all-class')){
             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id");
             if($request->txtSerachSection && $request->txtSerachSection!='all-section'){
                 $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
@@ -276,15 +276,17 @@ class ImportStudentsController extends Controller
         else if($request->txtSerachClass && $request->txtSerachSection == 'all-section'){
             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
         }
-        else if(!empty($request->txtSerachClass) &&($request->txtSerachClass!='all-class')){
+        else if(($request->txtSerachClass) &&($request->txtSerachClass!='all-class')){
             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
-            if(!empty($request->txtSerachSection && $request->txtSerachSection != 'all-section' )){
-                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
+            if(($request->txtSerachSection && $request->txtSerachSection != 'all-section' )){
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=? and c.class_name=?", [$request->txtSerachSection,$request->txtSerachClass]);
             }
-            if(!empty($request->txtSerachSection && $request->txtSerachSection == 'all-section' )){
-                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
+            if(($request->txtSerachSection) && ($request->txtSerachSection == 'all-section' )){
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
             }
         }
+        else
+            $getResult = $rec->get();
         return view('admin.numbers.filter-student', compact('getResult'));
     }
 
