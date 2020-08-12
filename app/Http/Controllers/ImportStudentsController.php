@@ -402,19 +402,20 @@ class ImportStudentsController extends Controller
                     }
                     $i += 1;
                 }
-                $event = EventManager::createEvent([
-                    'event_name'=>'Student csv upload',
-                    'job_id'=>Utility::getNextJobId(),
-                    'payload'=>$collection,
-                ]);
-                dispatch(new CreateStudentJob($collection, encrypt(Session::get('access_token'))));
                 Log::info('File processing done ');
 
                 @unlink($path);
                 if ( $error == "" )
+                {
+                    $event = EventManager::createEvent([
+                        'event_name'=>'Student csv upload',
+                        'job_id'=>Utility::getNextJobId(),
+                        'payload'=>$collection,
+                    ]);
+                    dispatch(new CreateStudentJob($collection, encrypt(Session::get('access_token'))));
                     return back()->with('success', 'Student details uploaded successfully!!');
-                else
-                    return back()->with('error', 'Student details processed, check log file, error in rows - ' . $rows);
+                }else
+                    return back()->with('error', 'Student details processed, check logs, error in rows - ' . $rows);
             } catch ( \Exception $e ) {
                 if(file_exists($path)){
                     @unlink($path);
