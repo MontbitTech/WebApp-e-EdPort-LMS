@@ -242,8 +242,12 @@ class ImportTimetableController extends Controller
                         $obj_inv->save();
 
                         // Update All Record in time table
-                        $obj = ClassTiming::where('subject_id', $cur_subject_id)->where('class_id', $cur_class_ID)->where('teacher_id', $cur_teacher_id)->update(['class_id' => $class_id, 'subject_id' => $subject_id]);
-
+                        // $obj = ClassTiming::where('subject_id', $cur_subject_id)->where('class_id', $cur_class_ID)->where('teacher_id', $cur_teacher_id)->update(['class_id' => $class_id, 'subject_id' => $subject_id]);
+                        $classTiming = ClassTiming::find($request->tid);
+                        $classTiming->class_id = $class_id;
+                        $classTiming->subject_id = $subject_id;
+                        $classTiming->save();
+                        
                         return back()->with('success', "TimeTable updated successfully..");
                     }
                 }
