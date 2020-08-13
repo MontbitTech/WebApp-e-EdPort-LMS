@@ -4,6 +4,7 @@ namespace App\libraries;
 
 use App\Http\Helpers\CommonHelper;
 use App\Http\Helpers\CustomHelper;
+use App\libraries\Utility\RemoteRequest;
 use App\Models\ClassSection;
 use App\StudentClass;
 use App\StudentSubject;
@@ -96,6 +97,26 @@ class Classroom
             return $response;
         }
 
+        return $response;
+    }
+
+    public static function createClassInGoogleClassroom($token, $data)
+    {
+        $url = "https://classroom.googleapis.com/v1/courses";
+        $headers = array(
+            "Authorization: Bearer ".$token['access_token'],
+            "Content-Type: application/json",
+        );
+
+        $response = RemoteRequest::postJsonRequest($url, $headers, $data);
+
+        if (!$response['success'] && isset($response['data']->status)) {
+            if ($response['data']->status == 'UNAUTHENTICATED') {
+                $token = CustomHelper::get_refresh_token($token);
+                Log::info($response['data']->status);
+                $response = self::createClassInGoogleClassroom($token, $data); // access Google api craete Cource
+            }
+        }
         return $response;
     }
 }

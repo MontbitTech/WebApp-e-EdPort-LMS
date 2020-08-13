@@ -139,7 +139,6 @@ class ImportStudentsController extends Controller
     {
         set_time_limit(0);
         $id = decrypt($id);
-        $error = ['status'=>false,'message'=>''];
 
         if ( $request->isMethod('post') ) {
             $request->validate([
@@ -174,18 +173,12 @@ class ImportStudentsController extends Controller
 
             StudentUtility::removeStudentFromClassroom($student);
             
-            $token = CommonHelper::varify_Admintoken();
             $classrooms = StudentClass::where('class_name', $request->class)->where('section_name', $request->section)->get();
 
-            $response = StudentUtility::inviteStudentToClassroom($request->email,$token,$classrooms);
-            if(!$response['success']){
-                if($response['data'] == 'UNAUTHENTICATED')
-                    return redirect()->route('admin.logout');
-                
-                $error['status'] = true;
-                $error['message'] = $response['data'];
-            }
-
+            $response = StudentUtility::inviteStudentToClassroom($request->email, Session::get('access_token'), $classrooms);
+            if(!$response['success'])
+                return redirect()->route('adminlist.students')->with('error', $response['data']);
+            
             $student->email = $request->email;
             $student->phone = $request->phone;
             $student->notify = $n;
@@ -193,11 +186,8 @@ class ImportStudentsController extends Controller
             $student->refresh();
 
             StudentUtility::sendTimeTableToStudentEmail($request->class, $request->section, $student);
-
-            if($error['status'])
-                return redirect()->route('adminlist.students')->with('error', $error['message']);
-            else
-                return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.112'));
+            
+            return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.112'));
         }
 
         $student = \DB::select('select s.id, s.name, s.phone, s.email, s.notify, c.class_name, c.section_name from tbl_students s, tbl_classes c

@@ -16,6 +16,9 @@ use App\Http\Helpers\CustomHelper;
 use App\ClassTiming;
 use App\DateClass;
 use App\ClassWork;
+use App\Jobs\CreateTeacherJob;
+use App\libraries\EventManager;
+use App\libraries\Utility\Utility;
 
 class TeacherController extends Controller
 {
@@ -391,10 +394,6 @@ class TeacherController extends Controller
                         $TeacherEmailExist = Teacher::where('email', $reader["email"])->get()->first();
                         $TeacherPhoneExist = Teacher::where('phone', $reader['phone'])->get()->first();
 
-                        $name = $reader["name"];
-                        $email = $reader["email"];
-                        $phone = $reader["phone"];
-
                         if ( $TeacherExist ) {
                             Log::error('Teacher already register : ROW - ' . $i);
                             $errorString = 'Teacher already register : ROW - ' . $i;
@@ -410,91 +409,7 @@ class TeacherController extends Controller
                             $errorString = 'Teacher phone already exists : ROW - ' . $i;
                             $error = 'found';
                             $rows .= $i . ",";
-                        } else {
-                            $data = array(
-                                "name"          => array(
-                                    "familyName" => "Teacher",
-                                    "givenName"  => $name,
-                                    "fullName"   => $name, //.' '.$request->lname
-                                ),
-                                "password"      => 't#' . $phone,
-                                "primaryEmail"  => $email,
-                                "recoveryEmail" => $logged_admin_email,
-                            );
-                            $data = json_encode($data);
-
-                            $token = CommonHelper::varify_Admintoken(); // verify admin token
-
-                            $responce = CommonHelper::create_new_user($token, $data);  // access Google api craete user
-                            $resData = array('error' => '');
-
-
-                            if ( $responce == 101 ) {
-                                Log::error('Teacher not created in Gsuite : ROW - ' . $i . '.Something went wrong! Please Try again!');
-                                $errorString = 'Teacher not created in Gsuite : ROW - ' . $i . '.Something went wrong! Please Try again!';
-                                $error = 'found';
-                                $rows .= $i . ",";
-                                //return back()->with('error', );
-                            } else {
-                                $resData = array_merge($resData, json_decode($responce, true));
-                                Log::info($responce);
-
-                                if ( $resData['error'] ) {
-                                    Log::error($resData['error']['message'] . " Something went wrong with : ROW - " . $i);
-                                    $errorString = $resData['error']['message'] . " Something went wrong with : ROW - " . $i;
-                                    $error = 'found';
-                                    //return back()->with('error', $resData['error']['message']." Something went wrong with : ROW - " . $i );
-                                    if ( $resData['error']['message'] == 'Invalid Credentials') {
-                                        Log::error($resData['error']['message']);
-                                        return redirect()->route('admin.logout');
-                                    } else {
-                                        return redirect()->route('admin.dashboard')->with('error', $resData['error']['message']);
-                                    }
-                                }
-
-
-
-                                if ( $resData['error'] ) {
-                                    Log::error($resData['error']['message'] . " Something went wrong with : ROW - " . $i);
-                                    $errorString = $resData['error']['message'] . " Something went wrong with : ROW - " . $i;
-                                    $error = 'found';
-                                    //return back()->with('error', $resData['error']['message']." Something went wrong with : ROW - " . $i );
-                                    if ( $resData['error']['message'] == 'Invalid Credentials' ) {
-                                        return redirect()->route('admin.logout');
-                                    } else {
-                                        return redirect()->route('admin.dashboard')->with('error', $resData['error']['message']);
-                                    }
-                                } else {
-                                    $teacher = new Teacher;
-                                    $teacher->name = $name;
-                                    //$teacher->last_name = $request->lname;
-                                    $teacher->email = $email;
-                                    $teacher->phone = $phone;
-                                    $teacher->g_user_id = $resData['id'];
-                                    $teacher->g_customer_id = $resData['customerId'];
-                                    $teacher->g_response = $responce;
-                                    // $teacher->password = Hash::make($request->pin);
-                                    $teacher->save();
-
-
-                                    if ( strlen($phone) <= 10 ) {
-                                        $number = '91' . $phone;
-                                    } else {
-                                        $number = $phone;
-                                    }
-
-                                    $message = "Your school created an account for you. Gmail ID: $email and  “t#” followed by phone number as password..";
-
-                                    $s = CommonHelper::send_sms($number, $message);
-
-
-                                    Log::error(Config::get('constants.WebMessageCode.100') . " : ROW - " . $i);
-                                    //return back()->with('success',Config::get('constants.WebMessageCode.100'));
-                                }
-                            }
-
-                            //	Log::error(Config::get('constants.WebMessageCode.130') ." : ROW - " . $i);
-                        }
+                        }  
                     }
                     $i += 1;
                 }
@@ -503,10 +418,16 @@ class TeacherController extends Controller
                 if ( $error == 'found' ) {
                     return back()->with('error', 'Teacher details processed, ' . $errorString . ', errors in rows - ' . $rows);
                 } else {
+                    $event = EventManager::createEvent([
+                        'event_name'    => 'Teacher csv upload',
+                        'job_id'        =>  Utility::getNextJobId(),
+                        'payload'       =>  $collection,
+                    ]);
+                    dispatch(new CreateTeacherJob($collection, encrypt(Session::get('access_token'))));
+
                     return back()->with('success', 'Teacher details processed successfully.');
                 }
             } catch ( \Exception $e ) {
-
                 if ( $error == "Header mismatch" ) {
                     return back()->with('error', 'CSV file Header/(1st line) mismatch!!, check the file format!!');
                 } else {

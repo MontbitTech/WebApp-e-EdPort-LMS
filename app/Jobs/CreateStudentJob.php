@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Http\Helpers\CustomHelper;
+use App\libraries\Utility\RemoteRequest;
 use App\libraries\Utility\StudentUtility;
 use App\Models\ClassSection;
 use App\StudentClass;
@@ -37,21 +39,22 @@ class CreateStudentJob implements ShouldQueue
      */
     public function handle()
     {
+        $rowCount = 1;
         foreach($this->data as $row){
-            $response = $this->createStudents($row);
+            $response = $this->createStudent($row, $rowCount);
             if(!$response['success'])
                 Log::error($response['data']);
+            $rowCount++;
         }
     }
 
-    public function createStudents($row)
+    public function createStudent($row, $rowCount)
     {
         $classrooms = StudentClass::where('class_name', $row["class"])->where('section_name', $row["section"])->get();
 
-        $response = StudentUtility::inviteStudentToClassroom($row["email"], $this->token['access_token'], $classrooms);
+        $response = StudentUtility::inviteStudentToClassroom($row["email"], $this->token, $classrooms);
         if(!$response['success']){
-            if($response['data'] == 'UNAUTHENTICATED')
-                return failure_message('UNAUTHENTICATED');
+            return failure_message($response['data']->message.'at row : '.$rowCount);
         }
 
         $student = StudentUtility::createStudent([

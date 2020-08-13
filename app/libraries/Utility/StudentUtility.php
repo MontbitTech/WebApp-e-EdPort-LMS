@@ -52,40 +52,28 @@ class StudentUtility
         $studentClasses = StudentClass::where('class_name', $student->class_name)->where('section_name', $student->section_name)->get();
         
         foreach ( $studentClasses as $studentClass ) {
-            $inv_responce = CommonHelper::student_course_delete($token, $student->email, $studentClass->g_class_id);
+            $invitationResponce = CommonHelper::student_course_delete($token, $student->email, $studentClass->g_class_id);
         }
     }
 
     public static function inviteStudentToClassroom($studentEmail, $token, $classrooms)
     {
         foreach ( $classrooms as $classroom ) {
-            $inv_data = array(
+            $invitationData = array(
                 "courseId" => $classroom->g_class_id,
                 "role"     => "STUDENT",
                 "userId"   => $studentEmail,
 
             );
 
-            $inv_responce = CommonHelper::teacher_invitation_forClass($token, json_encode($inv_data)); // Invite Student
-            $inv_resData = array('error' => '');
-            if ( $inv_responce == 101 ) {
-                return failure_message(Config::get('constants.WebMessageCode.119'));
-            } else {
-                $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                if ( $inv_resData['error'] != '' ) {
-
-                    if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
-                        return failure_message('UNAUTHENTICATED');
-                    } else {
-                        Log::error($inv_resData['error']['message']);
-                        return failure_message($inv_resData['error']['message'].' in :'. $classroom->studentSubject->subject_name);
-                    }
-                }
-            }
-
+            $response = self::createStudentInGoogleClassroom($token, json_encode($invitationData)); // Invite Student
+        
+            if(!$response['success'])
+                return failure_message($response['data']->message.' in :'. $classroom->studentSubject->subject_name);
+            
             self::createStudentInvitation([
                 'course_code'=>$classroom->g_class_id,
-                'invitation_code'=> $inv_resData['id'],
+                'invitation_code'=> $response['data']->id,
                 'student_email'=>$studentEmail
             ]);
         }
@@ -96,9 +84,9 @@ class StudentUtility
     public static function sendTimeTableToStudentEmail($class, $section, $student)
     {
         $from = CustomHelper::getFromMail();
-        $timeTable_url = env('APP_URL') . "/timeTable/" . encrypt($class) . "/" . encrypt($section) . "";
+        $timeTableUrl = env('APP_URL') . "/timeTable/" . encrypt($class) . "/" . encrypt($section) . "";
 
-        $data_mail = array('name' => $student->name, 'timetable_url' => $timeTable_url);
+        $data_mail = array('name' => $student->name, 'timetable_url' => $timeTableUrl);
         $email = $student->email;
 
         Mail::send('mail.mail_timetable', $data_mail, function ($message) use ($email, $from) {
@@ -108,4 +96,23 @@ class StudentUtility
         });
     }
 
+    public static function createStudentInGoogleClassroom($token, $data)
+    {
+        $url = "https://classroom.googleapis.com/v1/invitations";
+        $headers = array(
+            "Authorization: Bearer ".$token['access_token'],
+            "Content-Type: application/json",
+        );
+
+        $response = RemoteRequest::postJsonRequest($url, $headers, $data);
+
+        if (!$response['success'] && isset($response['data']->status)) {
+            if ($response['data']->status == 'UNAUTHENTICATED') {
+                $token = CustomHelper::get_refresh_token($token);
+                Log::info($response['data']->status);
+                $response = self::createStudentInGoogleClassroom($token, $data); // access Google api craete Cource
+            }
+        }
+        return $response;
+    }
 }
