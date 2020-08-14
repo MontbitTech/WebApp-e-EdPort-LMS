@@ -481,7 +481,7 @@ class CommonHelper
 
         if(isset(json_decode($response)->error) && isset(json_decode($response)->error->status)){
             if(json_decode($response)->error->status == 'UNAUTHENTICATED'){
-                $token = CustomHelper::get_refresh_token();
+                $token = CustomHelper::get_refresh_teacher_token();
 
                 $response =  CommonHelper::create_courcework($token['access_token'], $g_class_id, $data);
             }

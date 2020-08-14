@@ -164,18 +164,6 @@ class ClassWorkController extends Controller
 
                 if ( $resData['error'] != '' ) {
                     if ( $resData['error']['status'] == 'UNAUTHENTICATED' ) {
-                        Log::error($resData['error']['status']);
-                        CustomHelper::get_refresh_token();
-                        $token = CommonHelper::varify_Admintoken(); // verify admin token
-
-                        $responce = CommonHelper::create_topic($token, $g_class_id, $data); // access Google api craete Topic
-                        $resData = array('error' => '');
-                        $resData = array_merge($resData, json_decode($responce, true));
-                    }
-                }
-
-                if ( $resData['error'] != '' ) {
-                    if ( $resData['error']['status'] == 'UNAUTHENTICATED' ) {
                         return redirect()->route('teacher.logout');
                     } else {
                         return json_encode(array('status' => 'error', 'message' => $resData['error']['message']));
@@ -213,18 +201,6 @@ class ClassWorkController extends Controller
             return json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.119')));
         } else {
             $w_resData = array_merge($w_resData, json_decode($work_response, true));
-
-            if ( $w_resData['error'] != '' ) {
-                if ( $w_resData['error']['status'] == 'UNAUTHENTICATED' ) {
-                    Log::error($w_resData['error']['status']);
-                    CustomHelper::get_refresh_token();
-                    $token = CommonHelper::varify_Admintoken(); // verify admin token
-
-                    $work_response = CommonHelper::create_courcework($token, $g_class_id, $array_data);
-                    $w_resData = array('error' => '');
-                    $w_resData = array_merge($w_resData, json_decode($work_response, true));
-                }
-            }
 
             if ( $w_resData['error'] != '' ) {
 
