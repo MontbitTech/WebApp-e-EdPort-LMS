@@ -539,7 +539,7 @@ class CommonHelper
 
         if (!$response['success'] && isset($response['data']->status)) {
             if ($response['data']->status == 'UNAUTHENTICATED') {
-                $token = CustomHelper::get_refresh_token();
+                $token = CustomHelper::get_refresh_teacher_token();
 
                 $response = CommonHelper::createAnnouncement($token['access_token'], $classId, $data); // access Google api craete Cource
             }
