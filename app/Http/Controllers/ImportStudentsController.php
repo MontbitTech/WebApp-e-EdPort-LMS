@@ -360,6 +360,8 @@ class ImportStudentsController extends Controller
 
                 //
                 if ( !isset($collection[0]) ) {
+                    if ( file_exists($path) )
+                        @unlink($path);
                     return back()->with('error', Config::get('constants.WebMessageCode.104'));
                 }
                 $numbers = array();
@@ -425,18 +427,23 @@ class ImportStudentsController extends Controller
                                     );
                                     $inv_data = json_encode($inv_data);
                                     $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // Invite Student
+                                    
                                     $inv_resData = array('error' => '');
                                     if ( $inv_responce == 101 ) {
+                                        if ( file_exists($path) )
+                                            @unlink($path);
                                         return back()->with('error', Config::get('constants.WebMessageCode.119'));
                                     } else {
                                         $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
                                         if ( $inv_resData['error'] != '' ) {
-
                                             if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                                                if ( file_exists($path) )
+                                                    @unlink($path);
                                                 return redirect()->route('admin.logout');
                                             } else {
-                                                //Log::error($inv_resData['error']['message']);
-                                                return back()->with('error', $inv_resData['error']['message']);
+                                                if ( file_exists($path) )
+                                                    @unlink($path);
+                                                return back()->with('error', $inv_resData['error']['message'] . " at row : ".$i);
                                             }
                                         } else {
                                             $inv_res_code = $inv_resData['id'];
@@ -493,19 +500,24 @@ class ImportStudentsController extends Controller
                     $i += 1;
                 }
                 Log::info('File processing done ');
-
+                if ( file_exists($path) )
+                        @unlink($path);
                 if ( $error == "" )
                     return back()->with('success', 'Student details uploaded successfully!!');
                 else
                     return back()->with('error', 'Student details processed, check log file, error in rows - ' . $rows);
             } catch ( \Exception $e ) {
+                if ( file_exists($path) )
+                        @unlink($path);
                 if ( $error == "Header mismatch" ) {
                     return back()->with('error', 'CSV file Header/(1st line) mismatch!!, check the file format!!');
                 } else {
+                    dd($e);
                     return back()->with('error', Config::get('constants.WebMessageCode.136'));
                 }
             }
-            @unlink($path);
+            if ( file_exists($path) )
+                @unlink($path);
         }
 
         return view('admin.numbers.import', compact('student_class'));
