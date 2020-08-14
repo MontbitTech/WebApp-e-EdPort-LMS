@@ -514,7 +514,6 @@ class ImportStudentsController extends Controller
                 if ( $error == "Header mismatch" ) {
                     return back()->with('error', 'CSV file Header/(1st line) mismatch!!, check the file format!!');
                 } else {
-                    dd($e);
                     return back()->with('error', Config::get('constants.WebMessageCode.136'));
                 }
             }
