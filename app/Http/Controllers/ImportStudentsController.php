@@ -439,10 +439,12 @@ class ImportStudentsController extends Controller
                                             if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
                                                 if ( file_exists($path) )
                                                     @unlink($path);
+                                                Log::error($inv_resData);
                                                 return redirect()->route('admin.logout');
                                             } else {
                                                 if ( file_exists($path) )
                                                     @unlink($path);
+                                                Log::error($inv_resData);
                                                 return back()->with('error', $inv_resData['error']['message'] . " at row : ".$i);
                                             }
                                         } else {
