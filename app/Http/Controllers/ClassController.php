@@ -106,6 +106,11 @@ class ClassController extends Controller
                 return redirect()->route('classes.add')->with('error', $errorMsg . "subjects Already Exists !.");
             }
 
+            $class = ClassSection::firstOrCreate([
+                'class_name'   => $request->class_name,
+                'section_name' => $request->section,
+            ]);
+            
             $successMessage = 'Classes with ';
             foreach ($subjects as $subject) {
 
