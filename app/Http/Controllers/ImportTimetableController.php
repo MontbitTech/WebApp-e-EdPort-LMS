@@ -689,19 +689,18 @@ class ImportTimetableController extends Controller
                     }
                 }
                 Log::info('File processing done ');
+                if(file_exists($path))
+                    @unlink($path);
                 if ($error == "found")
                     return back()->with('error', 'Import time table processed, check log file, errors in rows - ' . $period_name);
                 else
                     return back()->with('success', Config::get('constants.WebMessageCode.122'));
             } catch (\Exception $e) {
-                //dd($e);
+                if(file_exists($path))
+                    @unlink($path);
                 return back()->with('error', $e->getMessage() . '  check log file, errors in rows - ' . $period_name);
             }
             @unlink($path);
-
-            //return redirect()->route('list.timetable')->with('success',Config::get('constants.WebMessageCode.122'));
-
-
         }
 
         return view('admin.timetable.import');
