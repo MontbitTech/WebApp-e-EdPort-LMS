@@ -119,4 +119,23 @@ class Classroom
         }
         return $response;
     }
+
+    public static function listGoogleClassrooms($token)
+    {
+        $url = "https://classroom.googleapis.com/v1/courses";
+        $headers = array(
+            "Authorization: Bearer ".$token['access_token'],
+        );
+
+        $response = RemoteRequest::getJsonRequest($url, $headers);
+
+        if (!$response['success'] && isset($response['data']->status)) {
+            if ($response['data']->status == 'UNAUTHENTICATED') {
+                $token = CustomHelper::get_refresh_token($token);
+                Log::info($response['data']->status);
+                $response = self::listGoogleClassrooms($token); // access Google api craete Cource
+            }
+        }
+        return $response;
+    }
 }

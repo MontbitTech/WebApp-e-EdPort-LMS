@@ -130,6 +130,8 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::post('/available/teacher', 'AvailabilityController@availableTeacherAndSubject');
 
     Route::get('/admin/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+    Route::get('/deleteAllClassrooms','TestController@deleteAllClassroomsFromGoogle');
 });
 
 /*  Teacher  */
