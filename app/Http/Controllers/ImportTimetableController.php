@@ -19,6 +19,7 @@ use PDF;
 use DB;
 use Log;
 use App\DateClass;
+use App\libraries\Utility\DateUtility;
 
 class ImportTimetableController extends Controller
 {
@@ -99,15 +100,15 @@ class ImportTimetableController extends Controller
 			} */ else {
                 $prve_g_code = '';
                 // Previous Teacher Data
-                $obj_prev_teacher = InvitationClass::where('class_id', $cur_class_ID)->where('subject_id', $cur_subject_id)->where('teacher_id', $teacher_id)->get()->first();
+                // $obj_prev_teacher = InvitationClass::where('class_id', $cur_class_ID)->where('subject_id', $cur_subject_id)->where('teacher_id', $teacher_id)->get()->first();
                 $token = CommonHelper::varify_Admintoken(); // verify admin token
-                if ($obj_prev_teacher) {
-                    $prve_g_code = $obj_prev_teacher->g_code;
+                // if ($obj_prev_teacher) {
+                //     $prve_g_code = $obj_prev_teacher->g_code;
 
-                    if ($prve_g_code != '') {
-                        $inv_delete = CommonHelper::teacher_invitation_delete($token, $prve_g_code); // cancel invitation
-                    }
-                }
+                //     if ($prve_g_code != '') {
+                //         $inv_delete = CommonHelper::teacher_invitation_delete($token, $prve_g_code); // cancel invitation
+                //     }
+                // }
                 /// Send SMS to Teacher for assigned new Class
                 if (strlen($phone) <= 10) {
                     $number = '91' . $phone;
@@ -160,8 +161,10 @@ class ImportTimetableController extends Controller
                         $obj_inv->save();
 
                         // Update All Record in time table
-                        $obj = ClassTiming::where('subject_id', $cur_subject_id)->where('class_id', $cur_class_ID)->where('teacher_id', $cur_teacher_id)->where('from_timing', $cur_from_timing)->update(['teacher_id' => $teacher_id]);
-
+                        // $obj = ClassTiming::where('subject_id', $cur_subject_id)->where('class_id', $cur_class_ID)->where('teacher_id', $cur_teacher_id)->where('from_timing', $cur_from_timing)->update(['teacher_id' => $teacher_id]);
+                        $classTiming = ClassTiming::find($request->tid);
+                        $classTiming->teacher_id = $teacher_id;
+                        $classTiming->save();
                         //$objD = DateClass::where('subject_id',$cur_subject_id)->where('class_id',$cur_class_ID)->where('teacher_id',$cur_teacher_id)->update(['teacher_id'=>$teacher_id]);    just now i commented
 
                         return back()->with('success', "TimeTable updated successfully..");
@@ -239,8 +242,12 @@ class ImportTimetableController extends Controller
                         $obj_inv->save();
 
                         // Update All Record in time table
-                        $obj = ClassTiming::where('subject_id', $cur_subject_id)->where('class_id', $cur_class_ID)->where('teacher_id', $cur_teacher_id)->update(['class_id' => $class_id, 'subject_id' => $subject_id]);
-
+                        // $obj = ClassTiming::where('subject_id', $cur_subject_id)->where('class_id', $cur_class_ID)->where('teacher_id', $cur_teacher_id)->update(['class_id' => $class_id, 'subject_id' => $subject_id]);
+                        $classTiming = ClassTiming::find($request->tid);
+                        $classTiming->class_id = $class_id;
+                        $classTiming->subject_id = $subject_id;
+                        $classTiming->save();
+                        
                         return back()->with('success', "TimeTable updated successfully..");
                     }
                 }
@@ -833,8 +840,8 @@ class ImportTimetableController extends Controller
                     if ($i == 1) {
                         $ef = '<br><a href="javascript:void(0)" id="delete-timetable" data-id=' . $d->id . '>' . 'Delete </a>';
 
-                        $html .= "<tr class='$x'><td><strong>Period $p</strong></td><td>" . date('H:i', strtotime($d->from_timing)) . "-" . date('H:i', strtotime($d->to_timing)) . "</td>";
-                        $htmla .= "<tr class='$x'><td>Period $p" . $ef . "</td><td style='width:100px;'>" . date('H:i', strtotime($d->from_timing)) . "-" . date('H:i', strtotime($d->to_timing)) . "</td>";
+                        $html .= "<tr class='$x'><td><strong>Period $p</strong></td><td>" . date('h:i a', strtotime($d->from_timing)) . "-" . date('h:i a', strtotime($d->to_timing)) . "</td>";
+                        $htmla .= "<tr class='$x'><td>Period $p" . $ef . "</td><td style='width:100px;'>" . date('h:i a', strtotime($d->from_timing)) . "-" . date('h:i a', strtotime($d->to_timing)) . "</td>";
                     }
 
                     if (empty($d->g_meet_url))
@@ -993,14 +1000,26 @@ class ImportTimetableController extends Controller
             $today = date("Y-m-d");
 
 
-            $TimeTableExist = ClassTiming::where('class_id', $class_id)->where('teacher_id', $teacher_id)->where('subject_id', $subject_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
+            $TimeTableExist = ClassTiming::where('class_id', $class_id)
+            ->where('teacher_id', $teacher_id)
+            ->where('subject_id', $subject_id)
+            ->where('class_day', $class_day)
+            ->where('from_timing', '<=', DateUtility::getPastTime(1, $to_time))
+            ->where('to_timing', '>=', DateUtility::getFutureTime(1, $from_time))
+            ->get()->first();
 
             $classTimingExist = ClassTiming::where('class_id', $class_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
 
             $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
 
 
-            $dateClassExist = DateClass::where('class_id', $class_id)->where('teacher_id', $teacher_id)->where('subject_id', $subject_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
+            $dateClassExist = DateClass::where('class_id', $class_id)
+            ->where('teacher_id', $teacher_id)
+            ->where('subject_id', $subject_id)
+            ->where('class_date', $class_date)
+            ->where('from_timing', '<=', DateUtility::getPastTime(1, $to_time))
+            ->where('to_timing', '>=', DateUtility::getFutureTime(1, $from_time))
+            ->get()->first();
 
             $dateClassTimeExist = DateClass::where('class_id', $class_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
 

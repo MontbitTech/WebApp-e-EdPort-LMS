@@ -155,6 +155,9 @@ class ImportStudentsController extends Controller
 
     public function editStudent (Request $request, $id)
     {
+        set_time_limit(0);
+        $id = decrypt($id);
+        $error = ['status'=>false,'message'=>''];
 
         if ( $request->isMethod('post') ) {
             $request->validate([
@@ -182,13 +185,38 @@ class ImportStudentsController extends Controller
             if ( isset($request->phone) && !is_numeric($request->phone) && str_len($request->phone) != 10 )
                 return back()->with('error', Config::get('constants.WebMessageCode.133'));
 
-            $sid = decrypt($id);
-            $student = \DB::table('tbl_students')->where('id', $sid)->update(array('phone' => $request->phone, 'email' => $request->email, 'notify' => $n));
+            $student = Student::find($id);
+            
+            if(!$student)
+                return redirect()->route('adminlist.students')->with('error','Student does not exist');
 
-            return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.112'));
+            StudentUtility::removeStudentFromClassroom($student);
+            
+            $token = CommonHelper::varify_Admintoken();
+            $classrooms = StudentClass::where('class_name', $request->class)->where('section_name', $request->section)->get();
+
+            $response = StudentUtility::inviteStudentToClassroom($request->email,$token,$classrooms);
+            if(!$response['success']){
+                if($response['data'] == 'UNAUTHENTICATED')
+                    return redirect()->route('admin.logout');
+                
+                $error['status'] = true;
+                $error['message'] = $response['data'];
+            }
+
+            $student->email = $request->email;
+            $student->phone = $request->phone;
+            $student->notify = $n;
+            $student->save();
+            $student->refresh();
+
+            StudentUtility::sendTimeTableToStudentEmail($request->class, $request->section, $student);
+
+            if($error['status'])
+                return redirect()->route('adminlist.students')->with('error', $error['message']);
+            else
+                return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.112'));
         }
-
-        $id = decrypt($id);
 
         $student = \DB::select('select s.id, s.name, s.phone, s.email, s.notify, c.class_name, c.section_name from tbl_students s, tbl_classes c
 								where c.id = s.class_id and s.id=?', [$id]);
@@ -255,9 +283,10 @@ class ImportStudentsController extends Controller
         return view('admin.numbers.index', compact('classes', 'sections', 'students'));
     }
 
-     public function filterStudent (Request $request)
+    public function filterStudent (Request $request)
     {
-        if(!empty($request->txtSerachClass=='all-class')){
+        
+        if(($request->txtSerachClass) && ($request->txtSerachClass=='all-class')){
             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id");
             if($request->txtSerachSection && $request->txtSerachSection!='all-section'){
                 $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
@@ -266,15 +295,18 @@ class ImportStudentsController extends Controller
         else if($request->txtSerachClass && $request->txtSerachSection == 'all-section'){
             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
         }
-        else if(!empty($request->txtSerachClass) &&($request->txtSerachClass!='all-class')){
+        else if(($request->txtSerachClass) &&($request->txtSerachClass!='all-class')){
             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
-            if(!empty($request->txtSerachSection && $request->txtSerachSection != 'all-section' )){
-                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
+            if(($request->txtSerachSection && $request->txtSerachSection != 'all-section' )){
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=? and c.class_name=?", [$request->txtSerachSection,$request->txtSerachClass]);
             }
-            if(!empty($request->txtSerachSection && $request->txtSerachSection == 'all-section' )){
-                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
+            if(($request->txtSerachSection) && ($request->txtSerachSection == 'all-section' )){
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
             }
         }
+        else
+            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id");
+
         return view('admin.numbers.filter-student', compact('getResult'));
     }
 
@@ -290,7 +322,7 @@ class ImportStudentsController extends Controller
     public function importClassStudentNumber (Request $request)
     {
         $from = CustomHelper::getFromMail();
-
+        set_time_limit(0);
         $student_class = StudentClass::all();
         $error = "";
         $rows = "";
@@ -328,12 +360,15 @@ class ImportStudentsController extends Controller
 
                 //
                 if ( !isset($collection[0]) ) {
+                    if ( file_exists($path) )
+                        @unlink($path);
                     return back()->with('error', Config::get('constants.WebMessageCode.104'));
                 }
                 $numbers = array();
 
                 Log::info('Filename processing - ' . $filename);
                 foreach ( $collection as $key => $reader ) {
+                    // $reader['name'] = trim($reader['name']);
                     if ( !isset($reader["class"]) || !isset($reader["name"]) || !isset($reader["phone"]) || !isset($reader["email"]) || !isset($reader["class"]) ) {
                         $error = "Header mismatch";
                         Log::error('Header mismatch!!');
@@ -392,18 +427,25 @@ class ImportStudentsController extends Controller
                                     );
                                     $inv_data = json_encode($inv_data);
                                     $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // Invite Student
+                                    
                                     $inv_resData = array('error' => '');
                                     if ( $inv_responce == 101 ) {
+                                        if ( file_exists($path) )
+                                            @unlink($path);
                                         return back()->with('error', Config::get('constants.WebMessageCode.119'));
                                     } else {
                                         $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
                                         if ( $inv_resData['error'] != '' ) {
-
                                             if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                                                if ( file_exists($path) )
+                                                    @unlink($path);
+                                                Log::error($inv_resData);
                                                 return redirect()->route('admin.logout');
                                             } else {
-                                                //Log::error($inv_resData['error']['message']);
-                                                return back()->with('error', $inv_resData['error']['message']);
+                                                if ( file_exists($path) )
+                                                    @unlink($path);
+                                                Log::error($inv_resData);
+                                                return back()->with('error', $inv_resData['error']['message'] . " at row : ".$i);
                                             }
                                         } else {
                                             $inv_res_code = $inv_resData['id'];
@@ -460,30 +502,36 @@ class ImportStudentsController extends Controller
                     $i += 1;
                 }
                 Log::info('File processing done ');
-
+                if ( file_exists($path) )
+                        @unlink($path);
                 if ( $error == "" )
                     return back()->with('success', 'Student details uploaded successfully!!');
                 else
                     return back()->with('error', 'Student details processed, check log file, error in rows - ' . $rows);
             } catch ( \Exception $e ) {
+                if ( file_exists($path) )
+                        @unlink($path);
                 if ( $error == "Header mismatch" ) {
                     return back()->with('error', 'CSV file Header/(1st line) mismatch!!, check the file format!!');
                 } else {
                     return back()->with('error', Config::get('constants.WebMessageCode.136'));
                 }
             }
-            @unlink($path);
+            if ( file_exists($path) )
+                @unlink($path);
         }
 
         return view('admin.numbers.import', compact('student_class'));
     }
 
-    function deleteAllStudent (Request $request)
+    public function deleteAllStudent (Request $request)
     {
         $students = Student::with('class')->whereIn('id', explode(",", $request->ids))->get();
 
-        StudentUtility::removeStudentsFromClassroom($students);
-
+        foreach($students as $student){
+            StudentUtility::removeStudentFromClassroom($student);
+            $student->delete();
+        }
         return response()->json(['success' => "Deleted successfully."]);
     }
 }

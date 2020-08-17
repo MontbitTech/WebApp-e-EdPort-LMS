@@ -134,6 +134,14 @@ class TeacherLoginController extends Controller
             ->limit(20)
             ->get();
 
+             $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher_id)
+            ->where('class_date', '<', DateUtility::getFutureDate(7))
+            ->Where('class_date', '>', $currentDay)
+            ->orderBy('class_date', 'desc')
+            ->orderBy('from_timing', 'desc')
+            ->limit(20)
+            ->get();
+
         $inviteClassData = InvitationClass::with('studentClass', 'studentSubject')->where('teacher_id', $logged_teacher_id)->orderBy('id', 'DESC')->get();
 
 
@@ -141,7 +149,7 @@ class TeacherLoginController extends Controller
 
         $helpCategories = HelpTicketCategory::get();
 
-        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo'));
+        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo','futureClassData'));
     }
 
     public function logout (Request $request)

@@ -24,7 +24,7 @@ $timing=$ar["timing"];
                         <span class="topic-heading">Time Table</span>
                         <div class="float-right">
                             <a type="button" class="btn btn-sm btn-secondary" href="{{ route('admin.timetableimport') }}">
-                                <i class="fa fa-download mr-1" aria-hidden="true"></i>
+                                <i class="fas fa-file-import icon-4x mr-1"></i>
                                 Import Time Table
                             </a>
                         </div>
@@ -49,7 +49,7 @@ $timing=$ar["timing"];
                                     @csrf
                                     <button type="submit" id="submit" style="float:right;display:none;" class="btn btn-secondary btn-sm" onclick="return confirmDelete()"><i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete
                                     </button>
-                                    <span data-dtlist="#teacherlist" style="float:right;" class="mr-2">
+                                    <span data-dtlist="#teacher" style="float:right;" class="mr-2">
                                         <!--  <div class="spinner-border spinner-border-sm text-secondary" role="status"></div> -->
                                         <a href='' class="btn btn-secondary btn-sm" target='_blank' id='download' style='display:none;'><i class="fa fa-download mr-1 " aria-hidden="true"></i>Download/View</a>
                                     </span>
@@ -108,6 +108,12 @@ $timing=$ar["timing"];
                                     </thead>
                                 </table>
                             </div>
+                    <div class="classes-box min-height-auto py-6 p-6 text-secondary text-center" id="no-timetable" style="display:none">
+                    <svg class="icon icon-4x mr-3" >
+                        <use xlink:href="../images/icons.svg#icon_nodate"></use>
+                    </svg>
+                    No time table available for the selected class
+                </div>
                         </div>
                     </div>
                 </div>
@@ -258,6 +264,7 @@ $timing=$ar["timing"];
         var dl = document.getElementById("download");
         var tt = document.getElementById("timetable");
         var del = document.getElementById("submit");
+        var norecord = document.getElementById("no-timetable");
         var url = "{{ route('list.filtertimetable') }}";
 
         if (cl.value == "") {
@@ -282,16 +289,19 @@ $timing=$ar["timing"];
                 cache: false,
                 processData:false, */
                 success: function(data) {
-                    dl.style.display = "none";
+                    dl.style.display  = "none";
                     del.style.display = "none";
+                    norecord.style.display = "block";
                     tt.innerHTML = data["html"];
                     if (data["data"]) {
                         dl.href = "{{ url('/dl-timetable') }}" + "/" + cl.value + "_" + sl
                             .value + "_timetable.pdf";
                         dl.style.display = "block";
                         del.style.display = "block";
+                        norecord.style.display = "none";
                     }
                 }
+
             });
         }
     }

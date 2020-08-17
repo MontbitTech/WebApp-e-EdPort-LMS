@@ -38,13 +38,13 @@ class TeacherController extends Controller
      */
     public function addTeacher (Request $request)
     {
-
         $logged_admin = Session::get('admin_session');
         $logged_admin_email = $logged_admin['admin_email'];
 
         $domain = CustomHelper::getDomain();
 
         if ( $request->isMethod('post') ) {
+           
             $request->validate([
                 'fname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
                 // 'lname' => 'required|max:100|alpha_num',
@@ -56,7 +56,12 @@ class TeacherController extends Controller
                 //'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
 
             ]);
-
+            
+            if ( Teacher::count() >= env('TEACHER_UPPERCAP') ) {
+                return back()->with('error','Maximum limit of ' . env('TEACHER_UPPERCAP') . 'teacher reached.
+                        Contact administrator for extending limit');
+            }
+            
             $data = array("name"          => array(
                 "familyName" => "Teacher",//$request->fname,
                 "givenName"  => $request->fname,
@@ -134,12 +139,20 @@ class TeacherController extends Controller
                 // 'lname' => 'required|max:100|alpha_num',
                 'email'      => 'required|email|ends_with:' . $domain->value . '|max:100|unique:tbl_techers,email,' . $id,
                 'phone'      => 'required|numeric|digits:10',
-                'g_meet_url' => "required|url|unique:tbl_techers",
             ], [
                 'fname.regex' => 'The name must be letters.',
                 //'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
 
             ]);
+
+            $teacher = Teacher::find($id);
+
+            if($request->g_meet_url != $teacher->g_meet_url)
+            {
+                $this->validate($request, [          
+                     'g_meet_url' => "url|unique:tbl_techers",
+                ]);
+            }
 
             $TeacherExist = Teacher::where('email', $request->email)->where('id', $id)->get()->first();
             if ( $TeacherExist ) {
@@ -429,6 +442,23 @@ class TeacherController extends Controller
                                 //return back()->with('error', );
                             } else {
                                 $resData = array_merge($resData, json_decode($responce, true));
+                                Log::info($responce);
+
+                                if ( $resData['error'] ) {
+                                    Log::error($resData['error']['message'] . " Something went wrong with : ROW - " . $i);
+                                    $errorString = $resData['error']['message'] . " Something went wrong with : ROW - " . $i;
+                                    $error = 'found';
+                                    //return back()->with('error', $resData['error']['message']." Something went wrong with : ROW - " . $i );
+                                    if ( $resData['error']['message'] == 'Invalid Credentials') {
+                                        Log::error($resData['error']['message']);
+                                        return redirect()->route('admin.logout');
+                                    } else {
+                                        return redirect()->route('admin.dashboard')->with('error', $resData['error']['message']);
+                                    }
+                                }
+
+
+
                                 if ( $resData['error'] ) {
                                     Log::error($resData['error']['message'] . " Something went wrong with : ROW - " . $i);
                                     $errorString = $resData['error']['message'] . " Something went wrong with : ROW - " . $i;

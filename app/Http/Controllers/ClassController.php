@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 
 //use Auth;
 use Illuminate\Support\Facades\Log;
+use Session;
 use Validator;
 use App\Http\Helpers\CommonHelper;
 use App\StudentClass;
@@ -22,7 +23,12 @@ use App\ClassTiming;
 use App\InvitationClass;
 use App\DateClass;
 use App\ClassWork;
+use App\Jobs\CreateClassroomsJob;
+use App\libraries\EventManager;
+use App\libraries\Utility\DateUtility;
+use App\libraries\Utility\Utility;
 use App\Models\ClassSection;
+use Illuminate\Console\Scheduling\Event;
 
 class ClassController extends Controller
 {
@@ -72,6 +78,8 @@ class ClassController extends Controller
                 $getResult = $rec->where('class_name', $request->txtSerachBySection)->get();
             }
         }
+         else
+            $getResult = $rec->get();
 
         return view('admin.class.filter-subject', compact('getResult'));
     }
@@ -98,6 +106,11 @@ class ClassController extends Controller
                 return redirect()->route('classes.add')->with('error', $errorMsg . "subjects Already Exists !.");
             }
 
+            $class = ClassSection::firstOrCreate([
+                'class_name'   => $request->class_name,
+                'section_name' => $request->section,
+            ]);
+            
             $successMessage = 'Classes with ';
             foreach ($subjects as $subject) {
 
@@ -116,17 +129,6 @@ class ClassController extends Controller
                 $token = CommonHelper::varify_Admintoken(); // verify admin token
 
                 $response = CommonHelper::create_class($token, $data); // access Google api craete Cource
-
-                if (!$response['success']) {
-                    if ($response['data']->status == 'UNAUTHENTICATED') {
-                        Log::error($response['data']->message);
-                        CustomHelper::get_refresh_token();
-                        $token = CommonHelper::varify_Admintoken(); // verify admin token
-
-                        $response = CommonHelper::create_class($token, $data); // access Google api craete Cource
-                        //                        return redirect()->route('admin.logout');
-                    }
-                }
 
                 if (!$response['success']) {
                     if ($response['data']->status == 'UNAUTHENTICATED') {
@@ -211,6 +213,7 @@ class ClassController extends Controller
 
     public function importClassroom (FileRequestValidation $request)
     {
+        $time = DateUtility::getDateTime();
         set_time_limit(0);
         $rows = ' ';
         $error = false;
@@ -222,32 +225,49 @@ class ClassController extends Controller
 
         $collection = FileUpload::uploadFile(public_path('classroom'), $request->file('file'));
         if ( !$collection['success'] )
-            return back()->with('error', $collection['message']);
+            return back()->with('error', $collection['data']);
 
         $rowCount = 1;
+
         foreach ( $collection['data'] as $row ) {
             if ( !isset($row['division']) || !isset($row['section']) || !isset($row['subjects']) )
                 return back()->with('error', 'Header Mismatch at row: ' . $rowCount);
 
+            if($row['subjects'] == ''){
+                $error = true;
+                $rows = $rowCount . ' ';
+                Log::error('subject is empty');
+                continue;
+            }
+
             $subjects = explode('|', $row['subjects']);
 
             foreach ( $subjects as $subject ) {
-                $response = Classroom::checkClassroomAndCreate($row, $subject);
+                $response = Classroom::validateClassroom($row, $subject);
 
                 if ( !$response['success'] ) {
-                    if($response['data'] == 'UNAUTHENTICATED')
-                        return redirect()->route('admin.logout');
                     Log::error($response['data']);
                     $error = true;
                     $rows = $rowCount . ' ';
                 }
             }
+
+            $rowCount++;
         }
 
-        unlink(public_path('classroom').'/'.$request->file('file')->getClientOriginalName());
+        if(file_exists(public_path('classroom').'/'.str_replace(' ', '_', $request->file('file')->getClientOriginalName())))
+            unlink(public_path('classroom').'/'.str_replace(' ', '_', $request->file('file')->getClientOriginalName()));
         if ( $error )
-            return back()->with('error', 'Teacher details processed, Please check logs for detailed error, errors in rows - ' . $rows);
+            return back()->with('error', 'Classroom details processed, Please check logs for detailed error, errors in rows - ' . $rows);
 
-        return back()->with('success', 'Classroom details processed successfully.');
+        Log::info('No error found');
+        EventManager::createEvent([
+            'event_name'=>'classroom csv upload',
+            'job_id'=>Utility::getNextJobId(),
+            'payload'=>$collection['data'],
+        ]);
+        dispatch(new CreateClassroomsJob($collection['data'], encrypt(Session::get('access_token'))));
+
+        return back()->with('success', 'Classroom details processed successfully. Please wait while your classsrooms are uploading.');
     }
 }

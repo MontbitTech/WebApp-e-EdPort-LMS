@@ -21,6 +21,10 @@ $cls = 0;
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assigned
                             Class</a>
                     </li>
+                    <!-- <li class="nav-item mb-1">
+                        <a class="nav-link shadow-sm" data-toggle="tab" href="#upcomingclasses" role="tab">Future
+                            Classes</a>
+                    </li> -->
                     <li class="nav-item mb-1 ml-md-auto">
                         <a class="nav-link shadow-sm mr-0" data-toggle="modal" href="#addClassModal" role="modal">
                             <svg class="icon mr-1">
@@ -72,7 +76,7 @@ $cls = 0;
                                     <div class="d-flex align-items-center col-md-4">
                                         <div class="cls-date font-weight-bold">{{ $todaysDate }}</div>
                                         <div class="cls-from pt-1">
-                                            {{ date('G:i',strtotime($t->from_timing))}} to {{ date('G:i',strtotime($t->to_timing))}}</div>
+                                            {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                     </div>
                                     <div class="d-flex align-items-center justify-content-between col-md-8">
                                         <div class="font-weight-bold pt-1">
@@ -149,32 +153,49 @@ $cls = 0;
                                         ?>
                                         <!--new changes -->
                                         <div class="m-auto mt-2 pt-2" id="icon{{$t->id}}">
+                                            <div class="row">
 
-                                            <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
-                                                <!-- Edport Content -->
-                                                <img src="{{asset('images/logo-1.png')}}" alt="" width="27px">
-                                            </a>
-
-                                            <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
-                                                <!-- Youtube -->
-                                                <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true"></i>
-                                            </a>
-
-                                            <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
-                                                <!-- Wikipedia -->
-                                                <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true"></i>
-                                            </a>
-
-                                            <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline p-0 m-0 text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
-                                                <!-- My School -->
-                                                @foreach ($schoollogo as $logo)
-                                                @if($logo->item=="schoollogo")
-                                                <img src="{{$logo->value}}" alt="logo" width="27px">
-
+                                                @if($cms_link!=null)
+                                                <div class="col-2">
+                                                    <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Edport Content -->
+                                                        <img src="{{asset('images/logo-1.png')}}" alt="" width="27px" style="{{$display_style}}">
+                                                    </a>
+                                                </div>
                                                 @endif
-                                                @endforeach
-                                            </a>
 
+                                                @if($youtube!=null)
+                                                <div class="col-2">
+                                                    <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Youtube -->
+                                                        <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
+                                                    </a>
+                                                </div>
+                                                @endif
+
+                                                @if($other!=null)
+                                                <div class="col-2">
+                                                    <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Wikipedia -->
+                                                        <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
+                                                    </a>
+                                                </div>
+                                                @endif
+
+                                                @if($academy!=null)
+                                                <div class="col-2">
+                                                    <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline p-0 m-0 text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- My School -->
+                                                        @foreach ($schoollogo as $logo)
+                                                        @if($logo->item=="schoollogo")
+                                                        <img src="{{$logo->value}}" alt="logo" width="27px" style="{{$display_style}}">
+
+                                                        @endif
+                                                        @endforeach
+                                                    </a>
+                                                </div>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -292,9 +313,9 @@ $cls = 0;
 
                             <div class="classes-datetime">
                                 <div class="cls-date">{{ $class_date }}</div>
-                                <div class="cls-from">{{$t->from_timing}}</div>
+                                <div class="cls-from">{{ date('h:i a',strtotime($t->from_timing))}}</div>
                                 <div class="cls-separater">to</div>
-                                <div class="cls-to">{{$t->to_timing}}</div>
+                                <div class="cls-to">{{ date('h:i a',strtotime($t->to_timing))}}</div>
                             </div>
                             <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
                                 <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span>
@@ -417,6 +438,123 @@ $cls = 0;
                         @endforeach
                         @else
 
+                        <!-- <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
+                                    <svg class="icon icon-4x mr-3">
+                                        <use xlink:href="../images/icons.svg#icon_nodate"></use>
+                                    </svg>
+                                    No Lectures found for {{ date("d/m/Y") }}.
+                                    <br><br>
+                                    <a href="{{ route('reload-timetable') }}" target="_blank">
+                                        Click here to reload updated timetable again.
+                                    </a>
+                                    <script>
+                                        function reload_timetable() {
+                                            fetch("{{ route('reload-timetable') }}")
+                                                .then(function (response) {
+                                                    location.reload();
+                                                })
+                                        }
+                                        reload_timetable()
+                                    </script>
+                                </div> -->
+                        @endif
+                    </div>
+
+                    <div class="tab-pane fade" id="upcomingclasses">
+
+
+                        @if(count($futureClassData) > 0)
+
+                        @php
+                        $i=1;
+                        @endphp
+                        @foreach ($futureClassData as $t)
+                        <?php
+                        $cls = 0;
+                        $section_name = '';
+                        $g_class_id = '';
+                        $class_name = '';
+                        $subject_name = '';
+                        if ($t->studentClass) {
+                            $class_name = $t->studentClass->class_name;
+                            //$class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
+                            $section_name = $t->studentClass->section_name;
+                            $g_class_id = $t->studentClass->g_class_id;
+                        }
+                        if ($t->studentSubject) {
+                            $subject_name = $t->studentSubject->subject_name;
+                        }
+                        ?>
+
+
+                        <div class="classes-box">
+
+                            <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
+                            <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
+                            <input type="hidden" id="past_subject_id{{$i}}" value="{{$t->subject_id}}">
+
+
+                            <input type="hidden" id="past_desc{{$i}}" value="{{$t->class_description}}">
+                            <input type="hidden" id="past_gMeetURL{{$i}}" value="{{$t->g_meet_url}}">
+                            <input type="hidden" id="past_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
+                            <input type="hidden" id="past_recURL{{$i}}" value="{{$t->recording_url}}">
+                            <input type="hidden" id="pastg_class_id_{{$i}}" value="{{ $g_class_id}}" />
+                            <?php
+                            $class_date = date("d M", strtotime($t->class_date));
+                            ?>
+
+                            <div class="classes-datetime">
+                                <div class="cls-date">{{ $class_date }}</div>
+                                <div class="cls-from">{{ date('h:i a',strtotime($t->from_timing))}}</div>
+                                <div class="cls-separater">to</div>
+                                <div class="cls-to">{{ date('h:i a',strtotime($t->to_timing))}}</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
+                                <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span>
+
+                                    {{$class_name}} Std
+                                </div>
+                                <div class="font-weight-bold pt-1"><span class="text-secondary">Section:</span> {{$section_name}}
+
+                                </div>
+                                <div class="font-weight-bold pt-1"><span class="text-secondary">Subject:</span>
+
+                                    {{$subject_name}}
+
+                                </div>
+                            </div>
+
+
+                            <p class="mt-0 mb-2 text-secondary text-edit" data-url="#" data-savedesc="{{$t->id}}" contenteditable="false" id="class_description_{{$i}}">
+                                @if($t->class_description!='')
+                                {{$t->class_description}}
+                                @else
+                                {{$t->class_description}}
+                                @endif
+                            </p>
+
+
+
+                            <div class="d-flex justify-content-between flex-wrap py-2">
+                                <div>
+
+
+
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        @php
+                        $i++;
+                        @endphp
+                        @endforeach
+                        @else
+
                         <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
                             <svg class="icon icon-4x mr-3">
                                 <use xlink:href="../images/icons.svg#icon_nodate"></use>
@@ -433,19 +571,20 @@ $cls = 0;
                     <div class="tab-pane fade" id="newInvitationclasses">
 
                         <div class="col-sm-12">
-                            <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Class</th>
-                                        <th>Section</th>
-                                        <th>Subject</th>
-                                        <th>Link</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    if (count($inviteClassData) > 0) {
+                            <?php if (count($inviteClassData) > 0) { ?>
+                                <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Class</th>
+                                            <th>Section</th>
+                                            <th>Subject</th>
+                                            <th>Link</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+
                                         $i = 0;
                                         foreach ($inviteClassData as $row) {
                                             $section_name = '';
@@ -460,7 +599,7 @@ $cls = 0;
                                             if ($row->studentSubject) {
                                                 $subject_name = $row->studentSubject->subject_name;
                                             }
-                                    ?>
+                                        ?>
                                             <tr>
                                                 <td>{{++$i}}</td>
                                                 <td>{{ $cls }} Std</td>
@@ -489,8 +628,8 @@ $cls = 0;
                                     <?php
                                     }
                                     ?>
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
                         </div>
                     </div>
                     <!-- ./Teacher-AssignedClasses -->
@@ -515,11 +654,7 @@ $cls = 0;
                 </button>
             </div>
             <div class="modal-body pt-4">
-
-
                 <div class="form-group row">
-
-
                 </div>
                 <input type="hidden" id="row_id" value="">
                 <input type="hidden" id="new_assignment" value="">
@@ -527,47 +662,46 @@ $cls = 0;
                 <input type="hidden" id="ass_class_id" value="">
                 <input type="hidden" id="ass_subject_id" value="">
                 <input type="hidden" id="ass_teacher_id" value="">
-
-
-                <div class="form-group row">
-                    <label for="inputJoinlive" class="col-md-4 col-form-label text-md-right">Select Topic :</label>
-                    <div class="col-md-6">
-                        <select name="sel_topic" id="sel_topic" class="form-control">
-                            <option value="">Select Topic</option>
-                        </select>
+                <div class="row">
+                    <div class="form-group col-md-5">
+                        <input checked type="radio" id="t1radio" name="asgradio">
+                        <label for="t1radio" class="col-form-label text-md-left">Select Topic :</label>
+                        <div>
+                            <select name="sel_topic" id="sel_topic" class="form-control asg1">
+                                <option value="">Select Topic</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group row">
-                    <label for="inputJoinlive" class="col-md-4 col-form-label text-md-right">OR Enter New Topic
-                        :</label>
-                    <div class="col-md-6">
-                        <input type="text" id="txt_topin_name" class="form-control" placeholder="Topic Name" />
-
+                    <div class="col-md-2 text-center">
+                        OR
                     </div>
-                </div>
-
-                <div class="form-group row">
-                    <label for="inputAddquiz" class="col-md-4 col-form-label text-md-right"> Assignment Title
-                        :</label>
-                    <div class="col-md-6">
-                        <input type="text" class="form-control" name="txt_aTitle" id="txt_aTitle" placeholder="Assigment Title">
-
+                    <div class="form-group col-md-5">
+                        <input type="radio" id="t2radio" name="asgradio">
+                        <label for="t2radio" class="col-form-label text-md-left">Enter New Topic
+                            :</label>
+                        <div>
+                            <input disabled type="text" id="txt_topin_name" class="form-control asg2" placeholder="Topic Name" />
+                        </div>
+                    </div>
+                    <div class="form-group col-md-12">
+                        <label for="txt_aTitle" class="col-form-label text-md-left"> Assignment Title:</label>
+                        <div>
+                            <input type="text" class="form-control" name="txt_aTitle" id="txt_aTitle" placeholder="Assigment Title">
+                        </div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-md-8 offset-md-4">
                         <button type="button" id="assignment_create" class="btn btn-primary px-4">Next</button>
-
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
+                <p style="font-size: smaller;color: red;text-align: center;">Note: Please allow popup for the assignment functionality.</p>
             </div>
         </div>
     </div>
 </div>
 <!-- ./New Assignment Modal -->
-
-<!-- View Assignment Modal -->
 <div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -666,16 +800,18 @@ $cls = 0;
                     <label for="addinputFtime" class="col-md-4 col-form-label text-md-right">Class From
                         Time:</label>
                     <div class="col-md-6">
-                        {!! Form::text('start_time', null, array('id'=>'addClassStartTime','placeholder' => '00:00:00','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                        {!! Form::text('start_time', null, array('id'=>'addClassStartTime','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="addinputTtime" class="col-md-4 col-form-label text-md-right">Class To Time:</label>
                     <div class="col-md-6">
-                        {!! Form::text('end_time', null, array('id'=>'addClassEndTime','placeholder' => '00:00:00','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                        {!! Form::text('end_time', null, array('id'=>'addClassEndTime','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
                     </div>
                 </div>
             </div>
+
+
 
             <div class="form-group row">
                 <label class="col-md-12 text-danger text-center" style="font-size: 12px;padding-left: 130px;">*Extra
@@ -828,6 +964,8 @@ $cls = 0;
 </div>
 <!-- End -->
 
+
+
 <script type="text/javascript">
     $(document).ready(function() {
         $('.ac-datepicker').datepicker({
@@ -837,8 +975,9 @@ $cls = 0;
         $('.ac-time').timepicker({
             controlType: 'select',
             oneLine: true,
-            timeFormat: 'HH:mm:ss'
+            timeFormat: 'hh:mm tt'
         });
+
     });
     $(document).on('click', '[data-LiveLink]', function() {
         var liveurl = $(this).attr("data-LiveLink");
@@ -918,6 +1057,16 @@ $cls = 0;
     });
     $(document).on('click', '[data-pasttopiclink]', function() {
         var liveurl = $(this).attr("data-pasttopiclink");
+        if (liveurl != '') {
+            //$('#viewClassModal').modal('show');
+            //$("#thedialog").attr('src','https://google.com');
+            window.open(liveurl, "dialog name"); //, "dialogWidth:400px;dialogHeight:300px");
+        } else {
+            alert('No content url found!');
+        }
+    });
+    $(document).on('click', '[data-futuretopiclink]', function() {
+        var liveurl = $(this).attr("data-futuretopiclink");
         if (liveurl != '') {
             //$('#viewClassModal').modal('show');
             //$("#thedialog").attr('src','https://google.com');
@@ -1130,14 +1279,21 @@ $cls = 0;
                     },
                     success: function(result) {
                         var response = JSON.parse(result);
-                        $('#viewcontent_' + dateWork_id).attr('style', 'display:block');
-                        $('#viewcontent_' + dateWork_id).attr('data-topiclink', response.topic_link);
-                        $('#youtube_' + dateWork_id).attr('style', 'display:block');
-                        $('#youtube_' + dateWork_id).attr('data-youtubelink', response.youtube_link);
-                        $('#wikipedia_' + dateWork_id).attr('style', 'display:block');
-                        $('#wikipedia_' + dateWork_id).attr('data-wikipedialink', response.wikipedia_link);
-                        $('#academy_' + dateWork_id).attr('style', 'display:block');
-                        $('#academy_' + dateWork_id).attr('data-academylink', response.academy_link);
+                        location.reload(true);
+                        if (response.youtube_link != null) {
+                            $('#youtube_' + dateWork_id).attr('style', 'display:block');
+                            $('#youtube_' + dateWork_id).attr('data-youtubelink', response.youtube_link);
+                        }
+
+                        if (response.wikipedia_link != null) {
+                            $('#wikipedia_' + dateWork_id).attr('style', 'display:block');
+                            $('#wikipedia_' + dateWork_id).attr('data-wikipedialink', response.wikipedia_link);
+                        }
+
+                        if (response.academy_link != null) {
+                            $('#academy_' + dateWork_id).attr('style', 'display:block');
+                            $('#academy_' + dateWork_id).attr('data-academylink', response.academy_link);
+                        }
                         $.fn.notifyMe('success', 4, response.message);
                     },
                     error: function() {
@@ -1409,5 +1565,32 @@ $cls = 0;
         });
     }
 </script>
-
+<script>
+    // $('#sel_topic').blur(function() {
+    //     if ($(this).val().length != 0) {
+    //         $('#txt_topin_name').attr('disabled', 'disabled');
+    //     }
+    // });
+    // $('#txt_topin_name').blur(function() {
+    //     if ($(this).val().length != 0) {
+    //         $('#sel_topic').attr('disabled', 'disabled');
+    //     }
+    // });
+</script>
+<script>
+    $(document).ready(function() {
+        $('input[id=t1radio]').on('click',
+            function() {
+                $('.asg1').prop("disabled", false);
+                $('.asg2').prop("disabled", true);
+                $('.asg2').prop("value", "");
+            });
+        $('input[id=t2radio]').on('click',
+            function() {
+                $('.asg2').prop("disabled", false);
+                $('.asg1').prop("disabled", true);
+                $('.asg1').prop("value", "");
+            });
+    });
+</script>
 @endsection

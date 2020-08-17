@@ -138,6 +138,10 @@ class ClassWorkController extends Controller
             return json_encode(array('status' => 'error', 'message' => 'Assignment Title Required.'));
         }
 
+        if ( $topic_name != '' && $sel_topic_id != '' ) {
+            return json_encode(array('status' => 'error', 'message' => 'Either select a topic or give a new topic fill both.'));
+        }
+
         $token = CommonHelper::varify_Teachertoken(); // verify Teacher token
         if ( ( $topic_name == '' && $sel_topic_id != '' ) || ( $topic_name != '' && $sel_topic_id != '' ) ) {
             $topic_id = $sel_topic_id;
@@ -157,18 +161,6 @@ class ClassWorkController extends Controller
                 return json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.119')));
             } else {
                 $resData = array_merge($resData, json_decode($responce, true));
-
-                if ( $resData['error'] != '' ) {
-                    if ( $resData['error']['status'] == 'UNAUTHENTICATED' ) {
-                        Log::error($resData['error']['status']);
-                        CustomHelper::get_refresh_token();
-                        $token = CommonHelper::varify_Admintoken(); // verify admin token
-
-                        $responce = CommonHelper::create_topic($token, $g_class_id, $data); // access Google api craete Topic
-                        $resData = array('error' => '');
-                        $resData = array_merge($resData, json_decode($responce, true));
-                    }
-                }
 
                 if ( $resData['error'] != '' ) {
                     if ( $resData['error']['status'] == 'UNAUTHENTICATED' ) {
@@ -209,18 +201,6 @@ class ClassWorkController extends Controller
             return json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.119')));
         } else {
             $w_resData = array_merge($w_resData, json_decode($work_response, true));
-
-            if ( $w_resData['error'] != '' ) {
-                if ( $w_resData['error']['status'] == 'UNAUTHENTICATED' ) {
-                    Log::error($w_resData['error']['status']);
-                    CustomHelper::get_refresh_token();
-                    $token = CommonHelper::varify_Admintoken(); // verify admin token
-
-                    $work_response = CommonHelper::create_courcework($token, $g_class_id, $array_data);
-                    $w_resData = array('error' => '');
-                    $w_resData = array_merge($w_resData, json_decode($work_response, true));
-                }
-            }
 
             if ( $w_resData['error'] != '' ) {
 
