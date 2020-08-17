@@ -134,11 +134,11 @@ class TeacherLoginController extends Controller
             ->limit(20)
             ->get();
 
-             $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher_id)
+        $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher_id)
             ->where('class_date', '<', DateUtility::getFutureDate(7))
             ->Where('class_date', '>', $currentDay)
-            ->orderBy('class_date', 'desc')
-            ->orderBy('from_timing', 'desc')
+            ->orderBy('class_date', 'asc')
+            ->orderBy('from_timing', 'asc')
             ->limit(20)
             ->get();
 
