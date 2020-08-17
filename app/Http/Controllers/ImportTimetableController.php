@@ -85,8 +85,8 @@ class ImportTimetableController extends Controller
 
             $sub_name = $subject_name['subject_name'];
 
-
-            $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('from_timing', $cur_from_timing)->get()->first();
+            $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('from_timing', $cur_from_timing)
+                                ->where('class_day',$obj_timeTable->class_day)->get()->first();
 
 
             //$dateClassTeacherExist = DateClass::where('teacher_id',$teacher_id)->where('from_timing',$cur_from_timing)->get()->first();
@@ -97,6 +97,19 @@ class ImportTimetableController extends Controller
 			{
 				return back()->with('error',"Teacher have already assigned lecture at selected time.");
 			} */ else {
+
+                $invitationExist = InvitationClass::where('class_id',$cur_class_ID)->where('subject_id',$cur_subject_id)
+                                    ->where('teacher_id',$teacher_id)->get();
+
+                if(count($invitationExist)){
+                    $classTiming = ClassTiming::find($request->tid);
+                    $classTiming->teacher_id = $teacher_id;
+                    $classTiming->save();
+
+                    return back()->with('success', "TimeTable updated successfully..");
+                }
+
+
                 $prve_g_code = '';
                 // Previous Teacher Data
                 // $obj_prev_teacher = InvitationClass::where('class_id', $cur_class_ID)->where('subject_id', $cur_subject_id)->where('teacher_id', $teacher_id)->get()->first();
@@ -200,7 +213,7 @@ class ImportTimetableController extends Controller
                 }
                 $invitationExist = InvitationClass::where('class_id',$class_id)->where('subject_id',$subject_id)
                                     ->where('teacher_id',$cur_teacher_id)->get();
-
+                
                 if(count($invitationExist)){
                     $classTiming = ClassTiming::find($request->tid);
                     $classTiming->class_id = $class_id;
@@ -231,7 +244,7 @@ class ImportTimetableController extends Controller
                         return back()->with('error', Config::get('constants.WebMessageCode.119'));
                     } else {
                         $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                        if ($inv_resData['error'] != '' && $inv_resData['error']['code'] != 409) {
+                        if ($inv_resData['error'] != '') {
 
                             if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
                                 return redirect()->route('admin.logout');
