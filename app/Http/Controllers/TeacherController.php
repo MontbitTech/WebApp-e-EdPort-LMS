@@ -41,13 +41,13 @@ class TeacherController extends Controller
      */
     public function addTeacher (Request $request)
     {
-
         $logged_admin = Session::get('admin_session');
         $logged_admin_email = $logged_admin['admin_email'];
 
         $domain = CustomHelper::getDomain();
 
         if ( $request->isMethod('post') ) {
+           
             $request->validate([
                 'fname' => 'required|max:100|regex:/^[a-zA-Z ]*$/',
                 // 'lname' => 'required|max:100|alpha_num',
@@ -59,7 +59,12 @@ class TeacherController extends Controller
                 //'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
 
             ]);
-
+            
+            if ( Teacher::count() >= env('TEACHER_UPPERCAP') ) {
+                return back()->with('error','Maximum limit of ' . env('TEACHER_UPPERCAP') . 'teacher reached.
+                        Contact administrator for extending limit');
+            }
+            
             $data = array("name"          => array(
                 "familyName" => "Teacher",//$request->fname,
                 "givenName"  => $request->fname,

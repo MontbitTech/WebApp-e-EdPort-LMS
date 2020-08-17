@@ -276,7 +276,8 @@ class ImportStudentsController extends Controller
             }
         }
         else
-            $getResult = $rec->get();
+            $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id");
+
         return view('admin.numbers.filter-student', compact('getResult'));
     }
 
@@ -328,6 +329,8 @@ class ImportStudentsController extends Controller
                 $collection = ( new FastExcel )->import($path);
 
                 if ( !isset($collection[0]) ) {
+                    if ( file_exists($path) )
+                        @unlink($path);
                     return back()->with('error', Config::get('constants.WebMessageCode.104'));
                 }
                 $numbers = array();
@@ -395,8 +398,8 @@ class ImportStudentsController extends Controller
                     $i += 1;
                 }
                 Log::info('File processing done ');
-
-                @unlink($path);
+                if ( file_exists($path) )
+                        @unlink($path);
                 if ( $error == "" )
                 {
                     $event = EventManager::createEvent([
@@ -409,16 +412,16 @@ class ImportStudentsController extends Controller
                 }else
                     return back()->with('error', 'Student details processed, check logs, error in rows - ' . $rows);
             } catch ( \Exception $e ) {
-                if(file_exists($path)){
-                    @unlink($path);
-                }
+                if ( file_exists($path) )
+                        @unlink($path);
                 if ( $error == "Header mismatch" ) {
                     return back()->with('error', 'CSV file Header/(1st line) mismatch!!, check the file format!!');
                 } else {
                     return back()->with('error', Config::get('constants.WebMessageCode.136'));
                 }
             }
-            @unlink($path);
+            if ( file_exists($path) )
+                @unlink($path);
         }
 
         return view('admin.numbers.import', compact('student_class'));
