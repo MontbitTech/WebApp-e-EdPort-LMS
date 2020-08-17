@@ -58,7 +58,7 @@ class ImportTimetableController extends Controller
         $subject_id = $request->sel_subject;
 
         $obj_timeTable = ClassTiming::where('id', $timeTableID)->get()->first();
-
+        
         $cur_class_ID = $obj_timeTable->class_id;
         $cur_teacher_id = $obj_timeTable->teacher_id;
         $cur_subject_id = $obj_timeTable->subject_id;
@@ -90,7 +90,6 @@ class ImportTimetableController extends Controller
 
 
             //$dateClassTeacherExist = DateClass::where('teacher_id',$teacher_id)->where('from_timing',$cur_from_timing)->get()->first();
-            //	dd($dateClassTeacherExist);
 
             if ($teacherTimeExist) {
                 return back()->with('error', "Teacher have already assigned lecture at selected time.");
@@ -174,6 +173,7 @@ class ImportTimetableController extends Controller
         }
 
         if ($subject_id != null || $subject_id != '') {
+          
             $studentClassExist = StudentClass::where('class_name', $cur_class_name)->where('section_name', $cur_section_name)->where('subject_id', $subject_id)->get()->first();
 
             if (!$studentClassExist) {
@@ -198,57 +198,67 @@ class ImportTimetableController extends Controller
                 } else {
                     $number = $phone;
                 }
+                $invitationExist = InvitationClass::where('class_id',$class_id)->where('subject_id',$subject_id)
+                                    ->where('teacher_id',$cur_teacher_id)->get();
 
-                $message = "You are invited for a new class $cur_class_name - $cur_section_name - $sub_name.";
+                if(count($invitationExist)){
+                    $classTiming = ClassTiming::find($request->tid);
+                    $classTiming->class_id = $class_id;
+                    $classTiming->subject_id = $subject_id;
+                    $classTiming->save();
+                    
+                    return back()->with('success', "TimeTable updated successfully..");
+                }else{
+                    $message = "You are invited for a new class $cur_class_name - $cur_section_name - $sub_name.";
 
-                $s = CommonHelper::send_sms($number, $message);
+                    $s = CommonHelper::send_sms($number, $message);
 
-                $token = CommonHelper::varify_Admintoken(); // verify admin token
-                $inv_data = array(
-                    "courseId" => $g_class_id,
-                    "role"     => "TEACHER",
-                    "userId"   => $g_teacher_id,
+                    $token = CommonHelper::varify_Admintoken(); // verify admin token
+                    $inv_data = array(
+                        "courseId" => $g_class_id,
+                        "role"     => "TEACHER",
+                        "userId"   => $g_teacher_id,
 
-                );
-                $inv_data = json_encode($inv_data);
-                $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // Ivite teacher
+                    );
+                    $inv_data = json_encode($inv_data);
+                    $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // Ivite teacher
 
-                //	$inv_delete = CommonHelper::teacher_invitation_delete($token,$prve_g_code); // cancel invitation
+                    //	$inv_delete = CommonHelper::teacher_invitation_delete($token,$prve_g_code); // cancel invitation
 
-                $inv_resData = array('error' => '');
+                    $inv_resData = array('error' => '');
 
-                if ($inv_responce == 101) {
-                    return back()->with('error', Config::get('constants.WebMessageCode.119'));
-                } else {
-                    $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                    if ($inv_resData['error'] != '') {
-
-                        if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
-                            return redirect()->route('admin.logout');
-                        } else {
-                            //Log::error($inv_resData['error']['message']);
-                            return back()->with('error', $inv_resData['error']['message']);
-                        }
+                    if ($inv_responce == 101) {
+                        return back()->with('error', Config::get('constants.WebMessageCode.119'));
                     } else {
+                        $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
+                        if ($inv_resData['error'] != '' && $inv_resData['error']['code'] != 409) {
 
-                        $inv_res_code = $inv_resData['id'];
-                        $obj_inv = new InvitationClass;
-                        $obj_inv->class_id = $class_id;
-                        $obj_inv->subject_id = $subject_id;
-                        $obj_inv->teacher_id = $cur_teacher_id;
-                        $obj_inv->g_code = $inv_res_code;
-                        //$obj_inv->g_responce = '';
-                        //$obj_inv->is_accept = 0;
-                        $obj_inv->save();
+                            if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
+                                return redirect()->route('admin.logout');
+                            } else {
+                                return back()->with('error', $inv_resData['error']['message']);
+                            }
+                        } else {
 
-                        // Update All Record in time table
-                        // $obj = ClassTiming::where('subject_id', $cur_subject_id)->where('class_id', $cur_class_ID)->where('teacher_id', $cur_teacher_id)->update(['class_id' => $class_id, 'subject_id' => $subject_id]);
-                        $classTiming = ClassTiming::find($request->tid);
-                        $classTiming->class_id = $class_id;
-                        $classTiming->subject_id = $subject_id;
-                        $classTiming->save();
-                        
-                        return back()->with('success', "TimeTable updated successfully..");
+                            $inv_res_code = $inv_resData['id'];
+                            $obj_inv = new InvitationClass;
+                            $obj_inv->class_id = $class_id;
+                            $obj_inv->subject_id = $subject_id;
+                            $obj_inv->teacher_id = $cur_teacher_id;
+                            $obj_inv->g_code = $inv_res_code;
+                            //$obj_inv->g_responce = '';
+                            //$obj_inv->is_accept = 0;
+                            $obj_inv->save();
+
+                            // Update All Record in time table
+                            // $obj = ClassTiming::where('subject_id', $cur_subject_id)->where('class_id', $cur_class_ID)->where('teacher_id', $cur_teacher_id)->update(['class_id' => $class_id, 'subject_id' => $subject_id]);
+                            $classTiming = ClassTiming::find($request->tid);
+                            $classTiming->class_id = $class_id;
+                            $classTiming->subject_id = $subject_id;
+                            $classTiming->save();
+                            
+                            return back()->with('success', "TimeTable updated successfully..");
+                        }
                     }
                 }
             }
@@ -690,19 +700,18 @@ class ImportTimetableController extends Controller
                     }
                 }
                 Log::info('File processing done ');
+                if(file_exists($path))
+                    @unlink($path);
                 if ($error == "found")
                     return back()->with('error', 'Import time table processed, check log file, errors in rows - ' . $period_name);
                 else
                     return back()->with('success', Config::get('constants.WebMessageCode.122'));
             } catch (\Exception $e) {
-                //dd($e);
+                if(file_exists($path))
+                    @unlink($path);
                 return back()->with('error', $e->getMessage() . '  check log file, errors in rows - ' . $period_name);
             }
             @unlink($path);
-
-            //return redirect()->route('list.timetable')->with('success',Config::get('constants.WebMessageCode.122'));
-
-
         }
 
         return view('admin.timetable.import');
@@ -827,7 +836,7 @@ class ImportTimetableController extends Controller
 													left join tbl_student_classes c on c.id = t.class_id
 													left join tbl_techers r on r.id = t.teacher_id
 													where c.class_name = ? and c.section_name=?
-													and from_timing = ?", [$class_name, $section_name, $t->from_timing]);
+													and from_timing = ? order by t.id", [$class_name, $section_name, $t->from_timing]);
 
             if (count($days) > 0) {
                 $data = true;
