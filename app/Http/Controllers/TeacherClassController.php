@@ -82,57 +82,57 @@ class TeacherClassController extends Controller
             }
 
             // $student_phone = \DB::table('tbl_students')->select('name', 'email', 'phone')->where('class_id', $c_id)->where('notify', 'yes')->get(); // Phone Number
-            $student_email = \DB::table('tbl_students')->select('name', 'email', 'phone')->where('class_id', $c_id)->get(); // email
+            // $student_email = \DB::table('tbl_students')->select('name', 'email', 'phone')->where('class_id', $c_id)->get(); // email
 
-            // foreach ( $student_phone as $p ) {
-            //     $number[] = $p->phone;
+            // // foreach ( $student_phone as $p ) {
+            // //     $number[] = $p->phone;
+            // // }
+
+            // // if ( count($student_phone) > 0 ) {
+            // //     $numbers = implode(",", $number);
+            // //     $msg = "You have $sub_name class at $start_time. Join using $class_join_link.";
+
+            // //     $s = CommonHelper::send_sms($numbers, $msg);
+            // //     $comm = "SMS ";
+            // // }
+
+            // if ( count($student_email) > 0 ) {
+            //     foreach ( $student_email as $e ) {
+            //         //$email[] = $e->email;
+            //         $data_mail = array('name' => $e->name, 'subject' => $sub_name, 'start_time' => $start_time, 'class_url' => $class_join_link);
+
+            //         Mail::send('mail.mail', $data_mail, function ($message) use ($e, $from) {    //dd($message);
+            //             $message->to($e->email)
+            //                 ->subject('Invitation to join live class');
+            //             //$message->from('noreply@montbit.com','MontBIt');
+            //             $message->from($from->value, 'MontBIt');
+            //         });
+
+            //     }
+            //     if ( $comm == "SMS " )
+            //         $comm .= "and Email ";
+            //     else
+            //         $comm = "Email ";
+
+
+            //     if ( count(Mail::failures()) > 0 ) {
+            //         foreach ( Mail::failures as $email_address ) {
+            //             $er .= $email_address;
+            //         }
+
+            //     } else {
+            //         $er = "Notification sent successfully!";
+            //     }
             // }
-
-            // if ( count($student_phone) > 0 ) {
-            //     $numbers = implode(",", $number);
-            //     $msg = "You have $sub_name class at $start_time. Join using $class_join_link.";
-
-            //     $s = CommonHelper::send_sms($numbers, $msg);
-            //     $comm = "SMS ";
-            // }
-
-            if ( count($student_email) > 0 ) {
-                foreach ( $student_email as $e ) {
-                    //$email[] = $e->email;
-                    $data_mail = array('name' => $e->name, 'subject' => $sub_name, 'start_time' => $start_time, 'class_url' => $class_join_link);
-
-                    Mail::send('mail.mail', $data_mail, function ($message) use ($e, $from) {    //dd($message);
-                        $message->to($e->email)
-                            ->subject('Invitation to join live class');
-                        //$message->from('noreply@montbit.com','MontBIt');
-                        $message->from($from->value, 'MontBIt');
-                    });
-
-                }
-                if ( $comm == "SMS " )
-                    $comm .= "and Email ";
-                else
-                    $comm = "Email ";
-
-
-                if ( count(Mail::failures()) > 0 ) {
-                    foreach ( Mail::failures as $email_address ) {
-                        $er .= $email_address;
-                    }
-
-                } else {
-                    $er = "Notification sent successfully!";
-                }
-            }
             //$emails = implode(",",$email);
 
 
-            if ( $comm == "" )
-                echo json_encode(array('status' => 'error', 'message' => "No SMS / Email present for notification!!"));
-            else
-                echo json_encode(array('status' => 'success', 'message' => $er));
-        } else {
-            echo json_encode(array('status' => 'error', 'message' => "Notification sent successfully"));
+        //     if ( $comm == "" )
+        //         echo json_encode(array('status' => 'error', 'message' => "No SMS / Email present for notification!!"));
+        //     else
+        //         echo json_encode(array('status' => 'success', 'message' => $er));
+        // } else {
+            echo json_encode(array('status' => 'success', 'message' => "Notification sent successfully"));
         }
 
     }
