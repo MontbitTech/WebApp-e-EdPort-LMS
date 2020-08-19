@@ -103,6 +103,14 @@
 		display: none !important;
 
 	}
+
+	.logout:hover {
+		color: red !important;
+	}
+
+	.dropdown-menu.dropdown-menu-right.show {
+		border-style: groove;
+	}
 </style>
 @php
 $student = "disabled";
@@ -183,18 +191,22 @@ $slogo = $logo->value;
 
 					<div class="dropdown-toggle" data-toggle="dropdown">
 						<div class="user-profilepic" style="font-size: 25px;">
-							<i class="fas fa-user icon-4x"></i>
+							<i class="fa fa-user-circle  icon-4x" style="color: #1a1a1a;font-size: larger;"></i>
 						</div>
 						<!-- <img src="{{asset('images/user.jpg')}}" width="31px"></div><span>My Profile</span> -->
 					</div>
 					<div class="dropdown-menu dropdown-menu-right">
-						<a class="dropdown-item" href="{{route('admin.profile')}}"><svg class="icon">
+						<a class="dropdown-item" href="{{route('admin.profile')}}">
+							<!-- <svg class="icon">
 								<use xlink:href="{{asset('images/icons.svg#icon_profile')}}"></use>
-							</svg> Profile</a>
+							</svg>  -->
+							<i class="fa fa-user-circle-o icon-2x" aria-hidden="true"></i>
+
+							Profile</a>
 						<!-- <a class="dropdown-item" href="#">Change Password</a> -->
 						<div class="dropdown-divider"></div>
 
-						<a class="dropdown-item" href="{{ route('admin.logout') }}">
+						<a class="dropdown-item logout" href="{{ route('admin.logout') }}">
 							<svg class="icon">
 								<use xlink:href="{{asset('images/icons.svg#icon_logout')}}"></use>
 							</svg> {{ __('Logout') }}
@@ -221,7 +233,7 @@ $slogo = $logo->value;
 <div class="leftmenu-section pb-4">
 	<div class="left-accordion" id="parentAccordion">
 		<div class="left-card">
-			<div class="left-link {{ Request::segment(1) == 'list-setting'?'active':''}}"><a href="{{route('admin.settings')}}" class="pl-3">
+			<div class="left-link {{ Request::segment(2) == 'list-setting'?'active':''}}"><a href="{{route('admin.settings')}}" class="pl-3">
 
 					<i class="fas fa-cogs icon icon-4x"></i>
 					My Institution</a>
@@ -288,7 +300,7 @@ $slogo = $logo->value;
 		</div>
 
 		<div class="text-center text-white w-100 " style="position:absolute;bottom:0;font-size: 10px;letter-spacing: 1px;">
-			<img src="{{asset('images/logo-1.png')}}" alt="e-edport" width="27px">
+			<img src="{{asset('images/logo-1.png')}}" alt="e-edport" width="50px">
 			<div>Powered by e-EdPort</div>
 
 		</div>

@@ -11,15 +11,15 @@
             <span class="topic-heading">Student List</span>
 
             <div class="float-right mr-3">
-              <a type="button" class="btn btn-sm btn-secondary" href="{{route('admin.studentsimport')}}">
+              <a type="button" class="btn btn-sm btn-color" href="{{route('admin.studentsimport')}}">
 
                 <i class="fas fa-file-import icon-4x mr-1"></i>
                 Import Students
               </a>
             </div>
             <div class="float-right mr-3">
-              <a type="button" class="btn btn-sm btn-secondary" href="{{route('student.add')}}">
-                <i class="fa fa-user-graduate mr-1" aria-hidden="true"></i>
+              <a type="button" class="btn btn-sm btn-color" href="{{route('student.add')}}">
+                <i class="fa fa-user-graduate mr-1 icon-4x" aria-hidden="true"></i>
                 Add Student
               </a>
             </div>
@@ -70,9 +70,9 @@
 
 
               </div>
-              <div class="col-md-6 col-lg-6 text-md-right text-center mb-1">
+              <div class="col-md-6 col-lg-6 text-md-right text-center mb-1 ">
                 <!-- id="appenddata"> -->
-                <button style="display:none;" id="deleteall" class="btn btn-sm btn-secondary float-right delete_all"" data-url=" {{ url('admin/deleteAllStudent') }}"><i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete</button>
+                <button style="display:none;" id="deleteall" class="btn btn-sm ml-2 btn-back float-right delete_all" data-url=" {{ url('admin/deleteAllStudent') }}"><i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete</button>
                 <span class="float-right mr-2" id="appenddata"></span>
               </div>
               <div class="col-sm-12" id="student">
@@ -99,14 +99,16 @@
                       <td>{{$list->phone}}</td>
                       <td>
                         @if ($list->notify=="yes")
-                        <input type="checkbox" checked disabled>
+                        <i class="fa fa-check " aria-hidden="true" style="color: green;"></i>
+
                         @else
-                        <input type="checkbox" disabled>
+                        <i class="fa fa-times text-danger" aria-hidden="true"></i>
+
                         @endif
                       </td>
                       <td>
-                        <a href="{{route('student.edit', encrypt($list->id))}}">Edit</a> |
-                        <a href="#" data-deleteModal="{{$list->id}}" class='deleteStudent' value='{{$list->id}}'>
+                        <a href="{{route('student.edit', encrypt($list->id))}}" class="edit-color">Edit</a> |
+                        <a href="#" data-deleteModal="{{$list->id}}" class='deleteStudent delete-color' value='{{$list->id}}'>
                           {{ __('Delete') }}
                         </a>
                       </td>
@@ -149,10 +151,10 @@
 
           </div>
           <div class="form-group text-center">
-            <button type="submit" class="btn btn-danger px-4">
+            <button type="submit" class="btn btn-back mr-2 px-4">
               Delete
             </button>
-            <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="btn submit-btn" class="close" data-dismiss="modal" aria-label="Close">
               Cancel
             </button>
           </div>
@@ -230,7 +232,7 @@
               autoFilter: true,
               sheetName: 'Exported data',
               text: '<i class="fas fa-file-export mr-1 icon-2x"  ></i>Export Student  Details',
-              className: 'btn btn-secondary btn-sm ml-2',
+              className: 'btn btn-color btn-sm ml-2',
               init: function(api, node, config) {
                 $(node).removeClass('dt-button')
               },

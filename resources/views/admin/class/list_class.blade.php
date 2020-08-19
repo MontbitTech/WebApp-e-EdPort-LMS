@@ -8,15 +8,15 @@
         <div class="card card-common mb-3">
           <div class="card-header">
             <span class="topic-heading">Classroom List</span>
-            <div class="float-right ml-1">
-              <a type="button" class="btn btn-sm btn-secondary" href="{{route('admin.class.import')}}">
+            <div class="float-right ml-3">
+              <a type="button" class="btn btn-sm btn-color" href="{{route('admin.class.import')}}">
                 <i class="fas fa-file-import icon-4x mr-1"></i>
                 Import Classroom
               </a>
             </div>
             <div class="float-right">
-              <a type="button" class="btn btn-sm btn-secondary" href="{{route('classes.add')}}">
-                <i class="fas fa-book-reader mr-1" aria-hidden="true"></i>
+              <a type="button" class="btn btn-sm btn-color" href="{{route('classes.add')}}">
+                <i class="fas fa-book-reader icon-4x mr-1" aria-hidden="true"></i>
                 Add Classroom
               </a>
             </div>
@@ -92,9 +92,9 @@
                       <td>{{$cls->class_name}}</td>
                       <td>{{$cls->section_name}}</td>
                       <td>{{$cls->studentSubject->subject_name}}</td>
-                      <td class="text-center"><a href="{{ $cls->g_link }}" target="_blank">Classroom Link </a></td>
+                      <td class="text-center"><a href="{{ $cls->g_link }}" target="_blank" class="link-color">Classroom Link </a></td>
                       <td class="text-center">
-                        <a href="javascript:void(0);" data-deleteModal="{{$cls->id}}">{{ __('Delete') }}</a>
+                        <a href="javascript:void(0);" data-deleteModal="{{$cls->id}}" class="delete-color">{{ __('Delete') }}</a>
                       </td>
                     </tr>
                     @endforeach
@@ -138,10 +138,10 @@
 
           </div>
           <div class="form-group text-center">
-            <button type="submit" class="btn btn-danger px-4">
+            <button type="submit" class="btn btn-back mr-2 px-4">
               Delete
             </button>
-            <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="btn submit-btn" class="close" data-dismiss="modal" aria-label="Close">
               Cancel
             </button>
           </div>
@@ -210,7 +210,7 @@
               autoFilter: true,
               sheetName: 'Exported data',
               text: '<i class="fas fa-file-export mr-1 icon-2x"  ></i>Export Classroom',
-              className: 'btn btn-secondary btn-sm',
+              className: 'btn btn-color btn-sm',
               init: function(api, node, config) {
                 $(node).removeClass('dt-button')
               },
@@ -238,20 +238,19 @@
             dateFormat: "yy/mm/dd"
             // showAnim: "slide"
           })
-        }
-        else{
+        } else {
 
-      $('#subjectlist').DataTable({
-      initComplete: function(settings, json) {
-        $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
-        $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
-      }
-    });
+          $('#subjectlist').DataTable({
+            initComplete: function(settings, json) {
+              $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
+              $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+            }
+          });
 
 
-    $('.dateset').datepicker({
-      dateFormat: "yy/mm/dd"
-    })
+          $('.dateset').datepicker({
+            dateFormat: "yy/mm/dd"
+          })
 
         }
       }

@@ -29,14 +29,14 @@
             <td>{{$list->phone}}</td>
             <td>
                 @if ($list->notify=="yes")
-                <input type="checkbox" checked disabled>
+                <i class="fa fa-check " aria-hidden="true" style="color: green;"></i>
                 @else
-                <input type="checkbox" disabled>
+                <i class="fa fa-times text-danger" aria-hidden="true"></i>
                 @endif
             </td>
             <td>
-                <a href="{{route('student.edit', encrypt($list->id))}}">Edit</a> |
-                <a href="#" data-deleteModal="{{$list->id}}" class='deleteStudent' value='{{$list->id}}'>
+                <a href="{{route('student.edit', encrypt($list->id))}}" class="edit-color">Edit</a> |
+                <a href="#" data-deleteModal="{{$list->id}}" class='deleteStudent delete-color' value='{{$list->id}}'>
                     {{ __('Delete') }}
                 </a>
 

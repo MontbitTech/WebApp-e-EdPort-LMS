@@ -9,7 +9,7 @@
 
 
         <div class="card ">
-          <div class="card-header bg-secondary text-white">
+          <div class="card-header  text-white main-bg-color">
             My Institution's information
           </div>
           <div class="card-body">
@@ -64,7 +64,7 @@
                 <div class="media-body">
                   <div class="custom-file">
                     <label for="uploadphoto" class=" custom-file-label">Institution Logo</label>
-                    <input type="file" class="custom-file-input" name="profile_picture" id="uploadphoto" onchange="readURL(this);" accept=".jpg,.jpeg,.png,.gif">
+                    <input type="file" class="custom-file-input form-control" name="profile_picture" id="uploadphoto" onchange="readURL(this);" accept=".jpg,.jpeg,.png,.gif">
                   </div>
                 </div>
                 <img src="{{$settings['schoollogo']->value }}" class="align-self-center ml-2" id="img-preview" width="50px">

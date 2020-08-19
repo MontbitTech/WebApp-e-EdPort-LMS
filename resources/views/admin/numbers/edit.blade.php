@@ -64,8 +64,8 @@
 
               <div class="form-group row">
                 <div class="col-md-6 offset-md-4">
-                  <button type="submit" class="btn btn-secondary btn-w140">Submit</button>
-                  <a href="{{route('list.students')}}" class="btn btn-danger ml-3"><i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>Back</a>
+                  <button type="submit" class="btn submit-btn btn-w140">Submit</button>
+                  <a href="{{route('list.students')}}" class="btn btn-back ml-3"><i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>Back</a>
                 </div>
               </div>
               {!! Form::close() !!}
