@@ -17,7 +17,7 @@ $sname = $sch->value;
 <section class="login-section">
   <div class="container-fluid min-height">
     <div class="row justify-content-center min-height align-items-center">
-      <div class="col-sm-10 col-md-8 col-lg-5 offset-lg-7 col-xl-4">
+      <div class="col-sm-10 col-md-8 col-lg-5 offset-lg-4 col-xl-4">
         <div class="login-form">
           <div class="pb-3">
             <h1 class="pb-0 mb-0" style="color: #D1D6E5;">{{$sname}}</h1>
