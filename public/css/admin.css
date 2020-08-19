@@ -176,7 +176,8 @@ header {
   position: fixed;
   left: 0px;
   top: 54px;
-  background: #213242;
+  background-color: #010616;
+  /* background: #213242; */
   z-index: 50;
   padding-top: 20px;
   padding-bottom: 24px;
@@ -210,6 +211,13 @@ header {
   overflow-scrolling: touch;
 }
 
+.left-link.active a,
+.left-link:active {
+  color: #060911 !important;
+  font-weight: 500;
+  background: #d1d6e5 !important;
+}
+
 .left-link a {
   font-size: 15px;
   display: block;
@@ -227,8 +235,10 @@ header {
 }
 
 .left-link a:hover {
-  color: #eee;
-  background: #1c3c63;
+  /* color: #eee;
+  background: #1c3c63; */
+  color: white !important;
+  background: #335599;
 }
 
 .left-link a svg.icon {
@@ -270,7 +280,7 @@ header {
 }
 
 /*if active*/
-.left-link.active a,
+
 .left-link.active a:hover,
 .left-link .collapsed-stepone[aria-expanded="true"] {
   color: #eee;
@@ -1076,4 +1086,97 @@ li.active span {
   .dropdown-user .dropdown-toggle>span {
     display: none;
   }
+}
+
+.custom-select:focus,
+.form-control:focus {
+  border-color: #010616 !important;
+  box-shadow: 0 0 0 0.2rem rgb(60 69 80 / 65%) !important;
+}
+
+.page-link {
+  color: #6c757d !important;
+  Font-weight: 700 !important;
+
+}
+
+
+
+.page-item.active .page-link {
+  color: white !important;
+  background-color: #010616 !important;
+  border-color: #010616 !important;
+
+}
+
+.page-item {
+  color: #010616 !important;
+}
+
+.dataTables_wrapper .page-item.active {
+  z-index: 10 !important;
+  color: #fff !important;
+  background-color: red !important;
+  border-color: #007bff !important;
+}
+
+.link-color {
+  Color: #03033D !important;
+  font-weight: 500 !important;
+}
+
+.edit-color {
+  color: #615682de !important;
+  font-weight: 500 !important;
+}
+
+.delete-color {
+  color: red !important;
+  font-weight: 500 !important;
+}
+
+.main-bg-color {
+  background-color: #010616 !important;
+}
+
+.submit-btn {
+  color: white !important;
+  background-color: #010616 !important;
+}
+
+.submit-btn:hover {
+  background-color: green !important;
+}
+
+.btn-back {
+  color: white !important;
+  background-color: #010616 !important;
+}
+
+
+
+.btn-color {
+  color: white !important;
+  background-color: #010616 !important;
+}
+
+.btn-color:hover {
+  color: white !important;
+  background-color: #335599 !important;
+}
+
+
+.btn-back:hover {
+  background-color: red !important;
+}
+
+.login-color {
+  background-color: #D1D6E5 !important;
+  color: #060911 !important;
+
+}
+
+.login-color:hover,
+.login-color:active {
+  border-color: #D1D6E5 !important;
 }

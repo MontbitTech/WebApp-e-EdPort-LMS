@@ -14,8 +14,8 @@
                                 <span class="topic-heading"> Category</span>
                             </div>
                             <div class="col-md-8 col-lg-4 text-md-right ">
-                                <a href="{{route('admin.help-category-add')}}" class="btn bg-secondary  text-white m-0 btn-sm">
-                                    <i class="fa fa-plus mr-2" aria-hidden="true"></i>
+                                <a href="{{route('admin.help-category-add')}}" class="btn btn-color  text-white m-0 btn-sm">
+                                    <i class="fa fa-plus mr-2 icon-4x" aria-hidden="true"></i>
                                     Add Category
                                 </a>
                             </div>
@@ -37,17 +37,12 @@
                                     <td>{{$cl->id}}</td>
                                     <td class="text-center">{{$cl->category}}</td>
                                     <td>
-                                        @if($cl->category=='Live Class')
-                                        <a href="{{route('admin.help-category-edit', encrypt($cl->id))}}" style="color:white" class="disabled">Edit</a> |
-                                        <a href="javascript:void(0);" data-deleteModal="{{$cl->id}}" style="color:white" class="disabled">
+
+                                        <a href="{{route('admin.help-category-edit', encrypt($cl->id))}}" class="edit-color">Edit</a> |
+                                        <a href="javascript:void(0);" data-deleteModal="{{$cl->id}}" class="delete-color">
                                             {{ __('Delete') }}
                                         </a>
-                                        @else
-                                        <a href="{{route('admin.help-category-edit', encrypt($cl->id))}}">Edit</a> |
-                                        <a href="javascript:void(0);" data-deleteModal="{{$cl->id}}">
-                                            {{ __('Delete') }}
-                                        </a>
-                                        @endif
+
                                     </td>
                                 </tr>
                                 @endforeach
@@ -85,10 +80,10 @@
 
                     </div>
                     <div class="form-group text-center">
-                        <button type="submit" class="btn btn-danger px-4">
+                        <button type="submit" class="btn btn-back px-4">
                             Delete
                         </button>
-                        <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn submit-btn" class="close" data-dismiss="modal" aria-label="Close">
                             Cancel
                         </button>
                     </div>

@@ -11,14 +11,14 @@ $sname = $sch->value;
 @extends('layouts.app')
 @section('content')
 <section class="login-section">
-  <div class="container min-height">
+  <div class="container-fluid min-height">
     <div class="row justify-content-center min-height align-items-center">
-      <div class="col-sm-10 col-md-8 col-lg-6 col-xl-4">
+      <div class="col-sm-10 col-md-8 col-lg-5 offset-lg-4 col-xl-4">
         <div class="login-form">
           <div class="pb-3">
-            <h1 class="pb-0 mb-0">{{$sname}}</h1>
+            <h1 class="pb-0 mb-0" style="color: #D1D6E5;">{{$sname}}</h1>
             <div class="text-center text-white">
-              <small> Powered by e-EdPort</small>
+              <small style="color: #D1D6E5;"> Powered by e-EdPort</small>
             </div>
 
           </div>
@@ -54,7 +54,7 @@ $sname = $sch->value;
               <form method="POST" class="loginbox-section" action="{{ route('admin.login.post') }}">
                 @csrf
                 <div class="form-group mb-4">
-                  <button type="submit" class="btn btn-lg btn-primary btn-block">
+                  <button type="submit" class="btn btn-lg login-color btn-block" style="background:#D1D6E5;color: #060911;">
                     {{ __('I Am School Coordinator ') }}
                   </button>
                 </div>
@@ -63,7 +63,7 @@ $sname = $sch->value;
               <form method="POST" class="loginbox-section" action="{{ route('teacher.login.post') }}">
                 @csrf
                 <div class="form-group mb-4">
-                  <button type="submit" class="btn btn-lg btn-primary btn-block">
+                  <button type="submit" class="btn btn-lg  btn-block" style="background:#D1D6E5; color: #060911;">
                     {{ __('I Am School Teacher') }}
                   </button>
                 </div>

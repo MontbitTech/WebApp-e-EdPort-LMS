@@ -9,8 +9,8 @@
             <span class="topic-heading">Import Time Table</span>
 
             <div class="float-right">
-              <a type="button" class="btn btn-sm btn-secondary" href="{{route('admin.sampleDownload')}}">
-                <i class="fa fa-download mr-1" aria-hidden="true"></i>
+              <a type="button" class="btn btn-sm btn-color" href="{{route('admin.sampleDownload')}}">
+                <i class="fa fa-download mr-1 icon-4x" aria-hidden="true"></i>
                 Download Sample File
               </a>
             </div>
@@ -26,8 +26,8 @@
             </div>
             <div class="form-group row">
               <div class="col-md-6 offset-md-4">
-                <button type="submit" class="btn btn-secondary btn-w140">Submit</button>
-                <a href="{{route('list.timetable')}}" class="btn btn-danger ml-3"><i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>Back</a>
+                <button type="submit" class="btn submit-btn btn-w140">Submit</button>
+                <a href="{{route('list.timetable')}}" class="btn btn-back ml-3"><i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>Back</a>
               </div>
             </div>
             {!! Form::close() !!}
