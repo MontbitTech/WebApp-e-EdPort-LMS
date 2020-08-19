@@ -5,6 +5,27 @@
   #ongoing_wrapper .row:first-child {
     display: flex;
   }
+
+
+
+  /* .previous,
+  .next {
+    color: red;
+    Font-weight: 700
+  } */
+
+
+
+
+  /* .next {
+    color: red !important;
+
+  } */
+
+  /* a.page-link {
+    color: red;
+    background-color: pink;
+  } */
 </style>
 <section class="main-section">
   <div class="container-fluid">
@@ -18,15 +39,15 @@
 
             </div>
             <div class="float-right mr-3">
-              <a type="button" class="btn btn-sm btn-secondary" href="{{ route('admin.teacherimport') }}">
+              <a type="button" class="btn btn-sm btn-color text-white" href="{{ route('admin.teacherimport') }}">
                 <i class="fas fa-file-import icon-4x mr-1"></i>
                 Import Teacher Details
               </a>
             </div>
 
             <div class="float-right mr-3">
-              <a type="button" class="btn btn-sm btn-secondary" href="{{route('teacher.add')}}">
-                <i class="fa fa-user-plus mr-1" aria-hidden="true"></i>
+              <a type="button" class="btn btn-sm btn-color text-white" href="{{route('teacher.add')}}">
+                <i class="fa fa-user-plus icon-4x mr-1" aria-hidden="true"></i>
                 Add Teacher
               </a>
             </div>
@@ -65,15 +86,15 @@
                       <td>{{$user->phone}}</td>
                       @if($user->g_meet_url)
                       <td class="text-center">
-                        <a href="{{$user->g_meet_url}}" target="_blank">Join Link</a>
+                        <a href="{{$user->g_meet_url}}" class="link-color" target="_blank">Join Link</a>
                       </td>
                       @else
                       <td class="text-center ">
-                        <a href="{{route('teacher.edit', encrypt($user->id))}}" class="text-danger w-100"> Insert URL</a>
+                        <a href="{{route('teacher.edit', encrypt($user->id))}}" class="delete-color w-100"> Insert URL</a>
                       </td>
                       @endif
-                      <td><a href="{{route('teacher.edit', encrypt($user->id))}}">Edit</a> |
-                        <a href="javascript:void(0);" data-deleteModal="{{$user->id}}">
+                      <td><a href="{{route('teacher.edit', encrypt($user->id))}}" class="edit-color">Edit</a> |
+                        <a href="javascript:void(0);" data-deleteModal="{{$user->id}}" class="delete-color">
                           {{ __('Delete') }}
                         </a>
 
@@ -156,10 +177,10 @@
 
           </div>
           <div class="form-group text-center">
-            <button type="submit" class="btn btn-danger px-4">
+            <button type="submit" class="btn btn-back mr-2 px-4">
               Delete
             </button>
-            <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="btn submit-btn" class="close" data-dismiss="modal" aria-label="Close">
               Cancel
             </button>
           </div>
@@ -176,8 +197,8 @@
         extend: 'csvHtml5',
         autoFilter: true,
         sheetName: 'Exported data',
-        text: '<i class="fas fa-file-export mr-1 icon-2x"  ></i>Export Teacher Details',
-        className: 'btn btn-secondary btn-sm',
+        text: '<i class="fas fa-file-export mr-1 icon-4x"  ></i>Export Teacher Details',
+        className: 'btn text-white btn-color btn-sm',
         init: function(api, node, config) {
           $(node).removeClass('dt-button')
         },

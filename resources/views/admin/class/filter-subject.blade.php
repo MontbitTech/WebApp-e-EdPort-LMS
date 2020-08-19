@@ -4,7 +4,7 @@
       <th>Division</th>
       <th>Section</th>
       <th>Subject</th>
-      <th class="text-center">Classroom</th>
+      <th class="text-center">Classroom URL</th>
       <th class="text-center">Action</th>
     </tr>
   </thead>
@@ -16,9 +16,9 @@
       <td>{{$cls->class_name}}</td>
       <td>{{$cls->section_name}}</td>
       <td>{{$cls->studentSubject->subject_name}}</td>
-      <td class="text-center"><a href="{{ $cls->g_link }}" target="_blank">Class Link </a></td>
+      <td class="text-center"><a href="{{ $cls->g_link }}" target="_blank" class="link-color">Classroom Link </a></td>
       <td class="text-center">
-        <a href="javascript:void(0);" data-deleteModal="{{$cls->id}}">{{ __('Delete') }}</a>
+        <a href="javascript:void(0);" data-deleteModal="{{$cls->id}}" class="delete-color">{{ __('Delete') }}</a>
       </td>
     </tr>
     @endforeach
