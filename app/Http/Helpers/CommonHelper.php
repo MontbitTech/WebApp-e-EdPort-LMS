@@ -51,8 +51,8 @@ class CommonHelper
 
     public static function send_sms ($number, $message)
     {
-        $apiKey = 'X98eAxQtlzQ-fh6xx0z9wJbd4jmMfq8vo2tEro7c8w';//env( 'TEXTLOCAL_APIKEY' );
-        $txt_sender = 'TXTLCL';//env( 'TEXTLOCAL_SENDER' );
+        $apiKey = env( 'TEXTLOCAL_APIKEY' );
+        $txt_sender = env( 'TXTLCL_SENDER' );
         //$support_number = env( 'SUPPORT_NUMBER' );
         $sender = urlencode($txt_sender);
 
