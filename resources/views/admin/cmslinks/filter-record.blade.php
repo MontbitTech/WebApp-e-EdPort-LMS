@@ -32,53 +32,53 @@
 
                       @if($list->link)
                       <td class="text-center">
-                          <a href="{{$list->link}}" target="_blank">Link</a>
+                          <a href="{{$list->link}}" target="_blank" class="link-color" class="link-color">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="delete-color w-100"> Insert Link</a>
                       </td>
                       @endif
 
                       @if($list->youtube)
                       <td class="text-center">
-                          <a href="{{$list->youtube}}" target="_blank">Link</a>
+                          <a href="{{$list->youtube}}" target="_blank" class="link-color">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="delete-color w-100"> Insert Link</a>
                       </td>
                       @endif
                       @if($list->others)
                       <td class="text-center">
-                          <a href="{{$list->others}}" target="_blank">Link</a>
+                          <a href="{{$list->others}}" target="_blank" class="link-color">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="delete-color w-100"> Insert Link</a>
                       </td>
                       @endif
                       @if($list->khan_academy)
                       <td class="text-center">
-                          <a href="{{$list->khan_academy}}" target="_blank">Link</a>
+                          <a href="{{$list->khan_academy}}" target="_blank" class="link-color">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="delete-color w-100"> Insert Link</a>
                       </td>
                       @endif
                       @if($list->assignment_link)
                       <td class="text-center">
-                          <a href="{{$list->assignment_link}}" target="_blank">Link</a>
+                          <a href="{{$list->assignment_link}}" target="_blank" class="link-color">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="delete-color w-100"> Insert Link</a>
                       </td>
                       @endif
                       <td>
-                          <a href="{{route('cms.editlink', encrypt($list->id))}}">Edit</a> |
-                          <a href="javascript:void(0);" data-deleteModal="{{$list->id}}">{{ __('Delete') }}</a>
+                          <a href="{{route('cms.editlink', encrypt($list->id))}}" class="edit-color">Edit</a> |
+                          <a href="javascript:void(0);" data-deleteModal="{{$list->id}}" class="delete-color">{{ __('Delete') }}</a>
 
 
                       </td>
@@ -110,10 +110,10 @@
 
                               </div>
                               <div class="form-group text-center">
-                                  <button type="submit" class="btn btn-danger px-4">
+                                  <button type="submit" class="btn btn-back mr-2 px-4">
                                       Delete
                                   </button>
-                                  <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
+                                  <button type="button" class="btn submit-btn" class="close" data-dismiss="modal" aria-label="Close">
                                       Cancel
                                   </button>
                               </div>

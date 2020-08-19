@@ -53,8 +53,8 @@
 							<div class="col-md-12">
 								<div class="form-group row">
 									<div class="col-md-6 offset-md-4">
-										<button type="submit" class="btn btn-primary btn-w140">Submit</button>
-										<a href="{{route('admin.listClass')}}" class="btn btn-danger">Back</a>
+										<button type="submit" class="btn submit-btn btn-w140">Submit</button>
+										<a href="{{route('admin.listClass')}}" class="btn btn-back">Back</a>
 									</div>
 								</div>
 							</div>

@@ -10,14 +10,14 @@
             <span class="topic-heading">Content</span>
 
             <div class="float-right mr-3">
-              <a type="button" class="btn btn-sm btn-secondary" href="{{route('cms.cmslinksimport')}}">
+              <a type="button" class="btn btn-sm btn-color" href="{{route('cms.cmslinksimport')}}">
                 <i class="fas fa-file-import icon-4x mr-1"></i>
                 Import Content
               </a>
             </div>
             <div class="float-right mr-3">
-              <a type="button" class="btn btn-sm btn-secondary" href="{{route('cms.addlink')}}">
-                <i class="fa fa-book-open mr-1" aria-hidden="true"></i>
+              <a type="button" class="btn btn-sm btn-color" href="{{route('cms.addlink')}}">
+                <i class="fa fa-book-open iocn-4x mr-1" aria-hidden="true"></i>
                 Add Content
               </a>
             </div>
@@ -67,7 +67,7 @@
 
               </div>
               <div class="col-md-6 col-lg-6 text-md-right  mb-1">
-                <button style="float: right;display:none;" id="deleteall" class="btn btn-sm btn-secondary delete_all" data-url="{{ url('admin/cmsDeleteAll') }}"> <i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete </button>
+                <button style="float: right;display:none;" id="deleteall" class="btn btn-sm btn-back delete_all" data-url="{{ url('admin/cmsDeleteAll') }}"> <i class="fa fa-trash mr-1 " aria-hidden="true"></i>Delete </button>
                 <span id="appenddata" style="float: right;"></span>
               </div>
 
@@ -100,57 +100,57 @@
 
                       @if($list->link)
                       <td class="text-center">
-                        <a href="{{$list->link}}" target="_blank">Link</a>
+                        <a href="{{$list->link}}" target="_blank" class="link-color">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="delete-color w-100"> Insert Link</a>
                       </td>
                       @endif
 
                       @if($list->youtube)
                       <td class="text-center">
-                        <a href="{{$list->youtube}}" target="_blank">Link</a>
+                        <a href="{{$list->youtube}}" target="_blank" class="link-color">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="delete-color w-100"> Insert Link</a>
                       </td>
                       @endif
 
                       @if($list->others)
                       <td class="text-center">
-                        <a href="{{$list->others}}" target="_blank">Link</a>
+                        <a href="{{$list->others}}" target="_blank" class="link-color">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="delete-color w-100"> Insert Link</a>
                       </td>
                       @endif
 
                       @if($list->khan_academy)
                       <td class="text-center">
-                        <a href="{{$list->khan_academy}}" target="_blank">Link</a>
+                        <a href="{{$list->khan_academy}}" target="_blank" class="link-color">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="delete-color w-100"> Insert Link</a>
                       </td>
                       @endif
 
                       @if($list->assignment_link)
                       <td class="text-center">
-                        <a href="{{$list->assignment_link}}" target="_blank">Link</a>
+                        <a href="{{$list->assignment_link}}" target="_blank" class="link-color">Link</a>
                       </td>
                       @else
                       <td class="text-center">
-                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="text-danger w-100"> Insert Link</a>
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="delete-color w-100"> Insert Link</a>
                       </td>
                       @endif
                       <td>
-                        <a href="{{route('cms.editlink', encrypt($list->id))}}">Edit</a> |
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="edit-color">Edit</a> |
 
-                        <a href="javascript:void(0);" data-deleteModal="{{$list->id}}">{{ __('Delete') }}</a>
+                        <a href="javascript:void(0);" data-deleteModal="{{$list->id}}" class="delete-color">{{ __('Delete') }}</a>
                       </td>
                     </tr>
                     @endforeach
@@ -187,10 +187,10 @@
 
           </div>
           <div class="form-group text-center">
-            <button type="submit" class="btn btn-danger px-4">
+            <button type="submit" class="btn btn-back mr-2 px-4">
               Delete
             </button>
-            <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
+            <button type="button" class="btn submit-btn" class="close" data-dismiss="modal" aria-label="Close">
               Cancel
             </button>
           </div>
@@ -231,24 +231,24 @@
               autoFilter: true,
               sheetName: 'Exported data',
               text: '<i class="fas fa-file-export mr-1 icon-2x"  ></i>Export Content',
-              className: 'btn btn-secondary mr-3 btn-sm text-md-right float-right ml-2',
+              className: 'btn btn-color mr-3 btn-sm text-md-right float-right ml-2',
               init: function(api, node, config) {
                 $(node).removeClass('dt-button')
               },
               exportOptions: {
                 columns: [1, 2, 3, 4, 5, 7, 8, 6],
-                format:{
-                  body:function(data,row,column,node){
-                 if( column === 3 || column === 4 || column === 5 || column === 6 || column === 7){
-                 data = data.split("\"");
-                 var linkUrl = data[1];
-                 linkUrl=data[1].trim("");
-                 if(linkUrl.includes("admin/edit-link")){
-                    linkUrl="";
-                  }
-                }
-               return column === 3 || column === 4 || column === 5 || column === 6 || column === 7?
-                        linkUrl.replace("",""):data;
+                format: {
+                  body: function(data, row, column, node) {
+                    if (column === 3 || column === 4 || column === 5 || column === 6 || column === 7) {
+                      data = data.split("\"");
+                      var linkUrl = data[1];
+                      linkUrl = data[1].trim("");
+                      if (linkUrl.includes("admin/edit-link")) {
+                        linkUrl = "";
+                      }
+                    }
+                    return column === 3 || column === 4 || column === 5 || column === 6 || column === 7 ?
+                      linkUrl.replace("", "") : data;
                   }
                 }
               },

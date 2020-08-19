@@ -69,31 +69,31 @@
                                             <td class="text-center">
                                                 <b>Category</b> :
                                                 @if($help->help_ticket_category_id==null)
-                                                    @if($help->studentClass)
-                                                        {{($help->help_type == 2)?$help->studentClass->class_name:''}}
+                                                @if($help->studentClass)
+                                                {{($help->help_type == 2)?$help->studentClass->class_name:''}}
 
-                                                        {{($help->help_type == 2)?$help->studentClass->section_name:''}}
-                                                    @endif
-                                                    @if($help->studentSubject)
-                                                        {{($help->help_type == 2)?$help->studentSubject->subject_name:''}}
-                                                    @endif
+                                                {{($help->help_type == 2)?$help->studentClass->section_name:''}}
+                                                @endif
+                                                @if($help->studentSubject)
+                                                {{($help->help_type == 2)?$help->studentSubject->subject_name:''}}
+                                                @endif
                                                 @endif
                                                 @foreach($categories as $category)
-                                                    @if($category->id == $help->help_ticket_category_id)
-                                                        {{$category->category}}
-                                                    @endif
+                                                @if($category->id == $help->help_ticket_category_id)
+                                                {{$category->category}}
+                                                @endif
                                                 @endforeach
                                                 @if(isset($help->studentClass->class_name))
                                                 ({{$help->studentClass->class_name}} {{$help->studentClass->section_name}})
                                                 @endif
                                                 <br>
                                                 @if($help->description)
-                                                    <b>Description</b> :
-                                                    {{isset($help->description)?$help->description:''}}
+                                                <b>Description</b> :
+                                                {{isset($help->description)?$help->description:''}}
                                                 <br>
                                                 @endif
                                                 @if($help->class_join_link)
-                                                    <a href="javascript:void(0);" data-helplink="{{$help->class_join_link}}" id="{{ $help->id}}">Join Live</a>
+                                                <a href="javascript:void(0);" data-helplink="{{$help->class_join_link}}" class="delete-color" id="{{ $help->id}}">Join Live</a>
                                                 @endif
                                             </td>
                                             <td style="width: 15%">
@@ -152,10 +152,10 @@
 
                 </div>
                 <div class="form-group text-center">
-                    <button type="button" class="btn btn-danger px-4" onclick="changeTicketStatus()">
+                    <button type="button" class="btn btn-back px-4" onclick="changeTicketStatus()">
                         Close Ticket
                     </button>
-                    <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close" onclick="window.open('{{ url('/admin/support-help') }}','_self');">
+                    <button type="button" class="btn submit-btn" class="close" data-dismiss="modal" aria-label="Close" onclick="window.open('{{ url('/admin/support-help') }}','_self');">
                         Cancel
                     </button>
                 </div>
