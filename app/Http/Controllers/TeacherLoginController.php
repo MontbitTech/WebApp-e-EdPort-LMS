@@ -203,8 +203,7 @@ class TeacherLoginController extends Controller
 
     public function getStudent (Request $request)
     {
-        $students = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.id = ? and c.section_name=?", [$request->txt_class_id, $request->txt_section_id]);
-
+        $students = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name = ? and c.section_name=?", [$request->txt_class_name, $request->txt_section_id]);
         return view('teacher.getStudents', compact('students'));
     }
 

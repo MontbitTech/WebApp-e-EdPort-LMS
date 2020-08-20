@@ -65,8 +65,8 @@ $cls = 0;
                         <div class="card text-center mb-3" style="border-color:#253372;">
                             <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" name="txt_class_id" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
-                        <input type="hidden" id="txt_section_id{{$i}}" value="{{$t->studentClass->section_name}}" name="txt_section_id">
-
+                            <input type="hidden" id="txt_section_id{{$i}}" value="{{$t->studentClass->section_name}}" name="txt_section_id">
+                            <input type="hidden" name="txt_class_name" id="txt_class_name{{$i}}" value="{{$t->studentClass->class_name}}">
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
                             <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
                             <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
@@ -1378,13 +1378,13 @@ $cls = 0;
     $('[data-id=view_student]').click(function() {
         $('#purchaseshowdatadiv').hide();
         var getBoxId = $(this).attr("data-view");
-        var class_id = $("#txt_class_id" + getBoxId).val();
+        var class_name = $("#txt_class_name" + getBoxId).val();
         var section_id = $("#txt_section_id" + getBoxId).val();
         $.ajax({
             url: '{{ url("/teacher/getStudent") }}',
             type: "GET",
             data: {
-                txt_class_id: class_id,
+                txt_class_name: class_name,
                 txt_section_id: section_id
             },
             success: function(result) { 
