@@ -12,6 +12,8 @@ use Google_Client;
 use Session;
 use App\DateClass;
 use App\StudentSubject;
+use App\Models\Student;
+use App\Models\ClassSection;
 use DB;
 use App\InvitationClass;
 use App\Http\Helpers\CommonHelper;
@@ -118,6 +120,7 @@ class TeacherLoginController extends Controller
             })->orderBy('from_timing', 'desc')
             ->get();
 
+
         $todaysDate = date("d M");
 
         $data['subject'] = StudentSubject::orderBy('subject_name', 'ASC')->pluck('subject_name', 'id');
@@ -149,6 +152,13 @@ class TeacherLoginController extends Controller
 
         $helpCategories = HelpTicketCategory::get();
 
+           # code..
+        // $abc = DateClass::get();
+
+         //$students = Student::get();
+
+         // $students = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txt_section_id]);
+       
         return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo','futureClassData'));
     }
 
@@ -190,4 +200,12 @@ class TeacherLoginController extends Controller
             }
         }
     }
+
+    public function getStudent (Request $request)
+    {
+        $students = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.id = ? and c.section_name=?", [$request->txt_class_id, $request->txt_section_id]);
+
+        return view('teacher.getStudents', compact('students'));
+    }
+
 }

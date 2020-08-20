@@ -21,10 +21,10 @@ $cls = 0;
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assigned
                             Class</a>
                     </li>
-                    <li class="nav-item mb-1">
+                    <!-- <li class="nav-item mb-1">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#upcomingclasses" role="tab">Future
                             Classes</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item mb-1 ml-md-auto">
                         <a class="nav-link shadow-sm mr-0" data-toggle="modal" href="#addClassModal" role="modal">
                             <svg class="icon mr-1">
@@ -64,7 +64,9 @@ $cls = 0;
 
                         <div class="card text-center mb-3" style="border-color:#253372;">
                             <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
-                            <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
+                            <input type="hidden" name="txt_class_id" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
+                        <input type="hidden" id="txt_section_id{{$i}}" value="{{$t->studentClass->section_name}}" name="txt_section_id">
+
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
                             <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
                             <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
@@ -209,6 +211,16 @@ $cls = 0;
                                             </svg>
                                             Join Live
                                         </a>
+
+                                         <!-- <button type="button" data-viewModal="{{$i}}"  data-target="#viewStudentModal" data-id="view_student" class="btn btn-sm btn-outline-primary mb-1 border-0 btn-shadow" title="Edit">
+                                            <svg class="icon mr-1">
+                                                <use xlink:href="../images/icons.svg#icon_edit"></use>
+                                            </svg>
+                                            View Students
+                                        </button> -->
+
+                                        <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-sm btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;"  data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
+
 
                                         <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notifyMe="{{$i}}" data-id="notify_student" id="notifyurl_{{$i}}">
                                             <svg class="icon mr-1">
@@ -640,7 +652,11 @@ $cls = 0;
     </div>
 </section>
 
-
+<div class="modal fade" id="viewStudentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" >
+<div class="modal-dialog modal-lg">
+ <div class="modal-content" id="purchaseshowdatadiv"></div>
+</div>
+</div>
 
 
 <!-- New Assignment Modal -->
@@ -962,6 +978,10 @@ $cls = 0;
         </div>
     </div>
 </div>
+<!-- End -->
+
+<!-- Edit Class Modal -->
+
 <!-- End -->
 
 
@@ -1352,6 +1372,31 @@ $cls = 0;
         $("#edit_notify_stdMessage").val($("#txt_stdMessage" + val).val());
         $("#txt_datecalss_id").val($("#dateClass_id" + val).val());
     });
+   
+
+     // $("#purchaseshowdivid").click(function() {
+    $('[data-id=view_student]').click(function() {
+        $('#purchaseshowdatadiv').hide();
+        var getBoxId = $(this).attr("data-view");
+        var class_id = $("#txt_class_id" + getBoxId).val();
+        var section_id = $("#txt_section_id" + getBoxId).val();
+        $.ajax({
+            url: '{{ url("/teacher/getStudent") }}',
+            type: "GET",
+            data: {
+                txt_class_id: class_id,
+                txt_section_id: section_id
+            },
+            success: function(result) { 
+
+            $('#purchaseshowdatadiv').html(result);
+            $('#purchaseshowdatadiv').show();             
+
+            }
+
+        });
+    });
+
     $("#frm_class_edit").on('submit', (function(e) {
         // e.preventDefault();
         var dateClass_id = $("#txt_datecalss_id").val();
@@ -1397,7 +1442,7 @@ $cls = 0;
     $('[data-id=accept]').click(function() {
         var id = $(this).attr("data-invaccept");
         var g_code = $("#txt_inv_code" + id).val();
-        var inv_id = $("#txt_inv_id" + id).val();
+        var inv_id = $("#txt_inv_id" + id).val()
         //alert(id);
         $.ajax({
             url: "{{route('teacher.acceptClass')}}",
