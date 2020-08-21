@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ env('SCHOOL_NAME') }}</title>
+    <title>{{ config('app.school_name') }}</title>
 
     <!-- Scripts -->
     <script src="https://kit.fontawesome.com/a3a1b3a803.js" crossorigin="anonymous"></script>
