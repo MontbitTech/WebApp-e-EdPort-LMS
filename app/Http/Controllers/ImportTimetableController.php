@@ -586,7 +586,6 @@ class ImportTimetableController extends Controller
                                         $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
                                         if ($inv_resData['error'] != '') {
                                             //return back()->with('error', "error 04");//Config::get('constants.WebMessageCode.119'));
-                                            Log::error('UNAUTHENTICATED, Error In ROW - ' . $period_name);
                                             if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
                                                 CustomHelper::get_refresh_token();
                                                 $token = CommonHelper::varify_Admintoken();
@@ -900,10 +899,6 @@ class ImportTimetableController extends Controller
         $html .= "</tbody></table>";
         $htmla .= "</tbody></table>";
 
-        //echo($html);
-        //Log::error($html);
-
-
         $name = public_path('dl-timetable') . "/" . $class_name . "_" . $section_name . "_timetable.pdf";
 
         if (file_exists($name))
@@ -1119,7 +1114,6 @@ class ImportTimetableController extends Controller
                         if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
                             return redirect()->route('admin.login.post');
                         } else {
-                            //Log::error($inv_resData['error']['message']);
                             return back()->with('error', $inv_resData['error']['message']);
                         }
                     } else {
@@ -1376,10 +1370,6 @@ class ImportTimetableController extends Controller
 
         $html .= "</tbody></table>";
         $htmla .= "</tbody></table>";
-
-        //echo($html);
-        //Log::error($html);
-
 
         $name = public_path('dl-timetable') . "/" . $class_name . "_" . $section_name . "_timetable.pdf";
 

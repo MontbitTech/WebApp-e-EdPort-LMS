@@ -45,7 +45,7 @@ class ImportCMSLinksController extends Controller
 			);
 
 			if ($studentClassExist) {
-				Log::error('Link already exists : ROW - ' . $i);
+				Log::error('Link already exists.');
 				$error = "found";
 			} else
 				$s = \DB::table('tbl_cmslinks')->insert(
