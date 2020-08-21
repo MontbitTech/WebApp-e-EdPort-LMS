@@ -494,11 +494,8 @@ class TeacherController extends Controller
 
 
                                     Log::error(Config::get('constants.WebMessageCode.100') . " : ROW - " . $i);
-                                    //return back()->with('success',Config::get('constants.WebMessageCode.100'));
                                 }
                             }
-
-                            //	Log::error(Config::get('constants.WebMessageCode.130') ." : ROW - " . $i);
                         }
                     }
                     $i += 1;

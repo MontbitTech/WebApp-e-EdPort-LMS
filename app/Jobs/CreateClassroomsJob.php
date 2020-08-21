@@ -41,7 +41,6 @@ class CreateClassroomsJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('inside job');
         $rowCount = 1;
         foreach($this->data as $row){
             $subjects = explode('|', $row['subjects']);
@@ -94,7 +93,6 @@ class CreateClassroomsJob implements ShouldQueue
 
     public function createGoogleClassroom ($className, $sectionName, $subjectName)
     {
-        Log::info('creating classroom');
         $data = array(
             "name"               => $className . ' ' . $subjectName,
             "section"            => $sectionName,
@@ -136,7 +134,6 @@ class CreateClassroomsJob implements ShouldQueue
         if (!$response['success']) {
             if ($response['data']->status == 'UNAUTHENTICATED') {
                 $token = CustomHelper::get_refresh_token($this->token);
-                Log::info($response['data']->status);
                 $response = $this->createClassInGoogleClassroom($token['access_token'], $data); // access Google api craete Cource
             }
         }
