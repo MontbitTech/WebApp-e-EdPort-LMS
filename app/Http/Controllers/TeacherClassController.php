@@ -335,11 +335,11 @@ class TeacherClassController extends Controller
         $dateClass_id = $request->dateClass_id;
 
         $validator = Validator::make($request->all(), [
-            'description' => 'required|max:100',
+            //'description' => 'required|max:100',
             'rec_url'     => 'required',
 
         ], [
-            'description.required' => 'The Description required.',
+            //'description.required' => 'The Description required.',
             'rec_url.required'     => 'Recording URL required.',
         ]);
 

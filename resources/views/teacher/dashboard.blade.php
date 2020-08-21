@@ -243,7 +243,7 @@ $cls = 0;
                                         <button onclick="viewAssignment({{$t->id}})" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
                                         @else
 
-                                        <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">no Assigment</button>
+                                        <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">No Assigment</button>
 
                                         @endif
                                     </div>
@@ -345,12 +345,12 @@ $cls = 0;
 
                             <div class="d-flex justify-content-between flex-wrap py-2">
                                 <div>
-                                    <a href="javascript:void(0);" data-pastLiveLink="{{ $t->recording_url }}" id="past_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+                                    <!-- <a href="javascript:void(0);" data-pastLiveLink="{{ $t->recording_url }}" id="past_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
                                         <svg class="icon font-10 mr-1">
                                             <use xlink:href="../images/icons.svg#icon_eye"></use>
                                         </svg>
                                         View Recording
-                                    </a>
+                                    </a> -->
 
                                     <?php
                                     $assignmentDataOfPastLiveClasses = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
@@ -936,12 +936,12 @@ $cls = 0;
                     <input type="hidden" id="txt_past_datecalss_id" value="" name="txt_past_datecalss_id" />
                     <input type="hidden" id="txt_boxID" value="" name="txt_boxID" />
 
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <label for="inputDesc" class="col-md-4 col-form-label text-md-right">Description:</label>
                         <div class="col-md-6">
                             {!! Form::textarea('past_edit_description', null, array('id'=>'past_edit_description','placeholder' => 'Class Description','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group row">
                         <label for="class_liveurl" class="col-md-4 col-form-label text-md-right"> Recording URL
                             <small>(Link)</small>:</label>

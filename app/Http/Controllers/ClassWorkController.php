@@ -243,7 +243,7 @@ class ClassWorkController extends Controller
                 }
 
 
-                return json_encode(array('status' => 'success', 'cource_url' => $cource_url, 'message' => Config::get('constants.WebMessageCode.127')));
+                return json_encode(array('status' => 'success', 'cource_url' => $cource_url, 'message' => 'Assigment Created Successfully'));
             }
         }
     }
