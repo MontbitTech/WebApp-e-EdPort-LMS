@@ -11,6 +11,14 @@ $cls = 0;
         border-width: 1.5px;
         border-radius: 5px;
     }
+    .profile-box {
+        background: url("{{asset('images/teacher-bg1.jpg')}}");
+    }
+    .class-box{
+        border-color:#fff;
+        background:url("{{asset('images/teacher-bg.jpg')}}");
+        background-position:center;
+    }
 </style>
 <section class="main-section">
     <div class="container">
@@ -70,7 +78,7 @@ $cls = 0;
                             }
                             ?>
                             <div class="col-md-4">
-                                <div class="card text-center mb-3" style="border-color:#fff;background:url(https://image.freepik.com/free-photo/school-supplies-arrangement-with-mask_23-2148565056.jpg);background-position:center;">
+                                <div class="card class-box text-center mb-3">
                                     <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
                                     <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
                                     <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
