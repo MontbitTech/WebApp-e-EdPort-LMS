@@ -179,9 +179,9 @@ class ClassController extends Controller
         if ($classTimingExist)
             return redirect()->route('admin.listClass')->with('error', "you cannot delete this class! it's associated with Teacher,Assignent....");
 
-        $dateClassExist = DateClass::where('class_id', $request->txt_class_id)->first();
-        if ($dateClassExist)
-            return redirect()->route('admin.listClass')->with('error', "you cannot delete this class! it's associated with Teacher,Assignent....");
+        // $dateClassExist = DateClass::where('class_id', $request->txt_class_id)->first();
+        // if ($dateClassExist)
+        //     return redirect()->route('admin.listClass')->with('error', "you cannot delete this class! it's associated with Teacher,Assignent....");
 
         $classWorkExits = ClassWork::where('class_id', $request->txt_class_id)->first();
         if ($classWorkExits)
