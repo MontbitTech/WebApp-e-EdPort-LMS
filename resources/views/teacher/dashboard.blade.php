@@ -859,7 +859,7 @@ $cls = 0;
             </div>
             <div class="form-group row">
                 <div class="col-md-8 offset-md-4">
-                    <button type="submit" class="btn btn-primary px-4">Save Class</button>
+                    <button type="submit" id="submit" class="btn btn-primary px-4">Save Class</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -986,6 +986,23 @@ $cls = 0;
         });
 
     });
+
+    $('#submit').click(function() {
+      var valuestart = $("#addClassStartTime").val();
+        var valueend = $("#addClassEndTime").val();
+       var timeStart = new Date("01/01/2007 " + valuestart);
+       var timeEnd = new Date("01/01/2007 " + valueend);
+
+       var diff = (timeEnd - timeStart) / 60000; //dividing by seconds and milliseconds
+       var minutes = diff % 60;
+       var hours = (diff - minutes) / 60;
+       if(timeStart>=timeEnd){
+        confirm("Class end-time can't be before/equal to class start-time.");
+       }
+       else
+       confirm("You have set class duration of "+hours+" hours and "+minutes+" minute");
+    });
+
     $(document).on('click', '[data-LiveLink]', function() {
         var liveurl = $(this).attr("data-LiveLink");
         if (liveurl != '') {
