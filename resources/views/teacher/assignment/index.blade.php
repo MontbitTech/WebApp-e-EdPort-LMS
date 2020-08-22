@@ -65,13 +65,13 @@
                           <a class="dropdown-item" href="#">Change Password</a>
                       </ul> -->
                     <?php
-                    $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($g_class_id);
+                    $assignmentData = App\Http\Helpers\CommonHelper::get_exam_assignment_data($g_class_id);
                     ?>
                     @if (count($assignmentData) > 0)
                     <button onclick="viewAssignment('{{$g_class_id}}')" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
                     @else
 
-                    <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">no Assigment</button>
+                    <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">No Assigment</button>
 
                     @endif
 
@@ -641,7 +641,7 @@
 
     $.ajax({
       type: 'POST',
-      url: '{{ url("/teacher/class/assignments") }}',
+      url: '{{ url("/teacher/class/examassignments") }}',
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },

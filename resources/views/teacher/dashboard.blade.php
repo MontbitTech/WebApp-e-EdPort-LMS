@@ -4,7 +4,18 @@
 <?php
 $cls = 0;
 ?>
+<style>
+    .yy {
+        font-size: 27px !important;
+        line-height: 0px;
 
+
+    }
+
+    .yy1 {
+        padding-left: 43px !important;
+    }
+</style>
 <section class="main-section">
     <div class="container">
         <div class="row justify-content-center">
@@ -156,45 +167,42 @@ $cls = 0;
                                             <div class="row">
 
                                                 @if($cms_link!=null)
-                                                <div class="col-2">
-                                                    <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                                <div class="col-5  yy1  mt-1">
+                                                    <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-3  text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                         <!-- Edport Content -->
-                                                        <img src="{{asset('images/logo-1.png')}}" alt="" width="27px" style="{{$display_style}}">
-                                                    </a>
-                                                </div>
-                                                @endif
-
-                                                @if($youtube!=null)
-                                                <div class="col-2">
-                                                    <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
-                                                        <!-- Youtube -->
-                                                        <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
-                                                    </a>
-                                                </div>
-                                                @endif
-
-                                                @if($other!=null)
-                                                <div class="col-2">
-                                                    <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
-                                                        <!-- Wikipedia -->
-                                                        <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
+                                                        <img src="{{asset('images/logo-1.png')}}" alt="" width="45px" style="{{$display_style}}">
                                                     </a>
                                                 </div>
                                                 @endif
 
                                                 @if($academy!=null)
-                                                <div class="col-2">
-                                                    <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline p-0 m-0 text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
+                                                <div class="col-5 yy1  mt-1">
+                                                    <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline   text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
                                                         <!-- My School -->
-                                                        @foreach ($schoollogo as $logo)
-                                                        @if($logo->item=="schoollogo")
-                                                        <img src="{{$logo->value}}" alt="logo" width="27px" style="{{$display_style}}">
+                                                        <img src="{{$schoollogo['schoollogo']->value}}" alt="" width="45px" style="{{$display_style}}">
 
-                                                        @endif
-                                                        @endforeach
                                                     </a>
                                                 </div>
                                                 @endif
+                                                @if($youtube!=null)
+                                                <div class="col-5   ml-1 mt-1 align-middle ">
+                                                    <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline text-decoration-none yy d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Youtube -->
+                                                        <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true" style="{{$display_style}}; "></i>
+                                                    </a>
+                                                </div>
+                                                @endif
+
+                                                @if($other!=null)
+                                                <div class="col-5 mt-1 ">
+                                                    <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Wikipedia -->
+                                                        <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true" style="{{$display_style}};font-size: 27px; "></i>
+                                                    </a>
+                                                </div>
+                                                @endif
+
+
                                             </div>
                                         </div>
                                     </div>

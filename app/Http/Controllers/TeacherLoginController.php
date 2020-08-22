@@ -23,20 +23,20 @@ class TeacherLoginController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index ()
+    public function index()
     {
         return view('teacher.welcome');
     }
 
-    public function teacher_login_post (Request $request)
+    public function teacher_login_post(Request $request)
     {
         $session_token = Session::get('access_token_teacher');
-        if ( isset($session_token['access_token_teacher']) && $session_token['access_token_teacher'] ) {
+        if (isset($session_token['access_token_teacher']) && $session_token['access_token_teacher']) {
             $res = $this->verify_email_DB();
-            if ( $res == 101 ) {
+            if ($res == 101) {
                 return back()->with('error', Config::get('constants.WebMessageCode.118'));
                 $this->logout();
-            } else if ( $res == 102 ) {
+            } else if ($res == 102) {
                 return back()->with('error', "Invalid Token");
                 $this->logout();
             } else {
@@ -49,10 +49,10 @@ class TeacherLoginController extends Controller
         }
     }
 
-    public function teacher_login_get ()
+    public function teacher_login_get()
     {
 
-        if ( !isset($_GET['code']) ) {
+        if (!isset($_GET['code'])) {
             $auth_url = CustomHelper::set_token_teacher();
 
             return redirect($auth_url);
@@ -67,10 +67,10 @@ class TeacherLoginController extends Controller
             //  echo $code;
             //echo  $responce->email;
 
-            if ( $res == 101 ) {
+            if ($res == 101) {
                 return back()->with('error', Config::get('constants.WebMessageCode.118'));
                 $this->logout();
-            } else if ( $res == 102 ) {
+            } else if ($res == 102) {
                 return back()->with('error', "Invalid Token");
                 $this->logout();
             } else {
@@ -82,20 +82,20 @@ class TeacherLoginController extends Controller
         }
     }
 
-    public function teacherDashboard (Request $request)
+    public function teacherDashboard(Request $request)
     {
         $logged_teacher = Session::get('teacher_session');
         $logged_teacher_id = $logged_teacher['teacher_id'];
         // CLass invitation accept
         $InvData = InvitationClass::where('teacher_id', $logged_teacher_id)->where('is_accept', 0)->get()->toArray();
-        if ( $InvData ) {
-            foreach ( $InvData as $key ) {
+        if ($InvData) {
+            foreach ($InvData as $key) {
 
                 $code = $key['g_code'];
                 $accept_id = $key['id'];
                 $token = CommonHelper::varify_Teachertoken(); // verify admin token
                 $responce = CommonHelper::acceptClassInvitation($token, $code); // access Google api craete Cource
-                if ( $responce ) {
+                if ($responce) {
                     $obj = InvitationClass::find($accept_id);
                     //$obj->g_code = '';
                     $obj->is_accept = 1;
@@ -110,7 +110,7 @@ class TeacherLoginController extends Controller
         $currentTime = date("H:i:s", strtotime($current_date));
         $currentDay = date("Y-m-d", strtotime($current_date));
 
-        $schoollogo = \DB::select('SELECT * FROM `tbl_settings` ');
+        $schoollogo = \DB::table('tbl_settings')->get()->keyBy('item');
         $TodayLiveData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher_id)
             ->where(function ($query) use ($currentTime, $currentDay) {
                 //$query->where('to_timing','>',$currentTime);
@@ -134,7 +134,7 @@ class TeacherLoginController extends Controller
             ->limit(20)
             ->get();
 
-             $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher_id)
+        $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher_id)
             ->where('class_date', '<', DateUtility::getFutureDate(7))
             ->Where('class_date', '>', $currentDay)
             ->orderBy('class_date', 'desc')
@@ -149,10 +149,10 @@ class TeacherLoginController extends Controller
 
         $helpCategories = HelpTicketCategory::get();
 
-        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo','futureClassData'));
+        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData'));
     }
 
-    public function logout (Request $request)
+    public function logout(Request $request)
     {
         Session::forget('access_token_teacher');
         Session::forget('teacher_session');
@@ -160,7 +160,7 @@ class TeacherLoginController extends Controller
         return redirect(url('/teacher'));
     }
 
-    public function verify_email_DB ()
+    public function verify_email_DB()
     {
 
         $session_token = Session::get('access_token_teacher');
@@ -175,12 +175,12 @@ class TeacherLoginController extends Controller
         $responce = CustomHelper::get_user_from_token($session_token['id_token']);
         $resData = array_merge($array, json_decode($responce, true));
 
-        if ( $resData['error'] != '' ) {
+        if ($resData['error'] != '') {
             return 102;
         } else {
             $credentials = $resData['email'];;
             $teacher = Teacher::where('email', $credentials)->first();;
-            if ( !empty($teacher) ) {
+            if (!empty($teacher)) {
                 $name = $teacher['name']; //.' '.$teacher['last_name'];
                 Session::put('teacher_session', array('teacher_id' => $teacher['id'], 'teacher_email' => $teacher['email'], 'teacher_name' => $name, 'teacher_phone' => $teacher['phone']));
 
