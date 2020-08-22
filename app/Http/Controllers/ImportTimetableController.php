@@ -329,6 +329,7 @@ class ImportTimetableController extends Controller
                     $error = '';
                     $rows = '';
                     $error_message = '';
+                    // dd($reader);
                     for ($i = 0; $i < 8; $i++) {
                         $j++;
                         $class_section_str = $reader_keys[0];
@@ -371,7 +372,8 @@ class ImportTimetableController extends Controller
                             $day_array = array("monday", "tuesday", "wednesday", "thursday", "friday", "saturday");
                             $teacher_subjects_arr = explode("/", $reader_values[$i]);
                             $teacher_name = isset($teacher_subjects_arr[0]) ? trim($teacher_subjects_arr[0]) : '';   // Teacher Name
-                            $subject_name = isset($teacher_subjects_arr[1]) ? trim($teacher_subjects_arr[1]) : '';     // subject_name
+                            $subject_name = isset($teacher_subjects_arr[1]) ? trim($teacher_subjects_arr[1]) : '';   
+                            // dd($teacher_name);  // subject_name
                             if (strtolower($teacher_name) != 'lunch') {
                                 if ($reader_keys[$i] == '') {
                                     Log::error('Day missing : ROW - ' . $period);
@@ -439,7 +441,7 @@ class ImportTimetableController extends Controller
                     return back()->with('error', Config::get('constants.WebMessageCode.120'));
                 }
 
-
+// dd($class_section_str);
                 if (count($period_array) > 0) {
                     $rows_period = '';
                     $error_msg = '';
@@ -643,10 +645,18 @@ class ImportTimetableController extends Controller
                             $teacher_id = 0;
                         }
 
-
+                        $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('class_day', $day)->where('from_timing', date("H:i:s", strtotime($start_time)))->get()->first();
+                        // dd($subject_id);
                         if (!$teacherTimeExist)         // check teacher availability
                         {
-                            if ($class_id > 0 && $subject_id > 0 && $error == '') {
+                            $studentClassExist = StudentClass::where('class_name', $class_name)->where('section_name', $section_name)->first();
+                            if(!$studentClassExist){
+                                Log::error('Teacher does not exist For ROW - ' . $period_name);
+                                $error = "found";
+                                $rows_period .= $period_name . ",";
+                                $error_msg = 'Teacher does not exist For ROW - ' . $period_name;
+                            }
+                            if ($error == '') {
                                 //Adding or updating timetable
                                 //$day = date("l",strtotime($day));
                                 $from_timing = date("H:i:s", strtotime($start_time));
@@ -654,12 +664,14 @@ class ImportTimetableController extends Controller
 
                                 // Class availability Check
 
-                                $studentTimingExist = ClassTiming::where('class_day', $day)->where('class_id', $class_id)->where('from_timing', $from_timing)->get()->first();
+                                $studentTimingExist = ClassTiming::where('class_day', $day)->where('from_timing', $from_timing)->get()->first();
 
-
+                                // dd($studentTimingExist);
                                 $lunch = 0;
                                 if ($teacher_id == 0) {
                                     $lunch = 1;
+                                    $class_id = $studentClassExist->id;
+                                    $subject_id = 0;
                                 }
 
                                 if ($studentTimingExist) {
@@ -885,7 +897,7 @@ class ImportTimetableController extends Controller
 									href='javascript:void(0)' onclick='editTimetable(" . $d->id . "," . json_encode($cc) . ")'><small>Edit</small></a>";
 
                     $html .= "<td>" . ($d->is_lunch == 1 ? "LUNCH" : $e) . "</td>";
-                    $htmla .= "<td>" . ($d->is_lunch == 1 ? "LUNCH" : $e) . $ed . "</td>";
+                    $htmla .= "<td>" . ($d->is_lunch == 1 ? "LUNCH" : $e . $ed) . "</td>";
                     //$html .= "<td>".$d->name."</td>";
                     $i++;
                 }
