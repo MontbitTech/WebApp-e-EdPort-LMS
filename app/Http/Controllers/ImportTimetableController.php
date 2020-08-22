@@ -481,12 +481,13 @@ class ImportTimetableController extends Controller
                             //$studentSubjectDetail->subject_name = $subject_name;
                             //$studentSubjectDetail->save();
                             $subject_id = $studentSubjectDetail->id;        //----------------------------Subject ID
-
+                            
 
                             $teacherExist = Teacher::where('name', $teacher_name)->first();
                             if ($teacherExist) {
                                 $user = $teacherExist;
                             } else {
+                               
                                 Log::error('Teacher does not exist For ROW - ' . $period_name);
                                 $error = "found";
                                 $rows_period .= $period_name . ",";
@@ -652,10 +653,10 @@ class ImportTimetableController extends Controller
                         {
                             $studentClassExist = StudentClass::where('class_name', $class_name)->where('section_name', $section_name)->first();
                             if(!$studentClassExist){
-                                Log::error('Teacher does not exist For ROW - ' . $period_name);
+                                Log::error('class does not exist For ROW - ' . $period_name);
                                 $error = "found";
                                 $rows_period .= $period_name . ",";
-                                $error_msg = 'Teacher does not exist For ROW - ' . $period_name;
+                                $error_msg = 'class does not exist For ROW - ' . $period_name;
                             }
                             if ($error == '') {
                                 //Adding or updating timetable
@@ -665,7 +666,7 @@ class ImportTimetableController extends Controller
 
                                 // Class availability Check
 
-                                $studentTimingExist = ClassTiming::where('class_day', $day)->where('from_timing', $from_timing)->get()->first();
+                                // $studentTimingExist = ClassTiming::where('class_day', $day)->where('from_timing', $from_timing)->get()->first();
 
                                 // dd($studentTimingExist);
                                 $lunch = 0;
@@ -675,13 +676,13 @@ class ImportTimetableController extends Controller
                                     $subject_id = 0;
                                 }
 
-                                if ($studentTimingExist) {
-                                    //$studentTimingDetail = $studentTimingExist;
-                                    Log::error('Class have already assigned lecture at selected time, for  ROW - ' . $period_name);
-                                    $error = "found";
-                                    $rows_period .= $period_name . ",";
-                                    $error_msg = 'Class have already assigned lecture at selected time, for  ROW - ' . $period_name;
-                                } else {
+                                // if ($studentTimingExist) {
+                                //     //$studentTimingDetail = $studentTimingExist;
+                                //     Log::error('Class have already assigned lecture at selected time, for  ROW - ' . $period_name);
+                                //     $error = "found";
+                                //     $rows_period .= $period_name . ",";
+                                //     $error_msg = 'Class have already assigned lecture at selected time, for  ROW - ' . $period_name;
+                                // } else {
                                     $studentTimingDetail = new ClassTiming;
                                     $studentTimingDetail->class_id = $class_id;
                                     $studentTimingDetail->subject_id = $subject_id;
@@ -710,7 +711,7 @@ class ImportTimetableController extends Controller
                                         $obj_dataClass->live_link = $g_live_link;
                                         $obj_dataClass->save();
                                     }
-                                }
+                                // }
                             } else {
                                 Log::error('Something went wrong while Creating time table for  ROW - ' . $period_name);
                                 $error = "found";
@@ -959,6 +960,7 @@ class ImportTimetableController extends Controller
         foreach ($timeTables as $timeTable) {
             $timeTable->delete();
         }
+
         return redirect()->back()->with('success', "Deleted Successfully");
     }
 
