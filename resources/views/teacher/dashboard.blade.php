@@ -29,8 +29,7 @@ $cls = 0;
                             Classes</a>
                     </li>
                     <li class="nav-item mb-1">
-                        <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assigned
-                            Class</a>
+                        <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assignment Submission Summary</a>
                     </li>
                     <!-- <li class="nav-item mb-1">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#upcomingclasses" role="tab">Future
@@ -587,7 +586,7 @@ $cls = 0;
                                             <th>Class</th>
                                             <th>Section</th>
                                             <th>Subject</th>
-                                            <th>Link</th>
+                                            <th>Submissions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -613,11 +612,11 @@ $cls = 0;
                                                 <td>{{ $cls }} Std</td>
                                                 <td>{{ $section_name }}</td>
                                                 <td>{{ $subject_name }}</td>
-                                                <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+                                                <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
                                                         <svg class="icon font-10 mr-1">
                                                             <use xlink:href="../images/icons.svg#icon_dot"></use>
                                                         </svg>
-                                                        Go To Classroom
+                                                        Check Submissions
                                                     </a></td>
                                             </tr>
 
