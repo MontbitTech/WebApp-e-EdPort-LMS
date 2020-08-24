@@ -77,7 +77,7 @@ class TeacherClassController extends Controller
             $response = CommonHelper::createAnnouncement($token, $class_name->g_class_id, json_encode($data));
             
             if(!$response['success']){
-                return back()->with('error', "The caller does not have permission");
+                return back()->with('error', $response['data']->message);
             }
               
              return back()->with('success', "Notification Send Successfully");
