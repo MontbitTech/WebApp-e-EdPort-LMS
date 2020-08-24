@@ -103,106 +103,153 @@ $cls = 0;
                             </div>
                             <div class="card-body p-0">
                                 <div class="row m-2">
-                                    <div class="col-md-9">
-                                        <div class="input-group text-editwrapper mt-1 mb-1">
-                                            <textarea class="form-control text-edit1" rows="3" placeholder="Add a note" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+
+                                    <div class="col-md-6 mt-1">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
+                                                    <option value="">Select Chapter</option>
+
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <?php
+                                                $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
+
+                                                //if($t->subject_id == 2)
+                                                //	dd($topics);
+
+                                                //dd($topics);
+                                                //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
+                                                $x = $t->cmsLink;
+                                                ?>
+                                                <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
+                                                    <option value="">Select Topic</option>
+                                                    @if(count($topics)>0)
+                                                    @foreach($topics as $topic)
+                                                    <?php $selected = ($topic->id == $t->topic_id) ? 'selected' : ''; ?>
+                                                    <option value="{{$topic->id}}" {{$selected}}>{{$topic->topic}}</option>
+                                                    @endforeach
+                                                    @endif
+                                                </select>
+                                            </div>
+                                            <div class="col-md-12">
+
+
+                                                <?php
+                                                $cms_link = '';
+                                                $youtube = '';
+                                                $academy = '';
+                                                $other = '';
+                                                if (strlen($x) > 0) {
+                                                    $display_style = 'display: block;';
+                                                    $cms_link = $x->link;
+                                                    $youtube = $x->youtube;
+                                                    $academy = $x->khan_academy;
+                                                    $other   = $x->others;
+                                                } else
+                                                    $display_style = 'display: none;';
+
+
+                                                if ($t->topic_id != '') {
+                                                    //  $display_style = 'display: block;';
+                                                }
+                                                if ($t->cmsLink) {
+                                                    // $cms_link = $t->cmsLink->link;
+                                                }
+
+
+                                                $cms_link = '';
+                                                if (strlen($x) > 0) {
+                                                    $display_style = 'display: block;';
+                                                    $cms_link = $x->link;
+                                                } else
+                                                    $display_style = 'display: none;';
+
+                                                ?>
+                                                <!--new changes -->
+                                                <div class="m-auto mt-2 pt-2" id="icon{{$t->id}}">
+                                                    <div class="row">
+
+                                                        @if($cms_link!=null)
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="w-100 d-inline-flex">
+                                                                <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="col-md-9 btn btn-outline-primary btn-shadow border-0 d-inline-flex d-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                                                    <!-- Edport Content -->
+                                                                    <img src="{{asset('images/logo-1.png')}}" class="m-1" alt="" width="25px" style="{{$display_style}}">
+                                                                    <span class="m-auto">e-Edport</span>
+                                                                </a>
+                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0">
+                                                                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        @endif
+
+                                                        @if($academy!=null)
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="w-100 d-inline-flex">
+                                                                <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" id="academy_{{$t->id}}" class="col-md-9 btn btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
+
+                                                                    <!-- My School -->
+                                                                    @foreach ($schoollogo as $logo)
+                                                                    @if($logo->item=="schoollogo")
+                                                                    <img src="{{$logo->value}}" class="m-1" alt="logo" width="25px" style="{{$display_style}}">
+
+                                                                    @endif
+                                                                    @endforeach
+                                                                    <span class="m-auto">Khan Academy</span>
+                                                                </a>
+
+                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0">
+                                                                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        @endif
+                                                        @if($youtube!=null)
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="w-100 d-inline-flex">
+                                                                <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" id="youtube_{{$t->id}}" class="col-md-9 btn btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
+
+                                                                    <i class="fa fa-youtube-play text-danger m-1 icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
+
+                                                                    <span class="m-auto">Youtube</span>
+                                                                </a>
+
+                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0">
+                                                                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        @endif
+
+                                                        @if($other!=null)
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="w-100 d-inline-flex">
+                                                                <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" id="wikipedia_{{$t->id}}" class="col-md-9 btn btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
+
+                                                                    <i class="fa fa-wikipedia-w  text-dark m-1 icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
+
+                                                                    <span class="m-auto">Wikepedia</span>
+                                                                </a>
+
+                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0">
+                                                                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        @endif
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 mt-1">
-                                        <?php
-                                        $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
-
-                                        //if($t->subject_id == 2)
-                                        //	dd($topics);
-
-                                        //dd($topics);
-                                        //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
-                                        $x = $t->cmsLink;
-                                        ?>
-                                        <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
-                                            <option value="">Select Topic</option>
-                                            @if(count($topics)>0)
-                                            @foreach($topics as $topic)
-                                            <?php $selected = ($topic->id == $t->topic_id) ? 'selected' : ''; ?>
-                                            <option value="{{$topic->id}}" {{$selected}}>{{$topic->topic}}</option>
-                                            @endforeach
-                                            @endif
-                                        </select>
-                                        </select>
-
-                                        <?php
-                                        $cms_link = '';
-                                        $youtube = '';
-                                        $academy = '';
-                                        $other = '';
-                                        if (strlen($x) > 0) {
-                                            $display_style = 'display: block;';
-                                            $cms_link = $x->link;
-                                            $youtube = $x->youtube;
-                                            $academy = $x->khan_academy;
-                                            $other   = $x->others;
-                                        } else
-                                            $display_style = 'display: none;';
-
-
-                                        if ($t->topic_id != '') {
-                                            //  $display_style = 'display: block;';
-                                        }
-                                        if ($t->cmsLink) {
-                                            // $cms_link = $t->cmsLink->link;
-                                        }
-
-
-                                        $cms_link = '';
-                                        if (strlen($x) > 0) {
-                                            $display_style = 'display: block;';
-                                            $cms_link = $x->link;
-                                        } else
-                                            $display_style = 'display: none;';
-
-                                        ?>
-                                        <!--new changes -->
-                                        <div class="m-auto mt-2 pt-2" id="icon{{$t->id}}">
-                                            <div class="row">
-
-                                                @if($cms_link!=null)
-                                                <div class="col-5  yy1  mt-1">
-                                                    <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-3  text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
-                                                        <!-- Edport Content -->
-                                                        <img src="{{asset('images/logo-1.png')}}" alt="" width="45px" style="{{$display_style}}">
-                                                    </a>
-                                                </div>
-                                                @endif
-
-                                                @if($academy!=null)
-                                                <div class="col-5 yy1  mt-1">
-                                                    <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline   text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
-                                                        <!-- My School -->
-                                                        <img src="{{$schoollogo['schoollogo']->value}}" alt="" width="45px" style="{{$display_style}}">
-
-                                                    </a>
-                                                </div>
-                                                @endif
-                                                @if($youtube!=null)
-                                                <div class="col-5   ml-1 mt-1 align-middle ">
-                                                    <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline text-decoration-none yy d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
-                                                        <!-- Youtube -->
-                                                        <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true" style="{{$display_style}}; "></i>
-                                                    </a>
-                                                </div>
-                                                @endif
-
-                                                @if($other!=null)
-                                                <div class="col-5 mt-1 ">
-                                                    <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
-                                                        <!-- Wikipedia -->
-                                                        <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true" style="{{$display_style}};font-size: 27px; "></i>
-                                                    </a>
-                                                </div>
-                                                @endif
-
-
-                                            </div>
+                                    <div class="col-md-6">
+                                        <div class="input-group text-editwrapper mt-1 mb-1">
+                                            <textarea class="form-control text-edit1" rows="5" placeholder="Add a note" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -217,7 +264,7 @@ $cls = 0;
                                             Join Live
                                         </a>
 
-                                         <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notify="{{$i}}">
+                                        <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notify="{{$i}}">
                                             <svg class="icon mr-1">
                                                 <use xlink:href="../images/icons.svg#icon_bell"></use>
                                             </svg>
@@ -970,12 +1017,12 @@ $cls = 0;
                 <input type="hidden" id="data_class_id" value="" name="class_id" />
                 <input type="hidden" id="data_gmeet_url" value="" name="gmeet_url" />
 
-               
+
                 <div class="form-group row">
                     <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student:
-                       </label>
-                    <div >
-                       {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+                    </label>
+                    <div>
+                        {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
 
                     </div>
@@ -1060,24 +1107,23 @@ $cls = 0;
     });
 
     $('#submit').click(function() {
-      var valuestart = $("#addClassStartTime").val();
+        var valuestart = $("#addClassStartTime").val();
         var valueend = $("#addClassEndTime").val();
-       var timeStart = new Date("01/01/2007 " + valuestart);
-       var timeEnd = new Date("01/01/2007 " + valueend);
+        var timeStart = new Date("01/01/2007 " + valuestart);
+        var timeEnd = new Date("01/01/2007 " + valueend);
 
-       var diff = (timeEnd - timeStart) / 60000; //dividing by seconds and milliseconds
-       var minutes = diff % 60;
-       var hours = (diff - minutes) / 60;
-       if(timeStart>=timeEnd){
-        var response = confirm("Class end-time can't be before/equal to class start-time.");
-       }
-       else{
-            var response = confirm("You have set class duration of "+hours+" hours and "+minutes+" minute");
-        }   
-        if(response){
+        var diff = (timeEnd - timeStart) / 60000; //dividing by seconds and milliseconds
+        var minutes = diff % 60;
+        var hours = (diff - minutes) / 60;
+        if (timeStart >= timeEnd) {
+            var response = confirm("Class end-time can't be before/equal to class start-time.");
+        } else {
+            var response = confirm("You have set class duration of " + hours + " hours and " + minutes + " minute");
+        }
+        if (response) {
             $('#frm_add_class').unbind('submit').submit();
-        }else{
-            $('#frm_add_class').submit(function(){
+        } else {
+            $('#frm_add_class').submit(function() {
                 return false;
             });
         }
@@ -1324,9 +1370,9 @@ $cls = 0;
         });
     }
     $(document).on('click', '#assignment_create', (function() {
-        $('#assignment_create').prop('disabled',true);
-        $('#attach_file').prop('disabled',true);
-        $('#cancel_assignment').prop('disabled',true);
+        $('#assignment_create').prop('disabled', true);
+        $('#attach_file').prop('disabled', true);
+        $('#cancel_assignment').prop('disabled', true);
         var id = $("#row_id").val();
         var class_id = $('#ass_class_id').val();
         var subject_id = $('#ass_subject_id').val();
@@ -1352,9 +1398,9 @@ $cls = 0;
                 subject_id: subject_id,
                 teacher_id: teacher_id,
                 dateClass_id: dateClass_id,
-                dueDate:dueDate,
-                dueTime:dueTime,
-                point:point
+                dueDate: dueDate,
+                dueTime: dueTime,
+                point: point
 
             },
             headers: {
@@ -1376,9 +1422,9 @@ $cls = 0;
         });
     }));
     $(document).on('click', '#attach_file', (function() {
-        $('#assignment_create').prop('disabled',true);
-        $('#attach_file').prop('disabled',true);
-        $('#cancel_assignment').prop('disabled',true);
+        $('#assignment_create').prop('disabled', true);
+        $('#attach_file').prop('disabled', true);
+        $('#cancel_assignment').prop('disabled', true);
         var id = $("#row_id").val();
         var class_id = $('#ass_class_id').val();
         var subject_id = $('#ass_subject_id').val();
@@ -1404,9 +1450,9 @@ $cls = 0;
                 subject_id: subject_id,
                 teacher_id: teacher_id,
                 dateClass_id: dateClass_id,
-                dueDate:dueDate,
-                dueTime:dueTime,
-                point:point
+                dueDate: dueDate,
+                dueTime: dueTime,
+                point: point
 
             },
             headers: {
@@ -1565,7 +1611,7 @@ $cls = 0;
 
 
 
-$(document).on('click', '[data-notify]', function() {
+    $(document).on('click', '[data-notify]', function() {
         var val = $(this).data('notify');
         $('#notifyModal').modal('show');
         $("#date_class_id").val($("#dateClass_id" + val).val());
@@ -1576,7 +1622,7 @@ $(document).on('click', '[data-notify]', function() {
     });
 
 
-$("#frm_class_notify").on('submit', (function(e) {
+    $("#frm_class_notify").on('submit', (function(e) {
         // e.preventDefault();
         var dateClass_id = $("#date_class_id").val();
         var subject_id = $("#data_subject_id").val();
@@ -1591,7 +1637,7 @@ $("#frm_class_notify").on('submit', (function(e) {
                 subject_id: subject_id,
                 class_id: class_id,
                 gmeet_url: gmeet_url,
-                notificationMsg:notificationMsg
+                notificationMsg: notificationMsg
             },
             contentType: false,
             cache: false,
