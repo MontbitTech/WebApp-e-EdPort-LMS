@@ -4,7 +4,18 @@
 <?php
 $cls = 0;
 ?>
+<style>
+    .yy {
+        font-size: 27px !important;
+        line-height: 0px;
 
+
+    }
+
+    .yy1 {
+        padding-left: 43px !important;
+    }
+</style>
 <section class="main-section">
     <div class="container">
         <div class="row justify-content-center">
@@ -18,8 +29,7 @@ $cls = 0;
                             Classes</a>
                     </li>
                     <li class="nav-item mb-1">
-                        <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assigned
-                            Class</a>
+                        <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assignment Submission Summary</a>
                     </li>
                     <!-- <li class="nav-item mb-1">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#upcomingclasses" role="tab">Future
@@ -156,45 +166,42 @@ $cls = 0;
                                             <div class="row">
 
                                                 @if($cms_link!=null)
-                                                <div class="col-2">
-                                                    <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                                <div class="col-5  yy1  mt-1">
+                                                    <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="d-inline mr-3  text-decoration-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                         <!-- Edport Content -->
-                                                        <img src="{{asset('images/logo-1.png')}}" alt="" width="27px" style="{{$display_style}}">
-                                                    </a>
-                                                </div>
-                                                @endif
-
-                                                @if($youtube!=null)
-                                                <div class="col-2">
-                                                    <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
-                                                        <!-- Youtube -->
-                                                        <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
-                                                    </a>
-                                                </div>
-                                                @endif
-
-                                                @if($other!=null)
-                                                <div class="col-2">
-                                                    <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
-                                                        <!-- Wikipedia -->
-                                                        <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
+                                                        <img src="{{asset('images/logo-1.png')}}" alt="" width="45px" style="{{$display_style}}">
                                                     </a>
                                                 </div>
                                                 @endif
 
                                                 @if($academy!=null)
-                                                <div class="col-2">
-                                                    <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline p-0 m-0 text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
+                                                <div class="col-5 yy1  mt-1">
+                                                    <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" class="d-inline   text-decoration-none" id="academy_{{$t->id}}" style="{{$display_style}}">
                                                         <!-- My School -->
-                                                        @foreach ($schoollogo as $logo)
-                                                        @if($logo->item=="schoollogo")
-                                                        <img src="{{$logo->value}}" alt="logo" width="27px" style="{{$display_style}}">
+                                                        <img src="{{$schoollogo['schoollogo']->value}}" alt="" width="45px" style="{{$display_style}}">
 
-                                                        @endif
-                                                        @endforeach
                                                     </a>
                                                 </div>
                                                 @endif
+                                                @if($youtube!=null)
+                                                <div class="col-5   ml-1 mt-1 align-middle ">
+                                                    <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" class="d-inline text-decoration-none yy d-none" id="youtube_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Youtube -->
+                                                        <i class="fa fa-youtube-play text-danger icon-4x" aria-hidden="true" style="{{$display_style}}; "></i>
+                                                    </a>
+                                                </div>
+                                                @endif
+
+                                                @if($other!=null)
+                                                <div class="col-5 mt-1 ">
+                                                    <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" class="d-inline mr-2 ml-0 text-decoration-none" id="wikipedia_{{$t->id}}" style="{{$display_style}}">
+                                                        <!-- Wikipedia -->
+                                                        <i class="fa fa-wikipedia-w text-dark icon-4x" aria-hidden="true" style="{{$display_style}};font-size: 27px; "></i>
+                                                    </a>
+                                                </div>
+                                                @endif
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -210,7 +217,7 @@ $cls = 0;
                                             Join Live
                                         </a>
 
-                                        <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notifyMe="{{$i}}" data-id="notify_student" id="notifyurl_{{$i}}">
+                                         <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notify="{{$i}}">
                                             <svg class="icon mr-1">
                                                 <use xlink:href="../images/icons.svg#icon_bell"></use>
                                             </svg>
@@ -243,7 +250,7 @@ $cls = 0;
                                         <button onclick="viewAssignment({{$t->id}})" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
                                         @else
 
-                                        <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">no Assigment</button>
+                                        <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">No Assigment</button>
 
                                         @endif
                                     </div>
@@ -345,12 +352,12 @@ $cls = 0;
 
                             <div class="d-flex justify-content-between flex-wrap py-2">
                                 <div>
-                                    <a href="javascript:void(0);" data-pastLiveLink="{{ $t->recording_url }}" id="past_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+                                    <!-- <a href="javascript:void(0);" data-pastLiveLink="{{ $t->recording_url }}" id="past_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
                                         <svg class="icon font-10 mr-1">
                                             <use xlink:href="../images/icons.svg#icon_eye"></use>
                                         </svg>
                                         View Recording
-                                    </a>
+                                    </a> -->
 
                                     <?php
                                     $assignmentDataOfPastLiveClasses = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
@@ -389,12 +396,12 @@ $cls = 0;
                                     <!--	  <button type="button" data-classhelp="{{$i}}" class="btn btn-sm btn-outline-info mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help"><svg class="icon mr-1"><use xlink:href="../images/icons.svg#icon_help"></use></svg>
 							Help 
 						  </button>-->
-                                    <button type="button" data-pasteditModal="{{$i}}" class="btn btn-sm btn-outline-secondary mb-1 border-0 btn-shadow" title="Edit">
+                                    <!-- <button type="button" data-pasteditModal="{{$i}}" class="btn btn-sm btn-outline-secondary mb-1 border-0 btn-shadow" title="Edit">
                                         <svg class="icon mr-1">
                                             <use xlink:href="../images/icons.svg#icon_edit"></use>
                                         </svg>
                                         Edit
-                                    </button>
+                                    </button> -->
                                 </div>
                             </div>
 
@@ -579,7 +586,7 @@ $cls = 0;
                                             <th>Class</th>
                                             <th>Section</th>
                                             <th>Subject</th>
-                                            <th>Link</th>
+                                            <th>Submissions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -605,11 +612,11 @@ $cls = 0;
                                                 <td>{{ $cls }} Std</td>
                                                 <td>{{ $section_name }}</td>
                                                 <td>{{ $subject_name }}</td>
-                                                <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+                                                <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
                                                         <svg class="icon font-10 mr-1">
                                                             <use xlink:href="../images/icons.svg#icon_dot"></use>
                                                         </svg>
-                                                        Go To Classroom
+                                                        Check Submissions
                                                     </a></td>
                                             </tr>
 
@@ -689,11 +696,32 @@ $cls = 0;
                             <input type="text" class="form-control" name="txt_aTitle" id="txt_aTitle" placeholder="Assigment Title">
                         </div>
                     </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="txt_aTitle" class="col-form-label text-md-left"> Due Date:</label>
+                        <div>
+                            <input type="date" class="form-control" name="txt_due_date" id="txt_due_date" placeholder="Due Date">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="txt_aTitle" class="col-form-label text-md-left"> Due Time:</label>
+                        <div>
+                            <input type="text" class="form-control due-time" name="txt_due_time" id="txt_due_time" placeholder="Due Time">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="txt_aTitle" class="col-form-label text-md-left"> Point:</label>
+                        <div>
+                            <input type="number" class="form-control" name="txt_point" id="txt_point" placeholder="Point">
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-md-8 offset-md-4">
-                        <button type="button" id="assignment_create" class="btn btn-primary px-4">Next</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <div class="col-md-12" style="text-align: center;">
+                        <button type="button" id="assignment_create" class="btn btn-primary px-4">Create</button>
+                        <button type="button" id="attach_file" class="btn btn-primary px-4">Create and Attach File</button>
+                        <button type="button" id="cancel_assignment" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
                 <p style="font-size: smaller;color: red;text-align: center;">Note: Please allow popup for the assignment functionality.</p>
@@ -852,7 +880,7 @@ $cls = 0;
             </div>
             <div class="form-group row">
                 <div class="col-md-8 offset-md-4">
-                    <button type="submit" class="btn btn-primary px-4">Save Class</button>
+                    <button type="submit" id="submit" class="btn btn-primary px-4">Save Class</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -917,6 +945,52 @@ $cls = 0;
     </div>
 </div>
 <!-- End -->
+
+
+
+
+<div class="modal fade" id="notifyModal" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-light d-flex align-items-center">
+                <h5 class="modal-title font-weight-bold">Notify Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <svg class="icon">
+                        <use xlink:href="../images/icons.svg#icon_times2"></use>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body pt-4">
+
+                {!! Form::open(array('route' => ['student-notify'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_class_notify')) !!}
+
+
+                <input type="hidden" id="date_class_id" value="" name="dateClass_id" />
+                <input type="hidden" id="data_subject_id" value="" name="subject_id" />
+                <input type="hidden" id="data_class_id" value="" name="class_id" />
+                <input type="hidden" id="data_gmeet_url" value="" name="gmeet_url" />
+
+               
+                <div class="form-group row">
+                    <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student:
+                       </label>
+                    <div >
+                       {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-8 offset-md-4">
+                        <button type="submit" class="btn btn-primary px-4">Notify</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Past Edit Class Modal -->
 <div class="modal fade" id="pasteditClassModal" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
@@ -936,12 +1010,12 @@ $cls = 0;
                     <input type="hidden" id="txt_past_datecalss_id" value="" name="txt_past_datecalss_id" />
                     <input type="hidden" id="txt_boxID" value="" name="txt_boxID" />
 
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <label for="inputDesc" class="col-md-4 col-form-label text-md-right">Description:</label>
                         <div class="col-md-6">
                             {!! Form::textarea('past_edit_description', null, array('id'=>'past_edit_description','placeholder' => 'Class Description','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group row">
                         <label for="class_liveurl" class="col-md-4 col-form-label text-md-right"> Recording URL
                             <small>(Link)</small>:</label>
@@ -978,7 +1052,37 @@ $cls = 0;
             timeFormat: 'hh:mm tt'
         });
 
+        $('.due-time').timepicker({
+            controlType: 'select',
+            oneLine: true,
+            timeFormat: 'hh:mm tt'
+        });
     });
+
+    $('#submit').click(function() {
+      var valuestart = $("#addClassStartTime").val();
+        var valueend = $("#addClassEndTime").val();
+       var timeStart = new Date("01/01/2007 " + valuestart);
+       var timeEnd = new Date("01/01/2007 " + valueend);
+
+       var diff = (timeEnd - timeStart) / 60000; //dividing by seconds and milliseconds
+       var minutes = diff % 60;
+       var hours = (diff - minutes) / 60;
+       if(timeStart>=timeEnd){
+        var response = confirm("Class end-time can't be before/equal to class start-time.");
+       }
+       else{
+            var response = confirm("You have set class duration of "+hours+" hours and "+minutes+" minute");
+        }   
+        if(response){
+            $('#frm_add_class').unbind('submit').submit();
+        }else{
+            $('#frm_add_class').submit(function(){
+                return false;
+            });
+        }
+    });
+
     $(document).on('click', '[data-LiveLink]', function() {
         var liveurl = $(this).attr("data-LiveLink");
         if (liveurl != '') {
@@ -1220,6 +1324,9 @@ $cls = 0;
         });
     }
     $(document).on('click', '#assignment_create', (function() {
+        $('#assignment_create').prop('disabled',true);
+        $('#attach_file').prop('disabled',true);
+        $('#cancel_assignment').prop('disabled',true);
         var id = $("#row_id").val();
         var class_id = $('#ass_class_id').val();
         var subject_id = $('#ass_subject_id').val();
@@ -1229,6 +1336,9 @@ $cls = 0;
         var txt_topic_name = $('#txt_topin_name').val();
         var sel_topic_name = $('#sel_topic').val();
         var assignment_title = $('#txt_aTitle').val();
+        var dueDate = $('#txt_due_date').val();
+        var dueTime = $('#txt_due_time').val();
+        var point = $('#txt_point').val();
         var dateClass_id = $('#new_assignment').val();
         $.ajax({
             url: "{{url('create-assignment')}}",
@@ -1241,7 +1351,63 @@ $cls = 0;
                 class_id: class_id,
                 subject_id: subject_id,
                 teacher_id: teacher_id,
-                dateClass_id: dateClass_id
+                dateClass_id: dateClass_id,
+                dueDate:dueDate,
+                dueTime:dueTime,
+                point:point
+
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                var response = JSON.parse(result);
+                if (response.status == 'success') {
+                    $.fn.notifyMe('success', 5, response.message);
+                    $('#createAssiModal').modal('hide');
+                    var data = '<option value="' + response.cource_url + '">' + assignment_title + '</option>';
+                    $('#view_a_link_' + id).append(data);
+                    location.reload();
+                } else {
+                    $.fn.notifyMe('error', 5, response.message);
+                    location.reload();
+                }
+            }
+        });
+    }));
+    $(document).on('click', '#attach_file', (function() {
+        $('#assignment_create').prop('disabled',true);
+        $('#attach_file').prop('disabled',true);
+        $('#cancel_assignment').prop('disabled',true);
+        var id = $("#row_id").val();
+        var class_id = $('#ass_class_id').val();
+        var subject_id = $('#ass_subject_id').val();
+        var teacher_id = $('#ass_teacher_id').val();
+        //var timing_id = $('[data-createmodal="'+id+'"]').data('timing_modal');
+        var g_class_id = $('#g_class_id').val();
+        var txt_topic_name = $('#txt_topin_name').val();
+        var sel_topic_name = $('#sel_topic').val();
+        var assignment_title = $('#txt_aTitle').val();
+        var dueDate = $('#txt_due_date').val();
+        var dueTime = $('#txt_due_time').val();
+        var point = $('#txt_point').val();
+        var dateClass_id = $('#new_assignment').val();
+        $.ajax({
+            url: "{{url('create-assignment')}}",
+            type: "POST",
+            data: {
+                g_class_id: g_class_id,
+                txt_topic_name: txt_topic_name,
+                sel_topic_name: sel_topic_name,
+                assignment_title: assignment_title,
+                class_id: class_id,
+                subject_id: subject_id,
+                teacher_id: teacher_id,
+                dateClass_id: dateClass_id,
+                dueDate:dueDate,
+                dueTime:dueTime,
+                point:point
+
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1254,8 +1420,10 @@ $cls = 0;
                     window.open(response.cource_url, "title", "dialogWidth:400px;dialogHeight:300px");
                     var data = '<option value="' + response.cource_url + '">' + assignment_title + '</option>';
                     $('#view_a_link_' + id).append(data);
+                    location.reload();
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
+                    location.reload();
                 }
             }
         });
@@ -1379,6 +1547,62 @@ $cls = 0;
                 if (response.status == 'success') {
                     $("#liveurl_" + dateClass_id).attr("data-livelink", join_liveUrl);
                     $('#editClassModal').modal('hide');
+                    $.fn.notifyMe('success', 5, response.message);
+                } else {
+                    $.fn.notifyMe('error', 5, response.message);
+                }
+            },
+            error: function(error_r) {
+                var obj = JSON.parse(error_r.responseText);
+                console.log(obj);
+                $.each(obj.errors, function(key, value) {
+                    $.fn.notifyMe('error', 5, value);
+                });
+            }
+        });
+    }));
+
+
+
+
+$(document).on('click', '[data-notify]', function() {
+        var val = $(this).data('notify');
+        $('#notifyModal').modal('show');
+        $("#date_class_id").val($("#dateClass_id" + val).val());
+        $("#data_subject_id").val($("#txt_subject_id" + val).val());
+        $("#data_class_id").val($("#txt_class_id" + val).val());
+        $("#data_gmeet_url").val($("#txt_gMeetURL" + val).val());
+
+    });
+
+
+$("#frm_class_notify").on('submit', (function(e) {
+        // e.preventDefault();
+        var dateClass_id = $("#date_class_id").val();
+        var subject_id = $("#data_subject_id").val();
+        var class_id = $("#data_class_id").val();
+        var gmeet_url = $("#data_gmeet_url").val();
+        //alert(class_id);
+        $.ajax({
+            url: "{{url('student-notify')}}",
+            type: "POST",
+            data: {
+                dateClass_id: dateClass_id,
+                subject_id: subject_id,
+                class_id: class_id,
+                gmeet_url: gmeet_url,
+                notificationMsg:notificationMsg
+            },
+            contentType: false,
+            cache: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                var response = JSON.parse(result);
+                //console.log(response.data);
+                if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
                 } else {
                     $.fn.notifyMe('error', 5, response.message);

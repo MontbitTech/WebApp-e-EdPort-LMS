@@ -49,6 +49,12 @@ class CommonHelper
 
     }
 
+    public static function get_exam_assignment_data ($g_class_id)
+    {
+        $assignmentData = \DB::select('select tbl_classwork.g_live_link,tbl_classwork.g_title,tbl_classwork.id from tbl_classwork_dateclass JOIN tbl_classwork ON tbl_classwork_dateclass.classwork_id=tbl_classwork.id where tbl_classwork.g_class_id =' . $g_class_id);
+        return $assignmentData;
+    }
+
     public static function send_sms ($number, $message)
     {
         $apiKey = env( 'TEXTLOCAL_APIKEY' );

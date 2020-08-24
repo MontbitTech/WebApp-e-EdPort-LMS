@@ -16,7 +16,8 @@ use App\ClassWork;
 use App\ClassTiming;
 use App\DateClass;
 use Validator;
-
+use DateTime;
+use DateTimeZone;
 class ClassWorkController extends Controller
 {
     /**
@@ -36,7 +37,6 @@ class ClassWorkController extends Controller
         $logged_teacher = Session::get('teacher_session');
         $logged_teacher_id = $logged_teacher['teacher_id'];
 
-
         $class_list = ClassTiming::with('studentClass', 'studentSubject')->where('teacher_id', $logged_teacher_id)->get();
 
         $links = array();
@@ -45,7 +45,7 @@ class ClassWorkController extends Controller
 
             $links[ $value->class_id ][ $value->subject_id ]['id'] = ( !empty($assignment) ) ? $assignment->id : '';
             $links[ $value->class_id ][ $value->subject_id ]['g_live_link'] = ( !empty($assignment) ) ? $assignment->g_live_link : '';
-            // $links[$value->class_id][$value->subject_id]['g_class_id'] = (!empty($assignment))? $assignment->g_class_id:'';
+            //$links[$value->class_id][$value->subject_id]['g_class_id'] = (!empty($assignment))? $assignment->g_class_id:'';
 
         }
 
@@ -53,7 +53,7 @@ class ClassWorkController extends Controller
 
         $helpCategories = HelpTicketCategory::get();
 
-        return view('teacher.assignment.index', compact('class_list', 'links', 'cmsclass', 'helpCategories'));
+        return view('teacher.assignment.index', compact('class_list', 'links', 'cmsclass', 'helpCategories','assignment'));
     }
 
     public function ajaxLinks (Request $request)
@@ -128,8 +128,10 @@ class ClassWorkController extends Controller
         $sel_topic_id = $request->sel_topic_name;
         $title = $request->assignment_title;
         $dateClass_id = $request->dateClass_id;
-
         $g_topic_id = '';
+        // $g_due_date =$request->dueDate;
+        $g_points = $request->point;
+
 
         if ( $topic_name == '' && $sel_topic_id == '' ) {
             return json_encode(array('status' => 'error', 'message' => 'Topic Name Required.'));
@@ -149,6 +151,7 @@ class ClassWorkController extends Controller
             $topicExists = ClassTopic::where('id', $topic_id)->get()->first();
             $g_topic_id = $topicExists->g_topic_id;
         }
+        
         if ( $topic_name != '' && $sel_topic_id == '' ) {
             $data = array("name" => $topic_name);
             $data = json_encode($data);
@@ -183,13 +186,28 @@ class ClassWorkController extends Controller
             }
         }
 
+        $dueDate = array(
+            "year"  => date('Y', strtotime($request->dueDate)),
+            "month" => date('m', strtotime($request->dueDate)),
+            "day"  => date('d', strtotime($request->dueDate))
+        );
 
+        $dueTime = array(
+            "hours"=>date("H",strtotime(DateUtility::getTime(strtotime($request->dueTime)))),
+            "minutes"=>date("i",strtotime(DateUtility::getTime(strtotime($request->dueTime)))),
+            "seconds"=>date("s",strtotime(DateUtility::getTime(strtotime($request->dueTime)))),
+        );
+        // return json_encode(array('status' => 'error', 'message' =>$dueTime['minutes']));
         $array_data = array(
             "title"       => $title,
             "workType"    => "ASSIGNMENT",
             "state"       => "PUBLISHED",
             "topicId"     => $g_topic_id,
+            "dueDate"     => $dueDate,
+            "dueTime"     => $dueTime,
+            "maxPoints"   =>  $g_points,
             "description" => "Open 3 dots in right side and click edit",
+
         );
 
         $array_data = json_encode($array_data);
@@ -198,6 +216,7 @@ class ClassWorkController extends Controller
         $w_resData = array('error' => '');
 
         if ( $work_response == 101 ) {
+            Log::info($work_response);
             return json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.119')));
         } else {
             $w_resData = array_merge($w_resData, json_decode($work_response, true));
@@ -207,6 +226,7 @@ class ClassWorkController extends Controller
                 if ( $w_resData['error']['status'] == 'UNAUTHENTICATED' ) {
                     return redirect()->route('teacher.logout');
                 } else {
+                    Log::error($w_resData['error']['message']);
                     return json_encode(array('status' => 'error', 'message' => $w_resData['error']['message']));
                 }
             } else {
@@ -243,7 +263,7 @@ class ClassWorkController extends Controller
                 }
 
 
-                return json_encode(array('status' => 'success', 'cource_url' => $cource_url, 'message' => Config::get('constants.WebMessageCode.127')));
+                return json_encode(array('status' => 'success', 'cource_url' => $cource_url, 'message' => 'Assigment Created Successfully'));
             }
         }
     }
@@ -392,8 +412,13 @@ class ClassWorkController extends Controller
 
     public function getClassAssignments (Request $request)
     {
-        $assignments = CommonHelper::get_assignment_data($request->class_id);
-
+        $assignments = CommonHelper::get_assignment_data($request->class_id); 
         return json_encode(array('status' => 'success', 'data' => $assignments));
     }
+
+     public function getExamAssignments (Request $request)
+     {
+        $assignments = CommonHelper::get_exam_assignment_data($request->class_id); 
+        return json_encode(array('status' => 'success', 'data' => $assignments));
+      }
 }

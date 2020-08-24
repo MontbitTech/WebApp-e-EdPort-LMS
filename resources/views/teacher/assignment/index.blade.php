@@ -61,29 +61,18 @@
                       </svg> New Assignment
                     </a>
                     <!-- <ul class="dropdown-menu">data-toggle="dropdown"
-				  	<a class="dropdown-item" href="#">Profile</a>
-				  	<a class="dropdown-item" href="#">Change Password</a>
-				</ul> -->
-                    @if ($links[$list->class_id][$list->subject_id]['id'] != '')
-                    <a href="javascript:void(0);" data-oldlink="{{$links[$list->class_id][$list->subject_id]['g_live_link']}}" id="old_a_link_{{$i}}" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">
-                      <svg class="icon icon-2x mr-1">
-                        <use xlink:href="../images/icons.svg#icon_eye"></use>
-                      </svg> View Given Assignments
-                    </a>
-                  </div>
-                  <div>
-                    <a href="javascript:" data-editlink="{{$links[$list->class_id][$list->subject_id]['g_live_link']}}" class="btn btn-sm btn-outline-secondary mb-1 border-0 btn-shadow" title="Edit">
-                      <svg class="icon mr-1">
-                        <use xlink:href="../images/icons.svg#icon_edit"></use>
-                      </svg> Edit
-                    </a>
-
+                          <a class="dropdown-item" href="#">Profile</a>
+                          <a class="dropdown-item" href="#">Change Password</a>
+                      </ul> -->
+                    <?php
+                    $assignmentData = App\Http\Helpers\CommonHelper::get_exam_assignment_data($g_class_id);
+                    ?>
+                    @if (count($assignmentData) > 0)
+                    <button onclick="viewAssignment('{{$g_class_id}}')" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
                     @else
-                    <a href="javascript:void(0);" class="btn btn-sm btn-outline-danger mb-1 mr-2 border-0 btn-shadow">
-                      <svg class="icon icon-2x mr-1">
-                        <use xlink:href="../images/icons.svg#icon_eye"></use>
-                      </svg> No Assignments
-                    </a>
+
+                    <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">No Assigment</button>
+
                     @endif
 
                   </div>
@@ -204,7 +193,39 @@
   </div>
 </div>
 <!-- ./New Assignment Modal -->
+<!-- ./New Assignment Modal -->
+<div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title font-weight-bold">View Assignment </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pt-4">
 
+
+        <table id="assignmentList" class="table table-hover btn-shadow table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+          <thead class="text-white" style="background:#253372;">
+            <tr>
+
+              <th>Assignment Name</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ./View Assignment Modal -->
 <!-- Open Live link in modal  -->
 <div class="modal fade" id="viewClassModal" data-backdrop="static" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-xl" role="document">
@@ -603,5 +624,47 @@
         $('.asg1').prop("value", "");
       });
   });
+</script>
+<script>
+  $(document).on('click', '[data-viewAssignment]', function() {
+    var liveurl = $(this).attr("data-viewAssignment");
+    if (liveurl != '') {
+      //$('#viewClassModal').modal('show');
+      //$("#thedialog").attr('src','https://google.com');
+      window.open(liveurl, "dialog name", "dialogWidth:400px;dialogHeight:300px");
+    } else {
+      alert('No assignement url found!');
+    }
+  });
+
+  function viewAssignment(id) {
+
+    $.ajax({
+      type: 'POST',
+      url: '{{ url("/teacher/class/examassignments") }}',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: {
+        'class_id': id,
+      },
+      success: function(result) {
+        var response = JSON.parse(result);
+        let data = '';
+        response.data.forEach(function(classAssignment) {
+          $('#assignmentList').find('tbody').find('tr').remove();
+          data += '<tr>';
+          data += '<td>' + classAssignment.g_title + '</td>';
+          data += '<td><a href="' + classAssignment.g_live_link + '" class="text-decoration-none" target="_blank">Link</a></td>';
+          data += '</tr>';
+
+          $('#assignmentList').find('tbody').append(data);
+        });
+      },
+      error: function() {
+        $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
+      }
+    });
+  }
 </script>
 @endsection

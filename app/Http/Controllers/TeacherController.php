@@ -56,8 +56,8 @@ class TeacherController extends Controller
                 //'lname.alpha_num'=>'The Last name may only contain letters and numbers.',
 
             ]);
-            
-            if ( Teacher::count() >= env('TEACHER_UPPERCAP') ) {
+
+            if ( Teacher::count() >= config('app.teacher_uppercap') ) {
                 return back()->with('error','Maximum limit of ' . env('TEACHER_UPPERCAP') . 'teacher reached.
                         Contact administrator for extending limit');
             }
@@ -77,8 +77,6 @@ class TeacherController extends Controller
 
             $responce = CommonHelper::create_new_user($token, $data);  // access Google api craete user
             $resData = array('error' => '');
-
-            //dd($responce);
 
             if ( $responce == 101 ) {
                 return back()->with('error', Config::get('constants.WebMessageCode.119'));
@@ -342,7 +340,7 @@ class TeacherController extends Controller
 
 
                 foreach ( $collection as $key => $reader ) {
-                    if ( Teacher::count() >= env('TEACHER_UPPERCAP') ) {
+                    if ( Teacher::count() >= config('app.teacher_uppercap') ) {
                         return back()->with('error',
                             'Maximum limit of ' . env('TEACHER_UPPERCAP') . 'teacher reached.
                                 Contact administrator for extending limit');
@@ -494,11 +492,8 @@ class TeacherController extends Controller
 
 
                                     Log::error(Config::get('constants.WebMessageCode.100') . " : ROW - " . $i);
-                                    //return back()->with('success',Config::get('constants.WebMessageCode.100'));
                                 }
                             }
-
-                            //	Log::error(Config::get('constants.WebMessageCode.130') ." : ROW - " . $i);
                         }
                     }
                     $i += 1;
