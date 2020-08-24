@@ -75,6 +75,7 @@ $cls = 0;
                         <div class="card text-center mb-3" style="border-color:#253372;">
                             <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
+                            <input type="hidden" id="txt_from_timing{{$i}}" value="{{$t->from_timing}}">
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
                             <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
                             <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
@@ -1015,7 +1016,9 @@ $cls = 0;
                 <input type="hidden" id="date_class_id" value="" name="dateClass_id" />
                 <input type="hidden" id="data_subject_id" value="" name="subject_id" />
                 <input type="hidden" id="data_class_id" value="" name="class_id" />
-                <input type="hidden" id="data_gmeet_url" value="" name="gmeet_url" />
+                <input type="hidden" id="data_gmeet_url" value="" name="gmeet_url" />         
+                 <input type="hidden" id="data_from_timing" value="data_from_timing" />
+
 
 
                 <div class="form-group row">
@@ -1626,6 +1629,10 @@ $cls = 0;
         $("#data_subject_id").val($("#txt_subject_id" + val).val());
         $("#data_class_id").val($("#txt_class_id" + val).val());
         $("#data_gmeet_url").val($("#txt_gMeetURL" + val).val());
+        $("#data_from_timing").val($("#txt_from_timing" + val).val());
+          var from_timing = $("#data_from_timing").val();
+         var gmeet_url = $("#data_gmeet_url").val();
+         $('#notificationMsg').val("The class will start from "+from_timing+". Please Join "+gmeet_url); 
 
     });
 
