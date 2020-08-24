@@ -78,6 +78,7 @@
                     <tr>
                       <th>Division</th>
                       <th>Subject</th>
+                      <th>Chapter</th>
                       <th>Topic</th>
                       <th>e-EdPort</th>
                       <th>Youtube</th>
@@ -96,6 +97,7 @@
                     <tr>
                       <td class="text-center">{{$list->class}}</td>
                       <td>{{$list->Subject->subject_name}}</td>
+                      <td>{{$list->chapter}}</td>
                       <td>{{$list->topic}}</td>
 
                       @if($list->link)
