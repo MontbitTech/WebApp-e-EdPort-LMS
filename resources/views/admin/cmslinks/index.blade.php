@@ -80,6 +80,7 @@
                       <th>Subject</th>
                       <th>Chapter</th>
                       <th>Topic</th>
+                      <th>Book URL</th>
                       <th>e-EdPort</th>
                       <th>Youtube</th>
                       <th>Wikipedia</th>
@@ -99,6 +100,16 @@
                       <td>{{$list->Subject->subject_name}}</td>
                       <td>{{$list->chapter}}</td>
                       <td>{{$list->topic}}</td>
+
+                      @if($list->book_url)
+                      <td class="text-center">
+                        <a href="{{$list->book_url}}" target="_blank" class="link-color">Link</a>
+                      </td>
+                      @else
+                      <td class="text-center">
+                        <a href="{{route('cms.editlink', encrypt($list->id))}}" class="delete-color w-100"> Insert Link</a>
+                      </td>
+                      @endif
 
                       @if($list->link)
                       <td class="text-center">
