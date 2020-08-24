@@ -217,7 +217,7 @@ $cls = 0;
                                             Join Live
                                         </a>
 
-                                        <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notifyMe="{{$i}}" data-id="notify_student" id="notifyurl_{{$i}}">
+                                         <a href="#" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notify="{{$i}}">
                                             <svg class="icon mr-1">
                                                 <use xlink:href="../images/icons.svg#icon_bell"></use>
                                             </svg>
@@ -945,6 +945,52 @@ $cls = 0;
     </div>
 </div>
 <!-- End -->
+
+
+
+
+<div class="modal fade" id="notifyModal" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-light d-flex align-items-center">
+                <h5 class="modal-title font-weight-bold">Notify Student</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <svg class="icon">
+                        <use xlink:href="../images/icons.svg#icon_times2"></use>
+                    </svg>
+                </button>
+            </div>
+            <div class="modal-body pt-4">
+
+                {!! Form::open(array('route' => ['student-notify'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_class_notify')) !!}
+
+
+                <input type="hidden" id="date_class_id" value="" name="dateClass_id" />
+                <input type="hidden" id="data_subject_id" value="" name="subject_id" />
+                <input type="hidden" id="data_class_id" value="" name="class_id" />
+                <input type="hidden" id="data_gmeet_url" value="" name="gmeet_url" />
+
+               
+                <div class="form-group row">
+                    <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student:
+                       </label>
+                    <div >
+                       {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-8 offset-md-4">
+                        <button type="submit" class="btn btn-primary px-4">Notify</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Past Edit Class Modal -->
 <div class="modal fade" id="pasteditClassModal" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
@@ -1501,6 +1547,62 @@ $cls = 0;
                 if (response.status == 'success') {
                     $("#liveurl_" + dateClass_id).attr("data-livelink", join_liveUrl);
                     $('#editClassModal').modal('hide');
+                    $.fn.notifyMe('success', 5, response.message);
+                } else {
+                    $.fn.notifyMe('error', 5, response.message);
+                }
+            },
+            error: function(error_r) {
+                var obj = JSON.parse(error_r.responseText);
+                console.log(obj);
+                $.each(obj.errors, function(key, value) {
+                    $.fn.notifyMe('error', 5, value);
+                });
+            }
+        });
+    }));
+
+
+
+
+$(document).on('click', '[data-notify]', function() {
+        var val = $(this).data('notify');
+        $('#notifyModal').modal('show');
+        $("#date_class_id").val($("#dateClass_id" + val).val());
+        $("#data_subject_id").val($("#txt_subject_id" + val).val());
+        $("#data_class_id").val($("#txt_class_id" + val).val());
+        $("#data_gmeet_url").val($("#txt_gMeetURL" + val).val());
+
+    });
+
+
+$("#frm_class_notify").on('submit', (function(e) {
+        // e.preventDefault();
+        var dateClass_id = $("#date_class_id").val();
+        var subject_id = $("#data_subject_id").val();
+        var class_id = $("#data_class_id").val();
+        var gmeet_url = $("#data_gmeet_url").val();
+        //alert(class_id);
+        $.ajax({
+            url: "{{url('student-notify')}}",
+            type: "POST",
+            data: {
+                dateClass_id: dateClass_id,
+                subject_id: subject_id,
+                class_id: class_id,
+                gmeet_url: gmeet_url,
+                notificationMsg:notificationMsg
+            },
+            contentType: false,
+            cache: false,
+            processData: false,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                var response = JSON.parse(result);
+                //console.log(response.data);
+                if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
