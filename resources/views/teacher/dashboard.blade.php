@@ -1413,10 +1413,14 @@ $cls = 0;
                     $('#createAssiModal').modal('hide');
                     var data = '<option value="' + response.cource_url + '">' + assignment_title + '</option>';
                     $('#view_a_link_' + id).append(data);
-                    location.reload();
+                    $('#assignment_create').prop('disabled',false);
+                    $('#attach_file').prop('disabled',false);
+                    $('#cancel_assignment').prop('disabled',false);
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
-                    location.reload();
+                    $('#assignment_create').prop('disabled',false);
+                    $('#attach_file').prop('disabled',false);
+                    $('#cancel_assignment').prop('disabled',false);
                 }
             }
         });
@@ -1466,10 +1470,14 @@ $cls = 0;
                     window.open(response.cource_url, "title", "dialogWidth:400px;dialogHeight:300px");
                     var data = '<option value="' + response.cource_url + '">' + assignment_title + '</option>';
                     $('#view_a_link_' + id).append(data);
-                    location.reload();
+                    $('#assignment_create').prop('disabled',false);
+                    $('#attach_file').prop('disabled',false);
+                    $('#cancel_assignment').prop('disabled',false);
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
-                    location.reload();
+                    $('#assignment_create').prop('disabled',false);
+                    $('#attach_file').prop('disabled',false);
+                    $('#cancel_assignment').prop('disabled',false);
                 }
             }
         });
