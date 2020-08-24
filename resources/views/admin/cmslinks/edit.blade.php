@@ -30,6 +30,12 @@
                   </select>
                 </div>
               </div>
+              <div class="form-group row">
+                <label for="colFormLabel" class="col-md-4 col-form-label">Chapter:</label>
+                <div class="col-md-5">
+                  {!! Form::text('chapter', $link[0]->chapter, array('placeholder' => 'Chapter','class' => 'form-control')) !!}
+                </div>
+              </div>
 
               <div class="form-group row">
                 <label for="colFormLabel" class="col-md-4 col-form-label">Topic:</label>
@@ -38,6 +44,13 @@
                 </div>
               </div>
 
+              <div class="form-group row">
+                <label for="colFormLabel" class="col-md-4 col-form-label">Book URL:</label>
+                <div class="col-md-5">
+                  {!! Form::text('book_url', $link[0]->book_url, array('placeholder' => 'Book URL','class' => 'form-control')) !!}
+                </div>
+
+              </div>
               <div class="form-group row">
                 <label for="colFormLabel" class="col-md-4 col-form-label">e-Edport URL:</label>
                 <div class="col-md-5">

@@ -15,6 +15,7 @@ class AddChapterColumnToCmsLinks extends Migration
     {
         Schema::table('tbl_cmslinks', function (Blueprint $table) {
             $table->string('chapter')->after('subject')->nullable();
+            $table->string('book_url')->after('topic')->nullable();
         });
     }
 
@@ -27,6 +28,7 @@ class AddChapterColumnToCmsLinks extends Migration
     {
         Schema::table('tbl_cmslinks', function (Blueprint $table) {
             $table->dropColumn('chapter');
+            $table->dropColumn('book_url');
         });
     }
 }
