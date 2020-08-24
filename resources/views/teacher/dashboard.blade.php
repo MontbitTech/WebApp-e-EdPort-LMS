@@ -396,12 +396,12 @@ $cls = 0;
                                     <!--	  <button type="button" data-classhelp="{{$i}}" class="btn btn-sm btn-outline-info mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help"><svg class="icon mr-1"><use xlink:href="../images/icons.svg#icon_help"></use></svg>
 							Help 
 						  </button>-->
-                                    <button type="button" data-pasteditModal="{{$i}}" class="btn btn-sm btn-outline-secondary mb-1 border-0 btn-shadow" title="Edit">
+                                    <!-- <button type="button" data-pasteditModal="{{$i}}" class="btn btn-sm btn-outline-secondary mb-1 border-0 btn-shadow" title="Edit">
                                         <svg class="icon mr-1">
                                             <use xlink:href="../images/icons.svg#icon_edit"></use>
                                         </svg>
                                         Edit
-                                    </button>
+                                    </button> -->
                                 </div>
                             </div>
 
@@ -1023,10 +1023,18 @@ $cls = 0;
        var minutes = diff % 60;
        var hours = (diff - minutes) / 60;
        if(timeStart>=timeEnd){
-        confirm("Class end-time can't be before/equal to class start-time.");
+        var response = confirm("Class end-time can't be before/equal to class start-time.");
        }
-       else
-       confirm("You have set class duration of "+hours+" hours and "+minutes+" minute");
+       else{
+            var response = confirm("You have set class duration of "+hours+" hours and "+minutes+" minute");
+        }   
+        if(response){
+            $('#frm_add_class').unbind('submit').submit();
+        }else{
+            $('#frm_add_class').submit(function(){
+                return false;
+            });
+        }
     });
 
     $(document).on('click', '[data-LiveLink]', function() {
