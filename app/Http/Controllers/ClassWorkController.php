@@ -16,7 +16,8 @@ use App\ClassWork;
 use App\ClassTiming;
 use App\DateClass;
 use Validator;
-
+use DateTime;
+use DateTimeZone;
 class ClassWorkController extends Controller
 {
     /**
@@ -127,8 +128,10 @@ class ClassWorkController extends Controller
         $sel_topic_id = $request->sel_topic_name;
         $title = $request->assignment_title;
         $dateClass_id = $request->dateClass_id;
-
         $g_topic_id = '';
+        // $g_due_date =$request->dueDate;
+        $g_points = $request->point;
+
 
         if ( $topic_name == '' && $sel_topic_id == '' ) {
             return json_encode(array('status' => 'error', 'message' => 'Topic Name Required.'));
@@ -188,7 +191,11 @@ class ClassWorkController extends Controller
             "workType"    => "ASSIGNMENT",
             "state"       => "PUBLISHED",
             "topicId"     => $g_topic_id,
+            // "dueDate"     => $g_due_date,
+             //"dueTime"     => $g_due_time,
+            "maxPoints"      =>  $g_points,
             "description" => "Open 3 dots in right side and click edit",
+
         );
 
         $array_data = json_encode($array_data);

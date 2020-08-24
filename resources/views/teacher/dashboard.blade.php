@@ -696,6 +696,20 @@ $cls = 0;
                             <input type="text" class="form-control" name="txt_aTitle" id="txt_aTitle" placeholder="Assigment Title">
                         </div>
                     </div>
+
+                    <div class="form-group col-md-5">
+                        <label for="txt_aTitle" class="col-form-label text-md-left"> Due Date:</label>
+                        <div>
+                            <input type="date" class="form-control" name="txt_due_date" id="txt_due_date" placeholder="Due Date">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-5">
+                        <label for="txt_aTitle" class="col-form-label text-md-left"> Point:</label>
+                        <div>
+                            <input type="number" class="form-control" name="txt_point" id="txt_point" placeholder="Point">
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-md-8 offset-md-4">
@@ -1253,6 +1267,8 @@ $cls = 0;
         var txt_topic_name = $('#txt_topin_name').val();
         var sel_topic_name = $('#sel_topic').val();
         var assignment_title = $('#txt_aTitle').val();
+        var dueDate = $('#txt_due_date').val();
+        var point = $('#txt_point').val();
         var dateClass_id = $('#new_assignment').val();
         $.ajax({
             url: "{{url('create-assignment')}}",
@@ -1265,7 +1281,10 @@ $cls = 0;
                 class_id: class_id,
                 subject_id: subject_id,
                 teacher_id: teacher_id,
-                dateClass_id: dateClass_id
+                dateClass_id: dateClass_id,
+                dueDate:dueDate,
+                point:point
+
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
