@@ -696,11 +696,32 @@ $cls = 0;
                             <input type="text" class="form-control" name="txt_aTitle" id="txt_aTitle" placeholder="Assigment Title">
                         </div>
                     </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="txt_aTitle" class="col-form-label text-md-left"> Due Date:</label>
+                        <div>
+                            <input type="date" class="form-control" name="txt_due_date" id="txt_due_date" placeholder="Due Date">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="txt_aTitle" class="col-form-label text-md-left"> Due Time:</label>
+                        <div>
+                            <input type="text" class="form-control due-time" name="txt_due_time" id="txt_due_time" placeholder="Due Time">
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-4">
+                        <label for="txt_aTitle" class="col-form-label text-md-left"> Point:</label>
+                        <div>
+                            <input type="number" class="form-control" name="txt_point" id="txt_point" placeholder="Point">
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group row">
-                    <div class="col-md-8 offset-md-4">
-                        <button type="button" id="assignment_create" class="btn btn-primary px-4">Next</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <div class="col-md-12" style="text-align: center;">
+                        <button type="button" id="assignment_create" class="btn btn-primary px-4">Create</button>
+                        <button type="button" id="attach_file" class="btn btn-primary px-4">Create and Attach File</button>
+                        <button type="button" id="cancel_assignment" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
                 <p style="font-size: smaller;color: red;text-align: center;">Note: Please allow popup for the assignment functionality.</p>
@@ -985,6 +1006,11 @@ $cls = 0;
             timeFormat: 'hh:mm tt'
         });
 
+        $('.due-time').timepicker({
+            controlType: 'select',
+            oneLine: true,
+            timeFormat: 'hh:mm tt'
+        });
     });
 
     $('#submit').click(function() {
@@ -1244,6 +1270,9 @@ $cls = 0;
         });
     }
     $(document).on('click', '#assignment_create', (function() {
+        $('#assignment_create').prop('disabled',true);
+        $('#attach_file').prop('disabled',true);
+        $('#cancel_assignment').prop('disabled',true);
         var id = $("#row_id").val();
         var class_id = $('#ass_class_id').val();
         var subject_id = $('#ass_subject_id').val();
@@ -1253,6 +1282,9 @@ $cls = 0;
         var txt_topic_name = $('#txt_topin_name').val();
         var sel_topic_name = $('#sel_topic').val();
         var assignment_title = $('#txt_aTitle').val();
+        var dueDate = $('#txt_due_date').val();
+        var dueTime = $('#txt_due_time').val();
+        var point = $('#txt_point').val();
         var dateClass_id = $('#new_assignment').val();
         $.ajax({
             url: "{{url('create-assignment')}}",
@@ -1265,7 +1297,63 @@ $cls = 0;
                 class_id: class_id,
                 subject_id: subject_id,
                 teacher_id: teacher_id,
-                dateClass_id: dateClass_id
+                dateClass_id: dateClass_id,
+                dueDate:dueDate,
+                dueTime:dueTime,
+                point:point
+
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                var response = JSON.parse(result);
+                if (response.status == 'success') {
+                    $.fn.notifyMe('success', 5, response.message);
+                    $('#createAssiModal').modal('hide');
+                    var data = '<option value="' + response.cource_url + '">' + assignment_title + '</option>';
+                    $('#view_a_link_' + id).append(data);
+                    location.reload();
+                } else {
+                    $.fn.notifyMe('error', 5, response.message);
+                    location.reload();
+                }
+            }
+        });
+    }));
+    $(document).on('click', '#attach_file', (function() {
+        $('#assignment_create').prop('disabled',true);
+        $('#attach_file').prop('disabled',true);
+        $('#cancel_assignment').prop('disabled',true);
+        var id = $("#row_id").val();
+        var class_id = $('#ass_class_id').val();
+        var subject_id = $('#ass_subject_id').val();
+        var teacher_id = $('#ass_teacher_id').val();
+        //var timing_id = $('[data-createmodal="'+id+'"]').data('timing_modal');
+        var g_class_id = $('#g_class_id').val();
+        var txt_topic_name = $('#txt_topin_name').val();
+        var sel_topic_name = $('#sel_topic').val();
+        var assignment_title = $('#txt_aTitle').val();
+        var dueDate = $('#txt_due_date').val();
+        var dueTime = $('#txt_due_time').val();
+        var point = $('#txt_point').val();
+        var dateClass_id = $('#new_assignment').val();
+        $.ajax({
+            url: "{{url('create-assignment')}}",
+            type: "POST",
+            data: {
+                g_class_id: g_class_id,
+                txt_topic_name: txt_topic_name,
+                sel_topic_name: sel_topic_name,
+                assignment_title: assignment_title,
+                class_id: class_id,
+                subject_id: subject_id,
+                teacher_id: teacher_id,
+                dateClass_id: dateClass_id,
+                dueDate:dueDate,
+                dueTime:dueTime,
+                point:point
+
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -1278,8 +1366,10 @@ $cls = 0;
                     window.open(response.cource_url, "title", "dialogWidth:400px;dialogHeight:300px");
                     var data = '<option value="' + response.cource_url + '">' + assignment_title + '</option>';
                     $('#view_a_link_' + id).append(data);
+                    location.reload();
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
+                    location.reload();
                 }
             }
         });
