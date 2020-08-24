@@ -644,12 +644,14 @@ class ImportTimetableController extends Controller
                                 $error_msg = 'Teacher have already assigned lecture at selected time, for  ROW - ' . $period_name;
                             }
                         } else {
+                            // dd(strtolower($teacher_name));
                             $teacher_id = 0;
+                           
                         }
 
                         $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('class_day', $day)->where('from_timing', date("H:i:s", strtotime($start_time)))->get()->first();
-                        // dd($subject_id);
-                        if (!$teacherTimeExist)         // check teacher availability
+                        // dd($teacherTimeExist);
+                        if (!$teacherTimeExist || $teacher_id == 0)         // check teacher availability
                         {
                             $studentClassExist = StudentClass::where('class_name', $class_name)->where('section_name', $section_name)->first();
                             if(!$studentClassExist){
@@ -658,7 +660,9 @@ class ImportTimetableController extends Controller
                                 $rows_period .= $period_name . ",";
                                 $error_msg = 'class does not exist For ROW - ' . $period_name;
                             }
+                            
                             if ($error == '') {
+                                
                                 //Adding or updating timetable
                                 //$day = date("l",strtotime($day));
                                 $from_timing = date("H:i:s", strtotime($start_time));
@@ -669,6 +673,7 @@ class ImportTimetableController extends Controller
                                 // $studentTimingExist = ClassTiming::where('class_day', $day)->where('from_timing', $from_timing)->get()->first();
 
                                 // dd($studentTimingExist);
+                                // dd($studentClassExist,$error,$teacher_id);
                                 $lunch = 0;
                                 if ($teacher_id == 0) {
                                     $lunch = 1;
@@ -694,7 +699,7 @@ class ImportTimetableController extends Controller
                                     $studentTimingDetail->save();
 
                                     $timetableId = $studentTimingDetail->id;
-
+                                    
                                     // Today's  Lecture add on dateClass table
                                     $Tdays = date('l');
                                     $todaysDate = date("Y-m-d");
@@ -948,7 +953,7 @@ class ImportTimetableController extends Controller
     public function deleteTimetable(Request $request, $id)
     {
         $classTiming = ClassTiming::find($id);
-        $objTeacher  = InvitationClass::where('class_id', $classTiming->class_id)->where('subject_id', $classTiming->teacher_id)->where('teacher_id', $classTiming->subject_id)->get()->first();
+        $objTeacher  = InvitationClass::where('class_id', $classTiming->class_id)->where('subject_id', $classTiming->subject_id)->where('teacher_id', $classTiming->teacher_id)->get()->first();
         $token = CommonHelper::varify_Admintoken(); // verify admin token
         if ($objTeacher) {
             $gCode = $objTeacher->g_code;
@@ -956,7 +961,9 @@ class ImportTimetableController extends Controller
                 $invDelete = CommonHelper::teacher_invitation_delete($token, $gCode);
             }
         }
-        $timeTables = ClassTiming::where('from_timing', $classTiming->from_timing)->get();
+        $classes = StudentClass::where('class_name',$classTiming->studentClass->class_name)
+                    ->where('section_name',$classTiming->studentClass->section_name)->pluck('id');
+        $timeTables = ClassTiming::whereIn('class_id',$classes)->where('from_timing', $classTiming->from_timing)->get();
         foreach ($timeTables as $timeTable) {
             $timeTable->delete();
         }
@@ -980,8 +987,8 @@ class ImportTimetableController extends Controller
                     $invDelete = CommonHelper::teacher_invitation_delete($token, $gCode);
                 }
             }
-            $classTime = ClassTiming::where('class_id', $timeTable->class_id)->where("subject_id", $timeTable->subject_id)->where("teacher_id", $timeTable->teacher_id);
-            $classTime->delete();
+            $classTime = ClassTiming::where('class_id', $timeTable->class_id)->delete();
+            // $classTime->delete();
         }
         return redirect()->back()->with('success', "Deleted Successfully");
     }
