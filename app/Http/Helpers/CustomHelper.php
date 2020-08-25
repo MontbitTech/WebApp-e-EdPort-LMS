@@ -5,6 +5,7 @@ namespace App\Http\Helpers;
 use Google_Client;
 use Session;
 use App\ClassTopic;
+use App\SupportHelp;
 use DB;
 
 class CustomHelper
@@ -298,6 +299,13 @@ class CustomHelper
 
         return $s;
     }
+
+        public static function pendingTicket ()
+        {
+        $pending_tickets = SupportHelp::where('status','1')->count();
+
+        return $pending_tickets;
+        }
 
     public static function onGoingClasses()
     {
