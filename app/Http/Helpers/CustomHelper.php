@@ -10,11 +10,11 @@ use DB;
 class CustomHelper
 {
 
-    public static function addOrdinalNumberSuffix ($num)
+    public static function addOrdinalNumberSuffix($num)
     {
-        if ( !in_array(( $num % 100 ), array(11, 12, 13)) ) {
-            switch ( $num % 10 ) {
-                // Handle 1st, 2nd, 3rd
+        if (!in_array(($num % 100), array(11, 12, 13))) {
+            switch ($num % 10) {
+                    // Handle 1st, 2nd, 3rd
                 case 1:
                     return $num . 'st';
                 case 2:
@@ -27,7 +27,7 @@ class CustomHelper
         return $num . 'th';
     }
 
-    public static function get_user_from_token ($id_token)
+    public static function get_user_from_token($id_token)
     {
         $curl = curl_init();
 
@@ -47,10 +47,9 @@ class CustomHelper
         curl_close($curl);
 
         return $response;
-
     }
 
-    public static function set_token_admin ()
+    public static function set_token_admin()
     {
 
         $client = new Google_Client();
@@ -69,11 +68,10 @@ class CustomHelper
         $auth_url = $client->createAuthUrl();
 
         return $auth_url;
-
     }
 
 
-    public static function get_token_admin ($code)
+    public static function get_token_admin($code)
     {
         $client = new Google_Client();
         $client->setAuthConfigFile('../credentials.json');
@@ -91,13 +89,13 @@ class CustomHelper
         //dd($client->getAccessToken());
         Session::put('access_token', $client->getAccessToken());
 
-        return true;//redirect()->route('/');
+        return true; //redirect()->route('/');
     }
 
-    public static function get_refresh_token ($token = false)
+    public static function get_refresh_token($token = false)
     {
         $client = new Google_Client();
-        $client->setAuthConfig(base_path().'/credentials.json');
+        $client->setAuthConfig(base_path() . '/credentials.json');
         $client->addScope('https://www.googleapis.com/auth/classroom.courses');
         $client->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
         $client->addScope('https://www.googleapis.com/auth/classroom.rosters');
@@ -108,13 +106,13 @@ class CustomHelper
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 
-        if($token)
+        if ($token)
             $client->setAccessToken($token);
         else
             $client->setAccessToken(Session::get('access_token'));
 
-        if ( $client->isAccessTokenExpired() ) {
-            if ( $client->getRefreshToken() ) {
+        if ($client->isAccessTokenExpired()) {
+            if ($client->getRefreshToken()) {
                 $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
             }
             Session::put('access_token', $client->getAccessToken());
@@ -124,7 +122,7 @@ class CustomHelper
     }
 
     // For Teacher get/set  auth token
-    public static function set_token_teacher ()
+    public static function set_token_teacher()
     {
 
         $client = new Google_Client();
@@ -144,11 +142,10 @@ class CustomHelper
         $auth_url = $client->createAuthUrl();
 
         return $auth_url;
-
     }
 
 
-    public static function get_token_teacher ($code)
+    public static function get_token_teacher($code)
     {
 
         $c = new Google_Client();
@@ -173,13 +170,13 @@ class CustomHelper
 
         Session::put('access_token_teacher', $c->getAccessToken());
 
-        return true;//redirect()->route('/');
+        return true; //redirect()->route('/');
     }
 
-    public static function get_refresh_teacher_token ($token = false)
+    public static function get_refresh_teacher_token($token = false)
     {
         $client = new Google_Client();
-        $client->setAuthConfig(base_path().'/credentials_teacher.json');
+        $client->setAuthConfig(base_path() . '/credentials_teacher.json');
         $client->addScope('https://www.googleapis.com/auth/classroom.courses');
         $client->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
         $client->addScope('https://www.googleapis.com/auth/classroom.rosters');
@@ -190,13 +187,13 @@ class CustomHelper
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 
-        if($token)
+        if ($token)
             $client->setAccessToken($token);
         else
             $client->setAccessToken(Session::get('access_token_teacher'));
 
-        if ( $client->isAccessTokenExpired() ) {
-            if ( $client->getRefreshToken() ) {
+        if ($client->isAccessTokenExpired()) {
+            if ($client->getRefreshToken()) {
                 $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
             }
             Session::put('access_token_teacher', $client->getAccessToken());
@@ -206,20 +203,20 @@ class CustomHelper
     }
 
 
-    public static function getCMSTopics ($class_id, $subject_id)
+    public static function getCMSTopics($class_id, $subject_id)
     {
 
         $cmsData = \DB::select('select * from tbl_cmslinks where class="' . $class_id . '" and subject="' . $subject_id . '"');
 
-        return $cmsData;//ClassTopic::where(['class_id'=>$class_id])->get();
+        return $cmsData; //ClassTopic::where(['class_id'=>$class_id])->get();
     }
 
-    public static function getTopicById ($id)
+    public static function getTopicById($id)
     {
         return ClassTopic::with('classwork')->find($id);
     }
 
-    public static function getCurrentYear ()
+    public static function getCurrentYear()
     {
         $year = \DB::table('tbl_settings')->where('item', 'year')->get();
 
@@ -227,21 +224,21 @@ class CustomHelper
     }
 
 
-    public static function getDomain ()
+    public static function getDomain()
     {
         $domain = \DB::table('tbl_settings')->where('item', 'domain')->get()->first();
 
         return $domain;
     }
 
-    public static function getSchool ()
+    public static function getSchool()
     {
         $school = \DB::table('tbl_settings')->where('item', 'like', 'school%')->get();
 
         return $school;
     }
 
-    public static function getFromMail ()
+    public static function getFromMail()
     {
         $mailfrom = \DB::table('tbl_settings')->where('item', 'mailfrom')->get()->first();
 
@@ -249,7 +246,7 @@ class CustomHelper
     }
 
 
-    public static function getDomainFromEmail ($email_address)
+    public static function getDomainFromEmail($email_address)
     {
         $email_parts = explode('@', $email_address);
         $domain = array_pop($email_parts);
@@ -257,16 +254,16 @@ class CustomHelper
         return $domain;
     }
 
-    public static function is_email ($email_address)
+    public static function is_email($email_address)
     {
-        if ( filter_var($email_address, FILTER_VALIDATE_EMAIL) ) {
+        if (filter_var($email_address, FILTER_VALIDATE_EMAIL)) {
             return true;
         }
 
         return false;
     }
 
-    public static function is_url ($url)
+    public static function is_url($url)
     {
         $path = parse_url($url, PHP_URL_PATH);
         $encoded_path = array_map('urlencode', explode('/', $path));
@@ -275,7 +272,7 @@ class CustomHelper
         return filter_var($url, FILTER_VALIDATE_URL) ? true : false;
     }
 
-    public static function enableOptions ()
+    public static function enableOptions()
     {
         $s = array();
 
@@ -290,7 +287,7 @@ class CustomHelper
     }
 
 
-    public static function latestTicket ()
+    public static function latestTicket()
     {
         $s = \DB::select("select t.name,t.phone, s.description, s.class_join_link 
 							from tbl_support_help s, tbl_techers t 
@@ -302,7 +299,7 @@ class CustomHelper
         return $s;
     }
 
-    public static function onGoingClasses ()
+    public static function onGoingClasses()
     {
         $s = \DB::select("SELECT d.class_date,  d.from_timing , d.to_timing, t.g_meet_url, s.subject_name,  t.name, c.class_name, c.section_name
 							FROM tbl_dateclass d, tbl_techers t, tbl_student_subjects s, tbl_student_classes c
@@ -310,9 +307,9 @@ class CustomHelper
 							and d.subject_id = s.id
 							and d.teacher_id = t.id
 							and c.id = d.class_id
+                            and d.from_timing >= now()
 							order by d.from_timing");
 
         return $s;
     }
-
 }
