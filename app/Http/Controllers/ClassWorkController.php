@@ -338,6 +338,7 @@ class ClassWorkController extends Controller
                 $youtube_link = $val->youtube;
                 $khan_academy = $val->khan_academy;
                 $others = $val->others;
+                $book = $val->book_url;
             }
 
             $obj = DateClass::find($dateWork_id);
@@ -345,7 +346,7 @@ class ClassWorkController extends Controller
             $obj->save();
 
 
-            return json_encode(array('status' => 'success', 'topic_link' => $res_link, 'youtube_link' => $youtube_link, 'academy_link' => $khan_academy, 'wikipedia_link' => $others, 'message' => Config::get('constants.WebMessageCode.131')));
+            return json_encode(array('status' => 'success', 'topic_link' => $res_link, 'youtube_link' => $youtube_link, 'academy_link' => $khan_academy, 'wikipedia_link' => $others, 'book_url' => $book, 'message' => Config::get('constants.WebMessageCode.131')));
             exit;
         } else {
             return json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.113')));
