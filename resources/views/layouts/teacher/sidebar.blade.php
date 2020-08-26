@@ -101,7 +101,7 @@ $photo = asset('images/teacher/'.$val->photo);
   </div>
 
   <div class="text-center text-white w-100 " style="position:absolute;bottom:0;font-size: 10px;letter-spacing: 1px;">
-    <img src="{{asset('images/logo-1.png')}}" alt="e-edport" width="27px">
+    <img src="{{asset('images/logo-1.png')}}" alt="e-edport" width="50px">
     <div>Powered by e-EdPort</div>
 
   </div>
