@@ -24,7 +24,7 @@ class TestController extends Controller
         if(isset($response['data']->courses))
             foreach($response['data']->courses as $class){
             $data[] = CommonHelper::delete_class($token['access_token'],$class->id);
-            return \response()->json(['success' => 'true', 'message' => 'rest in peace bro...','data'=>$data]);;
+            break;
             }
         return \response()->json(['success' => 'true', 'message' => 'rest in peace bro...','data'=>$data]);
     }
