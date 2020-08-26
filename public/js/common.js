@@ -28,8 +28,8 @@ $(document).on('click', '.close-profile,.fullbody-cover', function () {
 
 /* Help Button Pause for 30 Sec*/
 $(document).on('click', '.header-help', function(){
-  var helpPause = `<svg class="icon mr-1"><use xlink:href="`+SITE_URL+`/images/icons.svg#icon_pause"></use></svg> Help!`;
-  var helpNormal = `<svg class="icon mr-1"><use xlink:href="`+SITE_URL+`/images/icons.svg#icon_help"></use></svg> Help!`;
+  var helpPause = `<svg class="icon mr-1"><use xlink:href="`+SITE_URL+`/images/icons.svg#icon_pause"></use></svg> Support!`;
+  var helpNormal = `<svg class="icon mr-1"><use xlink:href="`+SITE_URL+`/images/icons.svg#icon_help"></use></svg> Support!`;
   $(this).addClass('active').html(helpPause);
   //$.fn.notifyMe('error',15,'Your help message send to support team!');
   setTimeout(() => {
