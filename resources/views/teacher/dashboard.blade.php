@@ -191,7 +191,7 @@ $cls = 0;
                                                                     <img src="{{asset('images/logo-1.png')}}" class="m-1" alt="" width="25px" style="{{$display_style}}">
                                                                     <span class="m-auto">e-Edport</span>
                                                                 </a>
-                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0">
+                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0" href="javascript:shareContent('{{$cms_link}}',{{$i}})">
                                                                     <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                 </a>
                                                             </div>
@@ -213,7 +213,7 @@ $cls = 0;
                                                                     <span class="m-auto">Khan Academy</span>
                                                                 </a>
 
-                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0">
+                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0" href="javascript:shareContent('{{$cms_link}}',{{$i}})">
                                                                     <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                 </a>
                                                             </div>
@@ -229,7 +229,7 @@ $cls = 0;
                                                                     <span class="m-auto">Youtube</span>
                                                                 </a>
 
-                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0">
+                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0" href="javascript:shareContent('{{$cms_link}}',{{$i}})">
                                                                     <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                 </a>
                                                             </div>
@@ -246,7 +246,7 @@ $cls = 0;
                                                                     <span class="m-auto">Wikepedia</span>
                                                                 </a>
 
-                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0">
+                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0" href="javascript:shareContent('{{$cms_link}}',{{$i}})">
                                                                     <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                 </a>
                                                             </div>
@@ -1921,6 +1921,35 @@ $cls = 0;
                 $('.asg1').prop("value", "");
             });
     });
+
+    function shareContent(url, dateClass_id){
+        var notificationMsg = "Please go through "+ url +" for today's notes";
+        $.ajax({
+            url: "{{url('student-notify')}}",
+            type: "POST",
+            data: {
+                notificationMsg:notificationMsg,
+                dateClass_id:dateClass_id
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                var response = JSON.parse(result);
+                if (response.status == 'success') {
+                    $.fn.notifyMe('success', 5, response.message);
+                } else {
+                    $.fn.notifyMe('error', 5, response.message);
+                }
+            },
+            error: function(error_r) {
+                var obj = JSON.parse(error_r.responseText);
+                $.each(obj.errors, function(key, value) {
+                    $.fn.notifyMe('error', 5, value);
+                });
+            }
+        });
+    }
 </script>
 
 <script>
