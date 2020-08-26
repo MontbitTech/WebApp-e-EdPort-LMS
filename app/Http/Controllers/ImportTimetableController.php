@@ -538,15 +538,15 @@ class ImportTimetableController extends Controller
                                         return redirect()->route('admin.logout');
                                 } else {
                                     Log::error($response);
-                                    $resData = array_merge($resData, json_decode($response['data'], true));
+                                    // $resData = array_merge($resData, json_decode($response['data'], true));
 
-                                    $g_class_id = $resData['id'];                //-----------------------------Google Class ID
-                                    $g_live_link = $resData['alternateLink'];
+                                    $g_class_id = $response['data']->id;                //-----------------------------Google Class ID
+                                    $g_live_link = $response['data']->alternateLink;
                                     $studentClassDetail->class_name = $class_name;
                                     $studentClassDetail->section_name = $section_name;
                                     $studentClassDetail->subject_id = $subject_id;
                                     $studentClassDetail->g_class_id = $g_class_id;
-                                    $studentClassDetail->g_link = $resData['alternateLink'];
+                                    $studentClassDetail->g_link = $response['data']->alternateLink;
                                     $studentClassDetail->g_response = serialize($response['data']);
                                     $studentClassDetail->save();
                                     $class_id = $studentClassDetail->id;        //------------------------------Class ID
