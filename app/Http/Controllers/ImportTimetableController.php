@@ -537,7 +537,8 @@ class ImportTimetableController extends Controller
                                     if ($response['data']->status == 'UNAUTHENTICATED')
                                         return redirect()->route('admin.logout');
                                 } else {
-                                    $resData = array_merge($resData, json_decode($response, true));
+                                    Log::error($response);
+                                    $resData = array_merge($resData, json_decode($response['data'], true));
 
                                     $g_class_id = $resData['id'];                //-----------------------------Google Class ID
                                     $g_live_link = $resData['alternateLink'];
@@ -578,7 +579,7 @@ class ImportTimetableController extends Controller
 
                                     $inv_resData = array('error' => '');
 
-
+                                    Log::error($inv_responce);
                                     if ($inv_responce == 101) {
                                         ////return back()->with('error',"Error 03");// Config::get('constants.WebMessageCode.119'));
                                         Log::error('Invitation has not send to teacher for class, Error In ROW - ' . $period_name);
@@ -587,19 +588,6 @@ class ImportTimetableController extends Controller
                                         $error_msg = 'Invitation has not send to teacher for class, Error In ROW - ' . $period_name;
                                     } else {
                                         $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                                        if ($inv_resData['error'] != '') {
-                                            //return back()->with('error', "error 04");//Config::get('constants.WebMessageCode.119'));
-                                            Log::error('UNAUTHENTICATED, Error In ROW - ' . $period_name);
-                                            if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
-                                                CustomHelper::get_refresh_token();
-                                                $token = CommonHelper::varify_Admintoken();
-                                                $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // access Google api craete Cource
-
-                                                $inv_resData = array('error' => '');
-                                                $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                                                //                                                return redirect()->route('admin.logout');
-                                            }
-                                        }
 
                                         if ($inv_resData['error'] != '') {
                                             //return back()->with('error', "error 04");//Config::get('constants.WebMessageCode.119'));
