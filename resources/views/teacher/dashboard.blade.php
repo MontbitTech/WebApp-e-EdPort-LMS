@@ -252,27 +252,27 @@ $cls = 0;
                                                                         <span class="m-auto font-weight-bolder">Wikipedia</span>
                                                                     </a>
 
-                                                                    <button class="col-md-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$i}}')">
+                                                                    <button class="col-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$i}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
                                                             </div>
                                                             @endif
 
-                                                             @if($book!=null)
-                                                        <div class="col-md-6 mt-2">
-                                                            <div class="w-100 d-inline-flex">
-                                                                <a href="javascript:void(0);" data-book="{{ $book}}" data-topicid="{{$t->topic_id}}" id="book_{{$t->id}}" class="col-md-9 btn btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
+                                                            @if($book!=null)
+                                                            <div class="col-md-6 mt-2">
+                                                                <div class="w-100 d-inline-flex"  style="letter-spacing:3px;">
+                                                                    <a href="javascript:void(0);" data-book="{{ $book}}" data-topicid="{{$t->topic_id}}" id="book_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
 
-                                                                    <span class="m-auto">Book</span>
-                                                                </a>
+                                                                        <span class="m-auto font-weight-bolder">Book</span>
+                                                                    </a>
 
-                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0" href="javascript:shareContent('{{$book}}',{{$i}})">
-                                                                    <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                                                </a>
+                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$book}}','{{$i}}')">
+                                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                                    </button>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        @endif
+                                                            @endif
 
 
                                                         </div>
