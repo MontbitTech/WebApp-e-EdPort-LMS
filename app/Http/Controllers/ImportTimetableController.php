@@ -556,12 +556,12 @@ class ImportTimetableController extends Controller
                             // Teacher availability Check
                             $from_timing = date("H:i:s", strtotime($start_time));
 
-                            $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('class_day', $day)->where('from_timing', $from_timing)->get()->first();
+                            // $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('class_day', $day)->where('from_timing', $from_timing)->get()->first();
 
 
                             //dd($teacherTimeExist);
 
-                            if (!$teacherTimeExist) {
+                            // if (!$teacherTimeExist) {
                                 // Invitation send to teacher for class
                                 $inviteExist = InvitationClass::where('class_id', $class_id)->where('subject_id', $subject_id)->where('teacher_id', $teacher_id)->get()->first();
                                 if ($inviteExist) {
@@ -637,22 +637,22 @@ class ImportTimetableController extends Controller
 
                                     $s = CommonHelper::send_sms($number, $message);
                                 }
-                            } else {
-                                Log::error('Teacher have already assigned lecture at selected time, for  ROW - ' . $period_name);
-                                $error = "found";
-                                $rows_period .= $period_name . ",";
-                                $error_msg = 'Teacher have already assigned lecture at selected time, for  ROW - ' . $period_name;
-                            }
+                            // } else {
+                            //     Log::error('Teacher have already assigned lecture at selected time, for  ROW - ' . $period_name);
+                            //     $error = "found";
+                            //     $rows_period .= $period_name . ",";
+                            //     $error_msg = 'Teacher have already assigned lecture at selected time, for  ROW - ' . $period_name;
+                            // }
                         } else {
                             // dd(strtolower($teacher_name));
                             $teacher_id = 0;
                            
                         }
 
-                        $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('class_day', $day)->where('from_timing', date("H:i:s", strtotime($start_time)))->get()->first();
+                        // $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('class_day', $day)->where('from_timing', date("H:i:s", strtotime($start_time)))->get()->first();
                         // dd($teacherTimeExist);
-                        if (!$teacherTimeExist || $teacher_id == 0)         // check teacher availability
-                        {
+                        // if (!$teacherTimeExist || $teacher_id == 0)         // check teacher availability
+                        // {
                             $studentClassExist = StudentClass::where('class_name', $class_name)->where('section_name', $section_name)->first();
                             if(!$studentClassExist){
                                 Log::error('class does not exist For ROW - ' . $period_name);
@@ -724,7 +724,7 @@ class ImportTimetableController extends Controller
                                 //$error_msg = 'Something went wrong while Createting time table for  ROW - ' .$period_name;
                                 ///return back()->with('error',Config::get('constants.WebMessageCode.121'));
                             }
-                        }
+                        // }
                         if ($error == "found") {
                             return back()->with('error', $error_msg);
                         }
