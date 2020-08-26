@@ -127,6 +127,7 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::post('/available/teacher', 'AvailabilityController@availableTeacherAndSubject');
 
     Route::get('/deleteAllClassrooms','TestController@deleteAllClassroomsFromGoogle');
+    Route::get('/listGoogleClassrooms','TestController@listGoogleClassrooms')
 });
 
 /*  Teacher  */
