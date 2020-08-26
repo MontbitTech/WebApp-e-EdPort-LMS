@@ -75,6 +75,7 @@ $cls = 0;
                         <div class="card text-center mb-3" style="border-color:#253372;">
                             <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
+                            <input type="hidden" id="txt_from_timing{{$i}}" value="{{$t->from_timing}}">
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
                             <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
                             <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
@@ -105,10 +106,19 @@ $cls = 0;
                                 <div class="row m-2">
 
                                     <div class="col-md-6 mt-1">
+                                        <?php
+                                                $chapters = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
+                                                ?>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
-                                                    <option value="">Select Chapter</option>
+                                                <select class="form-control custom-select-sm border-0 btn-shadow chapter" id="chapter" name="chap" data-chapter="{{$i}}">
+                                                <option value="Select Chapter">Select Chapter</option>
+                                                @if(count($chapters)>0)
+                                                @foreach($chapters as $ch)
+                                                <?php $selected = ($ch->id == $t->topic_id) ? 'selected' : ''; ?>
+                                                <option value="{{$ch->chapter}}" {{$selected}}>{{$ch->chapter}}</option>
+                                                @endforeach
+                                                @endif
 
                                                 </select>
                                             </div>
@@ -123,12 +133,12 @@ $cls = 0;
                                                 //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
                                                 $x = $t->cmsLink;
                                                 ?>
-                                                <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
+                                                <select class="form-control custom-select-sm border-0 btn-shadow topics" id=chapterTopic{{$i}} data-selecttopic="{{$t->id}}">
                                                     <option value="">Select Topic</option>
                                                     @if(count($topics)>0)
                                                     @foreach($topics as $topic)
                                                     <?php $selected = ($topic->id == $t->topic_id) ? 'selected' : ''; ?>
-                                                    <option value="{{$topic->id}}" {{$selected}}>{{$topic->topic}}</option>
+                                                    <option value="{{$i}}" {{$selected}}>{{$topic->topic}}</option>
                                                     @endforeach
                                                     @endif
                                                 </select>
@@ -140,12 +150,14 @@ $cls = 0;
                                                 $cms_link = '';
                                                 $youtube = '';
                                                 $academy = '';
+                                                $book = '';
                                                 $other = '';
                                                 if (strlen($x) > 0) {
                                                     $display_style = 'display: block;';
                                                     $cms_link = $x->link;
                                                     $youtube = $x->youtube;
                                                     $academy = $x->khan_academy;
+                                                    $book    = $x->book_url;
                                                     $other   = $x->others;
                                                 } else
                                                     $display_style = 'display: none;';
@@ -235,6 +247,23 @@ $cls = 0;
                                                                 </a>
 
                                                                 <a class="col-md-3 btn btn-outline-primary btn-shadow border-0" href="javascript:shareContent('{{$cms_link}}',{{$i}})">
+                                                                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                        @endif
+
+                                                        @if($book!=null)
+                                                        <div class="col-md-6 mt-2">
+                                                            <div class="w-100 d-inline-flex">
+                                                                <a href="javascript:void(0);" data-book="{{ $book}}" data-topicid="{{$t->topic_id}}" id="book_{{$t->id}}" class="col-md-9 btn btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
+
+                                                                    <i class="fa fa-file-pdf-o  text-dark m-1 icon-4x" aria-hidden="true" style="{{$display_style}}"></i>
+
+                                                                    <span class="m-auto">Book</span>
+                                                                </a>
+
+                                                                <a class="col-md-3 btn btn-outline-primary btn-shadow border-0">
                                                                     <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                 </a>
                                                             </div>
@@ -1015,7 +1044,9 @@ $cls = 0;
                 <input type="hidden" id="date_class_id" value="" name="dateClass_id" />
                 <input type="hidden" id="data_subject_id" value="" name="subject_id" />
                 <input type="hidden" id="data_class_id" value="" name="class_id" />
-                <input type="hidden" id="data_gmeet_url" value="" name="gmeet_url" />
+                <input type="hidden" id="data_gmeet_url" value="" name="gmeet_url" />         
+                 <input type="hidden" id="data_from_timing" value="data_from_timing" />
+
 
 
                 <div class="form-group row">
@@ -1184,6 +1215,17 @@ $cls = 0;
 
     $(document).on('click', '[data-academylink]', function() {
         var liveurl = $(this).attr("data-academylink");
+        if (liveurl != '') {
+            //$('#viewClassModal').modal('show');
+            //$("#thedialog").attr('src','https://google.com');
+            window.open(liveurl, "_blank"); //, "dialogWidth:400px;dialogHeight:300px");
+        } else {
+            alert('No content url found!');
+        }
+    });
+
+    $(document).on('click', '[data-book]', function() {
+        var liveurl = $(this).attr("data-book");
         if (liveurl != '') {
             //$('#viewClassModal').modal('show');
             //$("#thedialog").attr('src','https://google.com');
@@ -1516,6 +1558,11 @@ $cls = 0;
                             $('#academy_' + dateWork_id).attr('style', 'display:block');
                             $('#academy_' + dateWork_id).attr('data-academylink', response.academy_link);
                         }
+
+                        if (response.book_url != null) {
+                            $('#book_' + dateWork_id).attr('style', 'display:block');
+                            $('#book_' + dateWork_id).attr('data-book', response.book_url);
+                        }
                         $.fn.notifyMe('success', 4, response.message);
                     },
                     error: function() {
@@ -1626,6 +1673,10 @@ $cls = 0;
         $("#data_subject_id").val($("#txt_subject_id" + val).val());
         $("#data_class_id").val($("#txt_class_id" + val).val());
         $("#data_gmeet_url").val($("#txt_gMeetURL" + val).val());
+        $("#data_from_timing").val($("#txt_from_timing" + val).val());
+          var from_timing = $("#data_from_timing").val();
+         var gmeet_url = $("#data_gmeet_url").val();
+         $('#notificationMsg').val("The class will start from "+from_timing+". Please Join "+gmeet_url); 
 
     });
 
@@ -1899,5 +1950,43 @@ $cls = 0;
             }
         });
     }
+</script>
+
+<script>
+
+        $('.chapter').change('[data-chapter]',function(){
+        var getChapter = $(this).val(); 
+        var id = $(this).attr('data-chapter');
+        //alert(id);
+        if (getChapter != '') {
+                $.ajax({
+                    type: 'Get',
+                    url: '{{ route("get-topic") }}',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        'chapter': getChapter
+                    },
+                    success: function(result) {
+                        var response = JSON.parse(result);
+                        if(response || getChapter=="Select Chapter"){
+                          $("#chapterTopic"+id).empty();
+                            $("#chapterTopic"+id).append('<option>Select Topic</option>');
+                            $.each(response,function(key,value){
+                                $('#chapterTopic'+id).append('<option value="'+key+'">'+value+'</option>');
+                            });
+
+                        }else{
+                            $('.topics').empty();
+                        }
+                    },
+                    error: function() {
+                        $.fn.notifyMe('error', 4, 'There is some error while saving description text!');
+                    }
+                });
+
+        } 
+    });
 </script>
 @endsection

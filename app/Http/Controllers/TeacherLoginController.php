@@ -15,6 +15,9 @@ use App\StudentSubject;
 use DB;
 use App\InvitationClass;
 use App\Http\Helpers\CommonHelper;
+use App\CmsLink;
+use Response;
+
 
 class TeacherLoginController extends Controller
 {
@@ -152,6 +155,14 @@ class TeacherLoginController extends Controller
         return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData'));
     }
 
+    public function getTopic(Request $request)
+    {
+
+     $getdata   = CmsLink::where('chapter',$request->chapter)->pluck('topic','id');
+     echo $getdata;
+
+    }
+    
     public function logout(Request $request)
     {
         Session::forget('access_token_teacher');
