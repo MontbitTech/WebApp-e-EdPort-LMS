@@ -75,6 +75,7 @@ $cls = 0;
                         <div class="card text-center mb-3" style="border-color:#253372;">
                             <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
+                            <input type="hidden" id="txt_from_timing{{$i}}" value="{{$t->from_timing}}">
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
                             <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
                             <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
@@ -110,9 +111,19 @@ $cls = 0;
 
                                         <div class="col-md-6 mt-1">
                                             <div class="row">
+                                                <?php
+                                                $chapters = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
+                                                ?>
                                                 <div class="col-md-6">
-                                                    <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
-                                                        <option value="">Select Chapter</option>
+
+                                                    <select class="form-control custom-select-sm border-0 btn-shadow chapter" id="chapter" name="chap" data-chapter="{{$i}}">
+                                                        <option value="Select Chapter">Select Chapter</option>
+                                                        @if(count($chapters)>0)
+                                                        @foreach($chapters as $ch)
+                                                        <?php $selected = ($ch->id == $t->topic_id) ? 'selected' : ''; ?>
+                                                        <option value="{{$ch->chapter}}" {{$selected}}>{{$ch->chapter}}</option>
+                                                        @endforeach
+                                                        @endif
 
                                                     </select>
                                                 </div>
@@ -183,7 +194,7 @@ $cls = 0;
                                                                         <!--img src="{{asset('images/logo-1.png')}}" class="m-1" alt="" width="25px" style="{{$display_style}}"-->
                                                                         <span class="m-auto font-weight-bolder">e-Edport</span>
                                                                     </a>
-                                                                    <button class="col-3 btn btn-sm btn-outline-dark btn-shadow border-0">
+                                                                    <button class="col-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$i}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -205,7 +216,7 @@ $cls = 0;
                                                                         <span class="m-auto font-weight-bolder">Khan Academy</span>
                                                                     </a>
 
-                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0">
+                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$i}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -222,7 +233,7 @@ $cls = 0;
                                                                         <span class="m-auto font-weight-bolder">YouTube</span>
                                                                     </a>
 
-                                                                    <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0">
+                                                                    <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$i}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -239,7 +250,7 @@ $cls = 0;
                                                                         <span class="m-auto font-weight-bolder">Wikipedia</span>
                                                                     </a>
 
-                                                                    <button class="col-md-3 btn btn-sm btn-outline-secondary btn-shadow border-0">
+                                                                    <button class="col-md-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$i}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -1018,6 +1029,8 @@ $cls = 0;
                 <input type="hidden" id="data_subject_id" value="" name="subject_id" />
                 <input type="hidden" id="data_class_id" value="" name="class_id" />
                 <input type="hidden" id="data_gmeet_url" value="" name="gmeet_url" />
+                <input type="hidden" id="data_from_timing" value="data_from_timing" />
+
 
 
                 <div class="form-group row">
@@ -1190,6 +1203,17 @@ $cls = 0;
 
     $(document).on('click', '[data-academylink]', function() {
         var liveurl = $(this).attr("data-academylink");
+        if (liveurl != '') {
+            //$('#viewClassModal').modal('show');
+            //$("#thedialog").attr('src','https://google.com');
+            window.open(liveurl, "_blank"); //, "dialogWidth:400px;dialogHeight:300px");
+        } else {
+            alert('No content url found!');
+        }
+    });
+
+    $(document).on('click', '[data-book]', function() {
+        var liveurl = $(this).attr("data-book");
         if (liveurl != '') {
             //$('#viewClassModal').modal('show');
             //$("#thedialog").attr('src','https://google.com');
@@ -1419,10 +1443,14 @@ $cls = 0;
                     $('#createAssiModal').modal('hide');
                     var data = '<option value="' + response.cource_url + '">' + assignment_title + '</option>';
                     $('#view_a_link_' + id).append(data);
-                    location.reload();
+                    $('#assignment_create').prop('disabled', false);
+                    $('#attach_file').prop('disabled', false);
+                    $('#cancel_assignment').prop('disabled', false);
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
-                    location.reload();
+                    $('#assignment_create').prop('disabled', false);
+                    $('#attach_file').prop('disabled', false);
+                    $('#cancel_assignment').prop('disabled', false);
                 }
             }
         });
@@ -1472,10 +1500,14 @@ $cls = 0;
                     window.open(response.cource_url, "title", "dialogWidth:400px;dialogHeight:300px");
                     var data = '<option value="' + response.cource_url + '">' + assignment_title + '</option>';
                     $('#view_a_link_' + id).append(data);
-                    location.reload();
+                    $('#assignment_create').prop('disabled', false);
+                    $('#attach_file').prop('disabled', false);
+                    $('#cancel_assignment').prop('disabled', false);
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
-                    location.reload();
+                    $('#assignment_create').prop('disabled', false);
+                    $('#attach_file').prop('disabled', false);
+                    $('#cancel_assignment').prop('disabled', false);
                 }
             }
         });
@@ -1513,6 +1545,11 @@ $cls = 0;
                         if (response.academy_link != null) {
                             $('#academy_' + dateWork_id).attr('style', 'display:block');
                             $('#academy_' + dateWork_id).attr('data-academylink', response.academy_link);
+                        }
+
+                        if (response.book_url != null) {
+                            $('#book_' + dateWork_id).attr('style', 'display:block');
+                            $('#book_' + dateWork_id).attr('data-book', response.book_url);
                         }
                         $.fn.notifyMe('success', 4, response.message);
                     },
@@ -1625,6 +1662,10 @@ $cls = 0;
         $("#data_subject_id").val($("#txt_subject_id" + val).val());
         $("#data_class_id").val($("#txt_class_id" + val).val());
         $("#data_gmeet_url").val($("#txt_gMeetURL" + val).val());
+        $("#data_from_timing").val($("#txt_from_timing" + val).val());
+        var from_timing = $("#data_from_timing").val();
+        var gmeet_url = $("#data_gmeet_url").val();
+        $('#notificationMsg').val("The class will start from " + from_timing + ". Please Join " + gmeet_url);
 
     });
 
@@ -1868,6 +1909,72 @@ $cls = 0;
                 $('.asg1').prop("disabled", true);
                 $('.asg1').prop("value", "");
             });
+    });
+
+    function shareContent(url, dateClass_id) {
+        var notificationMsg = "Please go through " + url + " for today's notes";
+        $.ajax({
+            url: "{{url('student-notify')}}",
+            type: "POST",
+            data: {
+                notificationMsg: notificationMsg,
+                dateClass_id: dateClass_id
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                var response = JSON.parse(result);
+                if (response.status == 'success') {
+                    $.fn.notifyMe('success', 5, response.message);
+                } else {
+                    $.fn.notifyMe('error', 5, response.message);
+                }
+            },
+            error: function(error_r) {
+                var obj = JSON.parse(error_r.responseText);
+                $.each(obj.errors, function(key, value) {
+                    $.fn.notifyMe('error', 5, value);
+                });
+            }
+        });
+    }
+</script>
+
+<script>
+    $('.chapter').change('[data-chapter]', function() {
+        var getChapter = $(this).val();
+        var id = $(this).attr('data-chapter');
+        //alert(id);
+        if (getChapter != '') {
+            $.ajax({
+                type: 'Get',
+                url: '{{ route("get-topic") }}',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    'chapter': getChapter
+                },
+                success: function(result) {
+                    var response = JSON.parse(result);
+                    if (response || getChapter == "Select Chapter") {
+                        $("#chapterTopic" + id).empty();
+                        $("#chapterTopic" + id).append('<option>Select Topic</option>');
+                        $.each(response, function(key, value) {
+                            $('#chapterTopic' + id).append('<option value="' + key + '">' + value + '</option>');
+                        });
+
+                    } else {
+                        $('.topics').empty();
+                    }
+                },
+                error: function() {
+                    $.fn.notifyMe('error', 4, 'There is some error while saving description text!');
+                }
+            });
+
+        }
     });
 </script>
 @endsection

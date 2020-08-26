@@ -7,7 +7,7 @@ class CmsLink extends Model
 {
   protected $table = 'tbl_cmslinks';
 	
-	protected $fillable = ['class','subject','topic','link'];    
+	protected $fillable = ['class','subject','chapter','topic','link'];    
 	
   
    public function dateClass()
