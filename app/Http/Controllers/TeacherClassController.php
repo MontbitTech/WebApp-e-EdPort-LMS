@@ -15,6 +15,7 @@ use App\Http\Helpers\CustomHelper;
 use App\StudentSubject;
 use Illuminate\Support\Facades\Config;
 use App\InvitationClass;
+use Illuminate\Support\Facades\Log;
 use Mail;
 use Validator;
 
@@ -40,35 +41,37 @@ class TeacherClassController extends Controller
     public function notifyStudents (Request $request)
     {
         $logged_teacher = Session::get('teacher_session');
-        $logged_teacher_id = $logged_teacher['teacher_id'];
-        $logged_teacher_name = $logged_teacher['teacher_name'];
-        $logged_teacher_phone = $logged_teacher['teacher_phone'];
-        $from = CustomHelper::getFromMail();
-        $comm = "";
-        $er = "";
-        $number = array();
-
-
+        // $logged_teacher_id = $logged_teacher['teacher_id'];
+        // $logged_teacher_name = $logged_teacher['teacher_name'];
+        // $logged_teacher_phone = $logged_teacher['teacher_phone'];
+        // $from = CustomHelper::getFromMail();
+        // $comm = "";
+        // $er = "";
+        // $number = array();
+        
         if ( Request()->post() || Request()->ajax() ) {
-            $class_id = $request->class_id;
-            $subject_id = $request->subject_id;
-            $class_join_link = $request->g_meet_url;
+            // $class_id = $request->class_id;
+            // $subject_id = $request->subject_id;
+            // $class_join_link = $request->g_meet_url;
 
             $dateClass_id = $request->dateClass_id;
 
-            $class_timing = DateClass::where('id', $dateClass_id)->first();
+            // $class_timing = DateClass::where('id', $dateClass_id)->first();
             //$class_join_link = $class_timing->g_meet_url;
-            $start_time = $class_timing->from_timing;
-            $std_message = $class_timing->class_student_msg;
-
-            $subject_name = StudentSubject::where('id', $request->subject_id)->get()->first();
-            $sub_name = $subject_name->subject_name;
-            $class_name = StudentClass::where('id', $request->class_id)->get()->first();
-            $cls_name = $class_name->class_name;
-            $section_name = $class_name->section_name;
-
-            $classData = \DB::table('tbl_classes')->select('id')->where('class_name', $cls_name)->where('section_name', $section_name)->get()->first();
-            $c_id = $classData->id;
+            // $start_time = $class_timing->from_timing;
+            // $std_message = $class_timing->class_student_msg;
+            $class_name = StudentClass::with('dateClass')->whereHas('dateClass',function($q)use ($dateClass_id){
+                $q->where('id',$dateClass_id);
+            })->first();
+            // return json_encode(array('error', $class_name));
+            // $subject_name = StudentSubject::where('id', $request->subject_id)->get()->first();
+            // $sub_name = $subject_name->subject_name;
+            // $class_name = StudentClass::where('id', $request->class_id)->get()->first();
+            // $cls_name = $class_name->class_name;
+            // $section_name = $class_name->section_name;
+            
+            // $classData = \DB::table('tbl_classes')->select('id')->where('class_name', $cls_name)->where('section_name', $section_name)->get()->first();
+            // $c_id = $classData->id;
             
             $token = CommonHelper::varify_Teachertoken();
             $data = array(
@@ -76,11 +79,21 @@ class TeacherClassController extends Controller
                    );
             $response = CommonHelper::createAnnouncement($token, $class_name->g_class_id, json_encode($data));
             
+
+            if(Request()->ajax()){
+                if(!$response['success']){
+                    return json_encode(array('error', $response['data']->message));
+                }
+                  
+                return json_encode(array('status' => 'success', 'message' => "Notification sent successfully"));
+    
+
+            }
             if(!$response['success']){
                 return back()->with('error', $response['data']->message);
             }
               
-             return back()->with('success', "Notification Send Successfully");
+             return back()->with('success', "Notification Sent Successfully");
 
             // $student_phone = \DB::table('tbl_students')->select('name', 'email', 'phone')->where('class_id', $c_id)->where('notify', 'yes')->get(); // Phone Number
             // $student_email = \DB::table('tbl_students')->select('name', 'email', 'phone')->where('class_id', $c_id)->get(); // email
