@@ -250,7 +250,7 @@ class ClassWorkController extends Controller
                 $classWork->save();
                 $classWork_id = $classWork->id;  // Last Insert Id
 
-                if ( $dateClass_id != '' ) {
+                if ( $dateClass_id != '' && $dateClass_id!=0) {
                     $obj = DateClass::find($dateClass_id);
                     $obj->topic_id = $topic_id;
                     //$obj->ass_live_url = $w_resData['alternateLink'];
@@ -262,7 +262,7 @@ class ClassWorkController extends Controller
                 }
                 else{
                     $s = \DB::table('tbl_classwork_dateclass')->insert(
-                        ['dateclass_id' => 0, 'classwork_id' => $classWork_id]
+                        ['dateclass_id' => $dateClass_id, 'classwork_id' => $classWork_id]
                     );
             }
             

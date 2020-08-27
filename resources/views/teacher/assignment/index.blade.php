@@ -41,6 +41,8 @@
               <input type="hidden" id="txt_class_id{{$i}}" value="{{$list->class_id}}">
               <input type="hidden" id="txt_subject_id{{$i}}" value="{{$list->subject_id}}">
               <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$list->teacher_id}}">
+              <input type="hidden" id="txt_dateclass_id{{$i}}" value="0">
+
 
 
 
@@ -418,7 +420,8 @@
     var dueDate = $('#txt_due_date').val();
     var dueTime = $('#txt_due_time').val();
     var point = $('#txt_point').val();
-    var dateClass_id= '';
+    var dateClass_id= $("#txt_dateclass_id" + id).val();
+
     //alert(dateClass_id);
 
     $.ajax({
@@ -476,7 +479,9 @@
         var dueDate = $('#txt_due_date').val();
         var dueTime = $('#txt_due_time').val();
         var point = $('#txt_point').val();
-        var dateClass_id= '';
+        var dateClass_id= $("#txt_dateclass_id" + id).val();
+
+        //alert(dateClass_id);
 
         $.ajax({
             url: "{{url('create-assignment')}}",
