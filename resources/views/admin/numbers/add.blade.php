@@ -43,7 +43,7 @@
                 </div>
               </div>
 
-              <div class="form-group row mt-0">
+              <!-- <div class="form-group row mt-0">
 
                 <div class="col-md-5   offset-md-4">
                   {!! Form::checkbox('notify', "no", false, array('placeholder' => 'Section','class' => 'ml-2')) !!}
@@ -55,7 +55,7 @@
                   </label>
                 </div>
 
-              </div>
+              </div> -->
 
               <div class="form-group row">
                 <div class="col-md-6 offset-md-4">
