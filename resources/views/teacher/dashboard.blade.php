@@ -82,27 +82,35 @@ $cls = 0;
                             <input type="hidden" id="txt_gMeetURL{{$i}}" value="{{$teacherData->g_meet_url}}">
                             <input type="hidden" id="txt_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
                             <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}" />
-                            <div class="card-header text-white p-0" style="background:#253372;">
-                                <div class="row pl-2 pr-3">
-                                    <div class="d-flex align-items-center col-md-4">
-                                        <div class="cls-date font-weight-bold">{{ $todaysDate }}</div>
-                                        <div class="cls-from pt-1">
-                                            {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
-                                    </div>
-                                    <div class="d-flex align-items-center justify-content-between col-md-8">
-                                        <div class="font-weight-bold pt-1">
-                                            Class: {{ $class_name }} Std
-                                        </div>
-                                        <div class="font-weight-bold pt-1">
-                                            Section:{{$section_name}}
-                                        </div>
-                                        <div class="font-weight-bold pt-1">
-                                            Subject: {{$subject_name}}
-                                        </div>
-                                        <button type="button" class="btn btn-outline-primary text-white border-0" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="fas fa-plus"></i>
-                                        </button>
-                                    </div>
+                            <div class="card-header text-white p-0
+                            @if($t->to_timing<=now())
+                            bg-secondary
+                            @endif
+                            " style="background:#253372;">
+                                <div class="container">
 
+
+                                    <div class="row pl-2 pr-3">
+                                        <div class="d-flex align-items-center col-md-4">
+                                            <div class="cls-date font-weight-bold">{{ $todaysDate }}</div>
+                                            <div class="cls-from pt-1">
+                                                {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-between col-md-8">
+                                            <div class="font-weight-bold pt-1">
+                                                Class: {{ $class_name }} Std
+                                            </div>
+                                            <div class="font-weight-bold pt-1">
+                                                Section:{{$section_name}}
+                                            </div>
+                                            <div class="font-weight-bold pt-1">
+                                                Subject: {{$subject_name}}
+                                            </div>
+                                            <button type="button" class="btn btn-outline-primary text-white border-0" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="fas fa-plus"></i>
+                                            </button>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
                             <div class="collapse" id="collapseExample{{$t->id}}">
@@ -261,7 +269,7 @@ $cls = 0;
 
                                                             @if($book!=null)
                                                             <div class="col-md-6 mt-2">
-                                                                <div class="w-100 d-inline-flex"  style="letter-spacing:3px;">
+                                                                <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-book="{{ $book}}" data-topicid="{{$t->topic_id}}" id="book_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
 
                                                                         <span class="m-auto font-weight-bolder">Book</span>
