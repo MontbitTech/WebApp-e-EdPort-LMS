@@ -252,9 +252,11 @@ class ClassWorkController extends Controller
 
                 if ( $dateClass_id != '' ) {
                     $obj = DateClass::find($dateClass_id);
+                    if($obj){
                     $obj->topic_id = $topic_id;
                     //$obj->ass_live_url = $w_resData['alternateLink'];
                     $obj->save();
+                }
 
 
                     $s = \DB::table('tbl_classwork_dateclass')->insert(

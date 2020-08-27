@@ -418,7 +418,10 @@
     var dueDate = $('#txt_due_date').val();
     var dueTime = $('#txt_due_time').val();
     var point = $('#txt_point').val();
-    var dateClass_id = $('#new_assignment').val();
+    // var dateClass_id = $('#new_assignment').val();
+       var dateClass_id= $("#dateClass_id" + id).val();
+       //alert(dateClass_id);
+
     $.ajax({
       url: "{{url('create-assignment')}}",
       type: "POST",
@@ -474,7 +477,7 @@
         var dueDate = $('#txt_due_date').val();
         var dueTime = $('#txt_due_time').val();
         var point = $('#txt_point').val();
-        var dateClass_id = $('#new_assignment').val();
+        var dateClass_id= $("#dateClass_id" + id).val();
 
         $.ajax({
             url: "{{url('create-assignment')}}",
