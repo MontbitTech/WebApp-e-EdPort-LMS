@@ -252,19 +252,20 @@ class ClassWorkController extends Controller
 
                 if ( $dateClass_id != '' ) {
                     $obj = DateClass::find($dateClass_id);
-                    if($obj){
                     $obj->topic_id = $topic_id;
                     //$obj->ass_live_url = $w_resData['alternateLink'];
                     $obj->save();
-                }
-
-
+                
                     $s = \DB::table('tbl_classwork_dateclass')->insert(
                         ['dateclass_id' => $dateClass_id, 'classwork_id' => $classWork_id]
                     );
                 }
-
-
+                else{
+                    $s = \DB::table('tbl_classwork_dateclass')->insert(
+                        ['dateclass_id' => 0, 'classwork_id' => $classWork_id]
+                    );
+            }
+            
                 return json_encode(array('status' => 'success', 'cource_url' => $cource_url, 'message' => 'Assigment Created Successfully'));
             }
         }
