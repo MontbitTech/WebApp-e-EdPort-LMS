@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Admin;
 use App\Http\Helpers\CustomHelper;
 use App\Http\Requests\FileRequestValidation;
 use App\libraries\Classroom;
@@ -138,20 +139,44 @@ class ClassController extends Controller
                     }
 
                     return back()->with('error', $response['data']->message);
+                } 
+                Classroom::createClassroom([
+                    'class_name'   => $request->class_name,
+                    'section_name' => $request->section,
+                    'subject_id'   => $subject->id,
+                    'g_class_id'   => $response['data']->id,
+                    'g_link'       => $response['data']->alternateLink,
+                    'g_response'   => serialize($response['data']),
+                ]);
+
+                $inv_data = array(
+                    "courseId" => $response['data']->id,
+                    "role"     => "TEACHER",
+                    "userId"   => Admin::find(1)->email,
+        
+                );
+                $inv_data = json_encode($inv_data);
+                $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // Invite teacher  
+                $inv_resData = array('error' => '');
+
+                if ($inv_responce == 101) {
+                    return back()->with('error', Config::get('constants.WebMessageCode.119'));
                 } else {
-                    $g_class_id = $response['data']->id;
-                    $obj = new StudentClass;
-                    $obj->class_name = $request->class_name;
-                    $obj->section_name = $request->section;
-                    $obj->subject_id = $subject->id;
+                    $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
 
-                    $obj->g_class_id = $g_class_id;
-                    $obj->g_link = $response['data']->alternateLink;
-                    $obj->g_response = serialize($response['data']);
-                    $obj->save();
+                    if ($inv_resData['error'] != '') {
 
-                    $successMessage .= $subject->subject_name . ' ';
+                        if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
+                            return redirect()->route('admin.logout');
+                        } else if ($inv_resData['error']['status'] == 'FAILED_PRECONDITION') {
+                            return back()->with('error', 'The requested user\'s account is disabled or if the user already has this role');
+                        } else {
+                            //Log::error($inv_resData['error']['message']);
+                            return back()->with('error', $inv_resData['error']['message']);
+                        }
+                    }
                 }
+                $successMessage .= $subject->subject_name . ' ';
             }
 
             return redirect()->route('admin.listClass')->with('success', $successMessage . 'added successfully');
