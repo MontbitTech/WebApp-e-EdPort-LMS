@@ -214,6 +214,7 @@ class ClassController extends Controller
         if ($classWorkExits)
             return redirect()->route('admin.listClass')->with('error', "you cannot delete this class! it's associated with Assignent....");
 
+        InvitationClass::where('class_id',$request->txt_class_id)->delete();
         $classes = StudentClass::find($request->txt_class_id);
 
         $token = CommonHelper::varify_Admintoken(); // verify admin token
