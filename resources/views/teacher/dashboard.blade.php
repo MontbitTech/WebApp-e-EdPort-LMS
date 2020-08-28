@@ -83,10 +83,7 @@ $cls = 0;
                             <input type="hidden" id="txt_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
                             <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}" />
                             <div class="card-header text-white p-0
-                            @if($t->to_timing<=now())
-                            bg-secondary
-                            @endif
-                            " style="background:#253372;">
+                            @if(date('h:i a',strtotime($t->from_timing)) <= date('h:i a')) bg-secondary @endif" style="background:#253372;">
                                 <div class="container">
 
 
