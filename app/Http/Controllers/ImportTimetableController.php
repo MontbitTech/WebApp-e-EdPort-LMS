@@ -947,10 +947,9 @@ class ImportTimetableController extends Controller
         }
         $classes = StudentClass::where('class_name',$classTiming->studentClass->class_name)
                     ->where('section_name',$classTiming->studentClass->section_name)->pluck('id');
-        $timeTables = ClassTiming::whereIn('class_id',$classes)->where('from_timing', $classTiming->from_timing)->get();
-        foreach ($timeTables as $timeTable) {
-            $timeTable->delete();
-        }
+        $timeTableIds = ClassTiming::whereIn('class_id',$classes)->where('from_timing', $classTiming->from_timing)->pluck('id');
+        DateClass::whereIn('timetable_id',$timeTableIds)->where('class_date','>=',DateUtility::getDate())->delete();
+        ClassTiming::whereIn('id',$timeTableIds)->delete();
 
         return redirect()->back()->with('success', "Deleted Successfully");
     }
@@ -971,8 +970,9 @@ class ImportTimetableController extends Controller
                     $invDelete = CommonHelper::teacher_invitation_delete($token, $gCode);
                 }
             }
-            $classTime = ClassTiming::where('class_id', $timeTable->class_id)->delete();
-            // $classTime->delete();
+            $classTimes = ClassTiming::where('class_id', $timeTable->class_id)->pluck('id');
+            DateClass::whereIn('timetable_id',$classTimes)->where('class_date','>=',DateUtility::getDate())->delete();
+            ClassTiming::whereIn('id',$classTimes)->delete();
         }
         return redirect()->back()->with('success', "Deleted Successfully");
     }
