@@ -45,7 +45,16 @@ class StudentUtility
         $courseInvitations = StudentCourseInvitation::where('student_email',$student->email)->get();
 
         foreach ($courseInvitations as $courseInvitation){
-            CommonHelper::teacher_invitation_delete($token, $courseInvitation->invitation_code);
+            $response = CommonHelper::teacher_invitation_delete($token, $courseInvitation->invitation_code);
+            $inv_resData = array('error' => '');
+            if ($response == 101) {
+                return failure_message(Config::get('constants.WebMessageCode.119'));
+            } else {
+                $inv_resData = array_merge($inv_resData, json_decode($response, true));
+                if ($inv_resData['error'] != '') {
+                    return failure_message($inv_resData['error']['message']);
+                }
+            }
             $courseInvitation->delete();
         }
 
@@ -53,7 +62,18 @@ class StudentUtility
         
         foreach ( $studentClasses as $studentClass ) {
             $inv_responce = CommonHelper::student_course_delete($token, $student->email, $studentClass->g_class_id);
+            $inv_resData = array('error' => '');
+            if ($response == 101) {
+                return failure_message(Config::get('constants.WebMessageCode.119'));
+            } else {
+                $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
+                if ($inv_resData['error'] != '') {
+                    return failure_message($inv_resData['error']['message']);
+                }
+            }
         }
+
+        return success_message('success');
     }
 
     public static function inviteStudentToClassroom($studentEmail, $token, $classrooms)

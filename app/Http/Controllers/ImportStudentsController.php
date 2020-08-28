@@ -228,45 +228,13 @@ class ImportStudentsController extends Controller
     public function deleteStudent(Request $request, $id)
     {
         if ($request->delete == 'Delete' || $request->delete == 'delete') {
-            $sid = $request->txt_student_id;
+            $student = Student::with('class')->find($request->txt_student_id);
 
-            //            $student = \DB::select('select * from tbl_students s, tbl_classes c where s.class_id = c.id and s.id=' . $sid);
-            $student = Student::with('class')->find($sid);
-
-            if ($student) {
-                $obj_class = StudentClass::where('class_name', $student->class->class_name)->where('section_name', $student->class->section_name)->get();
-
-                $token = CommonHelper::varify_Admintoken(); // verify admin token
-                foreach ($obj_class as $row) {
-
-                    $courseInvitations = StudentCourseInvitation::where('student_email', $student->email)->get();
-
-                    foreach ($courseInvitations as $courseInvitation) {
-                        CommonHelper::teacher_invitation_delete($token, $courseInvitation->invitation_code);
-                        $courseInvitation->delete();
-                    }
-
-                    $inv_responce = CommonHelper::student_course_delete($token, $student->email, $row->g_class_id); // Invite Student
-
-                    $inv_resData = array('error' => '');
-                    if ($inv_responce == 101) {
-                        return back()->with('error', Config::get('constants.WebMessageCode.119'));
-                    } else {
-                        $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                        if ($inv_resData['error'] != '') {
-
-                            if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
-                                return redirect()->route('admin.logout');
-                            }
-                        }
-                    }
-                }
-                $student->delete();
-            }
-            /**/
-            //            $student = Student::find($sid);
-
-            //            $lists = \DB::select('select s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id');
+            $response = StudentUtility::removeStudentFromClassroom($student);
+            if(!$response['success'])
+                return back()->with('error', $response['data']);
+ 
+            $student->delete();
 
             return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.139'));
         } else {
@@ -526,7 +494,9 @@ class ImportStudentsController extends Controller
         $students = Student::with('class')->whereIn('id', explode(",", $request->ids))->get();
 
         foreach ($students as $student) {
-            StudentUtility::removeStudentFromClassroom($student);
+            $response = StudentUtility::removeStudentFromClassroom($student);
+            if(!$response['success'])
+                return response()->json(['error' => $response['data']]);
             $student->delete();
         }
         return response()->json(['success' => "Deleted successfully."]);
