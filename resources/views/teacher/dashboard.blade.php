@@ -75,7 +75,7 @@ $cls = 0;
                         <div class="card text-center mb-3" style="border-color:#253372;">
                             <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
-                             <input type="hidden" id="txt_class_name{{$i}}" value="{{$class_name}}">
+                            <input type="hidden" id="txt_class_name{{$i}}" value="{{$class_name}}">
                             <input type="hidden" id="txt_from_timing{{$i}}" value="{{$t->from_timing}}">
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
                             <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
@@ -103,14 +103,14 @@ $cls = 0;
                                             <div class="font-weight-bold pt-1">
                                                 Subject: {{$subject_name}}
                                             </div>
-                                            <button type="button" class="btn btn-outline-primary text-white border-0" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" @if(!(date('H',strtotime($t->to_timing))  < date('H') || date('H',strtotime($t->from_timing))  > date('H')))  fa fa-minus @else fas fa-plus  @endif "></i>
+                                            <button type="button" class="btn btn-outline-primary text-white border-0" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
                                             </button>
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
-                            <div class="collapse @if(!(date('H',strtotime($t->to_timing))  < date('H') || date('H',strtotime($t->from_timing))  > date('H')))  show @endif " id="collapseExample{{$t->id}}">
+                            <div class="collapse @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )   show @endif " id="collapseExample{{$t->id}} " id="collapseExample{{$t->id}}">
                                 <div class="card-body p-0">
                                     <div class="row m-2">
 
@@ -1966,7 +1966,7 @@ $cls = 0;
 <script>
     $('.chapter').change('[data-chapter]', function() {
         var getChapter = $(this).val();
-         var id = $(this).attr('data-chapter');
+        var id = $(this).attr('data-chapter');
         var class_name = $("#txt_class_name" + id).val();
         var subject_id = $("#txt_subject_id" + id).val();
         //alert(id);
@@ -1978,9 +1978,9 @@ $cls = 0;
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                    'chapter' : getChapter,
-                    'class'   : class_name,
-                    'subject' : subject_id
+                    'chapter': getChapter,
+                    'class': class_name,
+                    'subject': subject_id
                 },
                 success: function(result) {
                     var response = JSON.parse(result);

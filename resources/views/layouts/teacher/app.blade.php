@@ -21,11 +21,13 @@
 </head>
 
 <body>
+    <div class="loader" style="display:none;"></div>
     @include('layouts.teacher.header')
     @include('layouts.teacher.sidebar')
     @include('layouts.notifications')
     @yield('content')
     @include('layouts.teacher.footer')
+
 </body>
 
 </html>
