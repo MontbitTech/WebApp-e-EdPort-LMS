@@ -221,8 +221,9 @@ class ClassController extends Controller
             if ($response['data']->status == 'UNAUTHENTICATED')
                 return redirect()->route('admin.logout');
 
-            return back()->with('error', $response['message']->message);
+            return back()->with('error', $response['data']->message);
         } else {
+            DateClass::where('timetable_id',$request->txt_class_id)->delete();
             $classes->delete();
 
             return redirect()->route('admin.listClass')->with('success', "Class Deleted Successfully.");
