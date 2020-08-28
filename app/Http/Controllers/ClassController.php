@@ -225,7 +225,7 @@ class ClassController extends Controller
 
             return back()->with('error', $response['data']->message);
         } else {
-            DateClass::where('timetable_id',$request->txt_class_id)->delete();
+            DateClass::where('class_id',$request->txt_class_id)->delete();
             $classes->delete();
 
             return redirect()->route('admin.listClass')->with('success', "Class Deleted Successfully.");
