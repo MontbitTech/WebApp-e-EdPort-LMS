@@ -82,7 +82,7 @@ class TeacherClassController extends Controller
 
             if(Request()->ajax()){
                 if(!$response['success']){
-                    return json_encode(array('error', $response['data']->message));
+                    return json_encode(array('status' => 'success', 'message' => $response['data']->message));
                 }
                   
                 return json_encode(array('status' => 'success', 'message' => "Notification sent successfully"));
