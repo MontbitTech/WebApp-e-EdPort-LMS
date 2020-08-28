@@ -149,30 +149,32 @@ class ClassController extends Controller
                     'g_response'   => serialize($response['data']),
                 ]);
 
-                $inv_data = array(
-                    "courseId" => $response['data']->id,
-                    "role"     => "TEACHER",
-                    "userId"   => Admin::find(1)->email,
-        
-                );
-                $inv_data = json_encode($inv_data);
-                $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // Invite teacher  
-                $inv_resData = array('error' => '');
+                if(Session::get('admin_session')['admin_email'] != Admin::find(1)->email){
+                    $inv_data = array(
+                        "courseId" => $response['data']->id,
+                        "role"     => "TEACHER",
+                        "userId"   => Admin::find(1)->email,
+            
+                    );
+                    $inv_data = json_encode($inv_data);
+                    $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // Invite teacher  
+                    $inv_resData = array('error' => '');
 
-                if ($inv_responce == 101) {
-                    return back()->with('error', Config::get('constants.WebMessageCode.119'));
-                } else {
-                    $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
+                    if ($inv_responce == 101) {
+                        return back()->with('error', Config::get('constants.WebMessageCode.119'));
+                    } else {
+                        $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
 
-                    if ($inv_resData['error'] != '') {
+                        if ($inv_resData['error'] != '') {
 
-                        if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
-                            return redirect()->route('admin.logout');
-                        } else if ($inv_resData['error']['status'] == 'FAILED_PRECONDITION') {
-                            return back()->with('error', 'The requested user\'s account is disabled or if the user already has this role');
-                        } else {
-                            //Log::error($inv_resData['error']['message']);
-                            return back()->with('error', $inv_resData['error']['message']);
+                            if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
+                                return redirect()->route('admin.logout');
+                            } else if ($inv_resData['error']['status'] == 'FAILED_PRECONDITION') {
+                                return back()->with('error', 'The requested user\'s account is disabled or if the user already has this role');
+                            } else {
+                                //Log::error($inv_resData['error']['message']);
+                                return back()->with('error', $inv_resData['error']['message']);
+                            }
                         }
                     }
                 }

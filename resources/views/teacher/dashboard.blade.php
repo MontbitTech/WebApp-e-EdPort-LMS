@@ -102,14 +102,14 @@ $cls = 0;
                                             <div class="font-weight-bold pt-1">
                                                 Subject: {{$subject_name}}
                                             </div>
-                                            <button type="button" class="btn btn-outline-primary text-white border-0" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="fas fa-plus"></i>
+                                            <button type="button" class="btn btn-outline-primary text-white border-0" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" @if(!(date('H',strtotime($t->to_timing))  < date('H') || date('H',strtotime($t->from_timing))  > date('H')))  fa fa-minus @else fas fa-plus  @endif "></i>
                                             </button>
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
-                            <div class="collapse" id="collapseExample{{$t->id}}">
+                            <div class="collapse @if(!(date('H:i',strtotime($t->from_timing))  < date('H') || date('H',strtotime($t->to_timing))  > date('H')))  show @endif " id="collapseExample{{$t->id}}">
                                 <div class="card-body p-0">
                                     <div class="row m-2">
 
