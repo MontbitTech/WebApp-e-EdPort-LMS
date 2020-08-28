@@ -75,6 +75,7 @@ $cls = 0;
                         <div class="card text-center mb-3" style="border-color:#253372;">
                             <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
+                             <input type="hidden" id="txt_class_name{{$i}}" value="{{$t->studentClass->class_name}}">
                             <input type="hidden" id="txt_from_timing{{$i}}" value="{{$t->from_timing}}">
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
                             <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
@@ -1965,7 +1966,9 @@ $cls = 0;
 <script>
     $('.chapter').change('[data-chapter]', function() {
         var getChapter = $(this).val();
-        var id = $(this).attr('data-chapter');
+         var id = $(this).attr('data-chapter');
+        var class_name = $("#txt_class_name" + id).val();
+        var subject_id = $("#txt_subject_id" + id).val();
         //alert(id);
         if (getChapter != '') {
             $.ajax({
@@ -1975,7 +1978,9 @@ $cls = 0;
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                    'chapter': getChapter
+                    'chapter' : getChapter,
+                    'class'   : class_name,
+                    'subject' : subject_id
                 },
                 success: function(result) {
                     var response = JSON.parse(result);

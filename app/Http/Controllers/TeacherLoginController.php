@@ -158,7 +158,7 @@ class TeacherLoginController extends Controller
     public function getTopic(Request $request)
     {
 
-     $getdata   = CmsLink::where('chapter',$request->chapter)->pluck('topic','id');
+     $getdata   = CmsLink::where('chapter',$request->chapter)->where('class',$request->class)->where('subject',$request->subject)->pluck('topic','id');
      echo $getdata;
 
     }
