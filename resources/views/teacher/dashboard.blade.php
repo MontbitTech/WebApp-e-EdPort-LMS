@@ -143,12 +143,12 @@ $cls = 0;
                                                     //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
                                                     $x = $t->cmsLink;
                                                     ?>
-                                                    <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}">
+                                                    <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}" id=chapterTopic{{$i}}>
                                                         <option value="">Select Topic</option>
                                                         @if(count($topics)>0)
                                                         @foreach($topics as $topic)
                                                         <?php $selected = ($topic->id == $t->topic_id) ? 'selected' : ''; ?>
-                                                        <option value="{{$topic->id}}" {{$selected}}>{{$topic->topic}}</option>
+                                                        <option value="{{$topic->id}}" {{$selected}} style="display:none">{{$topic->topic}}</option>
                                                         @endforeach
                                                         @endif
                                                     </select>
@@ -1984,7 +1984,7 @@ $cls = 0;
                         $("#chapterTopic" + id).empty();
                         $("#chapterTopic" + id).append('<option>Select Topic</option>');
                         $.each(response, function(key, value) {
-                            $('#chapterTopic' + id).append('<option value="' + key + '">' + value + '</option>');
+                            $('#chapterTopic' + id).append('<option value="' + key + '">' + value + '</option>').show();
                         });
 
                     } else {
