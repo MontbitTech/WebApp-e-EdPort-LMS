@@ -944,10 +944,12 @@ class ImportTimetableController extends Controller
             if ($gCode != '') {
                 $invDelete = CommonHelper::teacher_invitation_delete($token, $gCode);
             }
+            // $objTeacher->delete();
         }
         $classes = StudentClass::where('class_name',$classTiming->studentClass->class_name)
                     ->where('section_name',$classTiming->studentClass->section_name)->pluck('id');
         $timeTableIds = ClassTiming::whereIn('class_id',$classes)->where('from_timing', $classTiming->from_timing)->pluck('id');
+
         DateClass::whereIn('timetable_id',$timeTableIds)->where('class_date','>=',DateUtility::getDate())->delete();
         ClassTiming::whereIn('id',$timeTableIds)->delete();
 
@@ -957,10 +959,10 @@ class ImportTimetableController extends Controller
     public function deleteAllTimetable(Request $request)
     {
         $timeTables = \DB::select("SELECT t.class_id, t.subject_id,t.id,t.teacher_id
-        FROM tbl_class_timings t
-        left join tbl_student_subjects s on s.id = t.subject_id
-        left join tbl_student_classes c on c.id = t.class_id
-        where c.class_name = ? and c.section_name=?", [$request->txtSerachByClass, $request->txtSerachBySection]);
+                        FROM tbl_class_timings t
+                        left join tbl_student_subjects s on s.id = t.subject_id
+                        left join tbl_student_classes c on c.id = t.class_id
+                        where c.class_name = ? and c.section_name=?", [$request->txtSerachByClass, $request->txtSerachBySection]);
         foreach ($timeTables as $timeTable) {
             $objTeacher = InvitationClass::where('class_id', $timeTable->class_id)->where('subject_id', $timeTable->subject_id)->where('teacher_id', $timeTable->teacher_id)->get()->first();
             $token = CommonHelper::varify_Admintoken(); // verify admin token
@@ -969,11 +971,14 @@ class ImportTimetableController extends Controller
                 if ($gCode != '') {
                     $invDelete = CommonHelper::teacher_invitation_delete($token, $gCode);
                 }
+
+                // $objTeacher->delete();
             }
             $classTimes = ClassTiming::where('class_id', $timeTable->class_id)->pluck('id');
             DateClass::whereIn('timetable_id',$classTimes)->where('class_date','>=',DateUtility::getDate())->delete();
             ClassTiming::whereIn('id',$classTimes)->delete();
         }
+
         return redirect()->back()->with('success', "Deleted Successfully");
     }
 
