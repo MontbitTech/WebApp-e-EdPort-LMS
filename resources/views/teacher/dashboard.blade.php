@@ -109,7 +109,7 @@ $cls = 0;
                                     </div>
                                 </div>
                             </div>
-                            <div class="collapse @if(!(date('H:i',strtotime($t->from_timing))  < date('H') || date('H',strtotime($t->to_timing))  > date('H')))  show @endif " id="collapseExample{{$t->id}}">
+                            <div class="collapse @if(!(date('H',strtotime($t->to_timing))  < date('H') || date('H',strtotime($t->from_timing))  > date('H')))  show @endif " id="collapseExample{{$t->id}}">
                                 <div class="card-body p-0">
                                     <div class="row m-2">
 
