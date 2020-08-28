@@ -75,7 +75,7 @@ $cls = 0;
                         <div class="card text-center mb-3" style="border-color:#253372;">
                             <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
-                             <input type="hidden" id="txt_class_name{{$i}}" value="{{$class_name}}">
+                            <input type="hidden" id="txt_class_name{{$i}}" value="{{$class_name}}">
                             <input type="hidden" id="txt_from_timing{{$i}}" value="{{$t->from_timing}}">
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
                             <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
@@ -103,14 +103,14 @@ $cls = 0;
                                             <div class="font-weight-bold pt-1">
                                                 Subject: {{$subject_name}}
                                             </div>
-                                            <button type="button" class="btn btn-outline-primary text-white border-0" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" @if(!(date('H',strtotime($t->to_timing))  < date('H') || date('H',strtotime($t->from_timing))  > date('H')))  fa fa-minus @else fas fa-plus  @endif "></i>
+                                            <button type="button" class="btn btn-outline-primary text-white border-0" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
                                             </button>
                                         </div>
 
                                     </div>
                                 </div>
                             </div>
-                            <div class="collapse @if(!(date('H',strtotime($t->to_timing))  < date('H') || date('H',strtotime($t->from_timing))  > date('H')))  show @endif " id="collapseExample{{$t->id}}">
+                            <div class="collapse @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )   show @endif " id="collapseExample{{$t->id}} " id="collapseExample{{$t->id}}">
                                 <div class="card-body p-0">
                                     <div class="row m-2">
 
@@ -1300,6 +1300,7 @@ $cls = 0;
         var rec_url = $('#past_edit_rec_liveUrl').val();
         var desc = $('#past_edit_description').val();
         var dateClass_id = $("#txt_past_datecalss_id").val();
+        $('.loader').show();
         $.ajax({
             url: "{{url('edit-past-class')}}",
             type: "POST",
@@ -1312,6 +1313,7 @@ $cls = 0;
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(result) {
+                $('.loader').fadeOut();
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
@@ -1355,6 +1357,7 @@ $cls = 0;
         $("#txt_aTitle").val('');
         $("#txt_topin_name").val('');
         $('#createAssiModal').modal('show');
+        $('.loader').show();
         $.ajax({
             url: "{{url('get-assignment')}}",
             type: "POST",
@@ -1366,6 +1369,7 @@ $cls = 0;
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(result) {
+                $('.loader').fadeOut();
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
                     var AssigmentData = response.data;
@@ -1396,6 +1400,7 @@ $cls = 0;
         var dateClass_id = $('#new_assignment').val();
         //var class_id = $('[data-createmodal="'+id+'"]').data('class_modal');
         //var subject_id = $('[data-createmodal="'+id+'"]').data('subject_modal');
+        $('.loader').show();
         $.ajax({
             url: "{{url('give-assignment')}}",
             type: "POST",
@@ -1407,6 +1412,7 @@ $cls = 0;
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(result) {
+                $('.loader').fadeOut();
                 ///  console.log(result);
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
@@ -1438,6 +1444,7 @@ $cls = 0;
         var dueTime = $('#txt_due_time').val();
         var point = $('#txt_point').val();
         var dateClass_id = $('#new_assignment').val();
+        $('.loader').show();
         $.ajax({
             url: "{{url('create-assignment')}}",
             type: "POST",
@@ -1459,6 +1466,7 @@ $cls = 0;
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(result) {
+                $('.loader').fadeOut();
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
@@ -1494,6 +1502,7 @@ $cls = 0;
         var dueTime = $('#txt_due_time').val();
         var point = $('#txt_point').val();
         var dateClass_id = $('#new_assignment').val();
+        $('.loader').show();
         $.ajax({
             url: "{{url('create-assignment')}}",
             type: "POST",
@@ -1515,6 +1524,7 @@ $cls = 0;
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(result) {
+                $('.loader').fadeOut();
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
@@ -1541,6 +1551,7 @@ $cls = 0;
             var topic_id = $(this).val();
             var dateWork_id = getid;
             if (dateWork_id != '') {
+                $('.loader').show();
                 $.ajax({
                     type: 'POST',
                     url: '{{ route("classtopic.update") }}',
@@ -1552,6 +1563,7 @@ $cls = 0;
                         'topic_id': topic_id
                     },
                     success: function(result) {
+                        $('.loader').fadeOut();
                         var response = JSON.parse(result);
                         location.reload(true);
                         if (response.youtube_link != null) {
@@ -1576,6 +1588,7 @@ $cls = 0;
                         $.fn.notifyMe('success', 4, response.message);
                     },
                     error: function() {
+                        $('.loader').fadeOut();
                         $.fn.notifyMe('error', 4, 'There is some error while saving description text!');
                     }
                 });
@@ -1593,6 +1606,7 @@ $cls = 0;
         var description = $('#class_description_' + getBoxId).text();
         var joinlive = $('#live_c_link_' + getBoxId).attr('data-LiveLink');
         var help_type = 2;
+        $('.loader').show();
         $.ajax({
             url: "{{route('teacher.generate_ticket')}}",
             type: "POST",
@@ -1608,6 +1622,7 @@ $cls = 0;
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(result) {
+                $('.loader').fadeOut();
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
@@ -1616,6 +1631,7 @@ $cls = 0;
                 }
             },
             error: function(error_r) {
+                $('.loader').fadeOut();
                 var obj = JSON.parse(error_r.responseText);
                 $.each(obj.errors, function(key, value) {
                     $.fn.notifyMe('error', 5, value);
@@ -1638,6 +1654,7 @@ $cls = 0;
         var description = $("#edit_description").val();
         var join_liveUrl = $("#edit_join_liveUrl").val();
         var notify_stdMessage = $("#edit_notify_stdMessage").val();
+        $('.loader').show();
         $.ajax({
             url: "{{url('edit-live-class')}}",
             type: "POST",
@@ -1654,6 +1671,7 @@ $cls = 0;
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(result) {
+                $('.loader').fadeOut();
                 var response = JSON.parse(result);
                 //console.log(response.data);
                 if (response.status == 'success') {
@@ -1665,6 +1683,7 @@ $cls = 0;
                 }
             },
             error: function(error_r) {
+                $('.loader').fadeOut();
                 var obj = JSON.parse(error_r.responseText);
                 console.log(obj);
                 $.each(obj.errors, function(key, value) {
@@ -1699,6 +1718,7 @@ $cls = 0;
         var class_id = $("#data_class_id").val();
         var gmeet_url = $("#data_gmeet_url").val();
         //alert(class_id);
+        $('.loader').show();
         $.ajax({
             url: "{{url('student-notify')}}",
             type: "POST",
@@ -1716,6 +1736,7 @@ $cls = 0;
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(result) {
+                $('.loader').fadeOut();
                 var response = JSON.parse(result);
                 //console.log(response.data);
                 if (response.status == 'success') {
@@ -1725,6 +1746,7 @@ $cls = 0;
                 }
             },
             error: function(error_r) {
+                $('.loader').fadeOut();
                 var obj = JSON.parse(error_r.responseText);
                 console.log(obj);
                 $.each(obj.errors, function(key, value) {
@@ -1739,6 +1761,7 @@ $cls = 0;
         var g_code = $("#txt_inv_code" + id).val();
         var inv_id = $("#txt_inv_id" + id).val();
         //alert(id);
+        $('.loader').show();
         $.ajax({
             url: "{{route('teacher.acceptClass')}}",
             type: "POST",
@@ -1750,6 +1773,7 @@ $cls = 0;
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(result) {
+                $('.loader').fadeOut();
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
@@ -1758,6 +1782,7 @@ $cls = 0;
                 }
             },
             error: function(error_r) {
+                $('.loader').fadeOut();
                 var obj = JSON.parse(error_r.responseText);
                 $.each(obj.errors, function(key, value) {
                     $.fn.notifyMe('error', 5, value);
@@ -1786,6 +1811,7 @@ $cls = 0;
             $.fn.notifyMe('error', 5, 'First update the JOIN LIVE class link');
             return false;
         }
+        $('.loader').show();
         $.ajax({
             url: '{{ url("student-notify") }}',
             type: "POST",
@@ -1803,6 +1829,7 @@ $cls = 0;
                 $('#notifyurl_' + getBoxId + ' span').text('Sending...');
             },
             success: function(result) {
+                $('.loader').fadeOut();
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
@@ -1811,10 +1838,12 @@ $cls = 0;
                 }
             },
             complete: function() {
+                $('.loader').fadeOut();
                 $(this).prop('disable', false);
                 $('#notifyurl_' + getBoxId + ' span').text('Notify Students');
             },
             error: function(error_r) {
+                $('.loader').fadeOut();
                 $(this).prop('disable', false);
                 $('#notifyurl_' + getBoxId + ' span').text('Notify Students');
                 var obj = JSON.parse(error_r.responseText);
@@ -1842,6 +1871,7 @@ $cls = 0;
         if (getDescText.length > 255) {
             $.fn.notifyMe('error', 4, 'Not To be Exceed More than 255 Char,You have Written ' + getDescText.length + ' Char');
         } else {
+            $('.loader').show();
             $.ajax({
                 type: 'POST',
                 url: '{{ url("update-classNotes") }}',
@@ -1853,7 +1883,7 @@ $cls = 0;
                     'description': getDescText
                 },
                 success: function(result) {
-
+                    $('.loader').fadeOut();
                     var response = JSON.parse(result);
 
                     if (response.status == 'success') {
@@ -1867,6 +1897,7 @@ $cls = 0;
                     //$.fn.notifyMe('success',4,'Description has been saved!');
                 },
                 error: function() {
+                    $('.loader').fadeOut();
                     // thiz.parent().find('.text-edit').removeClass('active');
                     $.fn.notifyMe('error', 4, 'There is some error while saving class note text!');
                 }
@@ -1876,7 +1907,7 @@ $cls = 0;
 
 
     function viewAssignment(id) {
-
+        $('.loader').show();
         $.ajax({
             type: 'POST',
             url: '{{ url("/teacher/class/assignments") }}',
@@ -1887,6 +1918,7 @@ $cls = 0;
                 'class_id': id,
             },
             success: function(result) {
+                $('.loader').fadeOut();
                 var response = JSON.parse(result);
                 let data = '';
                 response.data.forEach(function(classAssignment) {
@@ -1900,6 +1932,7 @@ $cls = 0;
                 });
             },
             error: function() {
+                $('.loader').fadeOut();
                 $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
             }
         });
@@ -1935,6 +1968,7 @@ $cls = 0;
 
     function shareContent(url, dateClass_id) {
         var notificationMsg = "Please go through " + url + " for today's notes";
+        $('.loader').show();
         $.ajax({
             url: "{{url('student-notify')}}",
             type: "POST",
@@ -1946,6 +1980,7 @@ $cls = 0;
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function(result) {
+                $('.loader').fadeOut();
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
@@ -1954,6 +1989,7 @@ $cls = 0;
                 }
             },
             error: function(error_r) {
+                $('.loader').fadeOut();
                 var obj = JSON.parse(error_r.responseText);
                 $.each(obj.errors, function(key, value) {
                     $.fn.notifyMe('error', 5, value);
@@ -1966,11 +2002,12 @@ $cls = 0;
 <script>
     $('.chapter').change('[data-chapter]', function() {
         var getChapter = $(this).val();
-         var id = $(this).attr('data-chapter');
+        var id = $(this).attr('data-chapter');
         var class_name = $("#txt_class_name" + id).val();
         var subject_id = $("#txt_subject_id" + id).val();
         //alert(id);
         if (getChapter != '') {
+            $('.loader').show();
             $.ajax({
                 type: 'Get',
                 url: '{{ route("get-topic") }}',
@@ -1978,11 +2015,12 @@ $cls = 0;
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                    'chapter' : getChapter,
-                    'class'   : class_name,
-                    'subject' : subject_id
+                    'chapter': getChapter,
+                    'class': class_name,
+                    'subject': subject_id
                 },
                 success: function(result) {
+                    $('.loader').fadeOut();
                     var response = JSON.parse(result);
                     if (response || getChapter == "Select Chapter") {
                         $("#chapterTopic" + id).empty();
@@ -1996,6 +2034,7 @@ $cls = 0;
                     }
                 },
                 error: function() {
+                    $('.loader').fadeOut();
                     $.fn.notifyMe('error', 4, 'There is some error while saving description text!');
                 }
             });
