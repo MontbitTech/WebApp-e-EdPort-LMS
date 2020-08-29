@@ -137,7 +137,6 @@ Route::group(['middleware' => 'adminsession'], function () {
 /*  Teacher  */
 Route::group(['middleware' => 'AuthCheck'], function () {
     Route::get('/teacher', 'TeacherLoginController@index')->name('teacher.index');
-    Route::get('/teacher/getStudent', 'TeacherLoginController@getStudent')->name('teacher.student');
 
     Route::post('/teacher/login', 'TeacherLoginController@teacher_login_post')->name('teacher.login.post');
     Route::get('/teacher/login', 'TeacherLoginController@teacher_login_get')->name('teacher.login');
@@ -146,6 +145,8 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::get('/teacher/logout', 'TeacherLoginController@logout')->name('teacher.logout');
     Route::get('/teacher/home', 'TeacherLoginController@teacherDashboard')->name('teacher.dashboard');
     Route::get('/teacher/getStudent', 'TeacherLoginController@getStudent')->name('teacher.student');
+    Route::get('get-topic','TeacherLoginController@getTopic')->name('get-topic');
+
 
     Route::post('/teacher/add-class', 'TeacherClassController@addClass')->name('add.class');
     Route::post('/teacher/edit-live-class', 'TeacherClassController@ajaxSaveLiveClass')->name('edit.class');
@@ -181,12 +182,10 @@ Route::group(['middleware' => 'teachersession'], function () {
 
     Route::post('/available/classes', 'AvailabilityController@availableClasses');
     Route::post('/teacher/class/assignments', 'ClassWorkController@getClassAssignments');
+    Route::post('/teacher/class/examassignments', 'ClassWorkController@getExamAssignments');
+
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
 });
-
-
-
-
 
 
 Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass')->name('reload-timetable');

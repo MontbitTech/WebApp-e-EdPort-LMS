@@ -31,11 +31,11 @@ use Session;
 class ImportStudentsController extends Controller
 {
 
-    public function addStudent (Request $request)
+    public function addStudent(Request $request)
     {
         $from = CustomHelper::getFromMail();
 
-        if ( $request->isMethod('post') ) {
+        if ($request->isMethod('post')) {
             $request->validate([
                 'fname'   => 'required|max:100|regex:/^[a-zA-Z ]*$/',
                 // 'lname' => 'required|max:100|alpha_num',
@@ -50,29 +50,29 @@ class ImportStudentsController extends Controller
 
             ]);
 
-            if ( $request->notify == true ) {
-                if ( isset($request->phone) || isset($request->email) )
+            if ($request->notify == true) {
+                if (isset($request->phone) || isset($request->email))
                     $n = "yes";
                 else
                     return back()->with('error', Config::get('constants.WebMessageCode.132'));
             } else
                 $n = "no";
 
-            if ( isset($request->phone) && $request->phone > 0 && strlen($request->phone) != 10 )
+            if (isset($request->phone) && $request->phone > 0 && strlen($request->phone) != 10)
                 return back()->with('error', Config::get('constants.WebMessageCode.133'));
 
             $student = \DB::table('tbl_classes')->where('class_name', $request->class)->where('section_name', $request->section)->pluck('id');
 
-            if ( count($student) <= 0 ) {
+            if (count($student) <= 0) {
                 return back()->with('error', Config::get('constants.WebMessageCode.120'));
             }
 
             $obj_class = StudentClass::where('class_name', $request->class)->where('section_name', $request->section)->get();
 
             $inv_responce = null;
-            if ( count($obj_class) > 0 ) {
+            if (count($obj_class) > 0) {
                 $token = CommonHelper::varify_Admintoken(); // verify admin token
-                foreach ( $obj_class as $row ) {
+                foreach ($obj_class as $row) {
 
                     $g_class_id = $row->g_class_id;
                     
@@ -85,13 +85,13 @@ class ImportStudentsController extends Controller
                     $inv_data = json_encode($inv_data);
                     $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // Invite Student
                     $inv_resData = array('error' => '');
-                    if ( $inv_responce == 101 ) {
+                    if ($inv_responce == 101) {
                         return back()->with('error', Config::get('constants.WebMessageCode.119'));
                     } else {
                         $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                        if ( $inv_resData['error'] != '' ) {
+                        if ($inv_resData['error'] != '') {
 
-                            if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
+                            if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
                                 return redirect()->route('admin.logout');
                             } else {
                                 //Log::error($inv_resData['error']['message']);
@@ -135,12 +135,13 @@ class ImportStudentsController extends Controller
         return view('admin.numbers.add', compact('data', $data));
     }
 
-    public function editStudent (Request $request, $id)
+    public function editStudent(Request $request, $id)
     {
         set_time_limit(0);
         $id = decrypt($id);
+        $error = ['status' => false, 'message' => ''];
 
-        if ( $request->isMethod('post') ) {
+        if ($request->isMethod('post')) {
             $request->validate([
                 'fname'   => 'required|max:100|regex:/^[a-zA-Z ]*$/',
                 // 'lname' => 'required|max:100|alpha_num',
@@ -155,21 +156,21 @@ class ImportStudentsController extends Controller
 
             ]);
 
-            if ( $request->notify == true ) {
-                if ( isset($request->phone) || isset($request->email) )
+            if ($request->notify == true) {
+                if (isset($request->phone) || isset($request->email))
                     $n = "yes";
                 else
                     return back()->with('error', Config::get('constants.WebMessageCode.132'));
             } else
                 $n = "no";
 
-            if ( isset($request->phone) && !is_numeric($request->phone) && str_len($request->phone) != 10 )
+            if (isset($request->phone) && !is_numeric($request->phone) && str_len($request->phone) != 10)
                 return back()->with('error', Config::get('constants.WebMessageCode.133'));
 
             $student = Student::find($id);
-            
-            if(!$student)
-                return redirect()->route('adminlist.students')->with('error','Student does not exist');
+
+            if (!$student)
+                return redirect()->route('adminlist.students')->with('error', 'Student does not exist');
 
             StudentUtility::removeStudentFromClassroom($student);
             
@@ -197,48 +198,16 @@ class ImportStudentsController extends Controller
         return view('admin.numbers.edit', compact('student'));
     }
 
-    public function deleteStudent (Request $request, $id)
+    public function deleteStudent(Request $request, $id)
     {
-        if ( $request->delete == 'Delete' || $request->delete == 'delete' ) {
-            $sid = $request->txt_student_id;
+        if ($request->delete == 'Delete' || $request->delete == 'delete') {
+            $student = Student::with('class')->find($request->txt_student_id);
 
-//            $student = \DB::select('select * from tbl_students s, tbl_classes c where s.class_id = c.id and s.id=' . $sid);
-            $student = Student::with('class')->find($sid);
-
-            if ( $student ) {
-                $obj_class = StudentClass::where('class_name', $student->class->class_name)->where('section_name', $student->class->section_name)->get();
-
-                $token = CommonHelper::varify_Admintoken(); // verify admin token
-                foreach ( $obj_class as $row ) {
-
-                    $courseInvitations = StudentCourseInvitation::where('student_email', $student->email)->get();
-
-                    foreach ( $courseInvitations as $courseInvitation ) {
-                        CommonHelper::teacher_invitation_delete($token, $courseInvitation->invitation_code);
-                        $courseInvitation->delete();
-                    }
-
-                    $inv_responce = CommonHelper::student_course_delete($token, $student->email, $row->g_class_id); // Invite Student
-
-                    $inv_resData = array('error' => '');
-                    if ( $inv_responce == 101 ) {
-                        return back()->with('error', Config::get('constants.WebMessageCode.119'));
-                    } else {
-                        $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                        if ( $inv_resData['error'] != '' ) {
-
-                            if ( $inv_resData['error']['status'] == 'UNAUTHENTICATED' ) {
-                                return redirect()->route('admin.logout');
-                            }
-                        }
-                    }
-                }
-                $student->delete();
-            }
-            /**/
-//            $student = Student::find($sid);
-
-//            $lists = \DB::select('select s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id');
+            $response = StudentUtility::removeStudentFromClassroom($student);
+            if(!$response['success'])
+                return back()->with('error', $response['data']);
+ 
+            $student->delete();
 
             return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.139'));
         } else {
@@ -246,42 +215,40 @@ class ImportStudentsController extends Controller
         }
     }
 
-    public function listStudents ()
+    public function listStudents()
     {
         $students = Student::get();
         $classes  = ClassSection::orderByRaw("CAST(class_name as UNSIGNED) ASC")->get();
-        $sections = ClassSection::orderBy('section_name','ASC')->get();
+        $sections = ClassSection::orderBy('section_name', 'ASC')->get();
 
         return view('admin.numbers.index', compact('classes', 'sections', 'students'));
     }
 
-    public function filterStudent (Request $request)
+    public function filterStudent(Request $request)
     {
-        if(($request->txtSerachClass) && ($request->txtSerachClass=='all-class')){
+
+        if (($request->txtSerachClass) && ($request->txtSerachClass == 'all-class')) {
             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id");
-            if($request->txtSerachSection && $request->txtSerachSection!='all-section'){
+            if ($request->txtSerachSection && $request->txtSerachSection != 'all-section') {
                 $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=?", [$request->txtSerachSection]);
             }
-        }
-        else if($request->txtSerachClass && $request->txtSerachSection == 'all-section'){
+        } else if ($request->txtSerachClass && $request->txtSerachSection == 'all-section') {
             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
-        }
-        else if(($request->txtSerachClass) &&($request->txtSerachClass!='all-class')){
+        } else if (($request->txtSerachClass) && ($request->txtSerachClass != 'all-class')) {
             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
-            if(($request->txtSerachSection && $request->txtSerachSection != 'all-section' )){
-                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=? and c.class_name=?", [$request->txtSerachSection,$request->txtSerachClass]);
+            if (($request->txtSerachSection && $request->txtSerachSection != 'all-section')) {
+                $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.section_name=? and c.class_name=?", [$request->txtSerachSection, $request->txtSerachClass]);
             }
-            if(($request->txtSerachSection) && ($request->txtSerachSection == 'all-section' )){
+            if (($request->txtSerachSection) && ($request->txtSerachSection == 'all-section')) {
                 $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name=?", [$request->txtSerachClass]);
             }
-        }
-        else
+        } else
             $getResult = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id");
 
         return view('admin.numbers.filter-student', compact('getResult'));
     }
 
-    public function sampleStudentsDownload (Request $request)
+    public function sampleStudentsDownload(Request $request)
     {
         $path = public_path('student-excels/sample') . '/Sample-Students-format.csv';
 
@@ -290,14 +257,14 @@ class ImportStudentsController extends Controller
 
 
     /*Import no of students in a class*/
-    public function importClassStudentNumber (Request $request)
+    public function importClassStudentNumber(Request $request)
     {
         $from = CustomHelper::getFromMail();
         set_time_limit(0);
         $student_class = StudentClass::all();
         $error = "";
         $rows = "";
-        if ( Request()->post() ) {
+        if (Request()->post()) {
 
             $request->validate([
                 'file' => 'required',
@@ -307,7 +274,7 @@ class ImportStudentsController extends Controller
                 $extensions = array("csv", "xlsx");
                 $file_validate = strtolower($request->file('file')->getClientOriginalExtension());
 
-                if ( !in_array($file_validate, $extensions) ) {
+                if (!in_array($file_validate, $extensions)) {
                     return back()->with('error', sprintf(Config::get('constants.WebMessageCode.103'), implode(",", $extensions)));
                 }
 
@@ -316,7 +283,7 @@ class ImportStudentsController extends Controller
                 
                 $filename = $file->getClientOriginalName();
 
-                if ( file_exists($destinationPath . '/' . $filename) )
+                if (file_exists($destinationPath . '/' . $filename))
                     unlink($destinationPath . '/' . $filename);
 
                 $file->move($destinationPath, $filename);
@@ -326,7 +293,7 @@ class ImportStudentsController extends Controller
                 $headerMissing = array();
                 $supplierAdded = 0;
                 $i = 1;
-                $collection = ( new FastExcel )->import($path);
+                $collection = (new FastExcel)->import($path);
 
                 if ( !isset($collection[0]) ) {
                     if ( file_exists($path) )
@@ -336,33 +303,32 @@ class ImportStudentsController extends Controller
                 $numbers = array();
                 
                 Log::info('Filename processing - ' . $filename);
-                foreach ( $collection as $key => $reader ) {
-                    
+                foreach ($collection as $key => $reader) {
                     // $reader['name'] = trim($reader['name']);
                     if ( !isset($reader["class"]) || !isset($reader["name"]) || !isset($reader["phone"]) || !isset($reader["email"]) || !isset($reader["section"]) ) {
                         $error = "Header mismatch";
                         Log::error('Header mismatch!!');
-                    } elseif ( $reader["name"] == "" || $reader["class"] == "" || $reader["section"] == "" || $reader["email"] == "" || $reader["phone"] == "" ) {
+                    } elseif ($reader["name"] == "" || $reader["class"] == "" || $reader["section"] == "" || $reader["email"] == "" || $reader["phone"] == "") {
                         Log::error('Student details missing : ROW - ' . $i);
                         $error = "true";
                         $rows .= $i . ",";
-                    } elseif ( $reader["phone"] == "" && $reader["email"] == "" && $reader["notify"] == "yes" ) {
+                    } elseif ($reader["phone"] == "" && $reader["email"] == "" && $reader["notify"] == "yes") {
                         Log::error('Student details missing for notification : ROW - ' . $i);
                         $rows .= $i . ",";
                         $error = "true";
-                    } else if ( !preg_match("/^[a-zA-Z\s]*$/", $reader['name']) ) {
+                    } else if (!preg_match("/^[a-zA-Z\s]*$/", $reader['name'])) {
                         Log::error('Student name must contain only charachters : ROW - ' . $i);
                         $error = 'found';
                         $rows .= $i . ",";
-                    } else if ( !preg_match("/^[0-9]{10}$/", $reader['phone']) ) {
+                    } else if (!preg_match("/^[0-9]{10}$/", $reader['phone'])) {
                         Log::error('Phone number must have 10 digits : ROW - ' . $i);
                         $error = 'found';
                         $rows .= $i . ",";
-                    } else if ( !CustomHelper::is_email($reader['email']) ) {
+                    } else if (!CustomHelper::is_email($reader['email'])) {
                         Log::error('Invalid Email : ROW - ' . $i);
                         $error = 'found';
                         $rows .= $i . ",";
-                    } else if(CustomHelper::getDomainFromEmail($reader['email']) != 'gmail.com' ){
+                    } else if (CustomHelper::getDomainFromEmail($reader['email']) != 'gmail.com') {
                         Log::error('Email with invalid domain : ROW - ' . $i);
                         $errorString = 'Email with invalid domain : ROW - ' . $i;
                         $error = 'found';
@@ -373,16 +339,16 @@ class ImportStudentsController extends Controller
 
                         $obj_class = StudentClass::where('class_name', $reader["class"])->where('section_name', $reader["section"])->get();
 
-                        if ( count($obj_class) > 0 ) {
+                        if (count($obj_class) > 0) {
                             $class_id = $studentClassExist[0]->id;
 
                             $studenExist = \DB::select('select * from tbl_students where email="' . $reader["email"] . '" and phone="' . $reader["phone"] . '" and name="' . $reader["name"] . '" and class_id="' . $class_id . '"');
                             $emailAndPhoneCheck = Student::where('email', $reader["email"])->orWhere('phone', $reader["phone"])->count();
-                            if ( $emailAndPhoneCheck ) {
+                            if ($emailAndPhoneCheck) {
                                 Log::error('Either mobile number or Email already registered : ROW - ' . $i);
                                 $rows .= $i . ",";
                                 $error = "true";
-                            } else if ( count($studenExist) > 0 ) {
+                            } else if (count($studenExist) > 0) {
                                 Log::error('Duplicate entry : ROW - ' . $i);
                                 $rows .= $i . ",";
                                 $error = "true";
@@ -421,19 +387,21 @@ class ImportStudentsController extends Controller
                     return back()->with('error', Config::get('constants.WebMessageCode.136'));
                 }
             }
-            if ( file_exists($path) )
+            if (file_exists($path))
                 @unlink($path);
         }
 
         return view('admin.numbers.import', compact('student_class'));
     }
 
-    public function deleteAllStudent (Request $request)
+    public function deleteAllStudent(Request $request)
     {
         $students = Student::with('class')->whereIn('id', explode(",", $request->ids))->get();
 
-        foreach($students as $student){
-            StudentUtility::removeStudentFromClassroom($student);
+        foreach ($students as $student) {
+            $response = StudentUtility::removeStudentFromClassroom($student);
+            if(!$response['success'])
+                return response()->json(['error' => $response['data']]);
             $student->delete();
         }
         return response()->json(['success' => "Deleted successfully."]);

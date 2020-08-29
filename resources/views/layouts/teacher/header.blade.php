@@ -58,7 +58,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
           <button type="button" class="btn btn-ui header-help" data-toggle="modal" href="#classhelpModal" role="modal">
             <svg class="icon mr-1">
               <use xlink:href="{{asset('images/icons.svg#icon_help')}}"></use>
-            </svg> Help!
+            </svg> Support!
           </button>
         </li>
       </ul>

@@ -121,6 +121,7 @@ $support = "disabled";
 
 $s = \App\Http\Helpers\CustomHelper::enableOptions();
 $t = \App\Http\Helpers\CustomHelper::latestTicket();
+$pending = \App\Http\Helpers\CustomHelper::pendingTicket();
 
 if($s["teacher"] > 0)
 {
@@ -171,11 +172,11 @@ $slogo = $logo->value;
 
 			</div>
 			<div class="float-right dropdown-user ">
-				@if($t)
-
-				<a href="{{route('admin.helplist')}}" class=" color-change mr-2 icon-lg align-middle">
-
-					<i class="fa fa-bell " style="font-size:1.3125rem; padding-top: 0.75rem;" aria-hidden="true"></i>
+				@if($pending)
+ 
+				<a href="{{route('admin.helplist')}}" class=" color-change mr-2 icon-lg align-middle">Pending Ticket: {{$pending}}&nbsp;
+                
+                <i class="fa fa-bell " style="font-size:1.3125rem; padding-top: 0.75rem;" aria-hidden="true"></i>
 				</a>
 
 				@else

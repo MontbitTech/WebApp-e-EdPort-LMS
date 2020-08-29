@@ -30,6 +30,7 @@ class ImportCMSLinksController extends Controller
 
 			$request->validate([
 				'subject' => 'required',
+				'chapter' => 'required',
 				'class'   => 'required',
 				'topic'   => 'required',
 				'link'    => 'required_without_all:khan_academy,youtube,others,alink|nullable|regex:' . $regex,
@@ -40,16 +41,18 @@ class ImportCMSLinksController extends Controller
 			]);
 
 			$studentClassExist = \DB::select(
-				'select id from tbl_cmslinks where class=? and subject=? and topic=? and link=? and assignment_link=?',
-				[$request["class"], $request["subject"], $request["topic"], $request["link"], $request["alink"],]
+				'select id from tbl_cmslinks where class=? and subject=? and chapter=? and topic=? and link=? and assignment_link=?',
+				[$request["class"], $request["subject"], $request['chapter'], $request["topic"], $request["link"], $request["alink"],]
 			);
 
 			if ($studentClassExist) {
-				Log::error('Link already exists : ROW - ' . $i);
+				Log::error('Link already exists.');
 				$error = "found";
 			} else
 				$s = \DB::table('tbl_cmslinks')->insert(
-					['class' => $request["class"], 'subject' => $request["subject"], 'topic' => $request["topic"], 'link' => $request["link"], 'khan_academy' => $request["khan_academy"], 'youtube' => $request["youtube"], 'others' => $request["others"], 'assignment_link' => $request["alink"]]
+					['class' => $request["class"], 'subject' => $request["subject"], 'chapter' => $request['chapter'], 'topic' => $request["topic"], 
+					'book_url' => $request['book_url'], 'link' => $request["link"], 'khan_academy' => $request["khan_academy"], 'youtube' => $request["youtube"], 
+					'others' => $request["others"], 'assignment_link' => $request["alink"]]
 				);
 
 			if ($error == "found")
@@ -61,32 +64,33 @@ class ImportCMSLinksController extends Controller
 		$subjects = \DB::table('tbl_student_subjects')->get();
 		$data['class'] = \DB::table('tbl_classes')->select('class_name')->distinct()->get()->pluck('class_name', 'class_name');
 		$data['class']->prepend('Select Divison', '');
-
+		
 		return view('admin.cmslinks.add', compact('subjects', 'data'));
 	}
 	public function editLink(Request $request, $id)
 	{
-		# $regex  = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';  
 		$regex  = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)([\/\w \.?]*)([\/\w \.=]*)*\/?$/';
 
 		if ($request->isMethod('post')) {
 			$request->validate([
-				'subject' => 'required|max:100',
-				'class' => 'required',
-				'topic' => 'required',
-				'link' => 'required_without_all:khan_academy,youtube,others,alink|nullable|regex:' . $regex,
-				'khan_academy' => 'required_without_all:link,youtube,others,alink|nullable|regex:' . $regex,
-				'youtube'      => 'required_without_all:khan_academy,link,others,alink|nullable|regex:' . $regex,
-				'others'       => 'required_without_all:khan_academy,link,youtube,alink|nullable|regex:' . $regex,
-				'alink'  => 'required_without_all:khan_academy,link,youtube,others|nullable|regex:' . $regex
+				'subject' 		=> 'required|max:100',
+				'class' 		=> 'required',
+				'chapter' 		=> 'required',
+				'topic' 		=> 'required',
+				'link' 			=> 'required_without_all:khan_academy,youtube,others,alink|nullable|regex:' . $regex,
+				'khan_academy' 	=> 'required_without_all:link,youtube,others,alink|nullable|regex:' . $regex,
+				'youtube'      	=> 'required_without_all:khan_academy,link,others,alink|nullable|regex:' . $regex,
+				'others'       	=> 'required_without_all:khan_academy,link,youtube,alink|nullable|regex:' . $regex,
+				'alink'  		=> 'required_without_all:khan_academy,link,youtube,others|nullable|regex:' . $regex
 			]);
 
 			$id = decrypt($id);
 
 			$s = \DB::table('tbl_cmslinks')->where('id', $id)->update(
 				[
-					'class' => $request["class"], 'subject' => $request["subject"], 'topic' => $request["topic"], 'link' => $request["link"],
-					'youtube' => $request["youtube"], 'khan_academy' => $request["khan_academy"], 'others' => $request["others"], 'assignment_link' => $request["alink"]
+					'class' => $request["class"], 'subject' => $request["subject"], 'chapter' => $request['chapter'], 'topic' => $request["topic"], 'link' => $request["link"],
+					'book_url' => $request['book_url'], 'youtube' => $request["youtube"], 'khan_academy' => $request["khan_academy"], 
+					'others' => $request["others"], 'assignment_link' => $request["alink"]
 				]
 			);
 
@@ -208,13 +212,14 @@ class ImportCMSLinksController extends Controller
 					$subjects = \DB::table('tbl_student_subjects')->where('subject_name', $reader["subject"])->get();
 
 					if (
-						!isset($reader["class"]) || !isset($reader["subject"]) || !isset($reader["topic"]) || !isset($reader["link"])
-						|| !isset($reader["youtube"]) || !isset($reader["khan_academy"]) || !isset($reader["others"]) || !isset($reader["assignment"])
+						!isset($reader["class"]) || !isset($reader["subject"]) || !isset($reader["chapter"]) || !isset($reader["topic"]) || 
+						!isset($reader["book_url"]) || !isset($reader["link"]) || !isset($reader["youtube"]) || !isset($reader["khan_academy"]) || 
+						!isset($reader["others"]) || !isset($reader["assignment"])
 					) {
 						return back()->with('error', 'Header Mismatch at row: ' . $i);
 					}
 
-					if ($reader["class"] == "" || $reader["subject"] == "" || $reader["topic"] == "") {
+					if ($reader["class"] == "" || $reader["subject"] == "" || $reader["chapter"] == "" || $reader["topic"] == "") {
 						Log::error('CMS details missing : ROW - ' . $i);
 						$error = "found";
 						$rows .= $i . ",";
@@ -263,9 +268,9 @@ class ImportCMSLinksController extends Controller
 							} else {
 								$s = \DB::table('tbl_cmslinks')->insert(
 									[
-										'class' => $reader["class"], 'subject' => $subjects[0]->id, 'topic' => $reader["topic"], 'link' => $reader["link"],
-										'youtube' => $reader["youtube"], 'khan_academy' => $reader["khan_academy"], 'others' => $reader["others"],
-										'assignment_link' => $reader["assignment"]
+										'class' => $reader["class"],'chapter' => $reader["chapter"], 'subject' => $subjects[0]->id, 'topic' => $reader["topic"], 
+										'link' => $reader["link"], 'book_url' => $reader["book_url"], 'youtube' => $reader["youtube"], 
+										'khan_academy' => $reader["khan_academy"], 'others' => $reader["others"], 'assignment_link' => $reader["assignment"]
 									]
 								);
 							}
