@@ -383,14 +383,16 @@ class ClassWorkController extends Controller
 
     public function addData_DateClass (Request $request) // Cron JOb Function add data timing table to Past Class
     {
+        Log::info('cron started');
         $teacherData = ClassTiming::with('studentClass')->where('class_day', DateUtility::getDay())->get();
-
+        Log::info($teacherData);
         if ( !count($teacherData) )
             return back()->with('error', 'No record found on class timming.');
 
         foreach ( $teacherData as $value ) {
             $pastClassExist = DateClass::where('class_date', DateUtility::getDate())->where('from_timing', $value->from_timing)->where('to_timing', $value->to_timing)->where('class_id', $value->class_id)->where('subject_id', $value->subject_id)->where('teacher_id', $value->teacher_id)->first();
-
+            Log:info('teacher classes :'. $value);
+            Log::info('already in dateClass :'.$pastClassExist);
             if ( !$pastClassExist ) {
                 $obj_dataClass = new DateClass;
 
@@ -403,9 +405,11 @@ class ClassWorkController extends Controller
                 $obj_dataClass->timetable_id = $value->id;
                 $obj_dataClass->live_link = $value->studentClass->g_link;
                 $obj_dataClass->save();
+
+                Log::info('created :' . $obj_dataClass);
             }
         }
-
+        Log::info('cron finished');
         return back()->with('success', "Time table for today's class reloaded successfully.");
     }
 
