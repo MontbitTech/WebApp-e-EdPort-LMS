@@ -349,7 +349,7 @@ $cls = 0;
                             <svg class="icon icon-4x mr-3">
                                 <use xlink:href="../images/icons.svg#icon_nodate"></use>
                             </svg>
-                            No Record Found!
+                            No Record Found! <a href="{{ route('reload-timetable') }}" target="_self"> Click Here </a> to reload today's timetable.
                         </div>
                         @endif
                     </div>
