@@ -78,6 +78,9 @@ $cls = 0;
                             <input type="hidden" id="txt_class_name{{$i}}" value="{{$class_name}}">
                             <input type="hidden" id="txt_from_timing{{$i}}" value="{{$t->from_timing}}">
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
+                            <input type="hidden" id="txt_section_name{{$i}}" value="{{$section_name}}">
+                            <input type="hidden" id="txt_subject_name{{$i}}" value="{{$subject_name}}">
+                            <input type="hidden" id="txt_today_date{{$i}}" value="{{$todaysDate}}">
                             <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
                             <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
                             <input type="hidden" id="txt_gMeetURL{{$i}}" value="{{$teacherData->g_meet_url}}">
@@ -1486,7 +1489,7 @@ $cls = 0;
                 subject_id: subject_id,
                 teacher_id: teacher_id,
                 dateClass_id: dateClass_id,
-                description:description,
+                description: description,
                 dueDate: dueDate,
                 dueTime: dueTime,
                 point: point
@@ -1546,7 +1549,7 @@ $cls = 0;
                 subject_id: subject_id,
                 teacher_id: teacher_id,
                 dateClass_id: dateClass_id,
-                description:description,
+                description: description,
                 dueDate: dueDate,
                 dueTime: dueTime,
                 point: point
@@ -1736,15 +1739,32 @@ $cls = 0;
         $("#data_class_id").val($("#txt_class_id" + val).val());
         $("#data_gmeet_url").val($("#txt_gMeetURL" + val).val());
         $("#data_from_timing").val($("#txt_from_timing" + val).val());
+
         var from_timing = $("#data_from_timing").val();
         var gmeet_url = $("#data_gmeet_url").val();
-        var subject = $("#date_class_id").val();
+        var class_w = $("#txt_class_name" + val).val();
+        // var d = $("#txt_today_date" + val).val();
+        var section = $("#txt_section_name" + val).val();
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        today = mm + '-' + dd + '-' + yyyy;
+        var s_name = $("#txt_subject_name" + val).val();
         $('#notify').click(function() {
             let vale = "The class will start from " + from_timing + ". Please Join " + gmeet_url
             $('#notificationMsg').val(vale);
         });
         $('#cancel').click(function() {
-            let vale = "Dear " + subject + " Student Subject' Class scheduled on dd/mm/yyyy at 00:00 AM/PM is Cancelled "
+            let vale = "Dear   " + class_w + section + " Student Please note that the " + s_name + "Class scheduled on " + today + "at " + from_timing + "is Cancelled"
+            // let vale = "Dear  Student Subject '" + s_name + " Class" + +d + " scheduled on dd/mm/yyyy at 00:00 AM/PM is Cancelled "
             $('#notificationMsg').val(vale);
         });
         $('#custom').click(function() {
