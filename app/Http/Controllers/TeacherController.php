@@ -236,8 +236,8 @@ class TeacherController extends Controller
             if ( $id != '' ) {
                 $classTimingExist = ClassTiming::where('teacher_id', $id)->get()->first();
 
-                $dateClassExist = DateClass::where('teacher_id', $id)->get()->first();
-
+                // $dateClassExist = DateClass::where('teacher_id', $id)->get()->first();
+                $dateClassExist = 0;
                 $classWorkExits = ClassWork::where('teacher_id', $id)->get()->first();
 
                 if ( $classTimingExist ) {

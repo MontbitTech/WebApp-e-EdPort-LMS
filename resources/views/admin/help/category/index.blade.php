@@ -80,10 +80,10 @@
 
                     </div>
                     <div class="form-group text-center">
-                        <button type="submit" class="btn btn-danger px-4">
+                        <button type="submit" class="btn btn-back px-4">
                             Delete
                         </button>
-                        <button type="button" class="btn btn-default" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="btn submit-btn" class="close" data-dismiss="modal" aria-label="Close">
                             Cancel
                         </button>
                     </div>

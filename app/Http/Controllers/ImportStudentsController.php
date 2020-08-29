@@ -339,7 +339,7 @@ class ImportStudentsController extends Controller
                 foreach ( $collection as $key => $reader ) {
                     
                     // $reader['name'] = trim($reader['name']);
-                    if ( !isset($reader["class"]) || !isset($reader["name"]) || !isset($reader["phone"]) || !isset($reader["email"]) || !isset($reader["class"]) ) {
+                    if ( !isset($reader["class"]) || !isset($reader["name"]) || !isset($reader["phone"]) || !isset($reader["email"]) || !isset($reader["section"]) ) {
                         $error = "Header mismatch";
                         Log::error('Header mismatch!!');
                     } elseif ( $reader["name"] == "" || $reader["class"] == "" || $reader["section"] == "" || $reader["email"] == "" || $reader["phone"] == "" ) {
@@ -417,6 +417,7 @@ class ImportStudentsController extends Controller
                 if ( $error == "Header mismatch" ) {
                     return back()->with('error', 'CSV file Header/(1st line) mismatch!!, check the file format!!');
                 } else {
+                    Log::error($e);
                     return back()->with('error', Config::get('constants.WebMessageCode.136'));
                 }
             }

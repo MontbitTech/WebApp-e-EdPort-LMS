@@ -52,7 +52,7 @@ class CommonHelper
     public static function send_sms ($number, $message)
     {
         $apiKey = env( 'TEXTLOCAL_APIKEY' );
-        $txt_sender = env( 'TEXTLOCAL_SENDER' );
+        $txt_sender = env( 'TXTLCL_SENDER' );
         //$support_number = env( 'SUPPORT_NUMBER' );
         $sender = urlencode($txt_sender);
 
