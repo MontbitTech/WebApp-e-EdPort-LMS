@@ -206,7 +206,7 @@ class ClassWorkController extends Controller
             "dueDate"     => $dueDate,
             "dueTime"     => $dueTime,
             "maxPoints"   =>  $g_points,
-            "description" => "Open 3 dots in right side and click edit",
+            "description" => $request->description,
 
         );
 

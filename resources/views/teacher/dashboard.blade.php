@@ -778,7 +778,12 @@ $cls = 0;
                             <input type="text" class="form-control" name="txt_aTitle" id="txt_aTitle" placeholder="Assigment Title">
                         </div>
                     </div>
-
+                    <div class="form-group col-md-12">
+                        <label for="txt_aTitle" class="col-form-label text-md-left"> Assignment Title:</label>
+                        <div>
+                            <textarea class="form-control" name="txt_description" id="txt_description" placeholder="Assigment Description"></textarea>
+                        </div>
+                    </div>
                     <div class="form-group col-md-4">
                         <label for="txt_aTitle" class="col-form-label text-md-left"> Due Date:</label>
                         <div>
@@ -1440,6 +1445,7 @@ $cls = 0;
         var txt_topic_name = $('#txt_topin_name').val();
         var sel_topic_name = $('#sel_topic').val();
         var assignment_title = $('#txt_aTitle').val();
+        var description = $('#txt_description').val();
         var dueDate = $('#txt_due_date').val();
         var dueTime = $('#txt_due_time').val();
         var point = $('#txt_point').val();
@@ -1457,6 +1463,7 @@ $cls = 0;
                 subject_id: subject_id,
                 teacher_id: teacher_id,
                 dateClass_id: dateClass_id,
+                description:description,
                 dueDate: dueDate,
                 dueTime: dueTime,
                 point: point
@@ -1498,6 +1505,7 @@ $cls = 0;
         var txt_topic_name = $('#txt_topin_name').val();
         var sel_topic_name = $('#sel_topic').val();
         var assignment_title = $('#txt_aTitle').val();
+        var description = $('#txt_description').val();
         var dueDate = $('#txt_due_date').val();
         var dueTime = $('#txt_due_time').val();
         var point = $('#txt_point').val();
@@ -1515,6 +1523,7 @@ $cls = 0;
                 subject_id: subject_id,
                 teacher_id: teacher_id,
                 dateClass_id: dateClass_id,
+                description:description,
                 dueDate: dueDate,
                 dueTime: dueTime,
                 point: point
