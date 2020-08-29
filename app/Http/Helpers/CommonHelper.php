@@ -61,6 +61,7 @@ class CommonHelper
         $txt_sender = env( 'TXTLCL_SENDER' );
         //$support_number = env( 'SUPPORT_NUMBER' );
         $sender = urlencode($txt_sender);
+        $message = rawurldecode($message);
 
         $data = array('apikey' => $apiKey, 'numbers' => $number, "sender" => $sender, "message" => $message);
 
@@ -70,12 +71,14 @@ class CommonHelper
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
+
         curl_close($ch);
         // Process your response here
         $result = json_decode($response);
         if ( $result->status == 'success' ) {
             return true;
         } else {
+            Log::error($result->errors[0]->message);
             return false;
         }
     }
