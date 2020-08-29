@@ -111,7 +111,7 @@ class TeacherController extends Controller
                         $number = $phone;
                     }
 
-                    $message = "Your school created an account for you. Gmail ID: $email and use t# followed by phone number as password..";
+                    $message = "Your school created an account for you. Gmail ID: $email and use 't#' followed by phone number as password..";
 
                     $s = CommonHelper::send_sms($number, $message);
 
@@ -488,7 +488,7 @@ class TeacherController extends Controller
                                         $number = $phone;
                                     }
 
-                                    $message = "Your school created an account for you. Gmail ID: $email and use t# followed by phone number as password..";
+                                    $message = "Your school created an account for you. Gmail ID: $email and use 't#' followed by phone number as password..";
 
                                     $s = CommonHelper::send_sms($number, $message);
 
