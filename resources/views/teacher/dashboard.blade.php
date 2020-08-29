@@ -306,7 +306,7 @@ $cls = 0;
                                                 <svg class="icon mr-1">
                                                     <use xlink:href="../images/icons.svg#icon_bell"></use>
                                                 </svg>
-                                                <span>Notify Students</span>
+                                                <span>Announcement</span>
                                             </a>
                                             <button type="button" data-classhelp="{{$i}}" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help">
                                                 <svg class="icon mr-1">
@@ -1053,21 +1053,44 @@ $cls = 0;
                 <input type="hidden" id="data_gmeet_url" value="" name="gmeet_url" />
                 <input type="hidden" id="data_from_timing" value="data_from_timing" />
 
+                <div class="container-fluid">
+
+                    <div class="form-group row">
+                        <div class="col-md-3 col-lg-3 col-3 pl-5 mt-4">
+                            <div class="row mb-3">
+
+                                <div class="btn btn-md btn-primary pl-3 pr-4 active" id="notify">
+                                    Notify
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+
+                                <div class="btn btn-md btn-primary pl-3 pr-3" id="cancel">
+                                    Cancel
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="btn btn-xs btn-primary" id="custom">
+                                    Custom
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-9 col-lg-9 col-9">
+                            <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
+                            </label>
+                            <div>
+                                {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
 
-                <div class="form-group row">
-                    <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student:
-                    </label>
-                    <div>
-                        {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+                            </div>
+                            <div class="form-group  mt-3 ml-5 ">
 
+                                <button type="submit" class="btn btn-primary px-4 mr-2">Notify</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-8 offset-md-4">
-                        <button type="submit" class="btn btn-primary px-4">Notify</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 </form>
@@ -1706,6 +1729,20 @@ $cls = 0;
         $("#data_from_timing").val($("#txt_from_timing" + val).val());
         var from_timing = $("#data_from_timing").val();
         var gmeet_url = $("#data_gmeet_url").val();
+        var subject = $("#date_class_id").val();
+        $('#notify').click(function() {
+            let vale = "The class will start from " + from_timing + ". Please Join " + gmeet_url
+            $('#notificationMsg').val(vale);
+        });
+        $('#cancel').click(function() {
+            let vale = "Dear " + subject + " Student Subject' Class scheduled on dd/mm/yyyy at 00:00 AM/PM is Cancelled "
+            $('#notificationMsg').val(vale);
+        });
+        $('#custom').click(function() {
+            let vale = ""
+            $('#notificationMsg').val(vale);
+        });
+
         $('#notificationMsg').val("The class will start from " + from_timing + ". Please Join " + gmeet_url);
 
     });
@@ -1840,12 +1877,12 @@ $cls = 0;
             complete: function() {
                 $('.loader').fadeOut();
                 $(this).prop('disable', false);
-                $('#notifyurl_' + getBoxId + ' span').text('Notify Students');
+                $('#notifyurl_' + getBoxId + ' span').text('Announcement');
             },
             error: function(error_r) {
                 $('.loader').fadeOut();
                 $(this).prop('disable', false);
-                $('#notifyurl_' + getBoxId + ' span').text('Notify Students');
+                $('#notifyurl_' + getBoxId + ' span').text('Announcement');
                 var obj = JSON.parse(error_r.responseText);
                 $.each(obj.errors, function(key, value) {
                     $.fn.notifyMe('error', 5, value);
