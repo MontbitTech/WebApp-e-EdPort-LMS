@@ -692,193 +692,190 @@ $cls = 0;
                                                     </div> -->
                         @endif
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- ///////////////// -->
-    <!-- Past Live Classes End -->
-    <!-- ///////////////// -->
-
-    <div class="tab-pane fade" id="upcomingclasses">
-
-
-        @if(count($futureClassData) > 0)
-
-        @php
-        $i=1;
-        @endphp
-        @foreach ($futureClassData as $t)
-        <?php
-        $cls = 0;
-        $section_name = '';
-        $g_class_id = '';
-        $class_name = '';
-        $subject_name = '';
-        if ($t->studentClass) {
-            $class_name = $t->studentClass->class_name;
-            //$class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
-            $section_name = $t->studentClass->section_name;
-            $g_class_id = $t->studentClass->g_class_id;
-        }
-        if ($t->studentSubject) {
-            $subject_name = $t->studentSubject->subject_name;
-        }
-        ?>
-
-
-        <div class="classes-box">
-
-            <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
-            <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
-            <input type="hidden" id="past_subject_id{{$i}}" value="{{$t->subject_id}}">
-
-
-            <input type="hidden" id="past_desc{{$i}}" value="{{$t->class_description}}">
-            <input type="hidden" id="past_gMeetURL{{$i}}" value="{{$t->g_meet_url}}">
-            <input type="hidden" id="past_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
-            <input type="hidden" id="past_recURL{{$i}}" value="{{$t->recording_url}}">
-            <input type="hidden" id="pastg_class_id_{{$i}}" value="{{ $g_class_id}}" />
-            <?php
-            $class_date = date("d M", strtotime($t->class_date));
-            ?>
-
-            <div class="classes-datetime">
-                <div class="cls-date">{{ $class_date }}</div>
-                <div class="cls-from">{{ date('h:i a',strtotime($t->from_timing))}}</div>
-                <div class="cls-separater">to</div>
-                <div class="cls-to">{{ date('h:i a',strtotime($t->to_timing))}}</div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
-                <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span>
-
-                    {{$class_name}} Std
-                </div>
-                <div class="font-weight-bold pt-1"><span class="text-secondary">Section:</span> {{$section_name}}
-
-                </div>
-                <div class="font-weight-bold pt-1"><span class="text-secondary">Subject:</span>
-
-                    {{$subject_name}}
-
-                </div>
-            </div>
-
-
-            <p class="mt-0 mb-2 text-secondary text-edit" data-url="#" data-savedesc="{{$t->id}}" contenteditable="false" id="class_description_{{$i}}">
-                @if($t->class_description!='')
-                {{$t->class_description}}
-                @else
-                {{$t->class_description}}
-                @endif
-            </p>
 
 
 
-            <div class="d-flex justify-content-between flex-wrap py-2">
-                <div>
+                    <!-- ///////////////// -->
+                    <!-- Past Live Classes End -->
+                    <!-- ///////////////// -->
+
+                    <div class="tab-pane fade" id="upcomingclasses">
 
 
+                        @if(count($futureClassData) > 0)
 
-                </div>
-                <div>
-
-                </div>
-            </div>
-
-
-
-        </div>
-        @php
-        $i++;
-        @endphp
-        @endforeach
-        @else
-
-        <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
-            <svg class="icon icon-4x mr-3">
-                <use xlink:href="../images/icons.svg#icon_nodate"></use>
-            </svg>
-            No Record Found!
-        </div>
-        @endif
-    </div>
-
-
-    <!---
-                        Invitation
-                         -->
-    <div class="tab-pane fade" id="newInvitationclasses">
-
-        <div class="col-sm-12">
-            <?php if (count($inviteClassData) > 0) { ?>
-                <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Class</th>
-                            <th>Section</th>
-                            <th>Subject</th>
-                            <th>Submissions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                        @php
+                        $i=1;
+                        @endphp
+                        @foreach ($futureClassData as $t)
                         <?php
-
-                        $i = 0;
-                        foreach ($inviteClassData as $row) {
-                            $section_name = '';
-                            $subject_name = '';
-                            $cls = '';
-                            $g_link = '';
-                            if ($row->studentClass) {
-                                $cls = $row->studentClass->class_name;
-                                $section_name = $row->studentClass->section_name;
-                                $g_link = $row->studentClass->g_link;
-                            }
-                            if ($row->studentSubject) {
-                                $subject_name = $row->studentSubject->subject_name;
-                            }
-                        ?>
-                            <tr>
-                                <td>{{++$i}}</td>
-                                <td>{{ $cls }} Std</td>
-                                <td>{{ $section_name }}</td>
-                                <td>{{ $subject_name }}</td>
-                                <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
-                                        <svg class="icon font-10 mr-1">
-                                            <use xlink:href="../images/icons.svg#icon_dot"></use>
-                                        </svg>
-                                        Check Submissions
-                                    </a></td>
-                            </tr>
-
-
-                        <?php
+                        $cls = 0;
+                        $section_name = '';
+                        $g_class_id = '';
+                        $class_name = '';
+                        $subject_name = '';
+                        if ($t->studentClass) {
+                            $class_name = $t->studentClass->class_name;
+                            //$class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
+                            $section_name = $t->studentClass->section_name;
+                            $g_class_id = $t->studentClass->g_class_id;
                         }
-                        $i++;
-                    } else {
+                        if ($t->studentSubject) {
+                            $subject_name = $t->studentSubject->subject_name;
+                        }
                         ?>
+
+
+                        <div class="classes-box">
+
+                            <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
+                            <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
+                            <input type="hidden" id="past_subject_id{{$i}}" value="{{$t->subject_id}}">
+
+
+                            <input type="hidden" id="past_desc{{$i}}" value="{{$t->class_description}}">
+                            <input type="hidden" id="past_gMeetURL{{$i}}" value="{{$t->g_meet_url}}">
+                            <input type="hidden" id="past_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
+                            <input type="hidden" id="past_recURL{{$i}}" value="{{$t->recording_url}}">
+                            <input type="hidden" id="pastg_class_id_{{$i}}" value="{{ $g_class_id}}" />
+                            <?php
+                            $class_date = date("d M", strtotime($t->class_date));
+                            ?>
+
+                            <div class="classes-datetime">
+                                <div class="cls-date">{{ $class_date }}</div>
+                                <div class="cls-from">{{ date('h:i a',strtotime($t->from_timing))}}</div>
+                                <div class="cls-separater">to</div>
+                                <div class="cls-to">{{ date('h:i a',strtotime($t->to_timing))}}</div>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
+                                <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span>
+
+                                    {{$class_name}} Std
+                                </div>
+                                <div class="font-weight-bold pt-1"><span class="text-secondary">Section:</span> {{$section_name}}
+
+                                </div>
+                                <div class="font-weight-bold pt-1"><span class="text-secondary">Subject:</span>
+
+                                    {{$subject_name}}
+
+                                </div>
+                            </div>
+
+
+                            <p class="mt-0 mb-2 text-secondary text-edit" data-url="#" data-savedesc="{{$t->id}}" contenteditable="false" id="class_description_{{$i}}">
+                                @if($t->class_description!='')
+                                {{$t->class_description}}
+                                @else
+                                {{$t->class_description}}
+                                @endif
+                            </p>
+
+
+
+                            <div class="d-flex justify-content-between flex-wrap py-2">
+                                <div>
+
+
+
+                                </div>
+                                <div>
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        @php
+                        $i++;
+                        @endphp
+                        @endforeach
+                        @else
+
                         <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
                             <svg class="icon icon-4x mr-3">
                                 <use xlink:href="../images/icons.svg#icon_nodate"></use>
                             </svg>
                             No Record Found!
                         </div>
-                    <?php
-                    }
-                    ?>
-                    </tbody>
-                </table>
-        </div>
-    </div>
-    <!-- ./Teacher-AssignedClasses -->
+                        @endif
+                    </div>
 
-    </div>
-    </div>
-    </div>
+
+                    <!---
+                        Invitation
+                         -->
+                    <div class="tab-pane fade" id="newInvitationclasses">
+
+                        <div class="col-sm-12">
+                            <?php if (count($inviteClassData) > 0) { ?>
+                                <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Class</th>
+                                            <th>Section</th>
+                                            <th>Subject</th>
+                                            <th>Submissions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+
+                                        $i = 0;
+                                        foreach ($inviteClassData as $row) {
+                                            $section_name = '';
+                                            $subject_name = '';
+                                            $cls = '';
+                                            $g_link = '';
+                                            if ($row->studentClass) {
+                                                $cls = $row->studentClass->class_name;
+                                                $section_name = $row->studentClass->section_name;
+                                                $g_link = $row->studentClass->g_link;
+                                            }
+                                            if ($row->studentSubject) {
+                                                $subject_name = $row->studentSubject->subject_name;
+                                            }
+                                        ?>
+                                            <tr>
+                                                <td>{{++$i}}</td>
+                                                <td>{{ $cls }} Std</td>
+                                                <td>{{ $section_name }}</td>
+                                                <td>{{ $subject_name }}</td>
+                                                <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+                                                        <svg class="icon font-10 mr-1">
+                                                            <use xlink:href="../images/icons.svg#icon_dot"></use>
+                                                        </svg>
+                                                        Check Submissions
+                                                    </a></td>
+                                            </tr>
+
+
+                                        <?php
+                                        }
+                                        $i++;
+                                    } else {
+                                        ?>
+                                        <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
+                                            <svg class="icon icon-4x mr-3">
+                                                <use xlink:href="../images/icons.svg#icon_nodate"></use>
+                                            </svg>
+                                            No Record Found!
+                                        </div>
+                                    <?php
+                                    }
+                                    ?>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                    <!-- ./Teacher-AssignedClasses -->
+
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
