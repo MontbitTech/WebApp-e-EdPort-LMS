@@ -4,6 +4,10 @@
 <?php
 $cls = 0;
 ?>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.js"></script>
+
 <style>
     .yy {
         font-size: 27px !important;
@@ -301,7 +305,7 @@ $cls = 0;
                                                 </svg>
                                                 Join Live
                                             </a>
-                                            <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;"  data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
+                                            <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
                                             <a href="#" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notify="{{$i}}">
                                                 <svg class="icon mr-1">
                                                     <use xlink:href="../images/icons.svg#icon_bell"></use>
@@ -729,10 +733,10 @@ $cls = 0;
     </div>
 </section>
 
-<div class="modal fade" id="viewStudentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" >
-<div class="modal-dialog modal-lg">
- <div class="modal-content" id="purchaseshowdatadiv"></div>
-</div>
+<div class="modal fade" id="viewStudentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="purchaseshowdatadiv"></div>
+    </div>
 </div>
 
 
@@ -1494,7 +1498,7 @@ $cls = 0;
                 subject_id: subject_id,
                 teacher_id: teacher_id,
                 dateClass_id: dateClass_id,
-                description:description,
+                description: description,
                 dueDate: dueDate,
                 dueTime: dueTime,
                 point: point
@@ -1554,7 +1558,7 @@ $cls = 0;
                 subject_id: subject_id,
                 teacher_id: teacher_id,
                 dateClass_id: dateClass_id,
-                description:description,
+                description: description,
                 dueDate: dueDate,
                 dueTime: dueTime,
                 point: point
@@ -1688,9 +1692,9 @@ $cls = 0;
         $("#edit_notify_stdMessage").val($("#txt_stdMessage" + val).val());
         $("#txt_datecalss_id").val($("#dateClass_id" + val).val());
     });
-   
 
-     // $("#purchaseshowdivid").click(function() {
+
+    // $("#purchaseshowdivid").click(function() {
     $('[data-id=view_student]').click(function() {
         $('#purchaseshowdatadiv').hide();
         var getBoxId = $(this).attr("data-view");
@@ -1703,10 +1707,10 @@ $cls = 0;
                 txt_class_name: class_name,
                 txt_section_id: section_id
             },
-            success: function(result) { 
+            success: function(result) {
 
-            $('#purchaseshowdatadiv').html(result);
-            $('#purchaseshowdatadiv').show();             
+                $('#purchaseshowdatadiv').html(result);
+                $('#purchaseshowdatadiv').show();
 
             }
 
@@ -2119,6 +2123,12 @@ $cls = 0;
             });
 
         }
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#teacherlist').DataTable();
     });
 </script>
 @endsection
