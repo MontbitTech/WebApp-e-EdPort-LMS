@@ -1800,7 +1800,7 @@ $cls = 0;
             $('#notificationMsg').val(vale);
         });
         $('#cancel').click(function() {
-            let vale = "Dear   " + class_w + section + " Student Please note that the " + s_name + "Class scheduled on " + today + "at " + from_timing + "is Cancelled"
+            let vale = "Dear " + class_w + section + " Students Please note that the " + s_name + " Class scheduled on " + today + " at " + from_timing + " is Cancelled"
             // let vale = "Dear  Student Subject '" + s_name + " Class" + +d + " scheduled on dd/mm/yyyy at 00:00 AM/PM is Cancelled "
             $('#notificationMsg').val(vale);
         });
