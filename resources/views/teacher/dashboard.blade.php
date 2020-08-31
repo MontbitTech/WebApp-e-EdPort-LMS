@@ -782,9 +782,9 @@ $cls = 0;
                         </div>
                     </div>
                     <div class="form-group col-md-12">
-                        <label for="txt_aTitle" class="col-form-label text-md-left"> Assignment Title:</label>
+                        <label for="txt_aTitle" class="col-form-label text-md-left"> Assignment Instruction:</label>
                         <div>
-                            <textarea class="form-control" name="txt_description" id="txt_description" placeholder="Assigment Description"></textarea>
+                            <textarea class="form-control" name="txt_description" id="txt_description" placeholder="Assignment Instruction"></textarea>
                         </div>
                     </div>
                     <div class="form-group col-md-4">
