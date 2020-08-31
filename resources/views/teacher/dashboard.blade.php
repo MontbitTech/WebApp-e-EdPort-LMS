@@ -361,15 +361,18 @@ $cls = 0;
                     <!-- Past Live Classes -->
                     <!-- ///////////////// -->
                     <div class="tab-pane fade" id="plclasses">
+                        @if(count($pastClassData1) > 0)
                         @foreach ($pastClassData1 as $tt)
                         <input type="hidden" id="pastclassdata{{$i}}" value="{{$tt->class_date}}">
                         <button class="text-white ll btn-sm ml-2 mb-5" style="background-color: #373c8e; border: 1px solid #373c8e;">
-                            {{ date("d M", strtotime($tt->class_date))}}
+                            {{ date("d D M", strtotime($tt->class_date))}}
                         </button>
 
-
+                        @php
+                        $i++;
+                        @endphp
                         @endforeach
-
+                        @endif
                         @if(count($pastClassData) > 0)
 
                         @php
@@ -2254,5 +2257,11 @@ $cls = 0;
 
         }
     });
+</script>
+<script>
+    $('.ll').click(function() {
+        var sname = $("#pastclassdata" + val).val();
+        console.log(sname);
+    })
 </script>
 @endsection
