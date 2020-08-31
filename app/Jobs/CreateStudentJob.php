@@ -54,7 +54,7 @@ class CreateStudentJob implements ShouldQueue
 
         $response = StudentUtility::inviteStudentToClassroom($row["email"], $this->token, $classrooms);
         if(!$response['success']){
-            return failure_message($response['data']->message.'at row : '.$rowCount);
+            return failure_message($response['data'].' at row : '.$rowCount);
         }
 
         $student = StudentUtility::createStudent([
