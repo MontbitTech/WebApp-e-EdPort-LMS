@@ -80,6 +80,7 @@ $cls = 0;
                             <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
                             <input type="hidden" id="txt_class_name{{$i}}" value="{{$class_name}}">
+                             <input type="hidden" id="txt_section_id{{$i}}" value="{{$section_name}}">
                             <input type="hidden" id="txt_from_timing{{$i}}" value="{{$t->from_timing}}">
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
                             <input type="hidden" id="txt_section_name{{$i}}" value="{{$section_name}}">

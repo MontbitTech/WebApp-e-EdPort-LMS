@@ -6,11 +6,10 @@
 </div>
 
 <div class="modal-body pt-4">
-    <input type="hidden" name="txt_class_id" id="txt_class_id">
-    <input type="hidden" id="txt_section_id" name="txt_section_id">
     <div class="col-sm-12">
 
-        @if (count($students) > 0) <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+        @if (count($students) > 0) 
+            <table id="getstudentlist" class="table table-sm table-bordered display" data-page-length="100" data-order="[[0, &quot;asc&quot; ]]" style="width:100%" data-page-length="10" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
             <thead>
                 <tr>
                     <th>#</th>
@@ -19,27 +18,19 @@
                     <th>Phone</th>
                 </tr>
             </thead>
+            @php
+            $i = 0;
+            @endphp
             <tbody>
-                <?php
+                @foreach ($students as $row)
+                <tr>
+                    <td>{{++$i}}</td>
+                    <td>{{$row->name}}</td>
+                    <td>{{$row->email}}</td>
+                    <td>{{$row->phone}}</td>
+                </tr>
 
-                $i = 0;
-                foreach ($students as $row) {
-                ?>
-
-                    <tr>
-                        <td>{{++$i}}</td>
-                        <td>{{$row->name}}</td>
-                        <td>{{$row->email}}</td>
-                        <td>{{$row->phone}}</td>
-                    </tr>
-
-                <?php
-                }
-                $i++;
-                ?>
-
-
-
+                @endforeach
             </tbody>
         </table>
         @else
@@ -54,3 +45,14 @@
         @endif
     </div>
 </div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#getstudentlist').DataTable({
+            initComplete: function(settings, json) {
+                $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
+                $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+            }
+        });
+    });
+</script>
