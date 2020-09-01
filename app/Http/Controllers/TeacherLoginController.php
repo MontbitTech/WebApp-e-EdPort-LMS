@@ -170,6 +170,11 @@ class TeacherLoginController extends Controller
         return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastClassData1', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData'));
     }
 
+    public function viewPastClass(Request $request){
+        $pastClassData2 = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('class_date', $request->class_date)->get();
+      echo $pastClassData2;
+    }
+
     public function getTopic(Request $request)
     {
         if ($request->chapter && $request->class && $request->subject) {

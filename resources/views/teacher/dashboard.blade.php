@@ -362,13 +362,18 @@ $cls = 0;
                     <!-- ///////////////// -->
                     <div class="tab-pane fade" id="plclasses">
                         @if(count($pastClassData1) > 0)
+                        @php
+                        $i=1;
+                        @endphp
                         @foreach ($pastClassData1 as $tt)
-                        <input type="hidden" id="pastclassdata" value="{{$tt->class_date}}">
-                        <button class="text-white ll btn-sm ml-2 mb-5" style="background-color: #373c8e; border: 1px solid #373c8e;">
+                        <input type="hidden" id="pastclassdata{{$i}}" value="{{$tt->class_date}}">                       
+                        <button onclick="viewPastClass({{$i}})" class="text-white ll btn-sm ml-2 mb-5" style="background-color: #373c8e; border: 1px solid #373c8e;">
                             {{ date("d D M", strtotime($tt->class_date))}}
                         </button>
 
-
+                        @php
+                        $i++;
+                        @endphp
                         @endforeach
                         @endif
                         @if(count($pastClassData) > 0)
@@ -2120,6 +2125,29 @@ $cls = 0;
     });
 
 
+function viewPastClass(id){
+    var class_date= $('#pastclassdata'+id).val();
+    //alert(class_date);
+    // $('#plclasses').hide();
+
+   $.ajax({
+            type: 'POST',
+            url: '{{ url("/teacher/class/viewPastClass") }}',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                'class_date': class_date,
+            },
+            success: function(result) {
+                // $('#plclasses').show();
+
+            },
+            error: function() {
+            }
+        });
+}
+
     function viewAssignment(id) {
         $('.loader').show();
         $.ajax({
@@ -2255,11 +2283,5 @@ $cls = 0;
 
         }
     });
-</script>
-<script>
-    $('.ll').click(function() {
-        var sname = $("#pastclassdata" + val).val();
-        console.log(sname);
-    })
 </script>
 @endsection
