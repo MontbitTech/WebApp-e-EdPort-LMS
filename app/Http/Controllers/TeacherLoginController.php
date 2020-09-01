@@ -136,7 +136,22 @@ class TeacherLoginController extends Controller
             ->orderBy('from_timing', 'desc')
             ->limit(20)
             ->get();
+        $pastClassData1 = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher_id)
+            ->where('class_date', '>', DateUtility::getPastDate(7))
+            ->Where('class_date', '<', $currentDay)
+            ->orderBy('class_date', 'desc')
+            ->limit(7)
+            ->distinct('class_date')
+            ->get()->unique();
+        // $pastClassData1 = DB::table('tbl_student_classes')->select('class_date')
+        //     ->where('ct.teacher_id', $logged_teacher_id)
+        //     ->where('class_date', '>', DateUtility::getPastDate(7))
+        //     ->Where('class_date', '<', $currentDay)
+        //     ->limit(7)
+        //     ->distinct()
+        //     ->get();
 
+        // dd($pastClassData1);
         $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher_id)
             ->where('class_date', '<', DateUtility::getFutureDate(7))
             ->Where('class_date', '>', $currentDay)
@@ -152,17 +167,17 @@ class TeacherLoginController extends Controller
 
         $helpCategories = HelpTicketCategory::get();
 
-        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData'));
+        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastClassData1', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData'));
     }
 
     public function getTopic(Request $request)
     {
-        if($request->chapter && $request->class && $request->subject ){
-            $getdata   = CmsLink::where('chapter',$request->chapter)->where('class',$request->class)->where('subject',$request->subject)->pluck('topic','id');
+        if ($request->chapter && $request->class && $request->subject) {
+            $getdata   = CmsLink::where('chapter', $request->chapter)->where('class', $request->class)->where('subject', $request->subject)->pluck('topic', 'id');
             echo $getdata;
         }
     }
-    
+
     public function logout(Request $request)
     {
         Session::forget('access_token_teacher');
