@@ -130,7 +130,7 @@ class TeacherLoginController extends Controller
         $data['classData'] = DB::table('tbl_student_classes as c')->select('c.id', 'c.class_name', 'c.section_name', 'c.subject_id', 's.subject_name')->join('tbl_student_subjects as s', 'c.subject_id', 's.id')->join('tbl_class_timings as ct', 'ct.class_id', 'c.id')->where('ct.teacher_id', $logged_teacher_id)->get()->unique();
 
         $pastClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher_id)
-            ->where('class_date', '>', DateUtility::getPastDate(2))
+            ->where('class_date', '>', DateUtility::getPastDate(7))
             ->Where('class_date', '<', $currentDay)
             ->orderBy('class_date', 'desc')
             ->orderBy('from_timing', 'desc')
@@ -170,11 +170,26 @@ class TeacherLoginController extends Controller
         return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastClassData1', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData'));
     }
 
-    public function viewPastClass(Request $request)
-    {
-        $pastClassData2 = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('class_date', $request->class_date)->get();
-        //  echo $pastClassData2;
-        return Response($pastClassData2);
+    public function viewPastClass(Request $request){
+
+        $logged_teacher   = Session::get('teacher_session');
+        $logged_teacher_id = $logged_teacher['teacher_id'];
+
+        $current_date = date("Y-m-d H:i:s");
+        $currentTime = date("H:i:s", strtotime($current_date));
+        $currentDay = date("Y-m-d", strtotime($current_date));
+                $schoollogo = \DB::table('tbl_settings')->get()->keyBy('item');
+
+        $pastClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('class_date', $request->class_date)->get();
+        $pastClassData1 = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher_id)
+            ->where('class_date', '>', DateUtility::getPastDate(7))
+            ->Where('class_date', '<', $currentDay)
+            ->orderBy('class_date', 'desc')
+            ->limit(7)
+            ->distinct('class_date')
+            ->get()->unique();
+      
+      return view('teacher.getPastClass',compact('pastClassData1','pastClassData','schoollogo'));
     }
 
     public function getTopic(Request $request)

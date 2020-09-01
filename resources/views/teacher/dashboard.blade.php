@@ -2133,12 +2133,10 @@ $cls = 0;
     });
 
 
-    function viewPastClass(id) {
-        var class_date = $('#pastclassdata' + id).val();
-        // alert(class_date);
-        // $('#plclasses').hide();
-
-        $.ajax({
+    function viewPastClass(id){
+    var class_date= $('#pastclassdata'+id).val();
+    $('#plclasses').hide();
+    $.ajax({
             type: 'GET',
             url: '{{ url("/teacher/class/viewPastClass") }}',
             headers: {
@@ -2147,29 +2145,15 @@ $cls = 0;
             data: {
                 'class_date': class_date,
             },
-            dataType: 'json',
             success: function(result) {
-                /// location.reload(true);
-                // $('#plclasses').show();
-                //console.log(result);
-                //  var dataw = result[0]['id'];
-                //   $("#plclasses").append(dataw);
-                // console.log(dataw);
-                // console.log(result);
-                var resultData = result;
-                // var bodyData = '';
-                var i = 1;
-                var newdata = $.each(resultData, function(index, row) {
-                    $('#plclasses ').find('card').append('card-header');
-                });
-
-                // $("#plclasses").prepend(bodyData);
-                // var bodyData = ' ';
-                console.log(newdata);
+               $('#plclasses').html(result);                
+               $('#plclasses').show();
+                 
             },
-            error: function() {}
+            error: function() {
+            }
         });
-    }
+}
 
     function viewAssignment(id) {
         $('.loader').show();
