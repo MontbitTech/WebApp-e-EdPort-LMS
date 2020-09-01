@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
@@ -183,6 +182,9 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/available/classes', 'AvailabilityController@availableClasses');
     Route::post('/teacher/class/assignments', 'ClassWorkController@getClassAssignments');
     Route::post('/teacher/class/examassignments', 'ClassWorkController@getExamAssignments');
+    Route::post('/teacher/class/viewPastClass', 'TeacherLoginController@viewPastClass');
+
+
 
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
 
