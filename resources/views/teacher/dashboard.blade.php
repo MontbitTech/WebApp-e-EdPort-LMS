@@ -363,14 +363,12 @@ $cls = 0;
                     <div class="tab-pane fade" id="plclasses">
                         @if(count($pastClassData1) > 0)
                         @foreach ($pastClassData1 as $tt)
-                        <input type="hidden" id="pastclassdata{{$i}}" value="{{$tt->class_date}}">
+                        <input type="hidden" id="pastclassdata" value="{{$tt->class_date}}">
                         <button class="text-white ll btn-sm ml-2 mb-5" style="background-color: #373c8e; border: 1px solid #373c8e;">
                             {{ date("d D M", strtotime($tt->class_date))}}
                         </button>
 
-                        @php
-                        $i++;
-                        @endphp
+
                         @endforeach
                         @endif
                         @if(count($pastClassData) > 0)
@@ -1303,7 +1301,10 @@ $cls = 0;
 
 <script>
     $('.card-header').click(function() {
-        $(this).find('i').toggleClass('fas fa-plus fas fa-minus');
+        $(this).find('i').toggleClass('fas fa-minus');
+        $(this).find('i').toggleClass('fas fa-plus');
+
+        //$(this).find('i').toggle(function(){});
     });
 </script>
 <script type="text/javascript">
