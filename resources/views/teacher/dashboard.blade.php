@@ -365,16 +365,24 @@ $cls = 0;
                         @php
                         $i=1;
                         @endphp
-                        @foreach ($pastClassData1 as $tt)
-                        <input type="hidden" id="pastclassdata{{$i}}" value="{{$tt->class_date}}">                       
-                        <button onclick="viewPastClass({{$i}})" class="text-white ll btn-sm ml-2 mb-5" style="background-color: #373c8e; border: 1px solid #373c8e;">
-                            {{ date("d D M", strtotime($tt->class_date))}}
-                        </button>
 
-                        @php
-                        $i++;
-                        @endphp
-                        @endforeach
+
+
+                        <ul class="nav justify-content-center">
+                            @foreach ($pastClassData1 as $tt)
+                            <input type="hidden" id="pastclassdata{{$i}}" value="{{$tt->class_date}}">
+                            <li class="nav-item" onclick="viewPastClass({{$i}})">
+                                <a class="nav-link  btn btn-sm text-white mr-2 mb-3 active1 " href="#"> {{ date("D, d M", strtotime($tt->class_date))}}</a>
+                            </li>
+                            @php
+                            $i++;
+                            @endphp
+                            @endforeach
+                        </ul>
+
+                        <div class="container1">
+
+                        </div>
                         @endif
                         @if(count($pastClassData) > 0)
 
@@ -2125,13 +2133,13 @@ $cls = 0;
     });
 
 
-function viewPastClass(id){
-    var class_date= $('#pastclassdata'+id).val();
-    //alert(class_date);
-    // $('#plclasses').hide();
+    function viewPastClass(id) {
+        var class_date = $('#pastclassdata' + id).val();
+        // alert(class_date);
+        // $('#plclasses').hide();
 
-   $.ajax({
-            type: 'POST',
+        $.ajax({
+            type: 'GET',
             url: '{{ url("/teacher/class/viewPastClass") }}',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -2139,14 +2147,29 @@ function viewPastClass(id){
             data: {
                 'class_date': class_date,
             },
+            dataType: 'json',
             success: function(result) {
+                /// location.reload(true);
                 // $('#plclasses').show();
+                //console.log(result);
+                //  var dataw = result[0]['id'];
+                //   $("#plclasses").append(dataw);
+                // console.log(dataw);
+                // console.log(result);
+                var resultData = result;
+                // var bodyData = '';
+                var i = 1;
+                var newdata = $.each(resultData, function(index, row) {
+                    $('#plclasses ').find('card').append('card-header');
+                });
 
+                // $("#plclasses").prepend(bodyData);
+                // var bodyData = ' ';
+                console.log(newdata);
             },
-            error: function() {
-            }
+            error: function() {}
         });
-}
+    }
 
     function viewAssignment(id) {
         $('.loader').show();

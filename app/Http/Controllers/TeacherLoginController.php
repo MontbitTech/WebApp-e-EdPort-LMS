@@ -130,7 +130,7 @@ class TeacherLoginController extends Controller
         $data['classData'] = DB::table('tbl_student_classes as c')->select('c.id', 'c.class_name', 'c.section_name', 'c.subject_id', 's.subject_name')->join('tbl_student_subjects as s', 'c.subject_id', 's.id')->join('tbl_class_timings as ct', 'ct.class_id', 'c.id')->where('ct.teacher_id', $logged_teacher_id)->get()->unique();
 
         $pastClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher_id)
-            ->where('class_date', '>', DateUtility::getPastDate(7))
+            ->where('class_date', '>', DateUtility::getPastDate(2))
             ->Where('class_date', '<', $currentDay)
             ->orderBy('class_date', 'desc')
             ->orderBy('from_timing', 'desc')
@@ -170,9 +170,11 @@ class TeacherLoginController extends Controller
         return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastClassData1', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData'));
     }
 
-    public function viewPastClass(Request $request){
+    public function viewPastClass(Request $request)
+    {
         $pastClassData2 = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('class_date', $request->class_date)->get();
-      echo $pastClassData2;
+        //  echo $pastClassData2;
+        return Response($pastClassData2);
     }
 
     public function getTopic(Request $request)
