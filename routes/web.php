@@ -185,6 +185,9 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/teacher/class/examassignments', 'ClassWorkController@getExamAssignments');
 
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
+
+    Route::post('/teacher/Attendance', 'StudentAttendanceController@store');
+    Route::get('/teacher/Attendance', 'StudentAttendanceController@index');
 });
 
 
