@@ -1704,12 +1704,14 @@ $cls = 0;
         var getBoxId = $(this).attr("data-view");
         var class_name = $("#txt_class_name" + getBoxId).val();
         var section_id = $("#txt_section_id" + getBoxId).val();
+        var dateclass_id = $('#dateClass_id' + getBoxId).val();
         $.ajax({
             url: '{{ url("/teacher/getStudent") }}',
             type: "GET",
             data: {
-                txt_class_name: class_name,
-                txt_section_id: section_id
+                txt_class_name  : class_name,
+                txt_section_id  : section_id,
+                dateclass_id    : dateclass_id 
             },
             success: function(result) {
 
