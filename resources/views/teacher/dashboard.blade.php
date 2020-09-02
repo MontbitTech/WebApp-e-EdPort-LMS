@@ -370,7 +370,7 @@ $cls = 0;
                     <!-- Past Live Classes -->
                     <!-- ///////////////// -->
                     <div class="tab-pane fade" id="plclasses">
-                        @if(count($pastClassData1) > 0)
+                        @if(count($pastDates) > 0)
                         @php
                         $i=1;
                         @endphp
@@ -378,7 +378,7 @@ $cls = 0;
 
 
                         <ul class="nav justify-content-center">
-                            @foreach ($pastClassData1 as $tt)
+                            @foreach ($pastDates as $tt)
                             <input type="hidden" id="pastclassdata{{$i}}" value="{{$tt->class_date}}">
                             <li class="nav-item" onclick="viewPastClass({{$i}})">
                                 <a class="nav-link  btn btn-sm text-white mr-2 mb-3 active1 " href="#"> {{ date("D, d M", strtotime($tt->class_date))}}</a>
@@ -724,7 +724,7 @@ $cls = 0;
                     <!-- ///////////////// -->
                     <div class="tab-pane fade" id="upcomingclasses">
 
-                        @if(count($futureClassData1) > 0)
+                        @if(count($futureDates) > 0)
                         @php
                         $i=1;
                         @endphp
@@ -732,7 +732,7 @@ $cls = 0;
 
 
                         <ul class="nav justify-content-center">
-                            @foreach ($futureClassData1 as $tt)
+                            @foreach ($futureDates as $tt)
                             <input type="hidden" id="futureclassdata{{$i}}" value="{{$tt->class_date}}">
                             <li class="nav-item" onclick="viewFutureClass({{$i}})">
                                 <a class="nav-link  btn btn-sm text-white mr-2 mb-3 active1 " href="#"> {{ date("D, d M", strtotime($tt->class_date))}}</a>
