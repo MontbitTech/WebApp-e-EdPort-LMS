@@ -370,16 +370,24 @@ $cls = 0;
                         @php
                         $i=1;
                         @endphp
-                        @foreach ($pastClassData1 as $tt)
-                        <input type="hidden" id="pastclassdata{{$i}}" value="{{$tt->class_date}}">                       
-                        <button onclick="viewPastClass({{$i}})" class="text-white ll btn-sm ml-2 mb-5" style="background-color: #373c8e; border: 1px solid #373c8e;">
-                            {{ date("d D M", strtotime($tt->class_date))}}
-                        </button>
 
-                        @php
-                        $i++;
-                        @endphp
-                        @endforeach
+
+
+                        <ul class="nav justify-content-center">
+                            @foreach ($pastClassData1 as $tt)
+                            <input type="hidden" id="pastclassdata{{$i}}" value="{{$tt->class_date}}">
+                            <li class="nav-item" onclick="viewPastClass({{$i}})">
+                                <a class="nav-link  btn btn-sm text-white mr-2 mb-3 active1 " href="#"> {{ date("D, d M", strtotime($tt->class_date))}}</a>
+                            </li>
+                            @php
+                            $i++;
+                            @endphp
+                            @endforeach
+                        </ul>
+
+                        <div class="container1">
+
+                        </div>
                         @endif
                         @if(count($pastClassData) > 0)
 
@@ -642,7 +650,7 @@ $cls = 0;
 
                                     </div>
                                 </div>
-                                <div class="card-footer p-1" style="background:#fff;">
+                                <!-- <div class="card-footer p-1" style="background:#fff;">
                                     <div class="d-flex justify-content-between flex-wrap">
                                         <div class="m-auto">
 
@@ -669,7 +677,7 @@ $cls = 0;
                                             @endif
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
@@ -2165,13 +2173,11 @@ $cls = 0;
     });
 
 
-function viewPastClass(id){
+    function viewPastClass(id){
     var class_date= $('#pastclassdata'+id).val();
-    //alert(class_date);
-    // $('#plclasses').hide();
-
-   $.ajax({
-            type: 'POST',
+    $('#plclasses').hide();
+    $.ajax({
+            type: 'GET',
             url: '{{ url("/teacher/class/viewPastClass") }}',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -2180,8 +2186,9 @@ function viewPastClass(id){
                 'class_date': class_date,
             },
             success: function(result) {
-                // $('#plclasses').show();
-
+               $('#plclasses').html(result);                
+               $('#plclasses').show();
+                 
             },
             error: function() {
             }

@@ -130,7 +130,8 @@ Route::group(['middleware' => 'adminsession'], function () {
 
     Route::get('/admin/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
 
-    Route::get('/deleteAllClassrooms','TestController@deleteAllClassroomsFromGoogle');
+    Route::get('/deleteAllClassrooms', 'TestController@deleteAllClassroomsFromGoogle');
+    Route::get('/listGoogleClassrooms', 'TestController@listGoogleClassrooms');
 });
 
 /*  Teacher  */
@@ -144,7 +145,8 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::get('/teacher/logout', 'TeacherLoginController@logout')->name('teacher.logout');
     Route::get('/teacher/home', 'TeacherLoginController@teacherDashboard')->name('teacher.dashboard');
     Route::get('/teacher/getStudent', 'TeacherLoginController@getStudent')->name('teacher.student');
-    Route::get('get-topic','TeacherLoginController@getTopic')->name('get-topic');
+
+    Route::get('get-topic', 'TeacherLoginController@getTopic')->name('get-topic');
 
 
     Route::post('/teacher/add-class', 'TeacherClassController@addClass')->name('add.class');
@@ -182,7 +184,7 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/available/classes', 'AvailabilityController@availableClasses');
     Route::post('/teacher/class/assignments', 'ClassWorkController@getClassAssignments');
     Route::post('/teacher/class/examassignments', 'ClassWorkController@getExamAssignments');
-    Route::post('/teacher/class/viewPastClass', 'TeacherLoginController@viewPastClass');
+    Route::get('/teacher/class/viewPastClass', 'TeacherLoginController@viewPastClass');
 
 
 
