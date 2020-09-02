@@ -734,7 +734,7 @@ $cls = 0;
                         <ul class="nav justify-content-center">
                             @foreach ($futureClassData1 as $tt)
                             <input type="hidden" id="futureclassdata{{$i}}" value="{{$tt->class_date}}">
-                            <li class="nav-item" onclick="viewfutureClass({{$i}})">
+                            <li class="nav-item" onclick="viewFutureClass({{$i}})">
                                 <a class="nav-link  btn btn-sm text-white mr-2 mb-3 active1 " href="#"> {{ date("D, d M", strtotime($tt->class_date))}}</a>
                             </li>
                             @php
@@ -1462,7 +1462,7 @@ $cls = 0;
                 <input type="hidden" id="data_class_id" value="" name="class_id" />
                 <input type="hidden" id="data_gmeet_url" value="" name="gmeet_url" />
                 <input type="hidden" id="data_from_timing" value="data_from_timing" />
-                <input type="hidden" id="data_cancelled" name="cancelled" value="0"/>
+                <input type="hidden" id="data_cancelled" name="cancelled" value="0" />
 
                 <div class="container-fluid">
 
@@ -1471,25 +1471,25 @@ $cls = 0;
                             <div class="row mb-3">
 
                                 <div class="btn btn-md btn-primary pl-3 pr-4 active" id="notify">
-                                    Notify
+                                    Class Invitation
                                 </div>
                             </div>
                             <div class="row mb-3">
 
-                                <div class="btn btn-md btn-primary pl-3 pr-3" id="cancel">
-                                    Cancel
+                                <div class="btn btn-md btn-primary " id="cancel">
+                                    Class Cancellation
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="btn btn-xs btn-primary" id="custom">
+                                <div class="btn btn-xs btn-primary pl-5 pr-5" id="custom">
                                     Custom
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-9 col-lg-9 col-9">
-                            <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
-                            </label>
-                            <div>
+                            <!-- <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
+                            </label> -->
+                            <div class="mt-5">
                                 {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
 
@@ -2436,12 +2436,12 @@ $cls = 0;
         //console.log(class_date1);
     }
 
-    function viewfutureClass(id) {
+    function viewFutureClass(id) {
         var class_date = $('#futureclassdata' + id).val();
         $('#upcmoingclass').hide();
         $.ajax({
             type: 'GET',
-            url: '{{ url("/teacher/class/viewfutureClass") }}',
+            url: '{{ url("/teacher/class/viewFutureClass") }}',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },

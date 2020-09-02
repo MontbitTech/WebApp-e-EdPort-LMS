@@ -79,10 +79,10 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
             <a class="nav-link shadow-sm active" data-toggle="tab" href="#fqa" role="tab" aria-selected="true">FAQs</a>
           </li>
           <li class="nav-item mb-1 btn-sm">
-            <a class="nav-link shadow-sm" data-toggle="tab" href="#video" role="tab">Video's</a>
+            <a class="nav-link shadow-sm" data-toggle="tab" href="#video" role="tab">Videos</a>
           </li>
           <li class="nav-item mb-1 btn-sm">
-            <a class="nav-link shadow-sm" data-toggle="tab" href="#message" role="tab">Message</a>
+            <a class="nav-link shadow-sm" data-toggle="tab" href="#message" role="tab">Contact Admin</a>
           </li>
         </ul>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
