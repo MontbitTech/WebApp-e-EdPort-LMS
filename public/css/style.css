@@ -158,10 +158,10 @@ body {
 
 .navbar .navbar-nav .nav-link:hover,
 .navbar .navbar-nav .nav-link:focus,
-.navbar .navbar-nav .active>.nav-link,
+.navbar .navbar-nav .active > .nav-link,
 .navbar .navbar-nav .nav-link.active,
 .navbar .navbar-nav .nav-link.show,
-.navbar .navbar-nav .show>.nav-link {
+.navbar .navbar-nav .show > .nav-link {
   color: #007bff;
 }
 
@@ -342,7 +342,7 @@ body {
 }
 
 .profile-name:hover .icon,
-.profile-name input:focus~.icon {
+.profile-name input:focus ~ .icon {
   opacity: 0.4;
   color: #222;
 }
@@ -728,7 +728,7 @@ body {
 }
 
 .nav-pills .nav-link.active,
-.nav-pills .show>.nav-link {
+.nav-pills .show > .nav-link {
   background-color: #373c8e;
   border: 1px solid #373c8e;
 }
@@ -741,7 +741,7 @@ body {
   transform-origin: top;
 }
 
-.show>.dropdown-flip {
+.show > .dropdown-flip {
   transform: scale(1, 1);
 }
 
@@ -871,14 +871,13 @@ body {
 }
 
 .login-color {
-  background-color: #D1D6E5 !important;
+  background-color: #d1d6e5 !important;
   color: #060911 !important;
-
 }
 
 .login-color:hover,
 .login-color:active {
-  border-color: #D1D6E5 !important;
+  border-color: #d1d6e5 !important;
 }
 
 /* loader */
@@ -920,5 +919,19 @@ body {
     -webkit-transform: rotate(360deg);
   }
 }
+.active1 {
+  font-family: "Roboto-Bold", Arial, sans-serif !important;
+  color: #373c8e !important;
+  letter-spacing: 0.5px !important;
+  margin-right: 10px !important;
+  border: 1px solid #ddd !important;
+}
 
+.active1:focus {
+  color: white !important;
+  background-color: #373c8e !important;
+  border: 1px solid #373c8e !important;
+  border: 1px solid #ddd !important;
+  box-shadow: none !important;
+}
 /*End*/

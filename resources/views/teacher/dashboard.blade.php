@@ -335,7 +335,7 @@ $cls = 0;
                                             $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
                                             ?>
                                             @if (count($assignmentData) > 0)
-                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
+                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
                                             @endif
                                         </div>
                                     </div>
@@ -362,14 +362,27 @@ $cls = 0;
                     <!-- ///////////////// -->
                     <div class="tab-pane fade" id="plclasses">
                         @if(count($pastClassData1) > 0)
-                        @foreach ($pastClassData1 as $tt)
-                        <input type="hidden" id="pastclassdata" value="{{$tt->class_date}}">
-                        <button class="text-white ll btn-sm ml-2 mb-5" style="background-color: #373c8e; border: 1px solid #373c8e;">
-                            {{ date("d D M", strtotime($tt->class_date))}}
-                        </button>
+                        @php
+                        $i=1;
+                        @endphp
 
 
-                        @endforeach
+
+                        <ul class="nav justify-content-center">
+                            @foreach ($pastClassData1 as $tt)
+                            <input type="hidden" id="pastclassdata{{$i}}" value="{{$tt->class_date}}">
+                            <li class="nav-item" onclick="viewPastClass({{$i}})">
+                                <a class="nav-link  btn btn-sm text-white mr-2 mb-3 active1 " href="#"> {{ date("D, d M", strtotime($tt->class_date))}}</a>
+                            </li>
+                            @php
+                            $i++;
+                            @endphp
+                            @endforeach
+                        </ul>
+
+                        <div class="container1">
+
+                        </div>
                         @endif
                         @if(count($pastClassData) > 0)
 
@@ -632,7 +645,7 @@ $cls = 0;
 
                                     </div>
                                 </div>
-                                <div class="card-footer p-1" style="background:#fff;">
+                                <!-- <div class="card-footer p-1" style="background:#fff;">
                                     <div class="d-flex justify-content-between flex-wrap">
                                         <div class="m-auto">
 
@@ -659,7 +672,7 @@ $cls = 0;
                                             @endif
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
 
@@ -2120,6 +2133,28 @@ $cls = 0;
     });
 
 
+    function viewPastClass(id){
+    var class_date= $('#pastclassdata'+id).val();
+    $('#plclasses').hide();
+    $.ajax({
+            type: 'GET',
+            url: '{{ url("/teacher/class/viewPastClass") }}',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                'class_date': class_date,
+            },
+            success: function(result) {
+               $('#plclasses').html(result);                
+               $('#plclasses').show();
+                 
+            },
+            error: function() {
+            }
+        });
+}
+
     function viewAssignment(id) {
         $('.loader').show();
         $.ajax({
@@ -2255,11 +2290,5 @@ $cls = 0;
 
         }
     });
-</script>
-<script>
-    $('.ll').click(function() {
-        var sname = $("#pastclassdata" + val).val();
-        console.log(sname);
-    })
 </script>
 @endsection

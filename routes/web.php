@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
@@ -126,8 +125,8 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::post('filter-student', 'ImportStudentsController@filterStudent')->name('filter-student');
     Route::post('/available/teacher', 'AvailabilityController@availableTeacherAndSubject');
 
-    Route::get('/deleteAllClassrooms','TestController@deleteAllClassroomsFromGoogle');
-    Route::get('/listGoogleClassrooms','TestController@listGoogleClassrooms');
+    Route::get('/deleteAllClassrooms', 'TestController@deleteAllClassroomsFromGoogle');
+    Route::get('/listGoogleClassrooms', 'TestController@listGoogleClassrooms');
 });
 
 /*  Teacher  */
@@ -140,7 +139,7 @@ Route::group(['middleware' => 'AuthCheck'], function () {
 Route::group(['middleware' => 'teachersession'], function () {
     Route::get('/teacher/logout', 'TeacherLoginController@logout')->name('teacher.logout');
     Route::get('/teacher/home', 'TeacherLoginController@teacherDashboard')->name('teacher.dashboard');
-    Route::get('get-topic','TeacherLoginController@getTopic')->name('get-topic');
+    Route::get('get-topic', 'TeacherLoginController@getTopic')->name('get-topic');
 
 
     Route::post('/teacher/add-class', 'TeacherClassController@addClass')->name('add.class');
@@ -178,6 +177,9 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/available/classes', 'AvailabilityController@availableClasses');
     Route::post('/teacher/class/assignments', 'ClassWorkController@getClassAssignments');
     Route::post('/teacher/class/examassignments', 'ClassWorkController@getExamAssignments');
+    Route::get('/teacher/class/viewPastClass', 'TeacherLoginController@viewPastClass');
+
+
 
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
 });
