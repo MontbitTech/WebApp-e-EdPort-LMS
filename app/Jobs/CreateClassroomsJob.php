@@ -110,7 +110,7 @@ class CreateClassroomsJob implements ShouldQueue
         );
         $data = json_encode($data);
 
-        $response = $this->createClassInGoogleClassroom($this->token['access_token'], $data); // access Google api craete Cource
+        $response = Classroom::createClassInGoogleClassroom($this->token, $data); // access Google api craete Cource
 
         if ( !$response['success'] ) {
             if ( $response['data']->status == 'UNAUTHENTICATED' ) {
@@ -123,25 +123,6 @@ class CreateClassroomsJob implements ShouldQueue
             return $response;
         }
 
-        return $response;
-    }
-
-    public function createClassInGoogleClassroom($token, $data)
-    {
-        $url = "https://classroom.googleapis.com/v1/courses";
-        $headers = array(
-            "Authorization: Bearer $token",
-            "Content-Type: application/json",
-        );
-
-        $response = RemoteRequest::postJsonRequest($url, $headers, $data);
-
-        if (!$response['success']) {
-            if ($response['data']->status == 'UNAUTHENTICATED') {
-                $token = CustomHelper::get_refresh_token($this->token);
-                $response = $this->createClassInGoogleClassroom($token['access_token'], $data); // access Google api craete Cource
-            }
-        }
         return $response;
     }
 

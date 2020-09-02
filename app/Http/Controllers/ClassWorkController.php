@@ -383,31 +383,37 @@ class ClassWorkController extends Controller
 
     public function addData_DateClass (Request $request) // Cron JOb Function add data timing table to Past Class
     {
-        Log::info('cron started');
-        $teacherData = ClassTiming::with('studentClass')->where('class_day', DateUtility::getDay())->get();
-        Log::info($teacherData);
-        if ( !count($teacherData) )
-            return back()->with('error', 'No record found on class timming.');
+        for($count = 0;$count<=7;$count++){
+            $days[] = DateUtility::getDay(DateUtility::getFutureDate($count));
+        }
+        
+        $count = 0;
+        foreach($days as $day){       
+            $teacherData = ClassTiming::with('studentClass')->where('class_day', $day)->get();
 
-        foreach ( $teacherData as $value ) {
-            $pastClassExist = DateClass::where('class_date', DateUtility::getDate())->where('from_timing', $value->from_timing)->where('to_timing', $value->to_timing)->where('class_id', $value->class_id)->where('subject_id', $value->subject_id)->where('teacher_id', $value->teacher_id)->first();
-            Log:info('teacher classes :'. $value);
-            Log::info('already in dateClass :'.$pastClassExist);
-            if ( !$pastClassExist ) {
-                $obj_dataClass = new DateClass;
-
-                $obj_dataClass->class_id = $value->class_id;
-                $obj_dataClass->subject_id = $value->subject_id;
-                $obj_dataClass->teacher_id = $value->teacher_id;
-                $obj_dataClass->from_timing = $value->from_timing;
-                $obj_dataClass->to_timing = $value->to_timing;
-                $obj_dataClass->class_date = DateUtility::getDate();
-                $obj_dataClass->timetable_id = $value->id;
-                $obj_dataClass->live_link = $value->studentClass->g_link;
-                $obj_dataClass->save();
-
-                Log::info('created :' . $obj_dataClass);
+            if ( !count($teacherData) ){
+                $count++;
+                continue;
             }
+
+            foreach ( $teacherData as $value ) {
+                $pastClassExist = DateClass::where('class_date', DateUtility::getFutureDate($count))->where('from_timing', $value->from_timing)->where('to_timing', $value->to_timing)->where('class_id', $value->class_id)->where('subject_id', $value->subject_id)->where('teacher_id', $value->teacher_id)->first();
+
+                if ( !$pastClassExist ) {
+                    $obj_dataClass = new DateClass;
+
+                    $obj_dataClass->class_id = $value->class_id;
+                    $obj_dataClass->subject_id = $value->subject_id;
+                    $obj_dataClass->teacher_id = $value->teacher_id;
+                    $obj_dataClass->from_timing = $value->from_timing;
+                    $obj_dataClass->to_timing = $value->to_timing;
+                    $obj_dataClass->class_date = DateUtility::getFutureDate($count);
+                    $obj_dataClass->timetable_id = $value->id;
+                    $obj_dataClass->live_link = $value->studentClass->g_link;
+                    $obj_dataClass->save();
+                }
+            }
+            $count++;
         }
         Log::info('cron finished');
         return back()->with('success', "Time table for today's class reloaded successfully.");

@@ -106,6 +106,13 @@ class ImportTimetableController extends Controller
                     $classTiming->teacher_id = $teacher_id;
                     $classTiming->save();
 
+                    if($teacher_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['teacher_id' => $teacher_id]);
+                    }
+                    if($subject_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['subject_id' => $subject_id]);
+                    }
+
                     return back()->with('success', "TimeTable updated successfully..");
                 }
 
@@ -179,6 +186,13 @@ class ImportTimetableController extends Controller
                         $classTiming->save();
                         //$objD = DateClass::where('subject_id',$cur_subject_id)->where('class_id',$cur_class_ID)->where('teacher_id',$cur_teacher_id)->update(['teacher_id'=>$teacher_id]);    just now i commented
 
+                        if($teacher_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['teacher_id' => $teacher_id]);
+                         }
+                        if($subject_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['subject_id' => $subject_id]);
+                          }
+
                         return back()->with('success', "TimeTable updated successfully..");
                     }
                 }
@@ -219,6 +233,13 @@ class ImportTimetableController extends Controller
                     $classTiming->class_id = $class_id;
                     $classTiming->subject_id = $subject_id;
                     $classTiming->save();
+
+                    if($teacher_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['teacher_id' => $teacher_id]);
+                         }
+                    if($subject_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['subject_id' => $subject_id]);
+                          }
                     
                     return back()->with('success', "TimeTable updated successfully..");
                 }else{
@@ -269,6 +290,13 @@ class ImportTimetableController extends Controller
                             $classTiming->class_id = $class_id;
                             $classTiming->subject_id = $subject_id;
                             $classTiming->save();
+
+                        if($teacher_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['teacher_id' => $teacher_id]);
+                         }
+                        if($subject_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['subject_id' => $subject_id]);
+                          }
                             
                             return back()->with('success', "TimeTable updated successfully..");
                         }
@@ -1352,7 +1380,7 @@ class ImportTimetableController extends Controller
 													left join tbl_student_classes c on c.id = t.class_id
 													left join tbl_techers r on r.id = t.teacher_id
 													where c.class_name = ? and c.section_name=?
-													and from_timing = ?", [$class_name, $section_name, $t->from_timing]);
+													and from_timing = ? order by t.id", [$class_name, $section_name, $t->from_timing]);
 
             if (count($days) > 0) {
                 foreach ($days as $d) {

@@ -292,6 +292,14 @@ $slogo = $logo->value;
 
 					Ongoing Class</a></div>
 		</div>
+
+		<div class="left-card">
+			<div class="left-link {{ Request::segment(2) == 'csvuploads'?'active':''}}"><a href="{{route('csvuploads.index')}}" class="{{$support}} pl-3">
+					<i class="fas fa-file-import icon icon-4x" aria-hidden="true"></i>
+
+					Csv Uploads</a></div>
+		</div>
+
 		<div class="text-center text-white w-100 " style="position:absolute;bottom:0;font-size: 10px;letter-spacing: 1px;">
 			<img src="{{asset('images/logo-1.png')}}" alt="e-edport" width="50px">
 			<div>Powered by e-EdPort</div>

@@ -28,7 +28,7 @@ Route::get('/timeTable/{class}/{section}', 'GtestController@TestFilterTimetable'
 Route::get('/test_email_timetable', 'GtestController@send_email_timeTable');
 Route::get('/get_token', 'GtestController@get_token')->name('get_token');
 Route::get('/test', 'TestController@test');
-Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
 
 // ------ //
 
@@ -63,6 +63,9 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::get('/download-teacher', 'TeacherController@sampleTeacherDownload')->name('admin.sampleTeacherDownload');
     /* on going class */
     Route::get('admin/ongoingclass', 'OngoingClassController@index')->name('ongoing.index');
+
+    /* csv uploads */
+    Route::get('admin/csv-uploads', 'EventDetailController@index')->name('csvuploads.index');
 
     /*Support Help*/
 
@@ -125,6 +128,8 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::post('filter-student', 'ImportStudentsController@filterStudent')->name('filter-student');
     Route::post('/available/teacher', 'AvailabilityController@availableTeacherAndSubject');
 
+    Route::get('/admin/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
     Route::get('/deleteAllClassrooms', 'TestController@deleteAllClassroomsFromGoogle');
     Route::get('/listGoogleClassrooms', 'TestController@listGoogleClassrooms');
 });
@@ -139,6 +144,8 @@ Route::group(['middleware' => 'AuthCheck'], function () {
 Route::group(['middleware' => 'teachersession'], function () {
     Route::get('/teacher/logout', 'TeacherLoginController@logout')->name('teacher.logout');
     Route::get('/teacher/home', 'TeacherLoginController@teacherDashboard')->name('teacher.dashboard');
+    Route::get('/teacher/getStudent', 'TeacherLoginController@getStudent')->name('teacher.student');
+
     Route::get('get-topic', 'TeacherLoginController@getTopic')->name('get-topic');
 
 
@@ -182,11 +189,10 @@ Route::group(['middleware' => 'teachersession'], function () {
 
 
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
+
+    Route::post('/teacher/Attendance', 'StudentAttendanceController@store')->name('save.attendance');
+    Route::get('/teacher/Attendance', 'StudentAttendanceController@index')->name('get.attendance');
 });
-
-
-
-
 
 
 Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass')->name('reload-timetable');
