@@ -1230,6 +1230,7 @@ $cls = 0;
                 <input type="hidden" id="data_class_id" value="" name="class_id" />
                 <input type="hidden" id="data_gmeet_url" value="" name="gmeet_url" />
                 <input type="hidden" id="data_from_timing" value="data_from_timing" />
+                <input type="hidden" id="data_cancelled" name="cancelled" value="0"/>
 
                 <div class="container-fluid">
 
@@ -1965,15 +1966,18 @@ $cls = 0;
         $('#notify').click(function() {
             let vale = "The class will start from " + from_timing + ". Please Join " + gmeet_url
             $('#notificationMsg').val(vale);
+            $('#data_cancelled').val(0);
         });
         $('#cancel').click(function() {
             let vale = "Dear " + class_w + section + " Students Please note that the " + s_name + " Class scheduled on " + today + " at " + from_timing + " is Cancelled"
             // let vale = "Dear  Student Subject '" + s_name + " Class" + +d + " scheduled on dd/mm/yyyy at 00:00 AM/PM is Cancelled "
             $('#notificationMsg').val(vale);
+            $('#data_cancelled').val(1);
         });
         $('#custom').click(function() {
             let vale = ""
             $('#notificationMsg').val(vale);
+            $('#data_cancelled').val(0);
         });
 
         $('#notificationMsg').val("The class will start from " + from_timing + ". Please Join " + gmeet_url);
