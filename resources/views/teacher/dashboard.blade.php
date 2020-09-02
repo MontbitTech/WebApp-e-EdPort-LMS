@@ -4,6 +4,10 @@
 <?php
 $cls = 0;
 ?>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.js"></script>
+
 <style>
     .yy {
         font-size: 27px !important;
@@ -31,10 +35,10 @@ $cls = 0;
                     <li class="nav-item mb-1">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assignment Submission Summary</a>
                     </li>
-                    <!-- <li class="nav-item mb-1">
+                    <li class="nav-item mb-1">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#upcomingclasses" role="tab">Future
                             Classes</a>
-                    </li> -->
+                    </li>
                     <li class="nav-item mb-1 ml-md-auto">
                         <a class="nav-link shadow-sm mr-0" data-toggle="modal" href="#addClassModal" role="modal">
                             <svg class="icon mr-1">
@@ -76,6 +80,7 @@ $cls = 0;
                             <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
                             <input type="hidden" id="txt_class_name{{$i}}" value="{{$class_name}}">
+                             <input type="hidden" id="txt_section_id{{$i}}" value="{{$section_name}}">
                             <input type="hidden" id="txt_from_timing{{$i}}" value="{{$t->from_timing}}">
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
                             <input type="hidden" id="txt_section_name{{$i}}" value="{{$section_name}}">
@@ -304,7 +309,7 @@ $cls = 0;
                                                 </svg>
                                                 Join Live
                                             </a>
-
+                                            <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
                                             <a href="#" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notify="{{$i}}">
                                                 <svg class="icon mr-1">
                                                     <use xlink:href="../images/icons.svg#icon_bell"></use>
@@ -890,7 +895,11 @@ $cls = 0;
     </div>
 </section>
 
-
+<div class="modal fade" id="viewStudentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="purchaseshowdatadiv"></div>
+    </div>
+</div>
 
 
 <!-- New Assignment Modal -->
@@ -1309,6 +1318,10 @@ $cls = 0;
         </div>
     </div>
 </div>
+<!-- End -->
+
+<!-- Edit Class Modal -->
+
 <!-- End -->
 
 
@@ -1844,6 +1857,33 @@ $cls = 0;
         $("#edit_notify_stdMessage").val($("#txt_stdMessage" + val).val());
         $("#txt_datecalss_id").val($("#dateClass_id" + val).val());
     });
+
+
+    // $("#purchaseshowdivid").click(function() {
+    $('[data-id=view_student]').click(function() {
+        $('#purchaseshowdatadiv').hide();
+        var getBoxId = $(this).attr("data-view");
+        var class_name = $("#txt_class_name" + getBoxId).val();
+        var section_id = $("#txt_section_id" + getBoxId).val();
+        var dateclass_id = $('#dateClass_id' + getBoxId).val();
+        $.ajax({
+            url: '{{ url("/teacher/getStudent") }}',
+            type: "GET",
+            data: {
+                txt_class_name  : class_name,
+                txt_section_id  : section_id,
+                dateclass_id    : dateclass_id 
+            },
+            success: function(result) {
+
+                $('#purchaseshowdatadiv').html(result);
+                $('#purchaseshowdatadiv').show();
+
+            }
+
+        });
+    });
+
     $("#frm_class_edit").on('submit', (function(e) {
         // e.preventDefault();
         var dateClass_id = $("#txt_datecalss_id").val();
@@ -1986,7 +2026,7 @@ $cls = 0;
     $('[data-id=accept]').click(function() {
         var id = $(this).attr("data-invaccept");
         var g_code = $("#txt_inv_code" + id).val();
-        var inv_id = $("#txt_inv_id" + id).val();
+        var inv_id = $("#txt_inv_id" + id).val()
         //alert(id);
         $('.loader').show();
         $.ajax({
@@ -2289,6 +2329,12 @@ $cls = 0;
             });
 
         }
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('#teacherlist').DataTable();
     });
 </script>
 @endsection

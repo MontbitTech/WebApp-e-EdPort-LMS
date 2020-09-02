@@ -444,7 +444,7 @@ class GtestController extends Controller
 													left join tbl_student_classes c on c.id = t.class_id
 													left join tbl_techers r on r.id = t.teacher_id
 													where c.class_name = ? and c.section_name=?
-													and from_timing = ?", [$class_name , $section_name, $t->from_timing]);
+													and from_timing = ? order by t.id", [$class_name , $section_name, $t->from_timing]);
 					
 							if(count($days) > 0)
 							{			
