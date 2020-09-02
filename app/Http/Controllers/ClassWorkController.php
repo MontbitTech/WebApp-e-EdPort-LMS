@@ -391,8 +391,10 @@ class ClassWorkController extends Controller
         foreach($days as $day){       
             $teacherData = ClassTiming::with('studentClass')->where('class_day', $day)->get();
 
-            if ( !count($teacherData) )
+            if ( !count($teacherData) ){
+                $count++;
                 continue;
+            }
 
             foreach ( $teacherData as $value ) {
                 $pastClassExist = DateClass::where('class_date', DateUtility::getFutureDate($count))->where('from_timing', $value->from_timing)->where('to_timing', $value->to_timing)->where('class_id', $value->class_id)->where('subject_id', $value->subject_id)->where('teacher_id', $value->teacher_id)->first();
