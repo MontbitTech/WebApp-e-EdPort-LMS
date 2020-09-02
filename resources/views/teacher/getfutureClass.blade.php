@@ -1,9 +1,9 @@
-@if(count($pastClassData) > 0)
+@if(count($futureClassData) > 0)
 
 @php
 $i=1;
 @endphp
-@foreach ($pastClassData as $t)
+@foreach ($futureClassData as $t)
 <?php
 $cls = 0;
 $section_name = '';
