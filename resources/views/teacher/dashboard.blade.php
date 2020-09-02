@@ -2336,6 +2336,7 @@ $cls = 0;
         }
     });
 </script>
+
 <script>
     $(document).ready(function() {
         $('#teacherlist').DataTable();
