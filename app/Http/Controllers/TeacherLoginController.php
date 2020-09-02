@@ -155,8 +155,15 @@ class TeacherLoginController extends Controller
         //     ->get();
 
         // dd($pastClassData1);
-        $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher_id)
+        $futureClassData1 = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher_id)
             ->where('class_date', '<', DateUtility::getFutureDate(7))
+            ->Where('class_date', '>', $currentDay)
+            ->orderBy('class_date')
+            ->limit(7)
+            ->distinct('class_date')
+            ->get()->unique();
+        $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher_id)
+            ->where('class_date', '<', DateUtility::getFutureDate(2))
             ->Where('class_date', '>', $currentDay)
             ->orderBy('class_date', 'asc')
             ->orderBy('from_timing', 'asc')
@@ -170,7 +177,7 @@ class TeacherLoginController extends Controller
 
         $helpCategories = HelpTicketCategory::get();
 
-        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastClassData1', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData'));
+        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastClassData1', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData', 'futureClassData1'));
     }
 
     public function viewPastClass(Request $request)
@@ -193,7 +200,33 @@ class TeacherLoginController extends Controller
             ->distinct('class_date')
             ->get()->unique();
 
-        return view('teacher.getPastClass', compact('pastClassData1', 'pastClassData', 'schoollogo'));
+
+
+        return view('teacher.getPastClass', compact('pastClassData1',  'pastClassData', 'schoollogo'));
+    }
+    public function viewfutureClass(Request $request)
+    {
+
+        $logged_teacher   = Session::get('teacher_session');
+        $logged_teacher_id = $logged_teacher['teacher_id'];
+
+        $current_date = date("Y-m-d H:i:s");
+        $currentTime = date("H:i:s", strtotime($current_date));
+        $currentDay = date("Y-m-d", strtotime($current_date));
+        $schoollogo = \DB::table('tbl_settings')->get()->keyBy('item');
+
+        $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('class_date', $request->class_date)->get();
+
+        $futureClassData1 = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher_id)
+            ->where('class_date', '<', DateUtility::getFutureDate(7))
+            ->Where('class_date', '>', $currentDay)
+            ->orderBy('class_date')
+            ->limit(7)
+            ->distinct('class_date')
+            ->get()->unique();
+
+
+        return view('teacher.getfutureClass', compact('futureClassData1', 'futureClassData', 'schoollogo'));
     }
 
     public function getTopic(Request $request)
@@ -243,12 +276,11 @@ class TeacherLoginController extends Controller
         }
     }
 
-    public function getStudent (Request $request)
+    public function getStudent(Request $request)
     {
         $students = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name = ? and c.section_name=?", [$request->txt_class_name, $request->txt_section_id]);
         $dateClassId = $request->dateclass_id;
-        
-        return view('teacher.getStudents', compact('students','dateClassId'));
-    }
 
+        return view('teacher.getStudents', compact('students', 'dateClassId'));
+    }
 }
