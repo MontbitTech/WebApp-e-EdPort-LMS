@@ -41,9 +41,16 @@ class HelpController extends Controller
     {
         $categories = HelpTicketCategory::get();
         $helpTickets =  SupportHelp::orderBy('status', 'DESC')->get();
-
         return view('admin.help.list', compact('categories','helpTickets'));
     }
+
+    public function showHelpTicktet (Request $request)
+    {
+        $categories = HelpTicketCategory::get();
+        $helpTickets =  SupportHelp::orderBy('status', 'DESC')->get();
+        return view('admin.help.ajax-help-ticket', compact('categories','helpTickets'));
+    }
+
 
     public function filterTicket (Request $request)
     {
@@ -132,8 +139,7 @@ class HelpController extends Controller
             /* $res = DateClass::find($request->dateClass_id);
             $res->class_description = $request->description;
             $res->save(); */
-
-
+            
             echo json_encode(array('status' => 'success', 'message' => Config::get('constants.WebMessageCode.111')));
         } else {
             echo json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.121')));
