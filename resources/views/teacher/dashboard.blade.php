@@ -99,6 +99,9 @@ $cls = 0;
                                             <div class="font-weight-bold pt-1">
                                                 Subject: {{$subject_name}}
                                             </div>
+                                            @if($t->cancelled)
+                                                <span class="badge badge-danger">Cancelled</span>
+                                            @endif
                                             <div>
                                                 <button type="button" data-editModal="{{$i}}" class="btn mr-2 text-right  btn-md pb-0 mb-0 pt-1 border-0 text-white" title="Edit">
                                                     <svg class="icon mr-1">
@@ -441,6 +444,9 @@ $cls = 0;
                                                 <div class="font-weight-bold pt-1">
                                                     Subject: {{$subject_name}}
                                                 </div>
+                                                @if($t->cancelled)
+                                                    <span class="badge badge-danger">Cancelled</span>
+                                                @endif
                                                 <button type="button" class="btn  text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                                                 </button>
                                             </div>
@@ -782,6 +788,9 @@ $cls = 0;
                                                 <div class="font-weight-bold pt-1">
                                                     Subject: {{$subject_name}}
                                                 </div>
+                                                @if($t->cancelled)
+                                                    <span class="badge badge-danger">Cancelled</span>
+                                                @endif
                                                 <button type="button" class="btn  text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                                                 </button>
                                             </div>
