@@ -59,7 +59,7 @@ if ($t->studentSubject) {
                         <div class="font-weight-bold pt-1">
                             Subject: {{$subject_name}}
                         </div>
-                        <button type="button" class="btn btn-outline-primary text-white border-0" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                        <button type="button" class="btn  text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                         </button>
                     </div>
                 </div>
@@ -316,3 +316,11 @@ $i++;
                                                         </script>
                                                     </div> -->
 @endif
+<script>
+    $('.card-header').click(function() {
+        $(this).find('i').toggleClass('fas fa-minus');
+        $(this).find('i').toggleClass('fas fa-plus');
+
+        //$(this).find('i').toggle(function(){});
+    });
+</script>

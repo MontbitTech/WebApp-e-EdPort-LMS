@@ -8,22 +8,6 @@ $cls = 0;
 
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.js"></script>
 
-<style>
-    .yy {
-        font-size: 27px !important;
-        line-height: 0px;
-
-
-    }
-
-    .yy1 {
-        padding-left: 43px !important;
-    }
-
-    .active1:focus {
-        background-color: red;
-    }
-</style>
 <section class="main-section">
     <div class="container">
         <div class="row justify-content-center">
@@ -115,8 +99,17 @@ $cls = 0;
                                             <div class="font-weight-bold pt-1">
                                                 Subject: {{$subject_name}}
                                             </div>
-                                            <button type="button" class="btn btn-outline-primary text-white border-0" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
-                                            </button>
+                                            <div>
+                                                <button type="button" data-editModal="{{$i}}" class="btn mr-2 text-right  btn-md pb-0 mb-0 pt-1 border-0 text-white" title="Edit">
+                                                    <svg class="icon mr-1">
+                                                        <use xlink:href="../images/icons.svg#icon_edit"></use>
+                                                    </svg>
+                                                    Edit
+                                                </button>
+                                                <button type="button" class="btn  text-white collapse-btn " data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
+                                                </button>
+                                            </div>
+
                                         </div>
 
                                     </div>
@@ -326,12 +319,7 @@ $cls = 0;
                                                 </svg>
                                                 Help
                                             </button>
-                                            <button type="button" data-editModal="{{$i}}" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" title="Edit">
-                                                <svg class="icon mr-1">
-                                                    <use xlink:href="../images/icons.svg#icon_edit"></use>
-                                                </svg>
-                                                Edit
-                                            </button>
+
                                         </div>
                                         <div class="m-auto">
                                             <a href=" #" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="new_a_link_{{$i}}" data-createModal='{{$i}}' data-class_modal="{{$t->class_id}}" data-subject_modal="{{$t->subject_id}}" data-teacher_modal="{{$t->teacher_id}}">
@@ -453,7 +441,7 @@ $cls = 0;
                                                 <div class="font-weight-bold pt-1">
                                                     Subject: {{$subject_name}}
                                                 </div>
-                                                <button type="button" class="btn btn-outline-primary text-white border-0" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                                                <button type="button" class="btn  text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                                                 </button>
                                             </div>
                                         </div>
@@ -653,34 +641,22 @@ $cls = 0;
 
                                         </div>
                                     </div>
-                                    <!-- <div class="card-footer p-1" style="background:#fff;">
-                                    <div class="d-flex justify-content-between flex-wrap">
-                                        <div class="m-auto">
+                                    <div class="card-footer p-1" style="background:#fff;">
+                                        <div class="d-flex justify-content-between flex-wrap">
+
+                                            <div class="m-auto">
+
+                                                <?php
+                                                $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
+                                                ?>
+                                                @if (count($assignmentData) > 0)
+                                                <button onclick="viewAssignment({{$t->id}})" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
 
 
-
-                                            <button type="button" data-classhelp="{{$i}}" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help">
-                                                <svg class="icon mr-1">
-                                                    <use xlink:href="../images/icons.svg#icon_help"></use>
-                                                </svg>
-                                                Help
-                                            </button>
-
-                                        </div>
-                                        <div class="m-auto">
-
-                                            <?php
-                                            $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
-                                            ?>
-                                            @if (count($assignmentData) > 0)
-                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
-
-                                            @else
-                                            <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow icon-4x">No Assigment</button>
-                                            @endif
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
-                                </div> -->
                                 </div>
                             </div>
                         </div>
@@ -806,7 +782,7 @@ $cls = 0;
                                                 <div class="font-weight-bold pt-1">
                                                     Subject: {{$subject_name}}
                                                 </div>
-                                                <button type="button" class="btn btn-outline-primary text-white border-0" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                                                <button type="button" class="btn  text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                                                 </button>
                                             </div>
                                         </div>
