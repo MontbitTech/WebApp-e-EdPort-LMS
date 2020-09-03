@@ -290,8 +290,8 @@
 </script>
 
 <script>
-var count=0;
-$(document).on(" click scroll", function(event) {
+var count=0
+$(document).on("scroll dblclick", function(event) {
     count+=1;
       //$( this ).off( event );
         if(count==1){
@@ -313,6 +313,8 @@ $(document).on(" click scroll", function(event) {
         }, 5000);
 
     });
+
+
 </script>
 
   @endsection
