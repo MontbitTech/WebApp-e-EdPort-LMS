@@ -641,34 +641,22 @@ $cls = 0;
 
                                         </div>
                                     </div>
-                                    <!-- <div class="card-footer p-1" style="background:#fff;">
-                                    <div class="d-flex justify-content-between flex-wrap">
-                                        <div class="m-auto">
+                                    <div class="card-footer p-1" style="background:#fff;">
+                                        <div class="d-flex justify-content-between flex-wrap">
+
+                                            <div class="m-auto">
+
+                                                <?php
+                                                $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
+                                                ?>
+                                                @if (count($assignmentData) > 0)
+                                                <button onclick="viewAssignment({{$t->id}})" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
 
 
-
-                                            <button type="button" data-classhelp="{{$i}}" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help">
-                                                <svg class="icon mr-1">
-                                                    <use xlink:href="../images/icons.svg#icon_help"></use>
-                                                </svg>
-                                                Help
-                                            </button>
-
-                                        </div>
-                                        <div class="m-auto">
-
-                                            <?php
-                                            $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
-                                            ?>
-                                            @if (count($assignmentData) > 0)
-                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
-
-                                            @else
-                                            <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow icon-4x">No Assigment</button>
-                                            @endif
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
-                                </div> -->
                                 </div>
                             </div>
                         </div>
