@@ -323,41 +323,32 @@ class TeacherClassController extends Controller
 
     public function ajaxSaveLiveClass (Request $request)
     {
-
-
         $logged_teacher = Session::get('teacher_session');
         $teacher_id = $logged_teacher['teacher_id'];
 
         $dateClass_id = $request->txt_datecalss_id;
 
-        $request->validate([
-            'edit_notify_stdMessage' => 'required|max:255',
-            'edit_description'       => 'required|max:255',
+        $class_name = StudentClass::with('dateClass')->whereHas('dateClass',function($q)use ($dateClass_id){
+                $q->where('id',$dateClass_id);
+            })->first();
 
-        ], [
-            'edit_notify_stdMessage.required' => 'Notify Message required.',
-            //'edit_notify_stdMessage.regex'=>'Notify Message must be letters and numbers.',
-            'edit_description.required'       => 'The Description required.',
-        ]);
-
-
-        $notify_stdMessage = $request->edit_notify_stdMessage;
-        $class_description = isset($request->edit_description) ? $request->edit_description : '';
-        /*     $class_liveurl = isset($request->edit_join_liveUrl)?$request->edit_join_liveUrl:'';
-           if($class_liveurl!=''){
-
-                if(!filter_var($class_liveurl, FILTER_VALIDATE_URL)){
-                     return back()->with('error', 'Please Add Valid URL.');
-                }
-            }
-         */
+        $start_time  = str_replace(" : ", ":", $request->start_time);
+        $start_time = date("H:i:s", strtotime($start_time));
+        $end_time    = str_replace(" : ", ":", $request->end_time);
+        $end_time   = date("H:i:s", strtotime($end_time));
 
         $pastClassDetail = DateClass::find($dateClass_id);
 
-        $pastClassDetail->class_description = $class_description;
+        $pastClassDetail->from_timing = $start_time;
         // $pastClassDetail->g_meet_url = $class_liveurl;
-        $pastClassDetail->class_student_msg = $notify_stdMessage;
+        $pastClassDetail->to_timing   = $end_time;
         $pastClassDetail->save();
+
+        $token = CommonHelper::varify_Teachertoken();
+        $data = array(
+                        'text'=>'Class timing is updated. New Time is '.$request->start_time.' to '.$request->end_time
+                   );
+        $response = CommonHelper::createAnnouncement($token, $class_name->g_class_id, json_encode($data));
 
         return back()->with('success', sprintf(Config::get('constants.WebMessageCode.123'), 'Updated'));
     }

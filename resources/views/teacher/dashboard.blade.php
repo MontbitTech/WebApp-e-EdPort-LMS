@@ -85,7 +85,7 @@ $cls = 0;
                             <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
                             <input type="hidden" id="txt_class_name{{$i}}" value="{{$class_name}}">
                              <input type="hidden" id="txt_section_id{{$i}}" value="{{$section_name}}">
-                            <input type="hidden" id="txt_from_timing{{$i}}" value="{{$t->from_timing}}">
+                            <input type="hidden" id="txt_from_timing{{$i}}" value="{{ date('h:i a',strtotime($t->from_timing))}}">
                             <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
                             <input type="hidden" id="txt_section_name{{$i}}" value="{{$section_name}}">
                             <input type="hidden" id="txt_subject_name{{$i}}" value="{{$subject_name}}">
@@ -93,6 +93,7 @@ $cls = 0;
                             <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
                             <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
                             <input type="hidden" id="txt_gMeetURL{{$i}}" value="{{$teacherData->g_meet_url}}">
+                            <input type="hidden" id="txt_to_timing{{$i}}" value="{{ date('h:i a',strtotime($t->to_timing))}}">
                             <input type="hidden" id="txt_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
                             <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}" />
                             <div class="card-header text-white p-0   @if(date('H:i',strtotime($t->to_timing)) <= date('H:i')) bg-secondary @endif" style="background:#253372;">
@@ -1169,14 +1170,14 @@ $cls = 0;
 
                 <input type="hidden" id="txt_datecalss_id" value="" name="txt_datecalss_id" />
 
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                     <label for="inputDesc" class="col-md-4 col-form-label text-md-right">Description:</label>
                     <div class="col-md-6">
                         {!! Form::textarea('edit_description', null, array('id'=>'edit_description','placeholder' => 'Class Description','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
                     </div>
-                </div>
+                </div> -->
 
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                     <label for="inputNotifystd" class="col-md-4 col-form-label text-md-right">Notify
                         Students:</label>
                     <div class="col-md-6">
@@ -1184,7 +1185,24 @@ $cls = 0;
                         {!! Form::textarea('edit_notify_stdMessage', null, array('id'=>'edit_notify_stdMessage','placeholder' => 'Enter Notify Message','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
                     </div>
-                </div>
+                </div> -->
+
+                <div class="form-group row">
+                            <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Start Time:
+                           </label>
+                            <div class="col-md-6">
+                                {!! Form::text('start_time', $teacherData->from_timing, array('id'=>'from_timing','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                            </div>
+
+                        </div>
+
+                        <div class="form-group row">
+                            <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">End Time:
+                           </label>
+                            <div class="col-md-6">
+                                {!! Form::text('end_time', $teacherData->to_timing, array('id'=>'end_timing','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                            </div>
+                        </div>
                 <div class="form-group row">
                     <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live
                         <small>(Link)</small>:</label>
@@ -1855,9 +1873,11 @@ $cls = 0;
     $(document).on('click', '[data-editModal]', function() {
         var val = $(this).data('editmodal');
         $('#editClassModal').modal('show');
-        $("#edit_description").val($("#txt_desc" + val).val());
+        //$("#edit_description").val($("#txt_desc" + val).val());
+        $("#from_timing").val($("#txt_from_timing" + val).val());
+        $("#end_timing").val($("#txt_to_timing" + val).val());
         $("#edit_join_liveUrl").val($("#txt_gMeetURL" + val).val());
-        $("#edit_notify_stdMessage").val($("#txt_stdMessage" + val).val());
+        //$("#edit_notify_stdMessage").val($("#txt_stdMessage" + val).val());
         $("#txt_datecalss_id").val($("#dateClass_id" + val).val());
     });
 
