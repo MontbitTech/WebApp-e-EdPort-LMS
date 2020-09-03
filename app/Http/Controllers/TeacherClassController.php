@@ -323,15 +323,19 @@ class TeacherClassController extends Controller
 
     public function ajaxSaveLiveClass (Request $request)
     {
-        $logged_teacher = Session::get('teacher_session');
-        $teacher_id = $logged_teacher['teacher_id'];
-        $dateClass_id = $request->txt_datecalss_id;
         $start_time  = str_replace(" : ", ":", $request->start_time);
-        $start_time = date("H:i:s", strtotime($start_time));
+        $start_time  = date("H:i:s", strtotime($start_time));
         $end_time    = str_replace(" : ", ":", $request->end_time);
-        $end_time   = date("H:i:s", strtotime($end_time));
+        $end_time    = date("H:i:s", strtotime($end_time));
+        $class_date  = date("Y-m-d", strtotime($request->class_date));
 
-        $pastClassDetail = DateClass::find($dateClass_id);
+        if ((strtotime($end_time) - strtotime($start_time)) / 60 <= 0 )
+            return back()->with('error', "Class end-time can't be before/equal to class start-time.");
+
+        if (((strtotime(date('H:i:s')) - strtotime($start_time)) / 60) >= 0 )
+        return back()->with('error', "You can't update a class in the past. Class date time should not be less than current date and time.");
+
+        $pastClassDetail = DateClass::find($request->txt_datecalss_id);
         $pastClassDetail->from_timing = $start_time;
         $pastClassDetail->to_timing   = $end_time;
         $pastClassDetail->save();
