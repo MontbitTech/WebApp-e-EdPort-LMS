@@ -78,7 +78,10 @@ class TeacherClassController extends Controller
                         'text'=>$request->notificationMsg
                    );
             $response = CommonHelper::createAnnouncement($token, $class_name->g_class_id, json_encode($data));
-            
+
+            $dateClass = DateClass::find($dateClass_id);
+            $dateClass->cancelled = $request->cancelled;
+            $dateClass->save();
 
             if(Request()->ajax()){
                 if(!$response['success']){

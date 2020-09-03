@@ -1,9 +1,9 @@
-@if(count($pastClassData) > 0)
+@if(count($futureClassData) > 0)
 
 @php
 $i=1;
 @endphp
-@foreach ($pastClassData as $t)
+@foreach ($futureClassData as $t)
 <?php
 $cls = 0;
 $section_name = '';
@@ -21,7 +21,7 @@ if ($t->studentSubject) {
 }
 ?>
 
-<div id="plclasses1">
+<div id="upcmoingclass">
     <div class="card text-center mb-3" style="border-color:#253372;">
 
         <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
@@ -59,9 +59,6 @@ if ($t->studentSubject) {
                         <div class="font-weight-bold pt-1">
                             Subject: {{$subject_name}}
                         </div>
-                        @if($t->cancelled)
-                            <span class="badge badge-danger">Cancelled</span>
-                        @endif
                         <button type="button" class="btn  text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                         </button>
                     </div>
@@ -262,21 +259,34 @@ if ($t->studentSubject) {
 
                 </div>
             </div>
-            <div class="card-footer p-1" style="background:#fff;">
-                <div class="d-flex justify-content-between flex-wrap">
+            <!-- <div class="card-footer p-1" style="background:#fff;">
+                                    <div class="d-flex justify-content-between flex-wrap">
+                                        <div class="m-auto">
 
-                    <div class="m-auto">
-                        <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
-                        <?php
-                        $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
-                        ?>
-                        @if (count($assignmentData) > 0)
-                        <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary ml-2 mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
 
-                        @endif
-                    </div>
-                </div>
-            </div>
+
+                                            <button type="button" data-classhelp="{{$i}}" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help">
+                                                <svg class="icon mr-1">
+                                                    <use xlink:href="../images/icons.svg#icon_help"></use>
+                                                </svg>
+                                                Help
+                                            </button>
+
+                                        </div>
+                                        <div class="m-auto">
+
+                                            <?php
+                                            $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
+                                            ?>
+                                            @if (count($assignmentData) > 0)
+                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
+
+                                            @else
+                                            <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow icon-4x">No Assigment</button>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div> -->
         </div>
     </div>
 </div>
@@ -306,36 +316,11 @@ $i++;
                                                         </script>
                                                     </div> -->
 @endif
-
-
 <script>
     $('.card-header').click(function() {
         $(this).find('i').toggleClass('fas fa-minus');
         $(this).find('i').toggleClass('fas fa-plus');
 
         //$(this).find('i').toggle(function(){});
-    });
-    $('[data-id=view_student]').click(function() {
-        $('#purchaseshowdatadiv').hide();
-        var getBoxId = $(this).attr("data-view");
-        var class_name = $("#txt_class_name" + getBoxId).val();
-        var section_id = $("#txt_section_id" + getBoxId).val();
-        var dateclass_id = $('#dateClass_id' + getBoxId).val();
-        $.ajax({
-            url: '{{ url("/teacher/getStudent") }}',
-            type: "GET",
-            data: {
-                txt_class_name: class_name,
-                txt_section_id: section_id,
-                dateclass_id: dateclass_id
-            },
-            success: function(result) {
-
-                $('#purchaseshowdatadiv').html(result);
-                $('#purchaseshowdatadiv').show();
-
-            }
-
-        });
     });
 </script>

@@ -133,6 +133,7 @@ Route::group(['middleware' => 'adminsession'], function () {
 
     Route::get('/deleteAllClassrooms', 'TestController@deleteAllClassroomsFromGoogle');
     Route::get('/listGoogleClassrooms', 'TestController@listGoogleClassrooms');
+    Route::get('/admin/weekleyEmails', 'UtilityController@weekleyMailsToStudents');
 });
 
 /*  Teacher  */
@@ -186,13 +187,13 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/teacher/class/assignments', 'ClassWorkController@getClassAssignments');
     Route::post('/teacher/class/examassignments', 'ClassWorkController@getExamAssignments');
     Route::get('/teacher/class/viewPastClass', 'TeacherLoginController@viewPastClass');
-
-
+    Route::get('/teacher/class/viewFutureClass', 'TeacherLoginController@viewFutureClass');
 
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
 
     Route::post('/teacher/Attendance', 'StudentAttendanceController@store')->name('save.attendance');
     Route::get('/teacher/Attendance', 'StudentAttendanceController@index')->name('get.attendance');
+    Route::post('/teacher/updateAttendance', 'StudentAttendanceController@update');
 });
 
 

@@ -73,7 +73,18 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-light d-flex align-items-center">
-        <h5 class="modal-title font-weight-bold">Help Message</h5>
+        <!-- <h5 class="modal-title font-weight-bold">Help Message</h5> -->
+        <ul class="nav nav-tabs1 nav-pills" id="myTab" role="tablist">
+          <li class="nav-item mb-1 btn-sm">
+            <a class="nav-link shadow-sm active" data-toggle="tab" href="#fqa" role="tab" aria-selected="true">FAQs</a>
+          </li>
+          <li class="nav-item mb-1 btn-sm">
+            <a class="nav-link shadow-sm" data-toggle="tab" href="#video" role="tab">Videos</a>
+          </li>
+          <li class="nav-item mb-1 btn-sm">
+            <a class="nav-link shadow-sm" data-toggle="tab" href="#message" role="tab">Contact Admin</a>
+          </li>
+        </ul>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <svg class="icon">
             <use xlink:href="../images/icons.svg#icon_times2"></use>
@@ -81,26 +92,42 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
         </button>
       </div>
       <div class="modal-body pt-4">
-        <form>
-          <div class="form-group">
-            <select name="help_ticket_category" id="helpCategory" class="form-control" required>
-              <option value="">Please select a category</option>
-              @foreach($helpCategories as $category)
-              <option value="{{$category->id}}">{{$category->category}}</option>
-              @endforeach
-            </select>
+        <div class="tab-content ">
+          <div class="tab-pane fade show active" id="fqa">
+            <h2>Popular Questions</h2>
+            <ul>
+              <li>Lorem ipsum dolor sit amet.</li>
+              <li>Quas id alias perferendis quod.</li>
+              <li>Nostrum omnis provident qui atque.</li>
+            </ul>
           </div>
-          <div class="form-group">
-            <textarea class="form-control" value="" rows="5" id="desc" placeholder="Write help message..." required="required"></textarea>
+          <div class="tab-pane fade" id="video">
+            video
           </div>
-          <div class="form-group text-right">
-            <button type="submit" class="btn btn-primary px-4" id="btn_help">
-              <svg class="icon mr-2">
-                <use xlink:href="../images/icons.svg#icon_send"></use>
-              </svg> Send
-            </button>
+          <div class="tab-pane fade" id="message">
+            <form>
+              <div class="form-group">
+                <select name="help_ticket_category" id="helpCategory" class="form-control" required>
+                  <option value="">Please select a category</option>
+                  @foreach($helpCategories as $category)
+                  <option value="{{$category->id}}">{{$category->category}}</option>
+                  @endforeach
+                </select>
+              </div>
+              <div class="form-group">
+                <textarea class="form-control" value="" rows="5" id="desc" placeholder="Write help message..." required="required"></textarea>
+              </div>
+              <div class="form-group text-right">
+                <button type="submit" class="btn btn-primary px-4" id="btn_help">
+                  <svg class="icon mr-2">
+                    <use xlink:href="../images/icons.svg#icon_send"></use>
+                  </svg> Send
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
+
       </div>
     </div>
   </div>
