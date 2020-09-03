@@ -133,6 +133,7 @@ Route::group(['middleware' => 'adminsession'], function () {
 
     Route::get('/deleteAllClassrooms', 'TestController@deleteAllClassroomsFromGoogle');
     Route::get('/listGoogleClassrooms', 'TestController@listGoogleClassrooms');
+    Route::get('/admin/weekleyEmails', 'UtilityController@weekleyMailsToStudents');
 });
 
 /*  Teacher  */
