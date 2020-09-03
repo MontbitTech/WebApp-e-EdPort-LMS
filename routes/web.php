@@ -185,6 +185,7 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/teacher/class/assignments', 'ClassWorkController@getClassAssignments');
     Route::post('/teacher/class/examassignments', 'ClassWorkController@getExamAssignments');
     Route::get('/teacher/class/viewPastClass', 'TeacherLoginController@viewPastClass');
+    Route::get('/teacher/class/viewFutureClass', 'TeacherLoginController@viewFutureClass');
 
 
 
