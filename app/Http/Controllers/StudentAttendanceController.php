@@ -16,16 +16,23 @@ class StudentAttendanceController extends Controller
 
     public function store(Request $request)
     {
+        $attendance = Attendance::where('dateclass_id',$request->dateclass_id)->get();
+
+        if(count($attendance))
+            return back()->with('error','Attendance has been submitted for this class already.');
+
         $data = array();
-        foreach($request->student_ids as $key => $value){
-            $data['student_id'] = $key;
-            $data['dateclass_id'] = $request->dateclass_id;
-            $data['status'] = $value;
+        $count = 1;
+        foreach($request->attendance as $key => $value){
+            $data[$count]['student_id'] = $key;
+            $data[$count]['dateclass_id'] = $request->dateclass_id;
+            $data[$count]['status'] = $value;
+            $count++;
         }
 
         $attendance = Attendance::insert($data);
 
-        return back()->with('student', $attendance);
+        return back()->with('success', 'Attendance added successfully');
     }
 
     public function update(Request $request)
@@ -36,6 +43,4 @@ class StudentAttendanceController extends Controller
 
         return back()->with('student', $attendance);
     }
-
-    
 }

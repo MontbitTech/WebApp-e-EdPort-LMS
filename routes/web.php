@@ -175,6 +175,8 @@ Route::group(['middleware' => 'teachersession'], function () {
 
     Route::post('/teacher/Attendance', 'StudentAttendanceController@store');
     Route::get('/teacher/Attendance', 'StudentAttendanceController@index');
+
+    Route::post('/teacher/updateAttendance', 'StudentAttendanceController@update');
 });
 
 
