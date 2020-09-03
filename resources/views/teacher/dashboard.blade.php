@@ -645,12 +645,12 @@ $cls = 0;
                                         <div class="d-flex justify-content-between flex-wrap">
 
                                             <div class="m-auto">
-
+                                                <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
                                                 <?php
                                                 $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
                                                 ?>
                                                 @if (count($assignmentData) > 0)
-                                                <button onclick="viewAssignment({{$t->id}})" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
+                                                <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary ml-2 mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
 
 
                                                 @endif

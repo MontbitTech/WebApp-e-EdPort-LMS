@@ -263,12 +263,12 @@ if ($t->studentSubject) {
                 <div class="d-flex justify-content-between flex-wrap">
 
                     <div class="m-auto">
-
+                        <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
                         <?php
                         $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
                         ?>
                         @if (count($assignmentData) > 0)
-                        <button onclick="viewAssignment({{$t->id}})" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
+                        <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary ml-2 mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
 
                         @endif
                     </div>
@@ -311,5 +311,28 @@ $i++;
         $(this).find('i').toggleClass('fas fa-plus');
 
         //$(this).find('i').toggle(function(){});
+    });
+    $('[data-id=view_student]').click(function() {
+        $('#purchaseshowdatadiv').hide();
+        var getBoxId = $(this).attr("data-view");
+        var class_name = $("#txt_class_name" + getBoxId).val();
+        var section_id = $("#txt_section_id" + getBoxId).val();
+        var dateclass_id = $('#dateClass_id' + getBoxId).val();
+        $.ajax({
+            url: '{{ url("/teacher/getStudent") }}',
+            type: "GET",
+            data: {
+                txt_class_name: class_name,
+                txt_section_id: section_id,
+                dateclass_id: dateclass_id
+            },
+            success: function(result) {
+
+                $('#purchaseshowdatadiv').html(result);
+                $('#purchaseshowdatadiv').show();
+
+            }
+
+        });
     });
 </script>
