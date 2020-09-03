@@ -43,6 +43,4 @@ class StudentAttendanceController extends Controller
 
         return back()->with('student', $attendance);
     }
-
-    
 }

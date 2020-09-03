@@ -189,12 +189,11 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::get('/teacher/class/viewPastClass', 'TeacherLoginController@viewPastClass');
     Route::get('/teacher/class/viewFutureClass', 'TeacherLoginController@viewFutureClass');
 
-
-
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
 
     Route::post('/teacher/Attendance', 'StudentAttendanceController@store')->name('save.attendance');
     Route::get('/teacher/Attendance', 'StudentAttendanceController@index')->name('get.attendance');
+    Route::post('/teacher/updateAttendance', 'StudentAttendanceController@update');
 });
 
 
