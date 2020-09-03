@@ -38,7 +38,7 @@
                             </div>
 
                             <div class="col-sm-12" id="getticket">
-                                <table id="ticketlist" class="table table-sm table-bordered display" data-page-length="100" data-order="[[0, &quot;desc&quot; ]]" style="width:100%" data-page-length="10" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                                <table id="ticketlist" class="table table-sm table-bordered display" data-page-length="100" data-order="[[0, &quot;asc&quot; ]]" style="width:100%" data-page-length="10" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                                     <thead>
                                         <tr class="text-center">
                                             <th>#</th>
@@ -56,10 +56,10 @@
                                     $n-=1;
                                     $i = 0;
                                     @endphp
-                                    <tbody>
+                                    <tbody id="ticketlistBody">
 
                                         @foreach($helpTickets as $help)
-                                        <tr>
+                                        <tr id="help_id_{{ $help->id }}">
                                             <td>{{++$i}}</td>
                                             <td>
                                                 @if($help->teacher)
@@ -165,16 +165,23 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#ticketlist').DataTable({
+         $('#ticketlist').DataTable({
+
             initComplete: function(settings, json) {
                 $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
                 $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+
+
+                    // setTimeout(function() {
+                    // location.reload(true);
+                    // }, 3000);
             }
         });
         $('.dateset').datepicker({
             dateFormat: "yy/mm/dd"
             // showAnim: "slide"
         })
+
     });
     $(document).on('click', '[data-addCommentModal]', function() {
         var val = $(this).data('deletemodal');
@@ -281,4 +288,31 @@
 
     });
 </script>
-@endsection
+
+<script>
+var count=0;
+$(document).on(" click scroll", function(event) {
+    count+=1;
+      //$( this ).off( event );
+        if(count==1){
+        $.ajax({
+            type: "GET",
+            url: "{{ route('admin.show.helpTicket') }}",
+            type: "GET",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(dataResult){
+                  $("#getticket").html(dataResult);
+                  $("#getticket").show();
+            }
+        });
+    }
+    setInterval(function() {
+            count = 0;
+        }, 5000);
+
+    });
+</script>
+
+  @endsection
