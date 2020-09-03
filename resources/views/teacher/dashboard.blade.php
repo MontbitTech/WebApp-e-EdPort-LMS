@@ -1169,6 +1169,13 @@ $cls = 0;
 
 
                 <input type="hidden" id="txt_datecalss_id" value="" name="txt_datecalss_id" />
+                 <input type="hidden" id="txt_g_class_id" value="" name="txt_g_class_id" />
+                  <input type="hidden" id="class_name" value="" name="class_name" />
+                 <input type="hidden" id="section_name" value="" name="section_name" />
+                 <input type="hidden" id="class_date" value="" name="class_date" />
+
+                 
+
 
                 <!-- <div class="form-group row">
                     <label for="inputDesc" class="col-md-4 col-form-label text-md-right">Description:</label>
@@ -1879,6 +1886,11 @@ $cls = 0;
         $("#edit_join_liveUrl").val($("#txt_gMeetURL" + val).val());
         //$("#edit_notify_stdMessage").val($("#txt_stdMessage" + val).val());
         $("#txt_datecalss_id").val($("#dateClass_id" + val).val());
+        $("#txt_g_class_id").val($("#g_class_id_" + val).val());
+        $("#class_name").val($("#txt_class_name" + val).val());
+        $("#section_name").val($("#txt_section_name" + val).val());
+        $("#class_date").val($("#txt_today_date" + val).val()); 
+
     });
 
 
