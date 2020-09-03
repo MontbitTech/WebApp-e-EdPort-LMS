@@ -70,6 +70,7 @@ Route::group(['middleware' => 'adminsession'], function () {
     /*Support Help*/
 
     Route::get('/admin/support-help', 'HelpController@helpList')->name('admin.helplist');
+     Route::get('/admin/show-helpTicket', 'HelpController@showHelpTicktet')->name('admin.show.helpTicket');
     Route::post('/update-help-status', 'HelpController@updateStatus')->name('helpStatus.update');
     Route::post('filter-ticket', 'HelpController@filterTicket')->name('filter-ticket');
 
