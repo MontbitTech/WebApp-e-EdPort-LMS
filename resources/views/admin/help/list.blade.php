@@ -10,7 +10,12 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-4 col-lg-8 text-md-left mb-1">
-                                <span class="topic-heading">Help Tickets</span>
+                                <span class="topic-heading">Help Tickets</span>&nbsp;
+                                <a type="button" class="btn btn-sm btn-color" onclick="refresh()">
+                                        <i class="fa fa-refresh mr-1 icon-4x" aria-hidden="true"></i>
+                                    
+                                    </a>
+
                             </div>
                             <div class="col-md-8 col-lg-4 text-md-right mb-1">
 
@@ -290,31 +295,9 @@
 </script>
 
 <script>
-var count=0
-$(document).on("scroll dblclick", function(event) {
-    count+=1;
-      //$( this ).off( event );
-        if(count==1){
-        $.ajax({
-            type: "GET",
-            url: "{{ route('admin.show.helpTicket') }}",
-            type: "GET",
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(dataResult){
-                  $("#getticket").html(dataResult);
-                  $("#getticket").show();
-            }
-        });
+    function refresh(){
+        location.reload(true);
     }
-    setInterval(function() {
-            count = 0;
-        }, 5000);
-
-    });
-
-
 </script>
 
   @endsection
