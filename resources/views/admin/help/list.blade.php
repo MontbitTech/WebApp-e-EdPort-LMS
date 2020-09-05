@@ -43,7 +43,7 @@
                             </div>
 
                             <div class="col-sm-12" id="getticket">
-                                <table id="ticketlist" class="table table-sm table-bordered display" data-page-length="100" style="width:100%" data-page-length="10" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                                <table id="ticketlist" class="table table-sm table-bordered display" data-page-length="100" data-order="[[0, &quot;asc&quot; ]]" style="width:100%" data-page-length="10" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                                     <thead>
                                         <tr class="text-center">
                                             <th>#</th>

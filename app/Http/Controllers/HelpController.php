@@ -40,7 +40,7 @@ class HelpController extends Controller
     public function helpList (Request $request)
     {
         $categories = HelpTicketCategory::get();
-        $helpTickets =  SupportHelp::orderBy('id', 'desc')->get();
+        $helpTickets =  SupportHelp::orderBy('status', 'DESC')->get();
         return view('admin.help.list', compact('categories','helpTickets'));
     }
 
@@ -48,16 +48,9 @@ class HelpController extends Controller
     {
         $categories = HelpTicketCategory::get();
         $helpTickets =  SupportHelp::orderBy('status', 'DESC')->get();
-
         return view('admin.help.ajax-help-ticket', compact('categories','helpTickets'));
     }
 
-    public static function pendingTicket ()
-    {
-        $pending_tickets = SupportHelp::where('status','1')->count();
-        return $pending_tickets;
-
-        }
 
     public function filterTicket (Request $request)
     {
