@@ -4,7 +4,7 @@ $i=1;
 @endphp
 
 <div class="form-group col-md-5">
-                            <select name="past_class" id="pastclassdata{{$i}}" style="margin-top: -44px;margin-left: -14px;width:60%" class="form-control" onchange="viewPastClass({{$i}})">
+                            <select name="past_class" id="pastclassdata{{$i}}" style="margin-left: -14px;width:60%" class="form-control" onchange="viewPastClass({{$i}})">
                                 <option value="{{$class_date}}">{{$class_date}}</option>
                                 @foreach ($pastDates as $tt)
                                 @if(date("D, d M", strtotime($tt->class_date))!=$class_date)
