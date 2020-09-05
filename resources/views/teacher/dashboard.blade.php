@@ -454,9 +454,9 @@ $cls = 0;
                                                 Subject: {{$subject_name}}
                                             </div>
                                             @if($t->cancelled)
-                                            <span class="badge badge-danger">Cancelled</span>
+                                            <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
                                             @endif
-                                            <button type="button" class="btn  text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                                            <button type="button" class="btn btn-collapse text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -472,7 +472,7 @@ $cls = 0;
                                                 ?>
                                                 <div class="col-md-6">
 
-                                                    <select class="form-control custom-select-sm border-0 btn-shadow chapter" id="chapter" name="chap" data-chapter="{{$i}}">
+                                                    <select class="form-control custom-select-sm border-0 btn-shadow chapter" id="chapter" name="chap" data-chapter="{{$i}}" disabled>
                                                         <option value="Select Chapter">Select Chapter</option>
                                                         @if(count($chapters)>0)
                                                         @foreach($chapters as $ch)
@@ -494,7 +494,7 @@ $cls = 0;
                                                     //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
                                                     $x = $t->cmsLink;
                                                     ?>
-                                                    <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}" id="chapterTopic{{$i}}">
+                                                    <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}" id="chapterTopic{{$i}}" disabled>
                                                         <option value="">Select Topic</option>
                                                         @if(count($topics)>0)
                                                         @foreach($topics as $topic)
@@ -637,23 +637,18 @@ $cls = 0;
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-1">
-                                            <div class="row">
 
-                                                <div class="col-12 col-lg-12 col-md-12"> Notes</div>
-                                                <div class="col-12 col-lg-12 col-md-12 text-center" data-url="#" data-savedesc="{{$t->id}}" contenteditable="false" id="class_description_{{$i}}">
 
-                                                    @if($t->class_description!='')
-                                                    {{$t->class_description}}
-                                                    @else
-                                                    {{$t->class_description}}
-                                                    @endif
-
-                                                </div>
+                                            <div class=" mt-1 mb-1">
+                                                <textarea class="form-control " style="resize: none;" rows="4" placeholder="empty Notes !" disabled name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
                                             </div>
+
                                         </div>
 
                                     </div>
                                 </div>
+                                @if($t->cancelled)
+                                @else
                                 <div class="card-footer p-1" style="background:#fff;">
                                     <div class="d-flex justify-content-between flex-wrap">
 
@@ -670,6 +665,7 @@ $cls = 0;
                                         </div>
                                     </div>
                                 </div>
+                                @endif
                             </div>
                         </div>
                         <!-- </div> -->
@@ -794,7 +790,7 @@ $cls = 0;
                                                 @if($t->cancelled)
                                                 <span class="badge badge-danger">Cancelled</span>
                                                 @endif
-                                                <button type="button" class="btn  text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                                                <button type="button" class="btn btn-collapse  text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                                                 </button>
                                             </div>
                                         </div>
