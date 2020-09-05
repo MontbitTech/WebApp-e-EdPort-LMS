@@ -39,8 +39,8 @@ class HelpController extends Controller
 
     public function helpList (Request $request)
     {
-        $categories = HelpTicketCategory::get();
-        $helpTickets =  SupportHelp::orderBy('id', 'DESC')->get();
+        $categories  = HelpTicketCategory::get();
+        $helpTickets =  SupportHelp::orderBy('status', 'asc')->orderBy('created_at', 'desc')->get();
         return view('admin.help.list', compact('categories','helpTickets'));
     }
 
