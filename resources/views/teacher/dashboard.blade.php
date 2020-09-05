@@ -146,7 +146,7 @@ $cls = 0;
                                                     $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
 
                                                     //if($t->subject_id == 2)
-                                                    //	dd($topics);
+                                                    //  dd($topics);
 
                                                     //dd($topics);
                                                     //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
@@ -161,6 +161,7 @@ $cls = 0;
                                                         @endforeach
                                                         @endif
                                                     </select>
+
                                                 </div>
                                                 <div class="col-md-12">
 
@@ -367,19 +368,17 @@ $cls = 0;
                         $i=1;
                         @endphp
 
-
-
-                        <ul class="nav justify-content-center">
-                            @foreach ($pastDates as $tt)
-                            <input type="hidden" id="pastclassdata{{$i}}" value="{{$tt->class_date}}">
-                            <li class="nav-item" onclick="viewPastClass({{$i}})">
-                                <a class="nav-link  btn btn-sm text-white mr-2 mb-3 active1 " href="#"> {{ date("D, d M", strtotime($tt->class_date))}}</a>
-                            </li>
+                        <div class="form-group col-md-5">
+                            <select name="past_class" id="pastclassdata{{$i}}" style="margin-top: -44px;margin-left: -14px;width:60%" class="form-control" onchange="viewPastClass({{$i}})">
+                                <option value="">Select Date</option>
+                                @foreach ($pastDates as $tt)
+                                <option value="{{$tt->class_date}}">{{ date("D, d M", strtotime($tt->class_date))}}</option>
                             @php
                             $i++;
                             @endphp
                             @endforeach
-                        </ul>
+                            </select>
+                        </div>
                         @endif
                         @if(count($pastClassData) > 0)
 
@@ -405,15 +404,13 @@ $cls = 0;
                         }
                         ?>
 
-                        <div id="plclasses1">
-
+                        <!-- <div id="plclasses1"> -->
 
                             <div class="card text-center mb-3" style="border-color:#253372;">
 
                                 <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
                                 <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
                                 <input type="hidden" id="past_subject_id{{$i}}" value="{{$t->subject_id}}">
-
 
                                 <input type="hidden" id="past_desc{{$i}}" value="{{$t->class_description}}">
                                 <input type="hidden" id="past_gMeetURL{{$i}}" value="{{$t->g_meet_url}}">
@@ -480,7 +477,7 @@ $cls = 0;
                                                         $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
 
                                                         //if($t->subject_id == 2)
-                                                        //	dd($topics);
+                                                        //  dd($topics);
 
                                                         //dd($topics);
                                                         //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
@@ -641,8 +638,6 @@ $cls = 0;
                                                         @endif
 
                                                     </div>
-
-
                                                 </div>
                                             </div>
 
@@ -666,7 +661,7 @@ $cls = 0;
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        <!-- </div> -->
                         @php
                         $i++;
                         @endphp
@@ -711,8 +706,6 @@ $cls = 0;
                         @php
                         $i=1;
                         @endphp
-
-
 
                         <ul class="nav justify-content-center">
                             @foreach ($futureDates as $tt)
@@ -767,10 +760,8 @@ $cls = 0;
                                 <?php
                                 $class_date = date("d M", strtotime($t->class_date));
                                 ?>
-
                                 <div class="card-header text-white p-0  " style="background:#253372;">
                                     <div class="container">
-
 
                                         <div class="row pl-2 pr-3">
                                             <div class="d-flex align-items-center col-md-4">
@@ -824,7 +815,7 @@ $cls = 0;
                                                         $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
 
                                                         //if($t->subject_id == 2)
-                                                        //	dd($topics);
+                                                        //  dd($topics);
 
                                                         //dd($topics);
                                                         //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
@@ -989,13 +980,19 @@ $cls = 0;
 
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                     <!-- <div class="card-footer p-1" style="background:#fff;">
                                                 <div class="d-flex justify-content-between flex-wrap">
                                                     <div class="m-auto">
 
+
+                                                        <button type="button" data-classhelp="{{$i}}" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help">
+                                                            <svg class="icon mr-1">
+                                                                <use xlink:href="../images/icons.svg#icon_help"></use>
+                                                            </svg>
+                                                            Help
+                                                        </button>
 
 
                                                         <button type="button" data-classhelp="{{$i}}" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help">
@@ -1013,7 +1010,6 @@ $cls = 0;
                                                         ?>
                                                         @if (count($assignmentData) > 0)
                                                         <button onclick="viewAssignment({{$t->id}})" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
-
                                                         @else
                                                         <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow icon-4x">No Assigment</button>
                                                         @endif
@@ -1341,9 +1337,9 @@ $cls = 0;
 
 
             <!-- <div class="form-group row">
-				<label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live <small>(Link)</small>:</label>
-				<div class="col-md-6">
-				  {!! Form::textarea('join_liveUrl', null, array('placeholder' => 'Enter Live class url','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+                <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live <small>(Link)</small>:</label>
+                <div class="col-md-6">
+                  {!! Form::textarea('join_liveUrl', null, array('placeholder' => 'Enter Live class url','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
                         </div>
                       </div> -->
 
@@ -1569,6 +1565,7 @@ $cls = 0;
 <!-- Edit Class Modal -->
 
 <!-- End -->
+
 
 
 <script>
@@ -2111,6 +2108,7 @@ $cls = 0;
 
     });
 
+   
 
     // $("#purchaseshowdivid").click(function() {
     $('[data-id=view_student]').click(function() {
@@ -2431,7 +2429,7 @@ $cls = 0;
 
     function viewPastClass(id) {
         var class_date = $('#pastclassdata' + id).val();
-        $('#plclasses1').hide();
+        $('#plclasses').hide();
         $.ajax({
             type: 'GET',
             url: '{{ url("/teacher/class/viewPastClass") }}',
@@ -2442,8 +2440,8 @@ $cls = 0;
                 'class_date': class_date,
             },
             success: function(result) {
-                $('#plclasses1').html(result);
-                $('#plclasses1').show();
+                $('#plclasses').html(result);
+                $('#plclasses').show();
 
             },
             error: function() {}

@@ -1,3 +1,22 @@
+@if(count($pastDates) > 0)
+@php
+$i=1;
+@endphp
+
+<div class="form-group col-md-5">
+                            <select name="past_class" id="pastclassdata{{$i}}" style="margin-top: -44px;margin-left: -14px;width:60%" class="form-control" onchange="viewPastClass({{$i}})">
+                                <option value="{{$class_date}}">{{$class_date}}</option>
+                                @foreach ($pastDates as $tt)
+                                @if(date("D, d M", strtotime($tt->class_date))!=$class_date)
+                                <option value="{{$tt->class_date}}">{{ date("D, d M", strtotime($tt->class_date))}}</option>
+                                @endif
+                                @php
+                                $i++;
+                                @endphp
+                                @endforeach
+                            </select>
+                        </div>
+@endif
 @if(count($pastClassData) > 0)
 
 @php
@@ -12,7 +31,7 @@ $class_name = '';
 $subject_name = '';
 if ($t->studentClass) {
     $class_name = $t->studentClass->class_name;
-    //$class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
+//$class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
     $section_name = $t->studentClass->section_name;
     $g_class_id = $t->studentClass->g_class_id;
 }
@@ -21,7 +40,7 @@ if ($t->studentSubject) {
 }
 ?>
 
-<div id="plclasses1">
+<!-- <div id="plclasses1"> -->
     <div class="card text-center mb-3" style="border-color:#253372;">
 
         <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
@@ -60,7 +79,7 @@ if ($t->studentSubject) {
                             Subject: {{$subject_name}}
                         </div>
                         @if($t->cancelled)
-                            <span class="badge badge-danger">Cancelled</span>
+                        <span class="badge badge-danger">Cancelled</span>
                         @endif
                         <button type="button" class="btn  text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                         </button>
@@ -93,11 +112,11 @@ if ($t->studentSubject) {
                                 <?php
                                 $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
 
-                                //if($t->subject_id == 2)
-                                //  dd($topics);
+//if($t->subject_id == 2)
+//  dd($topics);
 
-                                //dd($topics);
-                                //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
+//dd($topics);
+//App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
                                 $x = $t->cmsLink;
                                 ?>
                                 <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}" id="chapterTopic{{$i}}">
@@ -127,14 +146,14 @@ if ($t->studentSubject) {
                                     $book    = $x->book_url;
                                     $other   = $x->others;
                                 } else
-                                    $display_style = 'display: none;';
+                                $display_style = 'display: none;';
 
 
                                 if ($t->topic_id != '') {
-                                    //  $display_style = 'display: block;';
+//  $display_style = 'display: block;';
                                 }
                                 if ($t->cmsLink) {
-                                    // $cms_link = $t->cmsLink->link;
+// $cms_link = $t->cmsLink->link;
                                 }
 
 
@@ -143,7 +162,7 @@ if ($t->studentSubject) {
                                     $display_style = 'display: block;';
                                     $cms_link = $x->link;
                                 } else
-                                    $display_style = 'display: none;';
+                                $display_style = 'display: none;';
 
                                 ?>
                                 <!--new changes -->
@@ -279,32 +298,32 @@ if ($t->studentSubject) {
             </div>
         </div>
     </div>
-</div>
-@php
-$i++;
-@endphp
-@endforeach
-@else
+    <!-- </div> -->
+    @php
+    $i++;
+    @endphp
+    @endforeach
+    @else
 
 <!-- <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
-                                                        <svg class="icon icon-4x mr-3">
-                                                            <use xlink:href="../images/icons.svg#icon_nodate"></use>
-                                                        </svg>
-                                                        No Lectures found for {{ date("d/m/Y") }}.
-                                                        <br><br>
-                                                        <a href="{{ route('reload-timetable') }}" target="_blank">
-                                                            Click here to reload updated timetable again.
-                                                        </a>
-                                                        <script>
-                                                            function reload_timetable() {
-                                                                fetch("{{ route('reload-timetable') }}")
-                                                                    .then(function (response) {
-                                                                        location.reload();
-                                                                    })
-                                                            }
-                                                            reload_timetable()
-                                                        </script>
-                                                    </div> -->
+<svg class="icon icon-4x mr-3">
+<use xlink:href="../images/icons.svg#icon_nodate"></use>
+</svg>
+No Lectures found for {{ date("d/m/Y") }}.
+<br><br>
+<a href="{{ route('reload-timetable') }}" target="_blank">
+Click here to reload updated timetable again.
+</a>
+<script>
+function reload_timetable() {
+fetch("{{ route('reload-timetable') }}")
+.then(function (response) {
+location.reload();
+})
+}
+reload_timetable()
+</script>
+</div> -->
 @endif
 
 
@@ -313,8 +332,8 @@ $i++;
         $(this).find('i').toggleClass('fas fa-minus');
         $(this).find('i').toggleClass('fas fa-plus');
 
-        //$(this).find('i').toggle(function(){});
-    });
+//$(this).find('i').toggle(function(){});
+});
     $('[data-id=view_student]').click(function() {
         $('#purchaseshowdatadiv').hide();
         var getBoxId = $(this).attr("data-view");
