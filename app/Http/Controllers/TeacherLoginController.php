@@ -169,7 +169,7 @@ class TeacherLoginController extends Controller
 
     public function viewPastClass(Request $request)
     {
-
+        $class_date =date("D, d M", strtotime($request->class_date));
         $logged_teacher   = Session::get('teacher_session');
         $schoollogo = \DB::table('tbl_settings')->get()->keyBy('item');
         $pastClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('class_date', $request->class_date)->get();
@@ -181,7 +181,7 @@ class TeacherLoginController extends Controller
             ->distinct('class_date')
             ->get()->unique();
 
-        return view('teacher.getPastClass', compact('pastDates',  'pastClassData', 'schoollogo'));
+        return view('teacher.getPastClass', compact('pastDates',  'pastClassData', 'schoollogo','class_date'));
     }
     public function viewFutureClass(Request $request)
     {
