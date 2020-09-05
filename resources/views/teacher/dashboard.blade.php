@@ -368,17 +368,17 @@ $cls = 0;
                         $i=1;
                         @endphp
 
-                        <ul class="nav justify-content-center">
-                            @foreach ($pastDates as $tt)
-                            <input type="hidden" id="pastclassdata{{$i}}" value="{{$tt->class_date}}">
-                            <li class="nav-item" onclick="viewPastClass({{$i}})">
-                                <a class="nav-link  btn btn-sm text-white mr-2 mb-3 active1 " href="#"> {{ date("D, d M", strtotime($tt->class_date))}}</a>
-                            </li>
+                        <div class="form-group col-md-5">
+                            <select name="past_class" id="pastclassdata{{$i}}" style="margin-top: -44px;margin-left: -14px;width:60%" class="form-control" onchange="viewPastClass({{$i}})">
+                                <option value="">Select Date</option>
+                                @foreach ($pastDates as $tt)
+                                <option value="{{$tt->class_date}}">{{ date("D, d M", strtotime($tt->class_date))}}</option>
                             @php
                             $i++;
                             @endphp
                             @endforeach
-                        </ul>
+                            </select>
+                        </div>
                         @endif
                         @if(count($pastClassData) > 0)
 
@@ -404,7 +404,7 @@ $cls = 0;
                         }
                         ?>
 
-                        <div id="plclasses1">
+                        <!-- <div id="plclasses1"> -->
 
                             <div class="card text-center mb-3" style="border-color:#253372;">
 
@@ -661,7 +661,7 @@ $cls = 0;
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        <!-- </div> -->
                         @php
                         $i++;
                         @endphp
@@ -2429,7 +2429,7 @@ $cls = 0;
 
     function viewPastClass(id) {
         var class_date = $('#pastclassdata' + id).val();
-        $('#plclasses1').hide();
+        $('#plclasses').hide();
         $.ajax({
             type: 'GET',
             url: '{{ url("/teacher/class/viewPastClass") }}',
@@ -2440,8 +2440,8 @@ $cls = 0;
                 'class_date': class_date,
             },
             success: function(result) {
-                $('#plclasses1').html(result);
-                $('#plclasses1').show();
+                $('#plclasses').html(result);
+                $('#plclasses').show();
 
             },
             error: function() {}
