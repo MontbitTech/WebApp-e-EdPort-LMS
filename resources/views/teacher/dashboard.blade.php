@@ -720,18 +720,18 @@ $cls = 0;
                         @php
                         $i=1;
                         @endphp
+                        <div class="form-group col-md-5">
+                            <select name="past_class" id="futureclassdata{{$i}}" style="margin-left: -14px;width:60%" class="form-control" onchange="viewFutureClass({{$i}})">
+                                <option value="">Select Date</option>
+                                @foreach ($futureDates as $tt)
+                                <option value="{{$tt->class_date}}">{{ date("D, d M", strtotime($tt->class_date))}}</option>
+                                @php
+                                $i++;
+                                @endphp
+                                @endforeach
+                            </select>
+                        </div>
 
-                        <ul class="nav justify-content-center">
-                            @foreach ($futureDates as $tt)
-                            <input type="hidden" id="futureclassdata{{$i}}" value="{{$tt->class_date}}">
-                            <li class="nav-item" onclick="viewFutureClass({{$i}})">
-                                <a class="nav-link  btn btn-sm text-white mr-2 mb-3 active1 " href="#"> {{ date("D, d M", strtotime($tt->class_date))}}</a>
-                            </li>
-                            @php
-                            $i++;
-                            @endphp
-                            @endforeach
-                        </ul>
                         @endif
                         @if(count($futureClassData) > 0)
 
