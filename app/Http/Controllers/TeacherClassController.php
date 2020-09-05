@@ -326,44 +326,32 @@ class TeacherClassController extends Controller
 
     public function ajaxSaveLiveClass (Request $request)
     {
+        $start_time  = str_replace(" : ", ":", $request->start_time);
+        $start_time  = date("H:i:s", strtotime($start_time));
+        $end_time    = str_replace(" : ", ":", $request->end_time);
+        $end_time    = date("H:i:s", strtotime($end_time));
+        $class_date  = date("Y-m-d", strtotime($request->class_date));
 
+        if ((strtotime($end_time) - strtotime($start_time)) / 60 <= 0 )
+            return back()->with('error', "Class end-time can't be before/equal to class start-time.");
 
-        $logged_teacher = Session::get('teacher_session');
-        $teacher_id = $logged_teacher['teacher_id'];
+        if (((strtotime(date('H:i:s')) - strtotime($start_time)) / 60) >= 0 )
+        return back()->with('error', "You can't update a class in the past. Class date time should not be less than current date and time.");
 
-        $dateClass_id = $request->txt_datecalss_id;
-
-        $request->validate([
-            'edit_notify_stdMessage' => 'required|max:255',
-            'edit_description'       => 'required|max:255',
-
-        ], [
-            'edit_notify_stdMessage.required' => 'Notify Message required.',
-            //'edit_notify_stdMessage.regex'=>'Notify Message must be letters and numbers.',
-            'edit_description.required'       => 'The Description required.',
-        ]);
-
-
-        $notify_stdMessage = $request->edit_notify_stdMessage;
-        $class_description = isset($request->edit_description) ? $request->edit_description : '';
-        /*     $class_liveurl = isset($request->edit_join_liveUrl)?$request->edit_join_liveUrl:'';
-           if($class_liveurl!=''){
-
-                if(!filter_var($class_liveurl, FILTER_VALIDATE_URL)){
-                     return back()->with('error', 'Please Add Valid URL.');
-                }
-            }
-         */
-
-        $pastClassDetail = DateClass::find($dateClass_id);
-
-        $pastClassDetail->class_description = $class_description;
-        // $pastClassDetail->g_meet_url = $class_liveurl;
-        $pastClassDetail->class_student_msg = $notify_stdMessage;
+        $pastClassDetail = DateClass::find($request->txt_datecalss_id);
+        $pastClassDetail->from_timing = $start_time;
+        $pastClassDetail->to_timing   = $end_time;
         $pastClassDetail->save();
+
+        $token = CommonHelper::varify_Teachertoken();
+        $data = array(
+                        'text'=>'Class '.$request->class_name.' '.$request->section_name.' timing for '.$request->class_date.' has been changed. Now class timing is '.$request->start_time.' to '.$request->end_time
+                   );
+        $response = CommonHelper::createAnnouncement($token, $request->txt_g_class_id, json_encode($data));
 
         return back()->with('success', sprintf(Config::get('constants.WebMessageCode.123'), 'Updated'));
     }
+
 
     public function ajaxSavePastClass (Request $request)
     {
