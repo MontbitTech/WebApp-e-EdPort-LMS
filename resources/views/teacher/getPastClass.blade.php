@@ -78,11 +78,15 @@ if ($t->studentSubject) {
                     <div class="font-weight-bold pt-1">
                         Subject: {{$subject_name}}
                     </div>
-                    @if($t->cancelled)
-                    <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
-                    @endif
-                    <button type="button" class="btn btn-collapse text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
-                    </button>
+                    <div>
+
+
+                        @if($t->cancelled)
+                        <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
+                        @endif
+                        <button type="button" class="btn btn-collapse text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -129,6 +133,8 @@ if ($t->studentSubject) {
                                 @endif
                             </select>
                         </div>
+                        @if($t->cancelled)
+                        @else
                         <div class="col-md-12">
 
 
@@ -259,6 +265,7 @@ if ($t->studentSubject) {
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-md-6 mt-1">
