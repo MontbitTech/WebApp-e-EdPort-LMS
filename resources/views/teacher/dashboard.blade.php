@@ -369,7 +369,7 @@ $cls = 0;
                         @endphp
 
                         <div class="form-group col-md-5">
-                            <select name="past_class" id="pastclassdata{{$i}}" style="margin-top: -44px;margin-left: -14px;width:60%" class="form-control" onchange="viewPastClass({{$i}})">
+                            <select name="past_class" id="pastclassdata{{$i}}" style="margin-left: -14px;width:60%" class="form-control" onchange="viewPastClass({{$i}})">
                                 <option value="">Select Date</option>
                                 @foreach ($pastDates as $tt)
                                 <option value="{{$tt->class_date}}">{{ date("D, d M", strtotime($tt->class_date))}}</option>
