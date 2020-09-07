@@ -6,65 +6,65 @@
 </div>
 
 <style>
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 46px;
+        height: 20px;
+    }
 
-.switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
 
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
 
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-}
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 16px;
+        width: 16px;
+        left: 4px;
+        bottom: 2px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
 
-input:checked + .slider {
-  background-color: #373c8e;
-}
+    input:checked+.slider {
+        background-color: #373c8e;
+    }
 
-input:focus + .slider {
-  box-shadow: 0 0 1px #373c8e;
-}
+    input:focus+.slider {
+        box-shadow: 0 0 1px #373c8e;
+    }
 
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
+    input:checked+.slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
 
-/* Rounded sliders */
-.slider.round {
-  border-radius: 24px;
-}
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 24px;
+    }
 
-.slider.round:before {
-  border-radius: 50%;
-}
+    .slider.round:before {
+        border-radius: 50%;
+    }
 </style>
 
 <div class="modal-body pt-4">
@@ -94,14 +94,22 @@ input:checked + .slider:before {
                     <td>{{$student->email}}</td>
                     <td>{{$student->phone}}</td>
                     <input type="hidden" name="attendance[{{$student->id}}]" value="0">
-                    <td>
-                        <label class="switch"><input type="checkbox" id="attendance_{{$student->id}}" name="attendance[{{$student->id}}]" @if(count($student->attendance))
-                        @if($student->attendance[0]->status)
-                        checked
-                        @endif
-                        @endif
-
-                        value='1'><span class="slider round"></span></label>
+                    <td class="text-center">
+                        <label class="switch"><input type="checkbox" id="attendance_{{$student->id}}" data-studentId="{{$student->id}}" name="attendance[{{$student->id}}]" 
+                            @if(count($student->attendance))
+                                @if($student->attendance[0]->status)
+                                    checked
+                                @endif
+                            @endif
+                            @if(date('y-m-d') > date('y-m-d',strtotime($dateClass->class_date)))
+                                class="attendance"
+                            @endif
+                            @if(date('y-m-d') <= date('y-m-d',strtotime($dateClass->class_date)))
+                                @if(count($student->attendance)) 
+                                    disabled 
+                                @endif
+                            @endif
+                            value='1'><span class="slider round"></span></label>
 
                     </td>
                 </tr>
@@ -109,9 +117,13 @@ input:checked + .slider:before {
                 @endforeach
             </tbody>
         </table>
-
         <div class="text-center">
-            <input type="submit" class="btn btn-primary px-4 mr-2 text-center" @if(count($student->attendance)) disabled @endif value="save">
+            @if(date('y-m-d') <= date('y-m-d',strtotime($dateClass->class_date)))
+                <input type="submit" class="btn btn-primary px-4 mr-2 text-center" 
+                @if(count($student->attendance)) disabled @endif 
+                
+                value="save">
+            @endif
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
         </form>
@@ -134,6 +146,40 @@ input:checked + .slider:before {
             initComplete: function(settings, json) {
                 $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
                 $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+            }
+        });
+    });
+
+    $('.attendance').on('click',function(){
+        $('.loader').show();
+        var dateclass_id = $('#dateclass_id').val();
+        var student_id = $(this).attr('data-studentId');
+        var status = 0;
+        if($(this).prop('checked'))
+            status = 1;
+            
+        $.ajax({
+            url: '{{ url("/teacher/updateAttendance") }}',
+            type: "POST",
+            data: {
+                student_id : student_id,
+                dateclass_id: dateclass_id,
+                status : status
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                var response = JSON.parse(result);
+                $('.loader').fadeOut();
+                if(response.status == "success")
+                    $.fn.notifyMe('success', 4, response.message);
+                else
+                    $.fn.notifyMe('error', 4, response.message);
+            },
+            error: function(result) {
+                $('.loader').fadeOut();
+                $.fn.notifyMe('error', 4, 'Something went wrong');
             }
         });
     });

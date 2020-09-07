@@ -1908,16 +1908,11 @@ $cls = 0;
     $('[data-id=view_student]').click(function() {
         $('#purchaseshowdatadiv').hide();
         var getBoxId = $(this).attr("data-view");
-        var class_name = $("#txt_class_name" + getBoxId).val();
-        var section_id = $("#txt_section_id" + getBoxId).val();
         var dateclass_id = $(this).attr('data-dateclass');
-        alert(dateclass_id);
         $.ajax({
             url: '{{ url("/teacher/getStudent") }}',
             type: "GET",
             data: {
-                txt_class_name: class_name,
-                txt_section_id: section_id,
                 dateclass_id: dateclass_id
             },
             success: function(result) {
