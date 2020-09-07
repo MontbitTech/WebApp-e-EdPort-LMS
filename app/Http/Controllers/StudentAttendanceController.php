@@ -37,10 +37,13 @@ class StudentAttendanceController extends Controller
 
     public function update(Request $request)
     {
-        $attendance = Attendance::where('student_id',$request->student_id)->where('dateclass_id',$request->dateclass_id)->get();
+        $attendance = Attendance::where('student_id',$request->student_id)->where('dateclass_id',$request->dateclass_id)->first();
+        if(!$attendance)
+            return json_encode(array('status' => 'error', 'data' => $attendance, 'message' => 'Record not found'));
+
         $attendance->status = $request->status;
         $attendance->save();
 
-        return back()->with('student', $attendance);
+        return json_encode(array('status' => 'success', 'data' => $attendance, 'message' => 'Attendance updated successfully'));
     }
 }
