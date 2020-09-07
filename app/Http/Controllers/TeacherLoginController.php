@@ -147,11 +147,11 @@ class TeacherLoginController extends Controller
             ->where('class_date', '<', DateUtility::getFutureDate(7))
             ->Where('class_date', '>', DateUtility::getDate())
             ->orderBy('class_date')
-            ->limit(7)
+            ->limit(20)
             ->distinct('class_date')
             ->get()->unique();
         $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher['teacher_id'])
-            ->where('class_date', '<', DateUtility::getFutureDate(2))
+            ->where('class_date', '<', DateUtility::getFutureDate(7))
             ->Where('class_date', '>', DateUtility::getDate())
             ->orderBy('class_date', 'asc')
             ->orderBy('from_timing', 'asc')
@@ -170,7 +170,7 @@ class TeacherLoginController extends Controller
 
     public function viewPastClass(Request $request)
     {
-        $class_date =date("D, d M", strtotime($request->class_date));
+        $class_date = date("D, d M", strtotime($request->class_date));
         $logged_teacher   = Session::get('teacher_session');
         $schoollogo = \DB::table('tbl_settings')->get()->keyBy('item');
         $pastClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('class_date', $request->class_date)->get();
@@ -182,10 +182,11 @@ class TeacherLoginController extends Controller
             ->distinct('class_date')
             ->get()->unique();
 
-        return view('teacher.getPastClass', compact('pastDates',  'pastClassData', 'schoollogo','class_date'));
+        return view('teacher.getPastClass', compact('pastDates',  'pastClassData', 'schoollogo', 'class_date'));
     }
     public function viewFutureClass(Request $request)
     {
+        $class_date = date("D, d M", strtotime($request->class_date));
         $logged_teacher   = Session::get('teacher_session');
         $schoollogo = \DB::table('tbl_settings')->get()->keyBy('item');
         $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('class_date', $request->class_date)->get();
@@ -197,7 +198,7 @@ class TeacherLoginController extends Controller
             ->distinct('class_date')
             ->get()->unique();
 
-        return view('teacher.getfutureClass', compact('futureDates', 'futureClassData', 'schoollogo'));
+        return view('teacher.getfutureClass', compact('futureDates', 'futureClassData', 'schoollogo', 'class_date'));
     }
 
     public function getTopic(Request $request)

@@ -112,7 +112,7 @@ $cls = 0;
                                                     Edit
                                                 </button>
                                                 @endif
-                                                <button type="button" class="btn btn-collapse text-white collapse-btn " data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
+                                                <button type="button" class="btn btn-collapse text-white border border-white " data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
                                                 </button>
                                             </div>
 
@@ -228,11 +228,17 @@ $cls = 0;
                                                                         <!-- My School -->
                                                                         @foreach ($schoollogo as $logo)
                                                                         @if($logo->item=="schoollogo")
-                                                                        <!--img src="{{$logo->value}}" class="m-1" alt="logo" width="25px" style="{{$display_style}}"-->
+                                                                        <?php
 
+                                                                        $parse = parse_url($academy);
+                                                                        $academy_name = $parse['host'];
+
+                                                                        $academy_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $academy_name);
+
+                                                                        ?>
                                                                         @endif
                                                                         @endforeach
-                                                                        <span class="m-auto font-weight-bolder">Khan Academy</span>
+                                                                        <span class="m-auto font-weight-bolder text-capitalize">{{$academy_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$i}}')">
@@ -246,10 +252,15 @@ $cls = 0;
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" id="youtube_{{$t->id}}" class="col-9 btn btn-sm btn-outline-danger btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
+                                                                        <?php
 
-                                                                        <!--i class="fa fa-youtube-play text-danger m-1 icon-4x" aria-hidden="true" style="{{$display_style}}"></!--i-->
+                                                                        $parse = parse_url($youtube);
+                                                                        $youtube_name = $parse['host'];
 
-                                                                        <span class="m-auto font-weight-bolder">YouTube</span>
+                                                                        $youtube_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $youtube_name);
+
+                                                                        ?>
+                                                                        <span class="m-auto font-weight-bolder">{{$youtube_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0" onclick="shareContent('{{$youtube}}','{{$i}}')">
@@ -263,10 +274,14 @@ $cls = 0;
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" id="wikipedia_{{$t->id}}" class="col-9 btn btn-sm btn-outline-secondary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
+                                                                        <?php
+                                                                        $parse = parse_url($other);
+                                                                        $other_name = $parse['host'];
 
-                                                                        <!--i class="fa fa-wikipedia-w  text-dark m-1 icon-4x" aria-hidden="true" style="{{$display_style}}"></!--i-->
+                                                                        $other_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $other_name);
 
-                                                                        <span class="m-auto font-weight-bolder">Wikipedia</span>
+                                                                        ?>
+                                                                        <span class="m-auto font-weight-bolder">{{$other_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$i}}')">
@@ -280,8 +295,13 @@ $cls = 0;
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-book="{{ $book}}" data-topicid="{{$t->topic_id}}" id="book_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
+                                                                        <?php
+                                                                        $parse = parse_url($book);
+                                                                        $book_name = $parse['host'];
 
-                                                                        <span class="m-auto font-weight-bolder">Book</span>
+                                                                        $book_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $book_name);
+                                                                        ?>
+                                                                        <span class="m-auto font-weight-bolder">{{$book_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$book}}','{{$i}}')">
@@ -404,6 +424,8 @@ $cls = 0;
                         $g_class_id = '';
                         $class_name = '';
                         $subject_name = '';
+                        $chapter = '';
+                        $topic = '';
                         if ($t->studentClass) {
                             $class_name = $t->studentClass->class_name;
                             //$class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
@@ -413,9 +435,12 @@ $cls = 0;
                         if ($t->studentSubject) {
                             $subject_name = $t->studentSubject->subject_name;
                         }
+                        if ($t->cmsLink) {
+                            $chapter = $t->cmsLink->chapter;
+                            $topic = $t->cmsLink->topic;
+                        }
                         ?>
 
-                        <!-- <div id="plclasses1"> -->
 
                         <div class="card text-center mb-3" style="border-color:#253372;">
 
@@ -471,42 +496,15 @@ $cls = 0;
                                     <div class="row m-2">
                                         <div class="col-md-6">
                                             <div class="row">
-                                                <?php
-                                                $chapters = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
-                                                ?>
                                                 <div class="col-md-6">
 
-                                                    <select class="form-control custom-select-sm border-0 btn-shadow chapter" id="chapter" name="chap" data-chapter="{{$i}}" disabled>
-                                                        <option value="Select Chapter">Select Chapter</option>
-                                                        @if(count($chapters)>0)
-                                                        @foreach($chapters as $ch)
-                                                        <?php $selected = ($ch->id == $t->topic_id) ? 'selected' : ''; ?>
-                                                        <option value="{{$ch->chapter}}" {{$selected}}>{{$ch->chapter}}</option>
-                                                        @endforeach
-                                                        @endif
-
-                                                    </select>
+                                                    {{$chapter}}
                                                 </div>
                                                 <div class="col-md-6">
                                                     <?php
-                                                    $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
-
-                                                    //if($t->subject_id == 2)
-                                                    //  dd($topics);
-
-                                                    //dd($topics);
-                                                    //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
                                                     $x = $t->cmsLink;
                                                     ?>
-                                                    <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}" id="chapterTopic{{$i}}" disabled>
-                                                        <option value="">Select Topic</option>
-                                                        @if(count($topics)>0)
-                                                        @foreach($topics as $topic)
-                                                        <?php $selected = ($topic->id == $t->topic_id) ? 'selected' : ''; ?>
-                                                        <option value="{{$topic->id}}" {{$selected}} style="display:none">{{$topic->topic}}</option>
-                                                        @endforeach
-                                                        @endif
-                                                    </select>
+                                                    {{$topic}}
                                                 </div>
                                                 @if($t->cancelled)
                                                 @else
@@ -555,7 +553,6 @@ $cls = 0;
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="col-9 btn btn-sm btn-outline-dark btn-shadow border-0 d-inline-flex d-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                                         <!-- Edport Content -->
-                                                                        <!--img src="{{asset('images/logo-1.png')}}" class="m-1" alt="" width="25px" style="{{$display_style}}"-->
                                                                         <span class="m-auto font-weight-bolder">e-Edport</span>
                                                                     </a>
                                                                     <button class="col-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$i}}')">
@@ -566,18 +563,20 @@ $cls = 0;
                                                             @endif
 
                                                             @if($academy!=null)
+                                                            <?php
+
+                                                            $parse = parse_url($academy);
+                                                            $academy_name = $parse['host'];
+
+                                                            $academy_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $academy_name);
+
+                                                            ?>
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" id="academy_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
 
-                                                                        <!-- My School -->
-                                                                        @foreach ($schoollogo as $logo)
-                                                                        @if($logo->item=="schoollogo")
-                                                                        <!--img src="{{$logo->value}}" class="m-1" alt="logo" width="25px" style="{{$display_style}}"-->
 
-                                                                        @endif
-                                                                        @endforeach
-                                                                        <span class="m-auto font-weight-bolder">Khan Academy</span>
+                                                                        <span class="m-auto font-weight-bolder">{{$academy_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$i}}')">
@@ -587,14 +586,19 @@ $cls = 0;
                                                             </div>
                                                             @endif
                                                             @if($youtube!=null)
+                                                            <?php
+
+                                                            $parse = parse_url($youtube);
+                                                            $youtube_name = $parse['host'];
+
+                                                            $youtube_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $youtube_name);
+
+                                                            ?>
 
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" id="youtube_{{$t->id}}" class="col-9 btn btn-sm btn-outline-danger btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
-
-                                                                        <!--i class="fa fa-youtube-play text-danger m-1 icon-4x" aria-hidden="true" style="{{$display_style}}"></!--i-->
-
-                                                                        <span class="m-auto font-weight-bolder">YouTube</span>
+                                                                        <span class="m-auto font-weight-bolder">{{$youtube_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0" onclick="shareContent('{{$youtube}}','{{$i}}')">
@@ -605,13 +609,18 @@ $cls = 0;
                                                             @endif
 
                                                             @if($other!=null)
+                                                            <?php
+                                                            $parse = parse_url($other);
+                                                            $other_name = $parse['host'];
+
+                                                            $other_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $other_name);
+
+                                                            ?>
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" id="wikipedia_{{$t->id}}" class="col-9 btn btn-sm btn-outline-secondary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
 
-                                                                        <!--i class="fa fa-wikipedia-w  text-dark m-1 icon-4x" aria-hidden="true" style="{{$display_style}}"></!--i-->
-
-                                                                        <span class="m-auto font-weight-bolder">Wikipedia</span>
+                                                                        <span class="m-auto font-weight-bolder">{{$other_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$i}}')">
@@ -621,12 +630,17 @@ $cls = 0;
                                                             </div>
                                                             @endif
 
-                                                            @if($book!=null)
+                                                            @if($book!=null) <?php
+                                                                                $parse = parse_url($book);
+                                                                                $book_name = $parse['host'];
+
+                                                                                $book_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $book_name);
+                                                                                ?>
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-book="{{ $book}}" data-topicid="{{$t->topic_id}}" id="book_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
 
-                                                                        <span class="m-auto font-weight-bolder">Book</span>
+                                                                        <span class="m-auto font-weight-bolder">{{$book_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$book}}','{{$i}}')">
@@ -644,12 +658,9 @@ $cls = 0;
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-1">
-
-
                                             <div class=" mt-1 mb-1">
-                                                <textarea class="form-control " style="resize: none;" rows="4" placeholder="empty Notes !" disabled name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+                                                <textarea class="form-control " style="resize: none;" rows="4" placeholder="Empty Notes!" disabled name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
                                             </div>
-
                                         </div>
 
                                     </div>
@@ -675,7 +686,7 @@ $cls = 0;
                                 @endif
                             </div>
                         </div>
-                        <!-- </div> -->
+
                         @php
                         $i++;
                         @endphp
@@ -1262,40 +1273,42 @@ $cls = 0;
                                     Class Invitation
                                 </div>
                             </div>
-                            <div class="row mb-3">
-
+                            @if(date('H:i',strtotime($t->to_timing)) <= date('H:i')) @else <div class="row mb-3">
                                 <div class="btn btn-md btn-primary " id="cancel">
                                     Class Cancellation
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="btn btn-xs btn-primary pl-5 pr-5" id="custom">
-                                    Custom
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-9 col-lg-9 col-9">
-                            <!-- <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
-                            </label> -->
-                            <div class="mt-5">
-                                {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
-
-                            </div>
-                            <div class="form-group  mt-3 ml-5 ">
-
-                                <button type="submit" class="btn btn-primary px-4 mr-2">Notify</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-
-                            </div>
                         </div>
 
+                        @endif
+                        <div class="row">
+                            <div class="btn btn-xs btn-primary pl-5 pr-5" id="custom">
+                                Custom
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-md-9 col-lg-9 col-9">
+                        <!-- <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
+                            </label> -->
+                        <div class="mt-5">
+                            {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
+
+                        </div>
+                        <div class="form-group  mt-3 ml-5 ">
+
+                            <button type="submit" class="btn btn-primary px-4 mr-2">Notify</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                        </div>
+                    </div>
+
                 </div>
-                </form>
             </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 <!-- Past Edit Class Modal -->
 <div class="modal fade" id="pasteditClassModal" data-backdrop="static" tabindex="-1" role="dialog">
@@ -2235,7 +2248,7 @@ $cls = 0;
 
     function viewFutureClass(id) {
         var class_date = $('#futureclassdata' + id).val();
-        $('#upcmoingclass').hide();
+        $('#upcomingclasses').hide();
         $.ajax({
             type: 'GET',
             url: '{{ url("/teacher/class/viewFutureClass") }}',
@@ -2246,8 +2259,8 @@ $cls = 0;
                 'class_date': class_date,
             },
             success: function(result) {
-                $('#upcmoingclass').html(result);
-                $('#upcmoingclass').show();
+                $('#upcomingclasses').html(result);
+                $('#upcomingclasses').show();
 
             },
             error: function() {}
