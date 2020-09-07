@@ -361,9 +361,9 @@ $cls = 0;
                                             <?php
                                             $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
                                             ?>
-                                            @if (count($assignmentData) > 0)
-                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
-                                            @endif
+
+                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow @if (isset($assignmentData)) d-none @endif" data-toggle="modal" id="viewassigment" data-target="#exampleModalLong">View Assigment</button>
+
                                         </div>
                                     </div>
                                 </div>
@@ -1705,7 +1705,7 @@ $cls = 0;
             },
             success: function(result) {
                 $('.loader').fadeOut();
-                location.reload(true);
+                // location.reload(true);
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
@@ -1766,7 +1766,8 @@ $cls = 0;
             },
             success: function(result) {
                 $('.loader').fadeOut();
-                location.reload(true);
+
+                // location.reload(true);
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
@@ -2285,6 +2286,10 @@ $cls = 0;
 
                     $('#assignmentList').find('tbody').append(data);
                 });
+                if (data) {
+                    $('#viewassigment').removeClass('d-none')
+
+                }
             },
             error: function() {
                 $('.loader').fadeOut();
