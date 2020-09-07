@@ -1258,40 +1258,42 @@ $cls = 0;
                                     Class Invitation
                                 </div>
                             </div>
-                            <div class="row mb-3">
-
+                            @if(date('H:i',strtotime($t->to_timing)) <= date('H:i')) @else <div class="row mb-3">
                                 <div class="btn btn-md btn-primary " id="cancel">
                                     Class Cancellation
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="btn btn-xs btn-primary pl-5 pr-5" id="custom">
-                                    Custom
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-9 col-lg-9 col-9">
-                            <!-- <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
-                            </label> -->
-                            <div class="mt-5">
-                                {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
-
-                            </div>
-                            <div class="form-group  mt-3 ml-5 ">
-
-                                <button type="submit" class="btn btn-primary px-4 mr-2">Notify</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-
-                            </div>
                         </div>
 
+                        @endif
+                        <div class="row">
+                            <div class="btn btn-xs btn-primary pl-5 pr-5" id="custom">
+                                Custom
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-md-9 col-lg-9 col-9">
+                        <!-- <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
+                            </label> -->
+                        <div class="mt-5">
+                            {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
+
+                        </div>
+                        <div class="form-group  mt-3 ml-5 ">
+
+                            <button type="submit" class="btn btn-primary px-4 mr-2">Notify</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                        </div>
+                    </div>
+
                 </div>
-                </form>
             </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 <!-- Past Edit Class Modal -->
 <div class="modal fade" id="pasteditClassModal" data-backdrop="static" tabindex="-1" role="dialog">
