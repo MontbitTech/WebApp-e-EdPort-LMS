@@ -1,3 +1,23 @@
+@if(count($futureDates) > 0)
+@php
+$i=1;
+@endphp
+<div class="form-group col-md-5">
+    <select name="past_class" id="futureclassdata{{$i}}" style="margin-left: -14px;width:60%" class="form-control" onchange="viewFutureClass({{$i}})">
+        <option value="{{$class_date}}">{{$class_date}}</option>
+        @foreach ($futureDates as $tt)
+        @if(date("D, d M", strtotime($tt->class_date))!=$class_date)
+        <option value="{{$tt->class_date}}">{{ date("D, d M", strtotime($tt->class_date))}}</option>
+        @endif
+        @php
+        $i++;
+        @endphp
+        @endforeach
+    </select>
+</div>
+
+@endif
+
 @if(count($futureClassData) > 0)
 
 @php
