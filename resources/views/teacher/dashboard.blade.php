@@ -64,7 +64,7 @@ $cls = 0;
                         }
                         ?>
 
-                        <div class="card text-center mb-3" style="border-color:#253372;">
+                        <div class="card text-center mb-3">
                             <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
                             <input type="hidden" id="txt_class_name{{$i}}" value="{{$class_name}}">
@@ -84,9 +84,9 @@ $cls = 0;
                                 <div class="container">
 
 
-                                    <div class="row pl-2 pr-3">
-                                        <div class="d-flex align-items-center col-md-4">
-                                            <div class="cls-date font-weight-bold">{{ $todaysDate }}</div>
+                                    <div class="row ">
+                                        <div class="d-flex align-items-center col-md-4 pr-0">
+                                            <div class="cls-date font-weight-bold mb-2 mt-2">{{ $todaysDate }}</div>
                                             <div class="cls-from pt-1">
                                                 {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                         </div>
@@ -112,7 +112,7 @@ $cls = 0;
                                                     Edit
                                                 </button>
                                                 @endif
-                                                <button type="button" class="btn btn-collapse text-white border border-white " data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
+                                                <button type="button" class="btn btn-collapse text-white border border-white mb-1 mt-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
                                                 </button>
                                             </div>
 
@@ -121,7 +121,7 @@ $cls = 0;
                                     </div>
                                 </div>
                             </div>
-                            <div class="collapse @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )   show @endif " id="collapseExample{{$t->id}}">
+                            <div class="collapse card-border @if((date('H:i',strtotime($t->from_timing)) <= date('H:i')) &(date('H:i') <=date('H:i',strtotime($t->to_timing))) ) show @endif " id="collapseExample{{$t->id}}">
                                 <div class="card-body p-0">
                                     <div class="row m-2">
 
@@ -436,7 +436,7 @@ $cls = 0;
                         ?>
 
 
-                        <div class="card text-center mb-3" style="border-color:#253372;">
+                        <div class="card text-center mb-3">
 
                             <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
                             <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
@@ -485,7 +485,7 @@ $cls = 0;
                                     </div>
                                 </div>
                             </div>
-                            <div class="collapse " id="collapseExample{{$t->id}}">
+                            <div class="collapse card-border" id="collapseExample{{$t->id}}">
                                 <div class="card-body p-0">
                                     <div class="row m-2">
                                         <div class="col-md-6">
@@ -764,7 +764,7 @@ $cls = 0;
 
 
 
-                            <div class="card text-center mb-3" style="border-color:#253372;">
+                            <div class="card text-center mb-3">
 
                                 <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
                                 <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
