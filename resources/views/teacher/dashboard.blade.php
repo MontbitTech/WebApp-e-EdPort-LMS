@@ -1911,7 +1911,7 @@ $cls = 0;
         var class_name = $("#txt_class_name" + getBoxId).val();
         var section_id = $("#txt_section_id" + getBoxId).val();
         var dateclass_id = $(this).attr('data-dateclass');
-        alert(dateclass_id);
+        // alert(dateclass_id);
         $.ajax({
             url: '{{ url("/teacher/getStudent") }}',
             type: "GET",
