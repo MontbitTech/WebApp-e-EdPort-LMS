@@ -101,7 +101,7 @@
                             @endif
                             @endif
 
-                            value='1'><span class="slider round"></span></label>
+                            value='1' @if(count($student->attendance)) disabled @endif><span class="slider round"></span></label>
 
                     </td>
                 </tr>
