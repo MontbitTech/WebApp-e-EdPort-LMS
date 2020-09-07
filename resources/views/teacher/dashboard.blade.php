@@ -226,18 +226,12 @@ $cls = 0;
                                                                     <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" id="academy_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
 
                                                                         <!-- My School -->
-                                                                        @foreach ($schoollogo as $logo)
-                                                                        @if($logo->item=="schoollogo")
                                                                         <?php
-
                                                                         $parse = parse_url($academy);
                                                                         $academy_name = $parse['host'];
-
                                                                         $academy_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $academy_name);
-
                                                                         ?>
-                                                                        @endif
-                                                                        @endforeach
+
                                                                         <span class="m-auto font-weight-bolder text-capitalize">{{$academy_name}}</span>
                                                                     </a>
 
@@ -260,7 +254,7 @@ $cls = 0;
                                                                         $youtube_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $youtube_name);
 
                                                                         ?>
-                                                                        <span class="m-auto font-weight-bolder">{{$youtube_name}}</span>
+                                                                        <span class="m-auto font-weight-bolder text-capitalize">{{$youtube_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0" onclick="shareContent('{{$youtube}}','{{$i}}')">
@@ -281,7 +275,7 @@ $cls = 0;
                                                                         $other_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $other_name);
 
                                                                         ?>
-                                                                        <span class="m-auto font-weight-bolder">{{$other_name}}</span>
+                                                                        <span class="m-auto font-weight-bolder text-capitalize">{{$other_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$i}}')">
@@ -301,7 +295,7 @@ $cls = 0;
 
                                                                         $book_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $book_name);
                                                                         ?>
-                                                                        <span class="m-auto font-weight-bolder">{{$book_name}}</span>
+                                                                        <span class="m-auto font-weight-bolder text-capitalize">{{$book_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$book}}','{{$i}}')">
@@ -1711,6 +1705,7 @@ $cls = 0;
             },
             success: function(result) {
                 $('.loader').fadeOut();
+                location.reload(true);
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
@@ -1771,6 +1766,7 @@ $cls = 0;
             },
             success: function(result) {
                 $('.loader').fadeOut();
+                location.reload(true);
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
