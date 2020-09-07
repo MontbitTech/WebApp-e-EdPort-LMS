@@ -47,9 +47,10 @@
                 @endforeach
             </tbody>
         </table>
-
         <div class="text-center">
-            <input type="submit" class="btn btn-primary px-4 mr-2 text-center" @if(count($student->attendance)) disabled @endif value="save">
+            @if(date('y-m-d') <= date('y-m-d',strtotime($dateClass->class_date)))
+                <input type="submit" class="btn btn-primary px-4 mr-2 text-center" @if(count($student->attendance)) disabled @endif value="save">
+            @endif
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
         </form>
