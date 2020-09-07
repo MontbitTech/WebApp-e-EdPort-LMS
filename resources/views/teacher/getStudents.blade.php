@@ -104,7 +104,12 @@
                             @if(date('y-m-d') > date('y-m-d',strtotime($dateClass->class_date)))
                                 class="attendance"
                             @endif
-                            value='1' @if(count($student->attendance)) disabled @endif><span class="slider round"></span></label>
+                            @if(date('y-m-d') <= date('y-m-d',strtotime($dateClass->class_date)))
+                                @if(count($student->attendance)) 
+                                    disabled 
+                                @endif
+                            @endif
+                            value='1'><span class="slider round"></span></label>
 
                     </td>
                 </tr>
