@@ -238,7 +238,7 @@ $cls = 0;
                                                                         ?>
                                                                         @endif
                                                                         @endforeach
-                                                                        <span class="m-auto font-weight-bolder">{{$academy_name}}</span>
+                                                                        <span class="m-auto font-weight-bolder text-capitalize">{{$academy_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$i}}')">
@@ -296,7 +296,6 @@ $cls = 0;
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-book="{{ $book}}" data-topicid="{{$t->topic_id}}" id="book_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
                                                                         <?php
-
                                                                         $parse = parse_url($book);
                                                                         $book_name = $parse['host'];
 
@@ -554,7 +553,6 @@ $cls = 0;
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="col-9 btn btn-sm btn-outline-dark btn-shadow border-0 d-inline-flex d-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                                         <!-- Edport Content -->
-                                                                        <!--img src="{{asset('images/logo-1.png')}}" class="m-1" alt="" width="25px" style="{{$display_style}}"-->
                                                                         <span class="m-auto font-weight-bolder">e-Edport</span>
                                                                     </a>
                                                                     <button class="col-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$i}}')">
@@ -565,18 +563,20 @@ $cls = 0;
                                                             @endif
 
                                                             @if($academy!=null)
+                                                            <?php
+
+                                                            $parse = parse_url($academy);
+                                                            $academy_name = $parse['host'];
+
+                                                            $academy_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $academy_name);
+
+                                                            ?>
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" id="academy_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
 
-                                                                        <!-- My School -->
-                                                                        @foreach ($schoollogo as $logo)
-                                                                        @if($logo->item=="schoollogo")
-                                                                        <!--img src="{{$logo->value}}" class="m-1" alt="logo" width="25px" style="{{$display_style}}"-->
 
-                                                                        @endif
-                                                                        @endforeach
-                                                                        <span class="m-auto font-weight-bolder">Khan Academy</span>
+                                                                        <span class="m-auto font-weight-bolder">{{$academy_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$i}}')">
@@ -586,14 +586,19 @@ $cls = 0;
                                                             </div>
                                                             @endif
                                                             @if($youtube!=null)
+                                                            <?php
+
+                                                            $parse = parse_url($youtube);
+                                                            $youtube_name = $parse['host'];
+
+                                                            $youtube_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $youtube_name);
+
+                                                            ?>
 
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" id="youtube_{{$t->id}}" class="col-9 btn btn-sm btn-outline-danger btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
-
-                                                                        <!--i class="fa fa-youtube-play text-danger m-1 icon-4x" aria-hidden="true" style="{{$display_style}}"></!--i-->
-
-                                                                        <span class="m-auto font-weight-bolder">YouTube</span>
+                                                                        <span class="m-auto font-weight-bolder">{{$youtube_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0" onclick="shareContent('{{$youtube}}','{{$i}}')">
@@ -604,13 +609,18 @@ $cls = 0;
                                                             @endif
 
                                                             @if($other!=null)
+                                                            <?php
+                                                            $parse = parse_url($other);
+                                                            $other_name = $parse['host'];
+
+                                                            $other_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $other_name);
+
+                                                            ?>
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" id="wikipedia_{{$t->id}}" class="col-9 btn btn-sm btn-outline-secondary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
 
-                                                                        <!--i class="fa fa-wikipedia-w  text-dark m-1 icon-4x" aria-hidden="true" style="{{$display_style}}"></!--i-->
-
-                                                                        <span class="m-auto font-weight-bolder">Wikipedia</span>
+                                                                        <span class="m-auto font-weight-bolder">{{$other_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$i}}')">
@@ -620,12 +630,17 @@ $cls = 0;
                                                             </div>
                                                             @endif
 
-                                                            @if($book!=null)
+                                                            @if($book!=null) <?php
+                                                                                $parse = parse_url($book);
+                                                                                $book_name = $parse['host'];
+
+                                                                                $book_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $book_name);
+                                                                                ?>
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-book="{{ $book}}" data-topicid="{{$t->topic_id}}" id="book_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
 
-                                                                        <span class="m-auto font-weight-bolder">Book</span>
+                                                                        <span class="m-auto font-weight-bolder">{{$book_name}}</span>
                                                                     </a>
 
                                                                     <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$book}}','{{$i}}')">
