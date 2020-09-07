@@ -315,7 +315,7 @@ $cls = 0;
                                                 </svg>
                                                 Join Live
                                             </a>
-                                            <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
+                                            <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-dateclass="{{$t->id}}" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
                                             @endif
 
 
@@ -660,7 +660,7 @@ $cls = 0;
                                     <div class="d-flex justify-content-between flex-wrap">
 
                                         <div class="m-auto">
-                                            <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
+                                            <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-dateclass="{{$t->id}}" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
                                             <?php
                                             $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
                                             ?>
@@ -1897,7 +1897,8 @@ $cls = 0;
         var getBoxId = $(this).attr("data-view");
         var class_name = $("#txt_class_name" + getBoxId).val();
         var section_id = $("#txt_section_id" + getBoxId).val();
-        var dateclass_id = $('#dateClass_id' + getBoxId).val();
+        var dateclass_id = $(this).attr('data-dateclass');
+        alert(dateclass_id);
         $.ajax({
             url: '{{ url("/teacher/getStudent") }}',
             type: "GET",

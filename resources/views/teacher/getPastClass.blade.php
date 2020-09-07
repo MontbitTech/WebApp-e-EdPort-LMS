@@ -285,7 +285,7 @@ if ($t->studentSubject) {
             <div class="d-flex justify-content-between flex-wrap">
 
                 <div class="m-auto">
-                    <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
+                    <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-dateclass="{{$t->id}}" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
                     <?php
                     $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
                     ?>
@@ -332,15 +332,13 @@ reload_timetable()
     $('.card-header').click(function() {
         $(this).find('i').toggleClass('fas fa-minus');
         $(this).find('i').toggleClass('fas fa-plus');
-
-        //$(this).find('i').toggle(function(){});
     });
     $('[data-id=view_student]').click(function() {
         $('#purchaseshowdatadiv').hide();
         var getBoxId = $(this).attr("data-view");
         var class_name = $("#txt_class_name" + getBoxId).val();
         var section_id = $("#txt_section_id" + getBoxId).val();
-        var dateclass_id = $('#dateClass_id' + getBoxId).val();
+        var dateclass_id = $(this).attr('data-dateclass');
         $.ajax({
             url: '{{ url("/teacher/getStudent") }}',
             type: "GET",
