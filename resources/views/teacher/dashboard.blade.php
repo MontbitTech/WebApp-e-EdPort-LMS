@@ -1909,7 +1909,6 @@ $cls = 0;
         $('#purchaseshowdatadiv').hide();
         var getBoxId = $(this).attr("data-view");
         var dateclass_id = $(this).attr('data-dateclass');
-
         $.ajax({
             url: '{{ url("/teacher/getStudent") }}',
             type: "GET",
