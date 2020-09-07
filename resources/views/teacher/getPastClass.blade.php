@@ -29,8 +29,8 @@ $section_name = '';
 $g_class_id = '';
 $class_name = '';
 $subject_name = '';
-$chapter='';
-$topic='';
+$chapter = '';
+$topic = '';
 
 if ($t->studentClass) {
     $class_name = $t->studentClass->class_name;
@@ -91,7 +91,7 @@ if ($t->cmsLink) {
                         @if($t->cancelled)
                         <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
                         @endif
-                        <button type="button" class="btn btn-collapse text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                        <button type="button" class=" border border-white btn btn-collapse text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                         </button>
                     </div>
                 </div>
@@ -171,18 +171,19 @@ if ($t->cmsLink) {
                                     @endif
 
                                     @if($academy!=null)
+                                    <?php
+
+                                    $parse = parse_url($academy);
+                                    $academy_name = $parse['host'];
+
+                                    $academy_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $academy_name);
+
+                                    ?>
                                     <div class="col-md-6 mt-2">
                                         <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                             <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" id="academy_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
 
-                                                <!-- My School -->
-                                                @foreach ($schoollogo as $logo)
-                                                @if($logo->item=="schoollogo")
-                                                <!--img src="{{$logo->value}}" class="m-1" alt="logo" width="25px" style="{{$display_style}}"-->
-
-                                                @endif
-                                                @endforeach
-                                                <span class="m-auto font-weight-bolder">Khan Academy</span>
+                                                <span class="m-auto font-weight-bolder">{{$academy_name}}</span>
                                             </a>
 
                                             <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$i}}')">
@@ -192,14 +193,19 @@ if ($t->cmsLink) {
                                     </div>
                                     @endif
                                     @if($youtube!=null)
+                                    <?php
 
+                                    $parse = parse_url($youtube);
+                                    $youtube_name = $parse['host'];
+
+                                    $youtube_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $youtube_name);
+
+                                    ?>
                                     <div class="col-md-6 mt-2">
                                         <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                             <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" id="youtube_{{$t->id}}" class="col-9 btn btn-sm btn-outline-danger btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
 
-                                                <!--i class="fa fa-youtube-play text-danger m-1 icon-4x" aria-hidden="true" style="{{$display_style}}"></!--i-->
-
-                                                <span class="m-auto font-weight-bolder">YouTube</span>
+                                                <span class="m-auto font-weight-bolder">{{$youtube_name}}</span>
                                             </a>
 
                                             <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0" onclick="shareContent('{{$youtube}}','{{$i}}')">
@@ -210,13 +216,17 @@ if ($t->cmsLink) {
                                     @endif
 
                                     @if($other!=null)
+                                    <?php
+                                    $parse = parse_url($other);
+                                    $other_name = $parse['host'];
+
+                                    $other_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $other_name);
+
+                                    ?>
                                     <div class="col-md-6 mt-2">
                                         <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                             <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" id="wikipedia_{{$t->id}}" class="col-9 btn btn-sm btn-outline-secondary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
-
-                                                <!--i class="fa fa-wikipedia-w  text-dark m-1 icon-4x" aria-hidden="true" style="{{$display_style}}"></!--i-->
-
-                                                <span class="m-auto font-weight-bolder">Wikipedia</span>
+                                                <span class="m-auto font-weight-bolder">{{$other_name}}</span>
                                             </a>
 
                                             <button class="col-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$i}}')">
@@ -227,11 +237,17 @@ if ($t->cmsLink) {
                                     @endif
 
                                     @if($book!=null)
+                                    <?php
+                                    $parse = parse_url($book);
+                                    $book_name = $parse['host'];
+
+                                    $book_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $book_name);
+                                    ?>
                                     <div class="col-md-6 mt-2">
                                         <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
                                             <a href="javascript:void(0);" data-book="{{ $book}}" data-topicid="{{$t->topic_id}}" id="book_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
 
-                                                <span class="m-auto font-weight-bolder">Book</span>
+                                                <span class="m-auto font-weight-bolder">{{$book_name}}</span>
                                             </a>
 
                                             <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$book}}','{{$i}}')">
@@ -265,7 +281,7 @@ if ($t->cmsLink) {
             <div class="d-flex justify-content-between flex-wrap">
 
                 <div class="m-auto">
-                    <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
+                    <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-dateclass="{{$t->id}}" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
                     <?php
                     $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
                     ?>
@@ -312,15 +328,13 @@ reload_timetable()
     $('.card-header').click(function() {
         $(this).find('i').toggleClass('fas fa-minus');
         $(this).find('i').toggleClass('fas fa-plus');
-
-        //$(this).find('i').toggle(function(){});
     });
     $('[data-id=view_student]').click(function() {
         $('#purchaseshowdatadiv').hide();
         var getBoxId = $(this).attr("data-view");
         var class_name = $("#txt_class_name" + getBoxId).val();
         var section_id = $("#txt_section_id" + getBoxId).val();
-        var dateclass_id = $('#dateClass_id' + getBoxId).val();
+        var dateclass_id = $(this).attr('data-dateclass');
         $.ajax({
             url: '{{ url("/teacher/getStudent") }}',
             type: "GET",

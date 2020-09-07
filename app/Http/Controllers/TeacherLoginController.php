@@ -18,6 +18,7 @@ use DB;
 use App\InvitationClass;
 use App\Http\Helpers\CommonHelper;
 use App\CmsLink;
+use App\Models\Attendance;
 use Response;
 
 
@@ -249,9 +250,19 @@ class TeacherLoginController extends Controller
 
     public function getStudent(Request $request)
     {
-        $students = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name = ? and c.section_name=?", [$request->txt_class_name, $request->txt_section_id]);
-        $dateClassId = $request->dateclass_id;
+        // $students = \DB::select("SELECT s.id, s.name, s.email, s.phone, s.notify, c.class_name, c.section_name from tbl_students s left join tbl_classes c on c.id = s.class_id where c.class_name = ? and c.section_name=?", [$request->txt_class_name, $request->txt_section_id]);
 
-        return view('teacher.getStudents', compact('students', 'dateClassId'));
+        $students = Student::with('class')
+                        ->with(['attendance'=>function($q) use ($request){
+                            $q->where('dateclass_id',$request->dateclass_id);
+                        }])
+                        ->whereHas('class', function($q) use ($request){
+                            $q->where('class_name', $request->txt_class_name);
+                            $q->where('section_name', $request->txt_section_id);
+                        })->get();
+
+        $dateClass = DateClass::find($request->dateclass_id);
+
+        return view('teacher.getStudents', compact('students', 'dateClass'));
     }
 }
