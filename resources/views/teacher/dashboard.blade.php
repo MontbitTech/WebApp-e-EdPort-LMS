@@ -112,7 +112,7 @@ $cls = 0;
                                                     Edit
                                                 </button>
                                                 @endif
-                                                <button type="button" class="btn btn-collapse text-white collapse-btn " data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
+                                                <button type="button" class="btn btn-collapse text-white border border-white " data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
                                                 </button>
                                             </div>
 
@@ -404,6 +404,8 @@ $cls = 0;
                         $g_class_id = '';
                         $class_name = '';
                         $subject_name = '';
+                        $chapter='';
+                        $topic='';
                         if ($t->studentClass) {
                             $class_name = $t->studentClass->class_name;
                             //$class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
@@ -413,9 +415,12 @@ $cls = 0;
                         if ($t->studentSubject) {
                             $subject_name = $t->studentSubject->subject_name;
                         }
+                        if ($t->cmsLink) {
+                            $chapter = $t->cmsLink->chapter;
+                            $topic = $t->cmsLink->topic;
+                        }
                         ?>
 
-                        <!-- <div id="plclasses1"> -->
 
                         <div class="card text-center mb-3" style="border-color:#253372;">
 
@@ -471,42 +476,15 @@ $cls = 0;
                                     <div class="row m-2">
                                         <div class="col-md-6">
                                             <div class="row">
-                                                <?php
-                                                $chapters = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
-                                                ?>
                                                 <div class="col-md-6">
 
-                                                    <select class="form-control custom-select-sm border-0 btn-shadow chapter" id="chapter" name="chap" data-chapter="{{$i}}" disabled>
-                                                        <option value="Select Chapter">Select Chapter</option>
-                                                        @if(count($chapters)>0)
-                                                        @foreach($chapters as $ch)
-                                                        <?php $selected = ($ch->id == $t->topic_id) ? 'selected' : ''; ?>
-                                                        <option value="{{$ch->chapter}}" {{$selected}}>{{$ch->chapter}}</option>
-                                                        @endforeach
-                                                        @endif
-
-                                                    </select>
+                                                    {{$chapter}}
                                                 </div>
                                                 <div class="col-md-6">
                                                     <?php
-                                                    $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
-
-                                                    //if($t->subject_id == 2)
-                                                    //  dd($topics);
-
-                                                    //dd($topics);
-                                                    //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
                                                     $x = $t->cmsLink;
                                                     ?>
-                                                    <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}" id="chapterTopic{{$i}}" disabled>
-                                                        <option value="">Select Topic</option>
-                                                        @if(count($topics)>0)
-                                                        @foreach($topics as $topic)
-                                                        <?php $selected = ($topic->id == $t->topic_id) ? 'selected' : ''; ?>
-                                                        <option value="{{$topic->id}}" {{$selected}} style="display:none">{{$topic->topic}}</option>
-                                                        @endforeach
-                                                        @endif
-                                                    </select>
+                                                    {{$topic}}
                                                 </div>
                                                 @if($t->cancelled)
                                                 @else
@@ -644,12 +622,9 @@ $cls = 0;
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-1">
-
-
                                             <div class=" mt-1 mb-1">
-                                                <textarea class="form-control " style="resize: none;" rows="4" placeholder="empty Notes !" disabled name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+                                                <textarea class="form-control " style="resize: none;" rows="4" placeholder="Empty Notes!" disabled name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
                                             </div>
-
                                         </div>
 
                                     </div>
@@ -675,7 +650,7 @@ $cls = 0;
                                 @endif
                             </div>
                         </div>
-                        <!-- </div> -->
+
                         @php
                         $i++;
                         @endphp
@@ -720,18 +695,18 @@ $cls = 0;
                         @php
                         $i=1;
                         @endphp
+                        <div class="form-group col-md-5">
+                            <select name="past_class" id="futureclassdata{{$i}}" style="margin-left: -14px;width:60%" class="form-control" onchange="viewFutureClass({{$i}})">
+                                <option value="">Select Date</option>
+                                @foreach ($futureDates as $tt)
+                                <option value="{{$tt->class_date}}">{{ date("D, d M", strtotime($tt->class_date))}}</option>
+                                @php
+                                $i++;
+                                @endphp
+                                @endforeach
+                            </select>
+                        </div>
 
-                        <ul class="nav justify-content-center">
-                            @foreach ($futureDates as $tt)
-                            <input type="hidden" id="futureclassdata{{$i}}" value="{{$tt->class_date}}">
-                            <li class="nav-item" onclick="viewFutureClass({{$i}})">
-                                <a class="nav-link  btn btn-sm text-white mr-2 mb-3 active1 " href="#"> {{ date("D, d M", strtotime($tt->class_date))}}</a>
-                            </li>
-                            @php
-                            $i++;
-                            @endphp
-                            @endforeach
-                        </ul>
                         @endif
                         @if(count($futureClassData) > 0)
 
@@ -1262,40 +1237,42 @@ $cls = 0;
                                     Class Invitation
                                 </div>
                             </div>
-                            <div class="row mb-3">
-
+                            @if(date('H:i',strtotime($t->to_timing)) <= date('H:i')) @else <div class="row mb-3">
                                 <div class="btn btn-md btn-primary " id="cancel">
                                     Class Cancellation
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="btn btn-xs btn-primary pl-5 pr-5" id="custom">
-                                    Custom
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-9 col-lg-9 col-9">
-                            <!-- <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
-                            </label> -->
-                            <div class="mt-5">
-                                {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
-
-                            </div>
-                            <div class="form-group  mt-3 ml-5 ">
-
-                                <button type="submit" class="btn btn-primary px-4 mr-2">Notify</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-
-                            </div>
                         </div>
 
+                        @endif
+                        <div class="row">
+                            <div class="btn btn-xs btn-primary pl-5 pr-5" id="custom">
+                                Custom
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-md-9 col-lg-9 col-9">
+                        <!-- <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
+                            </label> -->
+                        <div class="mt-5">
+                            {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
+
+                        </div>
+                        <div class="form-group  mt-3 ml-5 ">
+
+                            <button type="submit" class="btn btn-primary px-4 mr-2">Notify</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                        </div>
+                    </div>
+
                 </div>
-                </form>
             </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 <!-- Past Edit Class Modal -->
 <div class="modal fade" id="pasteditClassModal" data-backdrop="static" tabindex="-1" role="dialog">
@@ -2234,7 +2211,7 @@ $cls = 0;
 
     function viewFutureClass(id) {
         var class_date = $('#futureclassdata' + id).val();
-        $('#upcmoingclass').hide();
+        $('#upcomingclasses').hide();
         $.ajax({
             type: 'GET',
             url: '{{ url("/teacher/class/viewFutureClass") }}',
@@ -2245,8 +2222,8 @@ $cls = 0;
                 'class_date': class_date,
             },
             success: function(result) {
-                $('#upcmoingclass').html(result);
-                $('#upcmoingclass').show();
+                $('#upcomingclasses').html(result);
+                $('#upcomingclasses').show();
 
             },
             error: function() {}

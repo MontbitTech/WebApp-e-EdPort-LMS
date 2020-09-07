@@ -29,6 +29,9 @@ $section_name = '';
 $g_class_id = '';
 $class_name = '';
 $subject_name = '';
+$chapter='';
+$topic='';
+
 if ($t->studentClass) {
     $class_name = $t->studentClass->class_name;
     //$class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
@@ -37,6 +40,10 @@ if ($t->studentClass) {
 }
 if ($t->studentSubject) {
     $subject_name = $t->studentSubject->subject_name;
+}
+if ($t->cmsLink) {
+    $chapter = $t->cmsLink->chapter;
+    $topic = $t->cmsLink->topic;
 }
 ?>
 
@@ -96,42 +103,15 @@ if ($t->studentSubject) {
             <div class="row m-2">
                 <div class="col-md-6">
                     <div class="row">
-                        <?php
-                        $chapters = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
-                        ?>
                         <div class="col-md-6">
 
-                            <select class="form-control custom-select-sm border-0 btn-shadow chapter" id="chapter" name="chap" data-chapter="{{$i}}" disabled>
-                                <option value="Select Chapter">Select Chapter</option>
-                                @if(count($chapters)>0)
-                                @foreach($chapters as $ch)
-                                <?php $selected = ($ch->id == $t->topic_id) ? 'selected' : ''; ?>
-                                <option value="{{$ch->chapter}}" {{$selected}}>{{$ch->chapter}}</option>
-                                @endforeach
-                                @endif
-
-                            </select>
+                            {{$chapter}}
                         </div>
                         <div class="col-md-6">
                             <?php
-                            $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
-
-                            //if($t->subject_id == 2)
-                            //  dd($topics);
-
-                            //dd($topics);
-                            //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
                             $x = $t->cmsLink;
                             ?>
-                            <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}" id="chapterTopic{{$i}}" disabled>
-                                <option value="">Select Topic</option>
-                                @if(count($topics)>0)
-                                @foreach($topics as $topic)
-                                <?php $selected = ($topic->id == $t->topic_id) ? 'selected' : ''; ?>
-                                <option value="{{$topic->id}}" {{$selected}} style="display:none">{{$topic->topic}}</option>
-                                @endforeach
-                                @endif
-                            </select>
+                            {{$topic}}
                         </div>
                         @if($t->cancelled)
                         @else
@@ -271,7 +251,7 @@ if ($t->studentSubject) {
                 <div class="col-md-6 mt-1">
 
                     <div class=" mt-1 mb-1">
-                        <textarea class="form-control " style="resize: none;" rows="4" placeholder="empty Notes !" disabled name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+                        <textarea class="form-control " style="resize: none;" rows="4" placeholder="Empty Notes!" disabled name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
                     </div>
 
 

@@ -937,12 +937,11 @@ body {
   border: 1px solid #ddd !important;
   box-shadow: none !important;
 }
-.collapse-btn:hover,
-.collapse-btn:active,
-.collapse-btn:focus,
-.collapse-btn {
-  box-shadow: 0 0 0 0.2rem #f8f9fa !important;
-  padding: 2px 8px !important;
+.btn-collapse:hover,
+.btn-collapse:active,
+.btn-collapse:focus,
+.btn-collapse {
+  box-shadow: none !important;
 }
 
 /*End*/
