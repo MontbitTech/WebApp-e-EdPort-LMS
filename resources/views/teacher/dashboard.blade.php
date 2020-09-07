@@ -404,6 +404,8 @@ $cls = 0;
                         $g_class_id = '';
                         $class_name = '';
                         $subject_name = '';
+                        $chapter='';
+                        $topic='';
                         if ($t->studentClass) {
                             $class_name = $t->studentClass->class_name;
                             //$class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
@@ -412,6 +414,10 @@ $cls = 0;
                         }
                         if ($t->studentSubject) {
                             $subject_name = $t->studentSubject->subject_name;
+                        }
+                        if ($t->cmsLink) {
+                            $chapter = $t->cmsLink->chapter;
+                            $topic = $t->cmsLink->topic;
                         }
                         ?>
 
@@ -470,42 +476,15 @@ $cls = 0;
                                     <div class="row m-2">
                                         <div class="col-md-6">
                                             <div class="row">
-                                                <?php
-                                                $chapters = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
-                                                ?>
                                                 <div class="col-md-6">
 
-                                                    <select class="form-control custom-select-sm border-0 btn-shadow chapter" id="chapter" name="chap" data-chapter="{{$i}}" disabled>
-                                                        <option value="Select Chapter">Select Chapter</option>
-                                                        @if(count($chapters)>0)
-                                                        @foreach($chapters as $ch)
-                                                        <?php $selected = ($ch->id == $t->topic_id) ? 'selected' : ''; ?>
-                                                        <option value="{{$ch->chapter}}" {{$selected}}>{{$ch->chapter}}</option>
-                                                        @endforeach
-                                                        @endif
-
-                                                    </select>
+                                                    {{$chapter}}
                                                 </div>
                                                 <div class="col-md-6">
                                                     <?php
-                                                    $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
-
-                                                    //if($t->subject_id == 2)
-                                                    //  dd($topics);
-
-                                                    //dd($topics);
-                                                    //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
                                                     $x = $t->cmsLink;
                                                     ?>
-                                                    <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}" id="chapterTopic{{$i}}" disabled>
-                                                        <option value="">Select Topic</option>
-                                                        @if(count($topics)>0)
-                                                        @foreach($topics as $topic)
-                                                        <?php $selected = ($topic->id == $t->topic_id) ? 'selected' : ''; ?>
-                                                        <option value="{{$topic->id}}" {{$selected}} style="display:none">{{$topic->topic}}</option>
-                                                        @endforeach
-                                                        @endif
-                                                    </select>
+                                                    {{$topic}}
                                                 </div>
                                                 @if($t->cancelled)
                                                 @else
@@ -1258,40 +1237,42 @@ $cls = 0;
                                     Class Invitation
                                 </div>
                             </div>
-                            <div class="row mb-3">
-
+                            @if(date('H:i',strtotime($t->to_timing)) <= date('H:i')) @else <div class="row mb-3">
                                 <div class="btn btn-md btn-primary " id="cancel">
                                     Class Cancellation
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="btn btn-xs btn-primary pl-5 pr-5" id="custom">
-                                    Custom
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-9 col-lg-9 col-9">
-                            <!-- <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
-                            </label> -->
-                            <div class="mt-5">
-                                {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
-
-                            </div>
-                            <div class="form-group  mt-3 ml-5 ">
-
-                                <button type="submit" class="btn btn-primary px-4 mr-2">Notify</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-
-                            </div>
                         </div>
 
+                        @endif
+                        <div class="row">
+                            <div class="btn btn-xs btn-primary pl-5 pr-5" id="custom">
+                                Custom
+                            </div>
+                        </div>
                     </div>
+                    <div class="col-md-9 col-lg-9 col-9">
+                        <!-- <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
+                            </label> -->
+                        <div class="mt-5">
+                            {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+
+
+                        </div>
+                        <div class="form-group  mt-3 ml-5 ">
+
+                            <button type="submit" class="btn btn-primary px-4 mr-2">Notify</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                        </div>
+                    </div>
+
                 </div>
-                </form>
             </div>
+            </form>
         </div>
     </div>
+</div>
 </div>
 <!-- Past Edit Class Modal -->
 <div class="modal fade" id="pasteditClassModal" data-backdrop="static" tabindex="-1" role="dialog">
