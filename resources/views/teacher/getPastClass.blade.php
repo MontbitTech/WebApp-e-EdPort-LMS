@@ -271,7 +271,7 @@ if ($t->studentSubject) {
                 <div class="col-md-6 mt-1">
 
                     <div class=" mt-1 mb-1">
-                        <textarea class="form-control " style="resize: none;" rows="4" placeholder="empty Notes !" disabled name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+                        <textarea class="form-control " style="resize: none;" rows="4" placeholder="Empty Notes!" disabled name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
                     </div>
 
 

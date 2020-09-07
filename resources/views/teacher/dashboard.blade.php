@@ -112,7 +112,7 @@ $cls = 0;
                                                     Edit
                                                 </button>
                                                 @endif
-                                                <button type="button" class="btn btn-collapse text-white collapse-btn " data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
+                                                <button type="button" class="btn btn-collapse text-white border border-white " data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
                                                 </button>
                                             </div>
 
@@ -415,7 +415,6 @@ $cls = 0;
                         }
                         ?>
 
-                        <!-- <div id="plclasses1"> -->
 
                         <div class="card text-center mb-3" style="border-color:#253372;">
 
@@ -644,12 +643,9 @@ $cls = 0;
                                             </div>
                                         </div>
                                         <div class="col-md-6 mt-1">
-
-
                                             <div class=" mt-1 mb-1">
-                                                <textarea class="form-control " style="resize: none;" rows="4" placeholder="empty Notes !" disabled name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
+                                                <textarea class="form-control " style="resize: none;" rows="4" placeholder="Empty Notes!" disabled name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
                                             </div>
-
                                         </div>
 
                                     </div>
@@ -675,7 +671,7 @@ $cls = 0;
                                 @endif
                             </div>
                         </div>
-                        <!-- </div> -->
+
                         @php
                         $i++;
                         @endphp
@@ -2234,7 +2230,7 @@ $cls = 0;
 
     function viewFutureClass(id) {
         var class_date = $('#futureclassdata' + id).val();
-        $('#upcmoingclass').hide();
+        $('#upcomingclasses').hide();
         $.ajax({
             type: 'GET',
             url: '{{ url("/teacher/class/viewFutureClass") }}',
@@ -2245,8 +2241,8 @@ $cls = 0;
                 'class_date': class_date,
             },
             success: function(result) {
-                $('#upcmoingclass').html(result);
-                $('#upcmoingclass').show();
+                $('#upcomingclasses').html(result);
+                $('#upcomingclasses').show();
 
             },
             error: function() {}

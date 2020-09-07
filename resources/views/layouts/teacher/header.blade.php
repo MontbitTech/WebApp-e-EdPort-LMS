@@ -1,10 +1,31 @@
+<style>
+  @media (max-width: 991.98px) {
+    /* 
+    .menu-bars,
+    .icon-bars {
+      display: none;
+      margin: 0px;
+      padding: 0px;
+    }
+
+    .navbar-expand-xl {
+      padding-left: 22px !important;
+    } */
+
+    body {
+      line-height: 1;
+    }
+  }
+</style>
+
+
 <!-- Navigation -->
 @php
 $s = \App\Http\Helpers\CustomHelper::getSchool();
 @endphp
 <nav class="navbar fixed-top navbar-expand-xl bg-light">
   <div class="menu-bars ">
-    <svg class="icon">
+    <svg class="icon icon-bars ">
       <use xlink:href="{{asset('images/icons.svg#icon_bars')}}"></use>
     </svg>
   </div>
@@ -26,11 +47,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
             </svg> Class
           </a>
         </li>
-        <!--<li class="nav-item">
-          <a class="nav-link {{ Request::segment(2) == 'quiz'?'active':''}}" href="{{route('teacher.quiz')}}">
-            <svg class="icon icon-1x mr-1"><use xlink:href="{{asset('images/icons.svg#icon_puzzle')}}"></use></svg> Quiz
-          </a>
-        </li>-->
+
         <li class="nav-item">
           <a class="nav-link {{ Request::segment(2) == 'assignment'?'active':''}}" href="{{route('teacher.assignment')}}">
             <svg class="icon mr-1">
@@ -38,20 +55,14 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
             </svg> Examination
           </a>
         </li>
-        <!--<li class="nav-item">
-          <a class="nav-link {{ Request::segment(2) == 'report'?'active':''}}" href="{{route('teacher.report')}}">
-            <svg class="icon mr-1"><use xlink:href="{{asset('images/icons.svg#icon_chart')}}"></use></svg> Report
-          </a>
-        </li>  -->
+
       </ul>
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <a class="nav-link" href="{{ route('teacher.logout') }}"><svg class="icon mmb-2 mr-1">
               <use xlink:href="{{asset('images/icons.svg#icon_logout')}}"></use>
             </svg> Logout</a>
-          <!--  <form id="logout-form" action="#" method="POST" style="display: none;">
-                @csrf
-            </form> -->
+
           </a>
         </li>
         <li class="nav-item">
