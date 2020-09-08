@@ -1719,7 +1719,7 @@ $cls = 0;
                     $('#assignment_create').prop('disabled', false);
                     $('#attach_file').prop('disabled', false);
                     $('#cancel_assignment').prop('disabled', false);
-                    $("#assignmentmodal").css('display', 'block');
+                    $("#assignmentmodal").css('display', 'inline');
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
                     $('#assignment_create').prop('disabled', false);
@@ -1783,7 +1783,7 @@ $cls = 0;
                     $('#assignment_create').prop('disabled', false);
                     $('#attach_file').prop('disabled', false);
                     $('#cancel_assignment').prop('disabled', false);
-                    $("#assignmentmodal").css('display', 'block');
+                    $("#assignmentmodal").css('display', 'inline');
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
                     $('#assignment_create').prop('disabled', false);
