@@ -87,20 +87,42 @@ $cls = 0;
 
 
                                     <div class="row ">
-                                        <div class="d-flex align-items-center col-md-4 pr-0">
+                                        <div class="d-flex align-items-center col-md-3 pr-0">
                                             <!-- <div class="cls-date font-weight-bold mb-2 mt-2">{{ $todaysDate }}</div> -->
-                                            <div class="cls-from pt-1 font-weight-bold">
+                                            <div class=" pt-1 font-weight-bold">
                                                 {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                         </div>
-                                        <div class="d-flex align-items-center justify-content-between col-md-8">
-                                            <div class="font-weight-bold pt-1">
-                                                Class: {{ $class_name }} Std
+                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3"> Class: {{ $class_name }} Std</div>
+                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3"> Section:{{$section_name}}</div>
+                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold   pt-3 p-0"> Subject: {{$subject_name}}</div>
+                                        <div class="col-md-3 col-3 col-lg-3 col-sm-3 font-weight-bold pt-1 pr-0 text-center">
+                                            <div class="row">
+                                                <div class="col-md-6 col-6 col-lg-6 p-0 m-0">
+                                                    @if($t->cancelled)
+                                                    <button class="btn btn-md bg-danger text-white  mb-0 ml-2 font-weight-bold mt-1">Cancelled</button>
+                                                    @else
+                                                    <button type="button" data-editModal="{{$i}}" class="btn mr-2 text-right  btn-md pb-0 mb-0 pt-2 border-0 text-white" title="Edit">
+                                                        <i class="fas fa-edit mr-1"></i>Edit
+                                                    </button>
+                                                    @endif
+                                                </div>
+                                                <div class="col-md-6 col-6 col-lg-6">
+                                                    <button type="button" class="btn btn-collapse text-white mb-1 mt-1 pl-2 pr-2 pt-1 pb-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <!-- <div class="d-flex align-items-center justify-content-between col-md-8">
+                                            <div class="">
+
                                             </div>
                                             <div class="font-weight-bold pt-1">
-                                                Section:{{$section_name}}
+
                                             </div>
                                             <div class="font-weight-bold pt-1">
-                                                Subject: {{$subject_name}}
+
                                             </div>
 
                                             <div>
@@ -118,7 +140,7 @@ $cls = 0;
                                                 </button>
                                             </div>
 
-                                        </div>
+                                        </div> -->
 
                                     </div>
                                 </div>
@@ -208,11 +230,17 @@ $cls = 0;
                                                         <div class="row">
 
                                                             @if($cms_link!=null)
+                                                            <?php
+                                                            $parse = parse_url($cms_link);
+                                                            $cms_link_name = $parse['host'];
+
+                                                            $cms_link_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $cms_link_name);
+                                                            ?>
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex row" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="col-md-9 col-9 col-lg-9 btn btn-sm btn-outline-dark btn-shadow border-0 d-inline-flex d-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                                         <!-- Edport Content -->
-                                                                        <span class="m-auto font-weight-bolder">e-Edport</span>
+                                                                        <span class="m-auto font-weight-bolder text-capitalize">{{$cms_link_name}}</span>
                                                                     </a>
                                                                     <button class="col-md-3 col-3 col-lg-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$i}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
@@ -362,7 +390,12 @@ $cls = 0;
                                             $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
                                             ?>
 
-                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow @if (isset($assignmentData)) d-none @endif" data-toggle="modal" id="viewassigment" data-target="#exampleModalLong">View Assigment</button>
+                                            @if (count($assignmentData) > 0)
+                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
+                                            @else
+                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="assignmentmodal" data-toggle="modal" data-target="#exampleModalLong" style="display:none">View Assigment</button>
+
+                                            @endif
 
                                         </div>
                                     </div>
@@ -779,7 +812,7 @@ $cls = 0;
                                 <?php
                                 $class_date = date("d M", strtotime($t->class_date));
                                 ?>
-                                <div class="card-header text-white p-0  " style="background:#253372;">
+                                <div class="card-header text-white p-0  pt-2 pb-2 " style="background:#253372;">
                                     <div class="container">
 
                                         <div class="row pl-2 pr-3">
@@ -1717,6 +1750,7 @@ $cls = 0;
                     $('#assignment_create').prop('disabled', false);
                     $('#attach_file').prop('disabled', false);
                     $('#cancel_assignment').prop('disabled', false);
+                    $("#assignmentmodal").css('display', 'block');
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
                     $('#assignment_create').prop('disabled', false);
@@ -1780,6 +1814,7 @@ $cls = 0;
                     $('#assignment_create').prop('disabled', false);
                     $('#attach_file').prop('disabled', false);
                     $('#cancel_assignment').prop('disabled', false);
+                    $("#assignmentmodal").css('display', 'block');
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
                     $('#assignment_create').prop('disabled', false);
