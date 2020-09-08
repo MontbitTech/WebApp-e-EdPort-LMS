@@ -423,8 +423,8 @@ body {
 }
 
 .cls-date {
-  padding: 8px 10px;
-  font-size: 20px;
+  /* padding: 8px 10px; */
+  font-size: 1.25rem;
 }
 
 .cls-separater {
@@ -723,7 +723,7 @@ body {
   font-family: "Roboto-Bold", Arial, sans-serif;
   color: #373c8e;
   letter-spacing: 0.5px;
-  margin-right: 10px;
+  margin-right: 0.625rem;
   border: 1px solid #ddd;
 }
 
@@ -937,6 +937,7 @@ body {
   border: 1px solid #ddd !important;
   box-shadow: none !important;
 }
+
 .btn-collapse:hover,
 .btn-collapse:active,
 .btn-collapse:focus,
@@ -944,4 +945,18 @@ body {
   box-shadow: none !important;
 }
 
+.card-border {
+  border: 1px solid black;
+  border-top-style: none;
+}
+
+@media (max-width: 991.98px) {
+  .futuer-m {
+    margin-top: 10px;
+  }
+
+  body {
+    line-height: 1;
+  }
+}
 /*End*/

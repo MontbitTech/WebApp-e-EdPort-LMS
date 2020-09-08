@@ -132,21 +132,22 @@ class TeacherLoginController extends Controller
         $pastClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '>', DateUtility::getPastDate(2))
             ->Where('class_date', '<', DateUtility::getDate())
-            ->orderBy('class_date', 'desc')
             ->orderBy('from_timing', 'desc')
             ->limit(20)
             ->get();
-        $pastDates = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher['teacher_id'])
+        $pastDates = DB::table('tbl_dateclass')->select('class_date','from_timing')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '>', DateUtility::getPastDate(7))
             ->Where('class_date', '<', DateUtility::getDate())
             ->orderBy('class_date', 'desc')
+            ->orderBy('from_timing', 'desc')
             ->limit(7)
             ->distinct('class_date')
             ->get()->unique();
-        $futureDates = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher['teacher_id'])
+        $futureDates = DB::table('tbl_dateclass')->select('class_date','from_timing')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '<', DateUtility::getFutureDate(7))
             ->Where('class_date', '>', DateUtility::getDate())
-            ->orderBy('class_date')
+            ->orderBy('class_date', 'asc')
+            ->orderBy('from_timing', 'asc')
             ->limit(20)
             ->distinct('class_date')
             ->get()->unique();
@@ -173,7 +174,9 @@ class TeacherLoginController extends Controller
         $class_date = date("D, d M", strtotime($request->class_date));
         $logged_teacher   = Session::get('teacher_session');
         $schoollogo = \DB::table('tbl_settings')->get()->keyBy('item');
-        $pastClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('class_date', $request->class_date)->get();
+        $pastClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('class_date', $request->class_date)
+            ->orderBy('from_timing', 'desc')
+            ->get();
         $pastDates = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '>', DateUtility::getPastDate(7))
             ->Where('class_date', '<', DateUtility::getDate())
@@ -189,7 +192,10 @@ class TeacherLoginController extends Controller
         $class_date = date("D, d M", strtotime($request->class_date));
         $logged_teacher   = Session::get('teacher_session');
         $schoollogo = \DB::table('tbl_settings')->get()->keyBy('item');
-        $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('class_date', $request->class_date)->get();
+        $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('class_date', $request->class_date)
+            ->orderBy('from_timing', 'asc')
+            ->orderBy('class_date', 'asc')
+            ->get();
         $futureDates = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '<', DateUtility::getFutureDate(7))
             ->Where('class_date', '>', DateUtility::getDate())
@@ -253,15 +259,15 @@ class TeacherLoginController extends Controller
         $dateClass = DateClass::with('studentClass')->find($request->dateclass_id);
 
         $students = Student::with('class')
-                        ->with(['attendance'=>function($q) use ($request){
-                            $q->where('dateclass_id',$request->dateclass_id);
-                        }])
-                        ->whereHas('class', function($q) use ($dateClass){
-                            $q->where('class_name', $dateClass->studentClass->class_name);
-                            $q->where('section_name', $dateClass->studentClass->section_name);
-                        })->get();
+            ->with(['attendance' => function ($q) use ($request) {
+                $q->where('dateclass_id', $request->dateclass_id);
+            }])
+            ->whereHas('class', function ($q) use ($dateClass) {
+                $q->where('class_name', $dateClass->studentClass->class_name);
+                $q->where('section_name', $dateClass->studentClass->section_name);
+            })->get();
 
-        
+
         return view('teacher.getStudents', compact('students', 'dateClass'));
     }
 }

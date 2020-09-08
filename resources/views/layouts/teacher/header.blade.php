@@ -1,20 +1,10 @@
 <style>
-  @media (max-width: 991.98px) {
-    /* 
-    .menu-bars,
-    .icon-bars {
-      display: none;
-      margin: 0px;
-      padding: 0px;
-    }
+  .color-change .nav-link.active {
+    color: #373c8e !important;
+  }
 
-    .navbar-expand-xl {
-      padding-left: 22px !important;
-    } */
-
-    body {
-      line-height: 1;
-    }
+  .color-change .nav-link {
+    color: #282c78 !important;
   }
 </style>
 
@@ -83,17 +73,17 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 <div class="modal fade" id="classhelpModal" data-backdrop="static" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header bg-light d-flex align-items-center">
+      <div class="modal-header bg-light d-flex align-items-center mb-0 pb-0">
         <!-- <h5 class="modal-title font-weight-bold">Help Message</h5> -->
-        <ul class="nav nav-tabs1 nav-pills" id="myTab" role="tablist">
-          <li class="nav-item mb-1 btn-sm">
-            <a class="nav-link shadow-sm active" data-toggle="tab" href="#fqa" role="tab" aria-selected="true">FAQs</a>
+        <ul class="nav  nav-tabs  color-change" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link   active" data-toggle="tab" href="#fqa" role="tab" aria-selected="true">FAQs</a>
           </li>
-          <li class="nav-item mb-1 btn-sm">
-            <a class="nav-link shadow-sm" data-toggle="tab" href="#video" role="tab">Videos</a>
+          <li class="nav-item">
+            <a class="nav-link " data-toggle="tab" href="#video" role="tab">Videos</a>
           </li>
-          <li class="nav-item mb-1 btn-sm">
-            <a class="nav-link shadow-sm" data-toggle="tab" href="#message" role="tab">Contact Admin</a>
+          <li class="nav-item  ">
+            <a class="nav-link " data-toggle="tab" href="#message" role="tab">Contact Admin</a>
           </li>
         </ul>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
