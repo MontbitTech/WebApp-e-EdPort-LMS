@@ -28,10 +28,11 @@ tr:nth-child(even) {
                 <th>End</th>
                 <th>subject</th>
                 <th>Teacher</th>
+                <th>Join</th>
             </tr>
         </thead>
         <tbody>
-            
+
             @foreach($weeksClasses as $weekclass)
             <tr>
                 <td>{{$weekclass['class_date']}}</td>
@@ -39,6 +40,7 @@ tr:nth-child(even) {
                 <td>{{$weekclass['to_timing']}}</td>
                 <td>@if($weekclass['student_subject'] != null) {{$weekclass['student_subject']['subject_name']}} @endif</td>
                 <td>@if($weekclass['teacher'] != null) {{$weekclass['teacher']['name']}} @endif</td>
+                <td><a href="{{$weekclass['teacher']['g_meet_url']}}">Join class</a> </td>
             </tr>
             @endforeach
         </tbody>
