@@ -16,10 +16,7 @@ class StudentAttendanceController extends Controller
 
     public function store(Request $request)
     {
-        $attendance = Attendance::where('dateclass_id',$request->dateclass_id)->get();
-
-        if(count($attendance))
-            return back()->with('error','Attendance has been submitted for this class already.');
+        Attendance::where('dateclass_id',$request->dateclass_id)->delete();
 
         $data = array();
         $count = 1;
@@ -30,7 +27,7 @@ class StudentAttendanceController extends Controller
             $count++;
         }
 
-        $attendance = Attendance::insert($data);
+        Attendance::insert($data);
 
         return back()->with('success', 'Attendance added successfully');
     }
