@@ -20,8 +20,7 @@ $cls = 0;
                         <a class="nav-link shadow-sm active" data-toggle="tab" href="#ulclasses" role="tab" aria-selected="true">Today's Live Classes</a>
                     </li>
                     <li class="nav-item mb-1">
-                        <a class="nav-link shadow-sm" data-toggle="tab" href="#plclasses" role="tab">Past Live
-                            Classes</a>
+                        <a class="nav-link shadow-sm" data-toggle="tab" href="#plclasses" role="tab">Past Classes</a>
                     </li>
                     <li class="nav-item mb-1">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assignment Submission Summary</a>
@@ -89,8 +88,8 @@ $cls = 0;
 
                                     <div class="row ">
                                         <div class="d-flex align-items-center col-md-4 pr-0">
-                                            <div class="cls-date font-weight-bold mb-2 mt-2">{{ $todaysDate }}</div>
-                                            <div class="cls-from pt-1">
+                                            <!-- <div class="cls-date font-weight-bold mb-2 mt-2">{{ $todaysDate }}</div> -->
+                                            <div class="cls-from pt-1 font-weight-bold">
                                                 {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                         </div>
                                         <div class="d-flex align-items-center justify-content-between col-md-8">
@@ -1255,6 +1254,7 @@ $cls = 0;
                 <input type="hidden" id="data_subject_id" value="" name="subject_id" />
                 <input type="hidden" id="data_class_id" value="" name="class_id" />
                 <input type="hidden" id="data_gmeet_url" value="" name="gmeet_url" />
+                <input type="hidden" id="data_to_timing" value="data_to_timing" />
                 <input type="hidden" id="data_from_timing" value="data_from_timing" />
                 <input type="hidden" id="data_cancelled" name="cancelled" value="0" />
 
@@ -1262,48 +1262,49 @@ $cls = 0;
 
                     <div class="form-group row">
                         <div class="col-md-3 col-lg-3 col-3 pl-5 mt-4">
-                            <div class="row mb-3">
+                            <div class="row mb-3     ">
 
                                 <div class="btn btn-md btn-primary pl-3 pr-4 active" id="notify">
                                     Class Invitation
                                 </div>
                             </div>
-                            @if(date('H:i',strtotime($t->to_timing)) <= date('H:i')) @else <div class="row mb-3">
+
+                            <div class="row mb-3">
                                 <div class="btn btn-md btn-primary " id="cancel">
                                     Class Cancellation
                                 </div>
 
-                        </div>
+                            </div>
 
-                        @endif
-                        <div class="row">
-                            <div class="btn btn-xs btn-primary pl-5 pr-5" id="custom">
-                                Custom
+
+                            <div class="row">
+                                <div class="btn btn-xs btn-primary pl-5 pr-5" id="custom">
+                                    Custom
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-9 col-lg-9 col-9">
-                        <!-- <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
+                        <div class="col-md-9 col-lg-9 col-9">
+                            <!-- <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
                             </label> -->
-                        <div class="mt-5">
-                            {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
+                            <div class="mt-5">
+                                {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
 
+                            </div>
+                            <div class="form-group  mt-3 ml-5 ">
+
+                                <button type="submit" class="btn btn-primary px-4 mr-2">Notify</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                            </div>
                         </div>
-                        <div class="form-group  mt-3 ml-5 ">
 
-                            <button type="submit" class="btn btn-primary px-4 mr-2">Notify</button>
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-
-                        </div>
                     </div>
-
                 </div>
+                </form>
             </div>
-            </form>
         </div>
     </div>
-</div>
 </div>
 <!-- Past Edit Class Modal -->
 <div class="modal fade" id="pasteditClassModal" data-backdrop="static" tabindex="-1" role="dialog">
@@ -1981,6 +1982,7 @@ $cls = 0;
         $("#data_from_timing").val($("#txt_from_timing" + val).val());
 
         var from_timing = $("#data_from_timing").val();
+        var to_timing = $("#txt_to_timing" + val).val();
         var gmeet_url = $("#data_gmeet_url").val();
         var class_w = $("#txt_class_name" + val).val();
         // var d = $("#txt_today_date" + val).val();
@@ -1996,10 +1998,28 @@ $cls = 0;
         if (mm < 10) {
             mm = '0' + mm;
         }
+
+
+        today.setHours(today.getHours());
+        var isPM = today.getHours() >= 12;
+        var isMidday = today.getHours() == 12;
+        var result = document.querySelector('#result');
+        var time = [today.getHours() - (isPM && !isMidday ? 12 : 0),
+                today.getMinutes() || '00'
+            ].join(':') +
+            (isPM ? ' pm' : 'am');
+
+        //console.log(to_timing, time);
+
+
+        if (to_timing <= time) {
+            $('#cancel').hide();
+        }
+
         today = mm + '-' + dd + '-' + yyyy;
         var s_name = $("#txt_subject_name" + val).val();
         $('#notify').click(function() {
-            let vale = "The class will start from " + from_timing + ". Please Join " + gmeet_url
+            let vale = "The class will start from " + to_timing + ". Please Join " + gmeet_url
             $('#notificationMsg').val(vale);
             $('#data_cancelled').val(0);
         });
