@@ -42,7 +42,7 @@ if ($t->studentSubject) {
 ?>
 
 <div id="upcmoingclass">
-    <div class="card text-center mb-3" style="border-color:#253372;">
+    <div class="card text-center mb-3">
 
         <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
         <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">

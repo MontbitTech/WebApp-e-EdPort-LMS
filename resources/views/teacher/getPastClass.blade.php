@@ -48,7 +48,7 @@ if ($t->cmsLink) {
 ?>
 
 <!-- <div id="plclasses1"> -->
-<div class="card text-center mb-3" style="border-color:#253372;">
+<div class="card text-center mb-3">
 
     <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
     <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
@@ -98,7 +98,7 @@ if ($t->cmsLink) {
             </div>
         </div>
     </div>
-    <div class="collapse " id="collapseExample{{$t->id}}">
+    <div class="collapse card-border" id="collapseExample{{$t->id}}">
         <div class="card-body p-0">
             <div class="row m-2">
                 <div class="col-md-6">

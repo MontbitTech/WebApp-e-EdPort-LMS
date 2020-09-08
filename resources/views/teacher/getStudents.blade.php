@@ -100,14 +100,11 @@
                                 @if($student->attendance[0]->status)
                                     checked
                                 @endif
+                            @else
+                                checked
                             @endif
                             @if(date('y-m-d') > date('y-m-d',strtotime($dateClass->class_date)))
                                 class="attendance"
-                            @endif
-                            @if(date('y-m-d') <= date('y-m-d',strtotime($dateClass->class_date)))
-                                @if(count($student->attendance)) 
-                                    disabled 
-                                @endif
                             @endif
                             value='1'><span class="slider round"></span></label>
 
@@ -119,10 +116,7 @@
         </table>
         <div class="text-center">
             @if(date('y-m-d') <= date('y-m-d',strtotime($dateClass->class_date)))
-                <input type="submit" class="btn btn-primary px-4 mr-2 text-center" 
-                @if(count($student->attendance)) disabled @endif 
-                
-                value="save">
+                <input type="submit" class="btn btn-primary px-4 mr-2 text-center" value="save">
             @endif
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
