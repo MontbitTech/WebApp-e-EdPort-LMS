@@ -107,7 +107,7 @@ $cls = 0;
                                                     @endif
                                                 </div>
                                                 <div class="col-md-6 col-6 col-lg-6">
-                                                    <button type="button" class="btn btn-collapse text-white mb-1 mt-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
+                                                    <button type="button" class="btn btn-collapse text-white mb-1 mt-1 pl-2 pr-2 pt-1 pb-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
                                                     </button>
                                                 </div>
                                             </div>
@@ -230,11 +230,17 @@ $cls = 0;
                                                         <div class="row">
 
                                                             @if($cms_link!=null)
+                                                            <?php
+                                                            $parse = parse_url($cms_link);
+                                                            $cms_link_name = $parse['host'];
+
+                                                            $cms_link_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $cms_link_name);
+                                                            ?>
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex row" style="letter-spacing:3px;">
                                                                     <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="col-md-9 col-9 col-lg-9 btn btn-sm btn-outline-dark btn-shadow border-0 d-inline-flex d-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                                         <!-- Edport Content -->
-                                                                        <span class="m-auto font-weight-bolder">e-Edport</span>
+                                                                        <span class="m-auto font-weight-bolder text-capitalize">{{$cms_link_name}}</span>
                                                                     </a>
                                                                     <button class="col-md-3 col-3 col-lg-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$i}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
@@ -387,7 +393,7 @@ $cls = 0;
                                             @if (count($assignmentData) > 0)
                                             <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
                                             @else
-                                             <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="assignmentmodal" data-toggle="modal" data-target="#exampleModalLong" style="display:none">View Assigment</button>
+                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="assignmentmodal" data-toggle="modal" data-target="#exampleModalLong" style="display:none">View Assigment</button>
 
                                             @endif
 
