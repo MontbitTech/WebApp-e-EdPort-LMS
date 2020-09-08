@@ -84,11 +84,8 @@ $cls = 0;
                             <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}" />
                             <div class="card-header text-white p-0   @if(date('H:i',strtotime($t->to_timing)) <= date('H:i')) bg-secondary @endif" style="background:#253372;">
                                 <div class="container">
-
-
                                     <div class="row ">
                                         <div class="d-flex align-items-center col-md-3 pr-0">
-                                            <!-- <div class="cls-date font-weight-bold mb-2 mt-2">{{ $todaysDate }}</div> -->
                                             <div class=" pt-1 font-weight-bold">
                                                 {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                         </div>
@@ -114,33 +111,7 @@ $cls = 0;
 
 
                                         </div>
-                                        <!-- <div class="d-flex align-items-center justify-content-between col-md-8">
-                                            <div class="">
 
-                                            </div>
-                                            <div class="font-weight-bold pt-1">
-
-                                            </div>
-                                            <div class="font-weight-bold pt-1">
-
-                                            </div>
-
-                                            <div>
-                                                @if($t->cancelled)
-                                                <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
-                                                @else
-                                                <button type="button" data-editModal="{{$i}}" class="btn mr-2 text-right  btn-md pb-0 mb-0 pt-1 border-0 text-white" title="Edit">
-                                                    <svg class="icon mr-1">
-                                                        <use xlink:href="../images/icons.svg#icon_edit"></use>
-                                                    </svg>
-                                                    Edit
-                                                </button>
-                                                @endif
-                                                <button type="button" class="btn btn-collapse text-white border border-white mb-1 mt-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
-                                                </button>
-                                            </div>
-
-                                        </div> -->
 
                                     </div>
                                 </div>
@@ -506,12 +477,10 @@ $cls = 0;
                                                 Subject: {{$subject_name}}
                                             </div>
                                             <div>
-
-
                                                 @if($t->cancelled)
                                                 <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
                                                 @endif
-                                                <button type="button" class="btn mt-1 mb-1 btn-collapse text-white collapse-btn border border-white" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                                                <button type="button" class="btn mt-1 mb-1 btn-collapse text-white collapse-btn pl-2 pr-2 pt-1 pb-1 mb-1 mt-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                                                 </button>
                                             </div>
                                         </div>

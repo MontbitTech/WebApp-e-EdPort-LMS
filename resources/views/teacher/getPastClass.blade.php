@@ -91,7 +91,7 @@ if ($t->cmsLink) {
                         @if($t->cancelled)
                         <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
                         @endif
-                        <button type="button" class=" border border-white btn btn-collapse text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                        <button type="button" class="pl-2 pr-2 pt-1 pb-1 mt-1 mb-1 btn btn-collapse text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                         </button>
                     </div>
                 </div>
