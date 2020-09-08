@@ -262,8 +262,9 @@ class TeacherLoginController extends Controller
                 $q->where('class_name', $dateClass->studentClass->class_name);
                 $q->where('section_name', $dateClass->studentClass->section_name);
             })->get();
+        $presentCount = Attendance::where('dateclass_id',$dateClass->id)->present()->count();
+        $absentCount = Attendance::where('dateclass_id',$dateClass->id)->absent()->count();
 
-
-        return view('teacher.getStudents', compact('students', 'dateClass'));
+        return view('teacher.getStudents', compact('students', 'dateClass', 'presentCount', 'absentCount'));
     }
 }
