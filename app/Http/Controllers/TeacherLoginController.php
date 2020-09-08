@@ -135,7 +135,7 @@ class TeacherLoginController extends Controller
             ->orderBy('from_timing', 'desc')
             ->limit(20)
             ->get();
-        $pastDates = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher['teacher_id'])
+        $pastDates = DB::table('tbl_dateclass')->select('class_date','from_timing')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '>', DateUtility::getPastDate(7))
             ->Where('class_date', '<', DateUtility::getDate())
             ->orderBy('class_date', 'desc')
@@ -143,7 +143,7 @@ class TeacherLoginController extends Controller
             ->limit(7)
             ->distinct('class_date')
             ->get()->unique();
-        $futureDates = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher['teacher_id'])
+        $futureDates = DB::table('tbl_dateclass')->select('class_date','from_timing')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '<', DateUtility::getFutureDate(7))
             ->Where('class_date', '>', DateUtility::getDate())
             ->orderBy('class_date', 'asc')
