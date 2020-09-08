@@ -133,14 +133,12 @@ class TeacherLoginController extends Controller
             ->where('class_date', '>', DateUtility::getPastDate(2))
             ->Where('class_date', '<', DateUtility::getDate())
             ->orderBy('from_timing', 'desc')
-            ->limit(20)
             ->get();
         $pastDates = DB::table('tbl_dateclass')->select('class_date','from_timing')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '>', DateUtility::getPastDate(7))
             ->Where('class_date', '<', DateUtility::getDate())
             ->orderBy('class_date', 'desc')
             ->orderBy('from_timing', 'desc')
-            ->limit(7)
             ->distinct('class_date')
             ->get()->unique();
         $futureDates = DB::table('tbl_dateclass')->select('class_date','from_timing')->where('teacher_id', $logged_teacher['teacher_id'])
@@ -148,7 +146,6 @@ class TeacherLoginController extends Controller
             ->Where('class_date', '>', DateUtility::getDate())
             ->orderBy('class_date', 'asc')
             ->orderBy('from_timing', 'asc')
-            ->limit(20)
             ->distinct('class_date')
             ->get()->unique();
         $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher['teacher_id'])
@@ -156,7 +153,6 @@ class TeacherLoginController extends Controller
             ->Where('class_date', '>', DateUtility::getDate())
             ->orderBy('class_date', 'asc')
             ->orderBy('from_timing', 'asc')
-            ->limit(20)
             ->get();
 
         $inviteClassData = InvitationClass::with('studentClass', 'studentSubject')->where('teacher_id', $logged_teacher['teacher_id'])->orderBy('id', 'DESC')->get();
