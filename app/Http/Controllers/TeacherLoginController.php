@@ -134,18 +134,18 @@ class TeacherLoginController extends Controller
             ->Where('class_date', '<', DateUtility::getDate())
             ->orderBy('from_timing', 'desc')
             ->get();
-        $pastDates = DB::table('tbl_dateclass')->select('class_date','from_timing')->where('teacher_id', $logged_teacher['teacher_id'])
+        $pastDates = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '>', DateUtility::getPastDate(7))
             ->Where('class_date', '<', DateUtility::getDate())
             ->orderBy('class_date', 'desc')
-            ->orderBy('from_timing', 'desc')
+            ->limit(7)
             ->distinct('class_date')
             ->get()->unique();
-        $futureDates = DB::table('tbl_dateclass')->select('class_date','from_timing')->where('teacher_id', $logged_teacher['teacher_id'])
+        $futureDates = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '<', DateUtility::getFutureDate(7))
             ->Where('class_date', '>', DateUtility::getDate())
-            ->orderBy('class_date', 'asc')
-            ->orderBy('from_timing', 'asc')
+            ->orderBy('class_date')
+            ->limit(7)
             ->distinct('class_date')
             ->get()->unique();
         $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher['teacher_id'])
@@ -262,8 +262,9 @@ class TeacherLoginController extends Controller
                 $q->where('class_name', $dateClass->studentClass->class_name);
                 $q->where('section_name', $dateClass->studentClass->section_name);
             })->get();
+        $presentCount = Attendance::where('dateclass_id', $dateClass->id)->present()->count();
+        $absentCount = Attendance::where('dateclass_id', $dateClass->id)->absent()->count();
 
-
-        return view('teacher.getStudents', compact('students', 'dateClass'));
+        return view('teacher.getStudents', compact('students', 'dateClass', 'presentCount', 'absentCount'));
     }
 }
