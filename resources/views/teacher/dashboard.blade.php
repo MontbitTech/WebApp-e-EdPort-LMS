@@ -89,8 +89,8 @@ $cls = 0;
                                             <div class=" pt-1 font-weight-bold">
                                                 {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                         </div>
-                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3"> Class: {{ $class_name }} Std</div>
-                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3"> Section:{{$section_name}}</div>
+                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3 p-0"> Class: {{ $class_name }} Std</div>
+                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3 p-0"> Section:{{$section_name}}</div>
                                         <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold   pt-3 p-0"> Subject: {{$subject_name}}</div>
                                         <div class="col-md-3 col-3 col-lg-3 col-sm-3 font-weight-bold pt-1 pr-0 text-center">
                                             <div class="row">
