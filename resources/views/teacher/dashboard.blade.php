@@ -384,7 +384,12 @@ $cls = 0;
                                             $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
                                             ?>
 
-                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow @if (isset($assignmentData)) d-none @endif" data-toggle="modal" id="viewassigment" data-target="#exampleModalLong">View Assigment</button>
+                                            @if (count($assignmentData) > 0)
+                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
+                                            @else
+                                             <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="assignmentmodal" data-toggle="modal" data-target="#exampleModalLong" style="display:none">View Assigment</button>
+
+                                            @endif
 
                                         </div>
                                     </div>
@@ -1739,6 +1744,7 @@ $cls = 0;
                     $('#assignment_create').prop('disabled', false);
                     $('#attach_file').prop('disabled', false);
                     $('#cancel_assignment').prop('disabled', false);
+                    $("#assignmentmodal").css('display', 'block');
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
                     $('#assignment_create').prop('disabled', false);
@@ -1802,6 +1808,7 @@ $cls = 0;
                     $('#assignment_create').prop('disabled', false);
                     $('#attach_file').prop('disabled', false);
                     $('#cancel_assignment').prop('disabled', false);
+                    $("#assignmentmodal").css('display', 'block');
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
                     $('#assignment_create').prop('disabled', false);
