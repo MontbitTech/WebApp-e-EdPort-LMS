@@ -87,20 +87,42 @@ $cls = 0;
 
 
                                     <div class="row ">
-                                        <div class="d-flex align-items-center col-md-4 pr-0">
+                                        <div class="d-flex align-items-center col-md-3 pr-0">
                                             <!-- <div class="cls-date font-weight-bold mb-2 mt-2">{{ $todaysDate }}</div> -->
-                                            <div class="cls-from pt-1 font-weight-bold">
+                                            <div class=" pt-1 font-weight-bold">
                                                 {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                         </div>
-                                        <div class="d-flex align-items-center justify-content-between col-md-8">
-                                            <div class="font-weight-bold pt-1">
-                                                Class: {{ $class_name }} Std
+                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3"> Class: {{ $class_name }} Std</div>
+                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3"> Section:{{$section_name}}</div>
+                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold   pt-3 p-0"> Subject: {{$subject_name}}</div>
+                                        <div class="col-md-3 col-3 col-lg-3 col-sm-3 font-weight-bold pt-1 pr-0 text-center">
+                                            <div class="row">
+                                                <div class="col-md-6 col-6 col-lg-6 p-0 m-0">
+                                                    @if($t->cancelled)
+                                                    <button class="btn btn-md bg-danger text-white  mb-0 ml-2 font-weight-bold mt-1">Cancelled</button>
+                                                    @else
+                                                    <button type="button" data-editModal="{{$i}}" class="btn mr-2 text-right  btn-md pb-0 mb-0 pt-2 border-0 text-white" title="Edit">
+                                                        <i class="fas fa-edit mr-1"></i>Edit
+                                                    </button>
+                                                    @endif
+                                                </div>
+                                                <div class="col-md-6 col-6 col-lg-6">
+                                                    <button type="button" class="btn btn-collapse text-white mb-1 mt-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                        <!-- <div class="d-flex align-items-center justify-content-between col-md-8">
+                                            <div class="">
+
                                             </div>
                                             <div class="font-weight-bold pt-1">
-                                                Section:{{$section_name}}
+
                                             </div>
                                             <div class="font-weight-bold pt-1">
-                                                Subject: {{$subject_name}}
+
                                             </div>
 
                                             <div>
@@ -118,7 +140,7 @@ $cls = 0;
                                                 </button>
                                             </div>
 
-                                        </div>
+                                        </div> -->
 
                                     </div>
                                 </div>
@@ -779,7 +801,7 @@ $cls = 0;
                                 <?php
                                 $class_date = date("d M", strtotime($t->class_date));
                                 ?>
-                                <div class="card-header text-white p-0  " style="background:#253372;">
+                                <div class="card-header text-white p-0  pt-2 pb-2 " style="background:#253372;">
                                     <div class="container">
 
                                         <div class="row pl-2 pr-3">
