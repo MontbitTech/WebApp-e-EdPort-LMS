@@ -1,6 +1,9 @@
 @extends('layouts.teacher.app')
 @php$i = 1;$k=$i;@endphp
 @section('content')
+<style>
+
+</style>
 <?php
 $cls = 0;
 ?>
@@ -23,11 +26,11 @@ $cls = 0;
                     <li class="nav-item mb-1">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assignment Submission Summary</a>
                     </li>
-                    <li class="nav-item mb-1">
+                    <li class="nav-item mb-1 futuer-m ">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#upcomingclasses" role="tab">Future
                             Classes</a>
                     </li>
-                    <li class="nav-item mb-1 ml-md-auto">
+                    <li class="nav-item mb-1 ml-md-auto futuer-m ">
                         <a class="nav-link shadow-sm mr-0" data-toggle="modal" href="#addClassModal" role="modal">
                             <svg class="icon mr-1">
                                 <use xlink:href="../images/icons.svg#icon_plus"></use>
@@ -207,13 +210,12 @@ $cls = 0;
 
                                                             @if($cms_link!=null)
                                                             <div class="col-md-6 mt-2">
-                                                                <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
-                                                                    <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="col-9 btn btn-sm btn-outline-dark btn-shadow border-0 d-inline-flex d-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
+                                                                <div class="w-100 d-inline-flex row" style="letter-spacing:3px;">
+                                                                    <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="col-md-9 col-9 col-lg-9 btn btn-sm btn-outline-dark btn-shadow border-0 d-inline-flex d-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
                                                                         <!-- Edport Content -->
-                                                                        <!--img src="{{asset('images/logo-1.png')}}" class="m-1" alt="" width="25px" style="{{$display_style}}"-->
                                                                         <span class="m-auto font-weight-bolder">e-Edport</span>
                                                                     </a>
-                                                                    <button class="col-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$i}}')">
+                                                                    <button class="col-md-3 col-3 col-lg-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$i}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -221,21 +223,20 @@ $cls = 0;
                                                             @endif
 
                                                             @if($academy!=null)
+                                                            <!-- My School -->
+                                                            <?php
+                                                            $parse = parse_url($academy);
+                                                            $academy_name = $parse['host'];
+                                                            $academy_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $academy_name);
+                                                            ?>
+
                                                             <div class="col-md-6 mt-2">
                                                                 <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
-                                                                    <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" id="academy_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
-
-                                                                        <!-- My School -->
-                                                                        <?php
-                                                                        $parse = parse_url($academy);
-                                                                        $academy_name = $parse['host'];
-                                                                        $academy_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $academy_name);
-                                                                        ?>
-
+                                                                    <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" id="academy_{{$t->id}}" class="col-9 col-md-9 col-lg-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
                                                                         <span class="m-auto font-weight-bolder text-capitalize">{{$academy_name}}</span>
                                                                     </a>
 
-                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$i}}')">
+                                                                    <button class="col-3 col-md-3 col-lg-3  btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$i}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -455,8 +456,8 @@ $cls = 0;
                                 <div class="container">
 
 
-                                    <div class="row pl-2 pr-3">
-                                        <div class="d-flex align-items-center col-md-4">
+                                    <div class="row ">
+                                        <div class="d-flex align-items-center col-md-4 pr-0">
                                             <div class="cls-date font-weight-bold">{{ $class_date }}</div>
                                             <div class="cls-from pt-1">
                                                 {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}
@@ -478,7 +479,7 @@ $cls = 0;
                                                 @if($t->cancelled)
                                                 <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
                                                 @endif
-                                                <button type="button" class="btn btn-collapse text-white collapse-btn border border-white" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                                                <button type="button" class="btn mt-1 mb-1 btn-collapse text-white collapse-btn border border-white" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
                                                 </button>
                                             </div>
                                         </div>
