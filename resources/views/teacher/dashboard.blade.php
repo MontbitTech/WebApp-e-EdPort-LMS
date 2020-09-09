@@ -89,8 +89,8 @@ $cls = 0;
                                             <div class=" pt-1 font-weight-bold">
                                                 {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                         </div>
-                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3"> Class: {{ $class_name }} Std</div>
-                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3"> Section:{{$section_name}}</div>
+                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3 p-0"> Class: {{ $class_name }} Std</div>
+                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3 p-0"> Section:{{$section_name}}</div>
                                         <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold   pt-3 p-0"> Subject: {{$subject_name}}</div>
                                         <div class="col-md-3 col-3 col-lg-3 col-sm-3 font-weight-bold pt-1 pr-0 text-center">
                                             <div class="row">
@@ -1261,49 +1261,30 @@ $cls = 0;
                 <input type="hidden" id="data_cancelled" name="cancelled" value="0" />
 
                 <div class="container-fluid">
-
                     <div class="form-group row">
-                        <div class="col-md-3 col-lg-3 col-3 pl-5 mt-4">
-                            <div class="row mb-3     ">
-
-                                <div class="btn btn-md btn-primary pl-3 pr-4 active" id="notify">
-                                    Class Invitation
-                                </div>
+                        <nav class="nav flex-column">
+                            <div class=" nav-link active btn btn-md btn-primary " id="notify">
+                                Class Invitation
+                            </div>
+                            <div class=" nav-link btn btn-md btn-primary mt-2 " id=" cancel">
+                                Class Cancellation
+                            </div>
+                            <div class=" nav-link btn btn-xs btn-primary mt-2" id="custom">
+                                Custom
                             </div>
 
-                            <div class="row mb-3">
-                                <div class="btn btn-md btn-primary " id="cancel">
-                                    Class Cancellation
-                                </div>
-
-                            </div>
-
-
-                            <div class="row">
-                                <div class="btn btn-xs btn-primary pl-5 pr-5" id="custom">
-                                    Custom
-                                </div>
-                            </div>
-                        </div>
+                        </nav>
                         <div class="col-md-9 col-lg-9 col-9">
-                            <!-- <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Notify student
-                            </label> -->
                             <div class="mt-5">
-                                {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
-
-
+                                {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3','style'=>'resize: none')) !!}
                             </div>
                             <div class="form-group  mt-3 ml-5 ">
-
                                 <button type="submit" class="btn btn-primary px-4 mr-2">Notify</button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
                             </div>
                         </div>
-
                     </div>
                 </div>
-                </form>
             </div>
         </div>
     </div>
