@@ -1266,7 +1266,7 @@ $cls = 0;
                             <div class=" nav-link active btn btn-md btn-primary " id="notify">
                                 Class Invitation
                             </div>
-                            <div class=" nav-link btn btn-md btn-primary mt-2 " id=" cancel">
+                            <div class=" nav-link btn btn-md btn-primary mt-2 " id="cancel">
                                 Class Cancellation
                             </div>
                             <div class=" nav-link btn btn-xs btn-primary mt-2" id="custom">
@@ -1994,10 +1994,9 @@ $cls = 0;
             ].join(':') +
             (isPM ? ' pm' : 'am');
 
-        //console.log(to_timing, time);
-
-
-        if (to_timing <= time) {
+        var timePresent = new Date("01/01/2007 " + time);
+        var timeFrom = new Date("01/01/2007 " + from_timing);
+         if (timePresent >= timeFrom) {
             $('#cancel').hide();
         }
 
