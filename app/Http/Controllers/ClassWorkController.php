@@ -243,7 +243,7 @@ class ClassWorkController extends Controller
                                     $classWork->g_status = '';
                                     $classWork->g_action = ''; */
                 $classWork->g_title = $w_resData['title'];
-                //$classWork->g_due_date = '';
+                $classWork->g_due_date = DateUtility::getDate(strtotime($request->dueDate));
                 $classWork->teacher_id = $logged_teacher_id;
                 //$classWork->timetable_id = $timing_id;
                 $classWork->subject_id = $subject_id;
