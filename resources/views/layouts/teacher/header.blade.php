@@ -46,7 +46,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link {{ Request::segment(2) == 'report'?'active':''}}" href="{{route('teacher.assignment')}}">
+          <a class="nav-link {{ Request::segment(2) == 'report'?'active':''}}" href="{{route('teacher.report')}}">
             <svg class="icon mr-1">
               <use xlink:href="{{asset('images/icons.svg#icon_edit')}}"></use>
             </svg> Report

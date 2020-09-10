@@ -174,6 +174,17 @@
     var chart = new google.visualization.PieChart(document.getElementById('chart'));
     chart.draw(data, options);
   }
+
+  $(document).on('click', '[data-INVLiveLink]', function() {
+    var liveurl = $(this).attr("data-INVLiveLink");
+    if (liveurl != '') {
+      //$('#viewClassModal').modal('show');
+      //$("#thedialog").attr('src','https://google.com');
+      window.open(liveurl, "dialog name", "dialogWidth:400px;dialogHeight:300px");
+    } else {
+      alert('No Class url found!');
+    }
+  });
 </script>
 <script>
   $(document).ready(function() {
