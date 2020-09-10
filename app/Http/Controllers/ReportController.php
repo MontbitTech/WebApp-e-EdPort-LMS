@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\HelpTicketCategory;
 use App\Models\Attendance;
 use App\Models\Student;
 use App\StudentClass;
@@ -20,34 +21,34 @@ class ReportController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function teacherReport (Request $request)
+    public function teacherReport(Request $request)
     {
+        $helpCategories = HelpTicketCategory::get();
         $teacherId = Session::get('teacher_session');
         $classrooms = StudentClass::with('dateClass', 'dateClass.attendance')->whereHas('dateClass', function ($q) use ($teacherId) {
             $q->where('teacher_id', $teacherId);
         })->get()->toArray();
 
-        foreach ( $classrooms as $classroom ) {
-            $students[ $classroom['id'] ] = Student::with('class')->whereHas('class', function ($q) use ($classroom) {
+        foreach ($classrooms as $classroom) {
+            $students[$classroom['id']] = Student::with('class')->whereHas('class', function ($q) use ($classroom) {
                 $q->where('class_name', $classroom['class_name']);
                 $q->where('section_name', $classroom['section_name']);
             })->get();
         }
 
-        return view('teacher.report.index');
+        return view('teacher.report.index', compact('helpCategories'));
     }
 
-    public function studentAttendanceAverage (Request $request)
+    public function studentAttendanceAverage(Request $request)
     {
         $totalAttenndance = Attendance::where('student_id', $request->studentId)->count();
         $present = Attendance::present()->where('student_id', $request->studentId)->count();
-
     }
 
-    public function assignmentSubmissionGrades (Request $request)
+    public function assignmentSubmissionGrades(Request $request)
     {
         $teacherId = Session::get('teacher_session');
-        $classrooms = StudentClass::with('dateClass','classwork')->whereHas('dateClass', function ($q) use ($teacherId) {
+        $classrooms = StudentClass::with('dateClass', 'classwork')->whereHas('dateClass', function ($q) use ($teacherId) {
             $q->where('teacher_id', $teacherId);
         })->get();
 
