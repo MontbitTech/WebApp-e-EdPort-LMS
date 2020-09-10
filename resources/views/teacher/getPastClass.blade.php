@@ -65,36 +65,29 @@ if ($t->cmsLink) {
     ?>
 
     <div class="card-header text-white p-0  " style="background:#253372;">
-        <div class="container">
-
-
-            <div class="row pl-2 pr-3">
-                <div class="d-flex align-items-center col-md-4">
-                    <div class="cls-date font-weight-bold">{{ $class_date }}</div>
-                    <div class="cls-from pt-1">
-                        {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}
+        <div class="container-fluid">
+            <div class="row p-0 m-0 ">
+                <div class="col-md-3 col-3 col-lg-3 top-padding  p-0 m-0">
+                    <div class="row ">
+                        <div class="col-md-4 col-lg-4 col-4 p-0 m-0 font-weight-bold"> {{ $class_date }} </div>
+                        <div class="col-md-8 col-lg-8 col-8 p-0 m-0 text-left"> {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                     </div>
                 </div>
-                <div class="d-flex align-items-center justify-content-between col-md-8">
-                    <div class="font-weight-bold pt-1">
-                        Class: {{ $class_name }} Std
+                <div class="col-md-2 col-lg-2 col-2 font-weight-bold top-padding  p-0 m-0"> Class: {{ $class_name }} Std</div>
+                <div class="col-md-1 col-lg-1 col-1 font-weight-bold top-padding  p-0 m-0">Section:{{$section_name}}</div>
+                <div class="col-md-4 col-lg-4 col-4 font-weight-bold top-padding  p-0 m-0"> Subject: {{$subject_name}}</div>
+                <div class="col-md-2 col-2 col-lg-2">
+                    <div class="row">
+                        <div class="col-7 col-md-7 col-lg-7 pt-1"> @if($t->cancelled)
+                            <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
+                            @endif</div>
+                        <div class="col-5 col-md-5 col-lg-5"> <button type="button" class="btn mt-1 mb-1 btn-collapse text-white collapse-btn pl-2 pr-2 pt-1 pb-1 mb-1 mt-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                            </button></div>
                     </div>
-                    <div class="font-weight-bold pt-1">
-                        Section:{{$section_name}}
-                    </div>
-                    <div class="font-weight-bold pt-1">
-                        Subject: {{$subject_name}}
-                    </div>
-                    <div>
 
 
-                        @if($t->cancelled)
-                        <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
-                        @endif
-                        <button type="button" class="pl-2 pr-2 pt-1 pb-1 mt-1 mb-1 btn btn-collapse text-white collapse-btn" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
-                        </button>
-                    </div>
                 </div>
+
             </div>
         </div>
     </div>
