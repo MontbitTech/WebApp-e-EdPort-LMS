@@ -197,7 +197,7 @@ $cls = 0;
 
                                                     ?>
                                                     <!--new changes -->
-                                                    <div class="m-auto mt-2 pt-2 abc" id="icon{{$t->id}}">
+                                                    <div class="m-auto mt-2 pt-2" id="icon{{$t->id}}">
                                                         <div class="row">
 
                                                             @if($cms_link!=null)
