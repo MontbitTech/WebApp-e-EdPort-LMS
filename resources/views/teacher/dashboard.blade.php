@@ -779,28 +779,20 @@ $cls = 0;
                                 <?php
                                 $class_date = date("d M", strtotime($t->class_date));
                                 ?>
-                                <div class="card-header text-white p-0  pt-2 pb-2 " style="background:#253372;">
-                                    <div class="container">
+                                <div class="card-header text-white p-0  pt-1 pb-2 " style="background:#253372;">
+                                    <div class="container-fluid">
 
-                                        <div class="row pl-2 pr-3">
-                                            <div class="d-flex align-items-center col-md-4">
-                                                <div class="cls-date font-weight-bold">{{ $class_date }}</div>
-                                                <div class="cls-from pt-1">
-                                                    {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}
+                                        <div class="row ">
+                                            <div class="col-md-3 col-3 col-lg-3 top-padding p-0 m-0">
+                                                <div class="row p-0 m-0">
+                                                    <div class="col-md-4 col-lg-4 col-4 p-0 m-0 font-weight-bold ">{{ $class_date }}</div>
+                                                    <div class="col-8 col-md-8 col-lg-8 m-0 p-0"> {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex align-items-center justify-content-between col-md-8">
-                                                <div class="font-weight-bold pt-1">
-                                                    Class: {{ $class_name }} Std
-                                                </div>
-                                                <div class="font-weight-bold pt-1">
-                                                    Section:{{$section_name}}
-                                                </div>
-                                                <div class="font-weight-bold pt-1">
-                                                    Subject: {{$subject_name}}
-                                                </div>
+                                            <div class="col-2 col-md-2 col-lg-2 top-padding font-weight-bold tetx-right"> Class: {{ $class_name }} Std</div>
+                                            <div class="col-2 col-md-2 col-lg-2 top-padding font-weight-bold text-right"> Section:{{$section_name}}</div>
+                                            <div class="col-5 col-md-5 col-lg-5 top-padding font-weight-bold"> Subject: {{$subject_name}}</div>
 
-                                            </div>
                                         </div>
                                     </div>
                                 </div>
