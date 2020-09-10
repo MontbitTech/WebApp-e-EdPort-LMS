@@ -1954,8 +1954,6 @@ $cls = 0;
     }));
 
 
-
-
     $(document).on('click', '[data-notify]', function() {
         var val = $(this).data('notify');
         $('#notifyModal').modal('show');
@@ -1971,6 +1969,7 @@ $cls = 0;
         var class_w = $("#txt_class_name" + val).val();
         // var d = $("#txt_today_date" + val).val();
         var section = $("#txt_section_name" + val).val();
+   
 
         var today = new Date();
         var dd = today.getDate();
@@ -1982,7 +1981,6 @@ $cls = 0;
         if (mm < 10) {
             mm = '0' + mm;
         }
-
 
         today.setHours(today.getHours());
         var isPM = today.getHours() >= 12;
@@ -1997,6 +1995,9 @@ $cls = 0;
         var timeFrom = new Date("01/01/2007 " + from_timing);
          if (timePresent >= timeFrom) {
             $('#cancel').hide();
+        }
+         if (timePresent <= timeFrom) {
+            $('#cancel').show();
         }
 
         today = mm + '-' + dd + '-' + yyyy;
