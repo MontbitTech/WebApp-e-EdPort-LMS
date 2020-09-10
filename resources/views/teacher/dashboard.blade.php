@@ -2,7 +2,9 @@
 @php $i = 1;$k=$i;@endphp
 @section('content')
 <style>
-
+    .top-padding {
+        padding-top: 0.625rem !important;
+    }
 </style>
 <?php
 $cls = 0;
@@ -85,14 +87,14 @@ $cls = 0;
                             <div class="card-header text-white p-0   @if(date('H:i',strtotime($t->to_timing)) <= date('H:i')) bg-secondary @endif" style="background:#253372;">
                                 <div class="container">
                                     <div class="row ">
-                                        <div class="d-flex align-items-center col-md-3 pr-0">
+                                        <div class="d-flex align-items-center col-md-2  pr-0">
                                             <div class=" pt-1 font-weight-bold">
                                                 {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                         </div>
                                         <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3 p-0"> Class: {{ $class_name }} Std</div>
-                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3 p-0"> Section:{{$section_name}}</div>
-                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold   pt-3 p-0"> Subject: {{$subject_name}}</div>
-                                        <div class="col-md-3 col-3 col-lg-3 col-sm-3 font-weight-bold pt-1 pr-0 text-center">
+                                        <div class="col-md-1 col-1 col-lg-1 col-sm-1 font-weight-bold pt-3 p-0"> Section:{{$section_name}}</div>
+                                        <div class="col-md-5 col-5 col-lg-5 col-sm-5 font-weight-bold text-center  m-0 pt-3 p-0"> Subject: {{$subject_name}}</div>
+                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-1 pr-0 text-center">
                                             <div class="row">
                                                 <div class="col-md-6 col-6 col-lg-6 p-0 m-0">
                                                     @if($t->cancelled)
@@ -124,6 +126,7 @@ $cls = 0;
                                             <div class="row">
                                                 <?php
                                                 $chapters = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
+
                                                 ?>
                                                 <div class="col-md-6">
 
@@ -456,34 +459,29 @@ $cls = 0;
                             ?>
 
                             <div class="card-header text-white p-0  " style="background:#253372;">
-                                <div class="container">
-
-
-                                    <div class="row ">
-                                        <div class="d-flex align-items-center col-md-4 pr-0">
-                                            <div class="cls-date font-weight-bold">{{ $class_date }}</div>
-                                            <div class="cls-from pt-1">
-                                                {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}
+                                <div class="container-fluid">
+                                    <div class="row p-0 m-0 ">
+                                        <div class="col-md-3 col-3 col-lg-3 top-padding  p-0 m-0">
+                                            <div class="row ">
+                                                <div class="col-md-4 col-lg-4 col-4 p-0 m-0 font-weight-bold"> {{ $class_date }} </div>
+                                                <div class="col-md-8 col-lg-8 col-8 p-0 m-0 text-left"> {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
                                             </div>
                                         </div>
-                                        <div class="d-flex align-items-center justify-content-between col-md-8">
-                                            <div class="font-weight-bold pt-1">
-                                                Class: {{ $class_name }} Std
+                                        <div class="col-md-2 col-lg-2 col-2 font-weight-bold top-padding  p-0 m-0"> Class: {{ $class_name }} Std</div>
+                                        <div class="col-md-1 col-lg-1 col-1 font-weight-bold top-padding  p-0 m-0">Section:{{$section_name}}</div>
+                                        <div class="col-md-4 col-lg-4 col-4 font-weight-bold top-padding  p-0 m-0"> Subject: {{$subject_name}}</div>
+                                        <div class="col-md-2 col-2 col-lg-2">
+                                            <div class="row">
+                                                <div class="col-7 col-md-7 col-lg-7 pt-1"> @if(!($t->cancelled))
+                                                    <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
+                                                    @endif</div>
+                                                <div class="col-5 col-md-5 col-lg-5"> <button type="button" class="btn mt-1 mb-1 btn-collapse text-white collapse-btn pl-2 pr-2 pt-1 pb-1 mb-1 mt-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                                                    </button></div>
                                             </div>
-                                            <div class="font-weight-bold pt-1">
-                                                Section:{{$section_name}}
-                                            </div>
-                                            <div class="font-weight-bold pt-1">
-                                                Subject: {{$subject_name}}
-                                            </div>
-                                            <div>
-                                                @if($t->cancelled)
-                                                <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
-                                                @endif
-                                                <button type="button" class="btn mt-1 mb-1 btn-collapse text-white collapse-btn pl-2 pr-2 pt-1 pb-1 mb-1 mt-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
-                                                </button>
-                                            </div>
+
+
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -1795,7 +1793,7 @@ $cls = 0;
                     success: function(result) {
                         $('.loader').fadeOut();
                         var response = JSON.parse(result);
-                        $('#icon'+dateWork_id).load(' #icon'+dateWork_id);                    
+                        $('#icon' + dateWork_id).load(' #icon' + dateWork_id);
                         if (response.youtube_link != null) {
                             $('#youtube_' + dateWork_id).attr('style', 'display:block');
                             $('#youtube_' + dateWork_id).attr('data-youtubelink', response.youtube_link);
@@ -1969,7 +1967,7 @@ $cls = 0;
         var class_w = $("#txt_class_name" + val).val();
         // var d = $("#txt_today_date" + val).val();
         var section = $("#txt_section_name" + val).val();
-   
+
 
         var today = new Date();
         var dd = today.getDate();
@@ -1993,10 +1991,10 @@ $cls = 0;
 
         var timePresent = new Date("01/01/2007 " + time);
         var timeFrom = new Date("01/01/2007 " + from_timing);
-         if (timePresent >= timeFrom) {
+        if (timePresent >= timeFrom) {
             $('#cancel').hide();
         }
-         if (timePresent <= timeFrom) {
+        if (timePresent <= timeFrom) {
             $('#cancel').show();
         }
 
