@@ -1,6 +1,6 @@
 @extends('layouts.teacher.app')
 @section('content')
-	
+
 <section class="main-section">
   <div class="container">
     <div class="row justify-content-center">
@@ -26,7 +26,7 @@
               <div class="col-md-6">
                 <div id="chart" style="width:300px;height:180px;margin:0 auto"></div>
               </div>
-            </div>         
+            </div>
           </div>
         </div>
       </div>
@@ -68,45 +68,116 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="col-sm-12">
+        <?php if (count($inviteClassData) > 0) { ?>
+          <table id="reportlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+            <thead>
+              <tr>
+                <th>Class</th>
+                <th>Section</th>
+                <th>Subject</th>
+                <th>Submissions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+
+              $i = 0;
+              foreach ($inviteClassData as $row) {
+                $section_name = '';
+                $subject_name = '';
+                $cls = '';
+                $g_link = '';
+                if ($row->studentClass) {
+                  $cls = $row->studentClass->class_name;
+                  $section_name = $row->studentClass->section_name;
+                  $g_link = $row->studentClass->g_link;
+                }
+                if ($row->studentSubject) {
+                  $subject_name = $row->studentSubject->subject_name;
+                }
+              ?>
+                <tr>
+                  <td>{{ $cls }} Std</td>
+                  <td>{{ $section_name }}</td>
+                  <td>{{ $subject_name }}</td>
+                  <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+                      <svg class="icon font-10 mr-1">
+                        <use xlink:href="../images/icons.svg#icon_dot"></use>
+                      </svg>
+                      Check Submissions
+                    </a></td>
+                </tr>
+
+
+              <?php
+              }
+              $i++;
+            } else {
+              ?>
+              <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
+                <svg class="icon icon-4x mr-3">
+                  <use xlink:href="../images/icons.svg#icon_nodate"></use>
+                </svg>
+                No Record Found!
+              </div>
+            <?php
+            }
+            ?>
+            </tbody>
+          </table>
+      </div>
+    </div>
   </div>
 </section>
 
 <script type="text/javascript">
-$(document).ready(function(){
-  var fromDate = $('#from_date');
-  var toDate = $('#to_date');
-  $.timepicker.dateRange(
-    fromDate,
-    toDate,
-    {
-      dateFormat: 'd M yy',
-      minInterval: (1000*60*60*24*0), // 1 days
-      // maxInterval: (1000*60*60*24*1), // 1 days
-      start: {}, // start picker options
-      end: {} // end picker options
-    });
-});
+  $(document).ready(function() {
+    var fromDate = $('#from_date');
+    var toDate = $('#to_date');
+    $.timepicker.dateRange(
+      fromDate,
+      toDate, {
+        dateFormat: 'd M yy',
+        minInterval: (1000 * 60 * 60 * 24 * 0), // 1 days
+        // maxInterval: (1000*60*60*24*1), // 1 days
+        start: {}, // start picker optionst
+        end: {} // end picker options
+      });
+  });
 </script>
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-google.charts.load('current', {'packages':['corechart']});
-google.charts.setOnLoadCallback(drawChart);
-function drawChart() {
-  var data = google.visualization.arrayToDataTable([
-    ['Attendence', 'Percentage'],
-    ['Present', 80],
-    ['Absent', 20]
-  ]);
-  var options = {
-    title: 'Students Attendence',
-    titlePosition: 'center',
-    titleFontSize: 16,
-    colors: ['#28a745', '#e0440e'],
-    legend: { position: 'bottom', alignment: 'center' }
-  };
-  var chart = new google.visualization.PieChart(document.getElementById('chart'));
-  chart.draw(data, options);
-}
+  google.charts.load('current', {
+    'packages': ['corechart']
+  });
+  google.charts.setOnLoadCallback(drawChart);
+
+  function drawChart() {
+    var data = google.visualization.arrayToDataTable([
+      ['Attendence', 'Percentage'],
+      ['Present', 80],
+      ['Absent', 20]
+    ]);
+    var options = {
+      title: 'Students Attendence',
+      titlePosition: 'center',
+      titleFontSize: 16,
+      colors: ['#28a745', '#e0440e'],
+      legend: {
+        position: 'bottom',
+        alignment: 'center'
+      }
+    };
+    var chart = new google.visualization.PieChart(document.getElementById('chart'));
+    chart.draw(data, options);
+  }
+</script>
+<script>
+  $(document).ready(function() {
+    $('#reportlist').DataTable();
+  });
 </script>
 @endsection

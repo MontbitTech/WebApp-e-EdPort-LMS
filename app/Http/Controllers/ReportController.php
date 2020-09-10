@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\HelpTicketCategory;
+use App\InvitationClass;
 use App\Models\Attendance;
 use App\Models\Student;
 use App\StudentClass;
@@ -23,20 +24,28 @@ class ReportController extends Controller
      */
     public function teacherReport(Request $request)
     {
+        $logged_teacher = Session::get('teacher_session');
+
         $helpCategories = HelpTicketCategory::get();
         $teacherId = Session::get('teacher_session');
-        $classrooms = StudentClass::with('dateClass', 'dateClass.attendance')->whereHas('dateClass', function ($q) use ($teacherId) {
-            $q->where('teacher_id', $teacherId);
-        })->get()->toArray();
+        $classrooms = StudentClass::with('dateClass', 'dateClass.attendance')
+            ->whereHas('dateClass', function ($q) use ($teacherId) {
+                $q->where('teacher_id', $teacherId);
+            })->get()->toArray();
 
         foreach ($classrooms as $classroom) {
-            $students[$classroom['id']] = Student::with('class')->whereHas('class', function ($q) use ($classroom) {
-                $q->where('class_name', $classroom['class_name']);
-                $q->where('section_name', $classroom['section_name']);
-            })->get();
+            $students[$classroom['id']] = Student::with('class')
+                ->whereHas('class', function ($q) use ($classroom) {
+                    $q->where('class_name', $classroom['class_name']);
+                    $q->where('section_name', $classroom['section_name']);
+                })->get();
         }
+        $inviteClassData = InvitationClass::with('studentClass', 'studentSubject')
+            ->where('teacher_id', $logged_teacher['teacher_id'])
+            ->orderBy('id', 'DESC')
+            ->get();
 
-        return view('teacher.report.index', compact('helpCategories'));
+        return view('teacher.report.index', compact('helpCategories', 'inviteClassData'));
     }
 
     public function studentAttendanceAverage(Request $request)
