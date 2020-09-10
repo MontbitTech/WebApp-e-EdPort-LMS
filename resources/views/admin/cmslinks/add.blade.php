@@ -32,9 +32,23 @@
                </div>
 
                <div class="form-group row">
+                 <label for="colFormLabel" class="col-md-4 col-form-label">Chapter:</label>
+                 <div class="col-md-5">
+                   {!! Form::text('chapter', "",array('placeholder' => 'Chapter','class' => 'form-control','required'=>'required')) !!}
+                 </div>
+               </div>
+
+               <div class="form-group row">
                  <label for="colFormLabel" class="col-md-4 col-form-label">Topic:</label>
                  <div class="col-md-5">
                    {!! Form::text('topic', "", array('placeholder' => 'Topic','class' => 'form-control')) !!}
+                 </div>
+               </div>
+
+               <div class="form-group row">
+                 <label for="colFormLabel" class="col-md-4 col-form-label">Book URL:</label>
+                 <div class="col-md-5">
+                   {!! Form::text('book_url', "", array('placeholder' => 'Book URL','class' => 'form-control')) !!}
                  </div>
                </div>
 

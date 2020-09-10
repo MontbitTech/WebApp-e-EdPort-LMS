@@ -15,4 +15,9 @@ class Student extends Model
     {
         return $this->hasOne(ClassSection::class, 'id', 'class_id');
     }
+
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }

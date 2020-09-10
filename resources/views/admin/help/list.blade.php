@@ -10,7 +10,12 @@
                     <div class="card-header">
                         <div class="row">
                             <div class="col-md-4 col-lg-8 text-md-left mb-1">
-                                <span class="topic-heading">Help Tickets</span>
+                                <span class="topic-heading">Help Tickets</span>&nbsp;
+                                <a type="button" class="btn btn-sm btn-color" onclick="refresh()">
+                                        <i class="fa fa-refresh mr-1 icon-4x" aria-hidden="true"></i>
+                                    
+                                    </a>
+
                             </div>
                             <div class="col-md-8 col-lg-4 text-md-right mb-1">
 
@@ -38,7 +43,7 @@
                             </div>
 
                             <div class="col-sm-12" id="getticket">
-                                <table id="ticketlist" class="table table-sm table-bordered display" data-page-length="100" data-order="[[0, &quot;desc&quot; ]]" style="width:100%" data-page-length="10" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                                <table id="ticketlist" class="table table-sm table-bordered display" data-page-length="100" style="width:100%" data-page-length="10" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                                     <thead>
                                         <tr class="text-center">
                                             <th>#</th>
@@ -56,10 +61,10 @@
                                     $n-=1;
                                     $i = 0;
                                     @endphp
-                                    <tbody>
+                                    <tbody id="ticketlistBody">
 
                                         @foreach($helpTickets as $help)
-                                        <tr>
+                                        <tr id="help_id_{{ $help->id }}">
                                             <td>{{++$i}}</td>
                                             <td>
                                                 @if($help->teacher)
@@ -165,16 +170,23 @@
 </div>
 <script type="text/javascript">
     $(document).ready(function() {
-        $('#ticketlist').DataTable({
+         $('#ticketlist').DataTable({
+
             initComplete: function(settings, json) {
                 $('[data-dtlist="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_length').find("label"));
                 $('[data-dtfilter="#' + settings.nTable.id + '"').html($('#' + settings.nTable.id + '_filter').find("input[type=search]").attr('placeholder', $('#' + settings.nTable.id).attr('data-filterplaceholder')))
+
+
+                    // setTimeout(function() {
+                    // location.reload(true);
+                    // }, 3000);
             }
         });
         $('.dateset').datepicker({
             dateFormat: "yy/mm/dd"
             // showAnim: "slide"
         })
+
     });
     $(document).on('click', '[data-addCommentModal]', function() {
         var val = $(this).data('deletemodal');
@@ -281,4 +293,11 @@
 
     });
 </script>
-@endsection
+
+<script>
+    function refresh(){
+        location.reload(true);
+    }
+</script>
+
+  @endsection

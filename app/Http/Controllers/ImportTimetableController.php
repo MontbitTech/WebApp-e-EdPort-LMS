@@ -106,6 +106,13 @@ class ImportTimetableController extends Controller
                     $classTiming->teacher_id = $teacher_id;
                     $classTiming->save();
 
+                    if($teacher_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['teacher_id' => $teacher_id]);
+                    }
+                    if($subject_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['subject_id' => $subject_id]);
+                    }
+
                     return back()->with('success', "TimeTable updated successfully..");
                 }
 
@@ -179,6 +186,13 @@ class ImportTimetableController extends Controller
                         $classTiming->save();
                         //$objD = DateClass::where('subject_id',$cur_subject_id)->where('class_id',$cur_class_ID)->where('teacher_id',$cur_teacher_id)->update(['teacher_id'=>$teacher_id]);    just now i commented
 
+                        if($teacher_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['teacher_id' => $teacher_id]);
+                         }
+                        if($subject_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['subject_id' => $subject_id]);
+                          }
+
                         return back()->with('success', "TimeTable updated successfully..");
                     }
                 }
@@ -219,6 +233,13 @@ class ImportTimetableController extends Controller
                     $classTiming->class_id = $class_id;
                     $classTiming->subject_id = $subject_id;
                     $classTiming->save();
+
+                    if($teacher_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['teacher_id' => $teacher_id]);
+                         }
+                    if($subject_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['subject_id' => $subject_id]);
+                          }
                     
                     return back()->with('success', "TimeTable updated successfully..");
                 }else{
@@ -269,6 +290,13 @@ class ImportTimetableController extends Controller
                             $classTiming->class_id = $class_id;
                             $classTiming->subject_id = $subject_id;
                             $classTiming->save();
+
+                        if($teacher_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['teacher_id' => $teacher_id]);
+                         }
+                        if($subject_id){
+                        $dateClass = DateClass::where('timetable_id', $timeTableID)->update(['subject_id' => $subject_id]);
+                          }
                             
                             return back()->with('success', "TimeTable updated successfully..");
                         }
@@ -906,10 +934,6 @@ class ImportTimetableController extends Controller
         $html .= "</tbody></table>";
         $htmla .= "</tbody></table>";
 
-        //echo($html);
-        //Log::error($html);
-
-
         $name = public_path('dl-timetable') . "/" . $class_name . "_" . $section_name . "_timetable.pdf";
 
         if (file_exists($name))
@@ -948,13 +972,14 @@ class ImportTimetableController extends Controller
             if ($gCode != '') {
                 $invDelete = CommonHelper::teacher_invitation_delete($token, $gCode);
             }
+            // $objTeacher->delete();
         }
         $classes = StudentClass::where('class_name',$classTiming->studentClass->class_name)
                     ->where('section_name',$classTiming->studentClass->section_name)->pluck('id');
-        $timeTables = ClassTiming::whereIn('class_id',$classes)->where('from_timing', $classTiming->from_timing)->get();
-        foreach ($timeTables as $timeTable) {
-            $timeTable->delete();
-        }
+        $timeTableIds = ClassTiming::whereIn('class_id',$classes)->where('from_timing', $classTiming->from_timing)->pluck('id');
+
+        DateClass::whereIn('timetable_id',$timeTableIds)->where('class_date','>=',DateUtility::getDate())->delete();
+        ClassTiming::whereIn('id',$timeTableIds)->delete();
 
         return redirect()->back()->with('success', "Deleted Successfully");
     }
@@ -962,10 +987,10 @@ class ImportTimetableController extends Controller
     public function deleteAllTimetable(Request $request)
     {
         $timeTables = \DB::select("SELECT t.class_id, t.subject_id,t.id,t.teacher_id
-        FROM tbl_class_timings t
-        left join tbl_student_subjects s on s.id = t.subject_id
-        left join tbl_student_classes c on c.id = t.class_id
-        where c.class_name = ? and c.section_name=?", [$request->txtSerachByClass, $request->txtSerachBySection]);
+                        FROM tbl_class_timings t
+                        left join tbl_student_subjects s on s.id = t.subject_id
+                        left join tbl_student_classes c on c.id = t.class_id
+                        where c.class_name = ? and c.section_name=?", [$request->txtSerachByClass, $request->txtSerachBySection]);
         foreach ($timeTables as $timeTable) {
             $objTeacher = InvitationClass::where('class_id', $timeTable->class_id)->where('subject_id', $timeTable->subject_id)->where('teacher_id', $timeTable->teacher_id)->get()->first();
             $token = CommonHelper::varify_Admintoken(); // verify admin token
@@ -974,10 +999,14 @@ class ImportTimetableController extends Controller
                 if ($gCode != '') {
                     $invDelete = CommonHelper::teacher_invitation_delete($token, $gCode);
                 }
+
+                // $objTeacher->delete();
             }
-            $classTime = ClassTiming::where('class_id', $timeTable->class_id)->delete();
-            // $classTime->delete();
+            $classTimes = ClassTiming::where('class_id', $timeTable->class_id)->pluck('id');
+            DateClass::whereIn('timetable_id',$classTimes)->where('class_date','>=',DateUtility::getDate())->delete();
+            ClassTiming::whereIn('id',$classTimes)->delete();
         }
+
         return redirect()->back()->with('success', "Deleted Successfully");
     }
 
@@ -1128,7 +1157,6 @@ class ImportTimetableController extends Controller
                         if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
                             return redirect()->route('admin.login.post');
                         } else {
-                            //Log::error($inv_resData['error']['message']);
                             return back()->with('error', $inv_resData['error']['message']);
                         }
                     } else {
@@ -1352,7 +1380,7 @@ class ImportTimetableController extends Controller
 													left join tbl_student_classes c on c.id = t.class_id
 													left join tbl_techers r on r.id = t.teacher_id
 													where c.class_name = ? and c.section_name=?
-													and from_timing = ?", [$class_name, $section_name, $t->from_timing]);
+													and from_timing = ? order by t.id", [$class_name, $section_name, $t->from_timing]);
 
             if (count($days) > 0) {
                 foreach ($days as $d) {
@@ -1385,10 +1413,6 @@ class ImportTimetableController extends Controller
 
         $html .= "</tbody></table>";
         $htmla .= "</tbody></table>";
-
-        //echo($html);
-        //Log::error($html);
-
 
         $name = public_path('dl-timetable') . "/" . $class_name . "_" . $section_name . "_timetable.pdf";
 
