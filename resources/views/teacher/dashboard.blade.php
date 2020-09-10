@@ -1,5 +1,5 @@
 @extends('layouts.teacher.app')
-@php$i = 1;$k=$i;@endphp
+@php $i = 1;$k=$i;@endphp
 @section('content')
 <?php
 $cls = 0;
