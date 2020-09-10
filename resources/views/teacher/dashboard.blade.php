@@ -472,7 +472,7 @@ $cls = 0;
                                         <div class="col-md-4 col-lg-4 col-4 font-weight-bold top-padding  p-0 m-0"> Subject: {{$subject_name}}</div>
                                         <div class="col-md-2 col-2 col-lg-2">
                                             <div class="row">
-                                                <div class="col-7 col-md-7 col-lg-7 pt-1"> @if(!($t->cancelled))
+                                                <div class="col-7 col-md-7 col-lg-7 pt-1"> @if($t->cancelled)
                                                     <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
                                                     @endif</div>
                                                 <div class="col-5 col-md-5 col-lg-5"> <button type="button" class="btn mt-1 mb-1 btn-collapse text-white collapse-btn pl-2 pr-2 pt-1 pb-1 mb-1 mt-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
