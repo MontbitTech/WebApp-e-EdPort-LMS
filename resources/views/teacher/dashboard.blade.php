@@ -197,7 +197,7 @@ $cls = 0;
 
                                                     ?>
                                                     <!--new changes -->
-                                                    <div class="m-auto mt-2 pt-2" id="icon{{$t->id}}">
+                                                    <div class="m-auto mt-2 pt-2 abc" id="icon{{$t->id}}">
                                                         <div class="row">
 
                                                             @if($cms_link!=null)
@@ -1795,7 +1795,7 @@ $cls = 0;
                     success: function(result) {
                         $('.loader').fadeOut();
                         var response = JSON.parse(result);
-                        location.reload(true);
+                        $('#icon'+dateWork_id).load(' #icon'+dateWork_id);                    
                         if (response.youtube_link != null) {
                             $('#youtube_' + dateWork_id).attr('style', 'display:block');
                             $('#youtube_' + dateWork_id).attr('data-youtubelink', response.youtube_link);
@@ -1885,7 +1885,6 @@ $cls = 0;
         $("#class_date").val($("#txt_today_date" + val).val());
 
     });
-
 
 
     // $("#purchaseshowdivid").click(function() {
@@ -1992,7 +1991,7 @@ $cls = 0;
         var time = [today.getHours() - (isPM && !isMidday ? 12 : 0),
                 today.getMinutes() || '00'
             ].join(':') +
-            (isPM ? ' pm' : 'am');
+            (isPM ? ' pm' : ' am');
 
         var timePresent = new Date("01/01/2007 " + time);
         var timeFrom = new Date("01/01/2007 " + from_timing);
