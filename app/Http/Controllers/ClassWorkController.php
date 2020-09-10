@@ -247,6 +247,7 @@ class ClassWorkController extends Controller
                 $classWork->teacher_id = $logged_teacher_id;
                 //$classWork->timetable_id = $timing_id;
                 $classWork->subject_id = $subject_id;
+                $classWork->google_classwork_id = $w_resData['id'];
                 $classWork->save();
                 $classWork_id = $classWork->id;  // Last Insert Id
 
