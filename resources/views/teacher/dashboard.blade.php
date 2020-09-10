@@ -826,7 +826,6 @@ $cls = 0;
                                 <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
                                             <th>Class</th>
                                             <th>Section</th>
                                             <th>Subject</th>
@@ -852,7 +851,7 @@ $cls = 0;
                                             }
                                         ?>
                                             <tr>
-                                                <td>{{++$i}}</td>
+
                                                 <td>{{ $cls }} Std</td>
                                                 <td>{{ $section_name }}</td>
                                                 <td>{{ $subject_name }}</td>
@@ -868,19 +867,22 @@ $cls = 0;
                                         <?php
                                         }
                                         $i++;
-                                    } else {
                                         ?>
-                                        <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
-                                            <svg class="icon icon-4x mr-3">
-                                                <use xlink:href="../images/icons.svg#icon_nodate"></use>
-                                            </svg>
-                                            No Record Found!
-                                        </div>
-                                    <?php
-                                    }
-                                    ?>
+
                                     </tbody>
                                 </table>
+                            <?php
+                            } else {
+                            ?>
+                                <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
+                                    <svg class="icon icon-4x mr-3">
+                                        <use xlink:href="../images/icons.svg#icon_nodate"></use>
+                                    </svg>
+                                    No Record Found!
+                                </div>
+                            <?php
+                            }
+                            ?>
                         </div>
                     </div>
                     <!-- ./Teacher-AssignedClasses -->
@@ -1334,9 +1336,7 @@ $cls = 0;
 
 <script>
     $('.btn-collapse').click(function() {
-        $(this).find('i').toggleClass('fas fa-minus');
-        $(this).find('i').toggleClass('fas fa-plus');
-        //$(this).find('i').toggle(function(){});
+        $(this).find('i').toggleClass('fas fa-plus fas fa-minus');
     });
 </script>
 <script type="text/javascript">
