@@ -1697,7 +1697,15 @@ $cls = 0;
                     $('#attach_file').prop('disabled', false);
                     $('#cancel_assignment').prop('disabled', false);
                 }
+            },
+            error: function() {
+                $('.loader').fadeOut();
+                $('#assignment_create').prop('disabled', false);
+                $('#attach_file').prop('disabled', false);
+                $('#cancel_assignment').prop('disabled', false);
+                $.fn.notifyMe('error', 4, 'Something went wrong please reload this page and try again');
             }
+
         });
     }));
     $(document).on('click', '#attach_file', (function() {
@@ -1761,6 +1769,13 @@ $cls = 0;
                     $('#attach_file').prop('disabled', false);
                     $('#cancel_assignment').prop('disabled', false);
                 }
+            },
+            error: function() {
+                $('.loader').fadeOut();
+                $('#assignment_create').prop('disabled', false);
+                $('#attach_file').prop('disabled', false);
+                $('#cancel_assignment').prop('disabled', false);
+                $.fn.notifyMe('error', 4, 'Something went wrong please reload this page and try again');
             }
         });
     }));
