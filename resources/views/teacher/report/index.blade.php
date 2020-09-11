@@ -1,6 +1,17 @@
 @extends('layouts.teacher.app')
 @section('content')
+<style>
+  .dataTables_length {
+    padding-left: 20px !important;
+  }
 
+  .dataTables_filter {
+    padding-right: 20px !important;
+  }
+</style>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.css" />
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.js"></script>
 <section class="main-section">
   <div class="container">
     <div class="row justify-content-center">
@@ -70,52 +81,58 @@
     </div>
     <div class="row">
       <div class="col-sm-12">
-        <?php if (count($inviteClassData) > 0) { ?>
-          <table id="reportlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
-            <thead>
-              <tr>
-                <th>Class</th>
-                <th>Section</th>
-                <th>Subject</th>
-                <th>Submissions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php
+        <div class="card">
+          <div class="card-header text-white" style="background-color: #253372;">Assignment Submission Summary</div>
+          <div class="card body pt-2">
 
-              $i = 0;
-              foreach ($inviteClassData as $row) {
-                $section_name = '';
-                $subject_name = '';
-                $cls = '';
-                $g_link = '';
-                if ($row->studentClass) {
-                  $cls = $row->studentClass->class_name;
-                  $section_name = $row->studentClass->section_name;
-                  $g_link = $row->studentClass->g_link;
-                }
-                if ($row->studentSubject) {
-                  $subject_name = $row->studentSubject->subject_name;
-                }
-              ?>
-                <tr>
-                  <td>{{ $cls }} Std</td>
-                  <td>{{ $section_name }}</td>
-                  <td>{{ $subject_name }}</td>
-                  <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
-                      <svg class="icon font-10 mr-1">
-                        <use xlink:href="../images/icons.svg#icon_dot"></use>
-                      </svg>
-                      Check Submissions
-                    </a></td>
-                </tr>
+            <?php if (count($inviteClassData) > 0) { ?>
+              <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                <thead>
+                  <tr>
+                    <th>Class/Section</th>
+                    <th>Subject</th>
+                    <th>Submissions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php
+
+                  $i = 0;
+                  foreach ($inviteClassData as $row) {
+                    $section_name = '';
+                    $subject_name = '';
+                    $cls = '';
+                    $g_link = '';
+                    if ($row->studentClass) {
+                      $cls = $row->studentClass->class_name;
+                      $section_name = $row->studentClass->section_name;
+                      $g_link = $row->studentClass->g_link;
+                    }
+                    if ($row->studentSubject) {
+                      $subject_name = $row->studentSubject->subject_name;
+                    }
+                  ?>
+                    <tr>
+                      <td>{{ $cls }} Std {{ $section_name }}</td>
+                      <td>{{ $subject_name }}</td>
+                      <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+                          <svg class="icon font-10 mr-1">
+                            <use xlink:href="../images/icons.svg#icon_dot"></use>
+                          </svg>
+                          Check Submissions
+                        </a></td>
+                    </tr>
 
 
-              <?php
-              }
+                  <?php
+                  } ?>
+
+                </tbody>
+              </table>
+            <?php
               $i++;
             } else {
-              ?>
+            ?>
               <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
                 <svg class="icon icon-4x mr-3">
                   <use xlink:href="../images/icons.svg#icon_nodate"></use>
@@ -125,9 +142,10 @@
             <?php
             }
             ?>
-            </tbody>
-          </table>
+          </div>
+        </div>
       </div>
+
     </div>
   </div>
 </section>
@@ -188,7 +206,7 @@
 </script>
 <script>
   $(document).ready(function() {
-    $('#reportlist').DataTable();
+    $('#teacherlist').DataTable();
   });
 </script>
 @endsection
