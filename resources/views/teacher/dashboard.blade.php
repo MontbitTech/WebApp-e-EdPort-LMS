@@ -124,18 +124,17 @@ $cls = 0;
 
                                         <div class="col-md-6 mt-1">
                                             <div class="row">
-                                                <?php
-                                                $chapters = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
 
-                                                ?>
                                                 <div class="col-md-6">
 
                                                     <select class="form-control custom-select-sm border-0 btn-shadow chapter" id="chapter" name="chap" data-chapter="{{$i}}" @if($t->cancelled)disabled @endif>
                                                         <option value="Select Chapter">Select Chapter</option>
                                                         @if(count($chapters)>0)
-                                                        @foreach($chapters as $ch)
+                                                        @foreach($chapters->unique('chapter') as $ch)
+                                                        @if($ch->class==$cls && $ch->subject==$t->subject_id)
                                                         <?php $selected = ($ch->id == $t->topic_id) ? 'selected' : ''; ?>
                                                         <option value="{{$ch->chapter}}" {{$selected}}>{{$ch->chapter}}</option>
+                                                        @endif
                                                         @endforeach
                                                         @endif
 

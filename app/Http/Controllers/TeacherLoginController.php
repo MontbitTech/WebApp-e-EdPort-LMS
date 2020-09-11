@@ -162,7 +162,9 @@ class TeacherLoginController extends Controller
 
         $helpCategories = HelpTicketCategory::get();
 
-        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastDates', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData', 'futureDates'));
+        $chapters   = CmsLink::orderBy('chapter','asc')->get();
+
+        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastDates', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData', 'futureDates','chapters'));
     }
 
     public function viewPastClass(Request $request)
