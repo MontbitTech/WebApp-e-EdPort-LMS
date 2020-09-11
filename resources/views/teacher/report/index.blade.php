@@ -18,30 +18,30 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8 col-xl-8">
-        <div class="classes-box pr-3 min-height-auto">
-          <div class="classes-datetime">
-            <div class="cls-date">22 Apr</div>
-            <div class="cls-from">10:00 AM</div>
-            <div class="cls-separater">to</div>
-            <div class="cls-to">11:00 AM</div>
+        <div class="card">
+          <div class="card-header btn-ui">
+            <div class="row p-0 m-0">
+              <div class="col-md-5 p-0 m-0 col-5 col-lg-5">22 Sep 10:00 AM to 11:00 AM </div>
+              <div class="col-md-4 col-lg-4 col-4 p-0 m-0">Class/Section: 7th A Std</div>
+              <div class="col-md-3 col-lg-3 col-3 p-0 m-0">Subject:Physics</div>
+            </div>
           </div>
-          <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
-            <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span> 7th Std</div>
-            <div class="font-weight-bold pt-1"><span class="text-secondary">Section:</span> A</div>
-            <div class="font-weight-bold pt-1"><span class="text-secondary">Subject:</span> Physics</div>
-          </div>
-          <p class="mt-0 mb-1 text-secondary">
-            The branch of science concerned with the nature and properties of matter and energy.
-          </p>
-          <div class="py-2">
-            <div class="row m-0 p-1 border bg-light">
+          <div class="card-body">
+
+            <div class="row m-0 p-1  ">
               <div class="col-md-6 text-center pt-2">Visual Result of quiz</div>
               <div class="col-md-6">
                 <div id="chart" style="width:18.75rem;height:11.25rem;margin:0 auto"></div>
               </div>
             </div>
           </div>
+          <div class="card-footer">
+            <p class="mt-0 mb-1 text-secondary">
+              The branch of science concerned with the nature and properties of matter and energy.
+            </p>
+          </div>
         </div>
+
       </div>
       <div class="col-md-4 col-xl-4 mb-3">
         <div class="p-3 p-md-4 h-100 repo-hover bg-lightblue">
@@ -84,7 +84,7 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-header text-white" style="background-color: #253372;">Assignment Submission Summary</div>
+          <div class="card-header btn-ui">Assignment Submission Summary</div>
           <div class="card body pt-2">
 
             <?php if (count($inviteClassData) > 0) { ?>
