@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\ClassWork;
 use App\HelpTicketCategory;
 use App\InvitationClass;
+use App\libraries\Utility\ClassWorkUtility;
 use App\Models\Attendance;
 use App\Models\Student;
 use App\StudentClass;
@@ -22,7 +24,7 @@ class ReportController extends Controller
     /**
      * @return Application|Factory|View
      */
-    public function teacherReport(Request $request)
+    public function teacherReport (Request $request)
     {
         $logged_teacher = Session::get('teacher_session');
 
@@ -33,8 +35,8 @@ class ReportController extends Controller
                 $q->where('teacher_id', $teacherId);
             })->get()->toArray();
 
-        foreach ($classrooms as $classroom) {
-            $students[$classroom['id']] = Student::with('class')
+        foreach ( $classrooms as $classroom ) {
+            $students[ $classroom['id'] ] = Student::with('class')
                 ->whereHas('class', function ($q) use ($classroom) {
                     $q->where('class_name', $classroom['class_name']);
                     $q->where('section_name', $classroom['section_name']);
@@ -48,19 +50,27 @@ class ReportController extends Controller
         return view('teacher.report.index', compact('helpCategories', 'inviteClassData'));
     }
 
-    public function studentAttendanceAverage(Request $request)
+    public function studentAttendanceAverage (Request $request)
     {
         $totalAttenndance = Attendance::where('student_id', $request->studentId)->count();
         $present = Attendance::present()->where('student_id', $request->studentId)->count();
     }
 
-    public function assignmentSubmissionGrades(Request $request)
+    public function assignmentSubmissionGrades (Request $request)
     {
         $teacherId = Session::get('teacher_session');
         $classrooms = StudentClass::with('dateClass', 'classwork')->whereHas('dateClass', function ($q) use ($teacherId) {
             $q->where('teacher_id', $teacherId);
         })->get();
 
-        dd($classrooms);
+        $classWorks = ClassWork::with('studentClass', 'studentClass.dateClass')
+            ->whereHas('studentClass.dateClass', function ($q) use ($teacherId) {
+                $q->where('teacher_id', $teacherId);
+            })
+            ->get();
+
+        $gradeAverage = ClassWorkUtility::calculateGrade($classWorks);
+
+        dd($gradeAverage);
     }
 }
