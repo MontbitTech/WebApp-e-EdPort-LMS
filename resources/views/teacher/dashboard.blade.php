@@ -1002,6 +1002,7 @@ $cls = 0;
 
                             <th>Assignment Name</th>
                             <th>Link</th>
+                            <th>Submissions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -2275,7 +2276,8 @@ $cls = 0;
                     $('#assignmentList').find('tbody').find('tr').remove();
                     data += '<tr>';
                     data += '<td>' + classAssignment.g_title + '</td>';
-                    data += '<td><a href="' + classAssignment.g_live_link + '" class="text-decoration-none" target="_blank">Link</a></td>';
+                    data += '<td><a href="' + classAssignment.g_live_link + '" class="text-decoration-none" target="_blank">Check Assignment</a></td>';
+                    data += '<td><a href="' + classAssignment.g_live_link.replace("details", "submissions") + '" class="text-decoration-none" target="_blank">Check Submissions</a></td>';
                     data += '</tr>';
 
                     $('#assignmentList').find('tbody').append(data);
