@@ -5,6 +5,8 @@
     padding-left: 20px !important;
   }
 
+
+
   .dataTables_filter {
     padding-right: 20px !important;
   }
@@ -35,14 +37,14 @@
             <div class="row m-0 p-1 border bg-light">
               <div class="col-md-6 text-center pt-2">Visual Result of quiz</div>
               <div class="col-md-6">
-                <div id="chart" style="width:300px;height:180px;margin:0 auto"></div>
+                <div id="chart" style="width:18.75rem;height:11.25rem;margin:0 auto"></div>
               </div>
             </div>
           </div>
         </div>
       </div>
       <div class="col-md-4 col-xl-4 mb-3">
-        <div class="p-3 p-md-4 h-100 bg-lightblue">
+        <div class="p-3 p-md-4 h-100 repo-hover bg-lightblue">
           <h5 class="font-weight-bold mb-3">Download Report</h5>
           <div class="form-group">
             <label for="classChoose" class="mb-0">Class:</label>
@@ -113,7 +115,7 @@
                     }
                   ?>
                     <tr>
-                      <td>{{ $cls }} Std {{ $section_name }}</td>
+                      <td>{{ $cls }} {{ $section_name }} Std </td>
                       <td>{{ $subject_name }}</td>
                       <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
                           <svg class="icon font-10 mr-1">
