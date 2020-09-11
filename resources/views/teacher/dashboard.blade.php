@@ -1002,6 +1002,7 @@ $cls = 0;
 
                             <th>Assignment Name</th>
                             <th>Link</th>
+                            <th>Submissions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -1696,7 +1697,15 @@ $cls = 0;
                     $('#attach_file').prop('disabled', false);
                     $('#cancel_assignment').prop('disabled', false);
                 }
+            },
+            error: function() {
+                $('.loader').fadeOut();
+                $('#assignment_create').prop('disabled', false);
+                $('#attach_file').prop('disabled', false);
+                $('#cancel_assignment').prop('disabled', false);
+                $.fn.notifyMe('error', 4, 'Something went wrong please reload this page and try again');
             }
+
         });
     }));
     $(document).on('click', '#attach_file', (function() {
@@ -1760,6 +1769,13 @@ $cls = 0;
                     $('#attach_file').prop('disabled', false);
                     $('#cancel_assignment').prop('disabled', false);
                 }
+            },
+            error: function() {
+                $('.loader').fadeOut();
+                $('#assignment_create').prop('disabled', false);
+                $('#attach_file').prop('disabled', false);
+                $('#cancel_assignment').prop('disabled', false);
+                $.fn.notifyMe('error', 4, 'Something went wrong please reload this page and try again');
             }
         });
     }));
@@ -2275,7 +2291,8 @@ $cls = 0;
                     $('#assignmentList').find('tbody').find('tr').remove();
                     data += '<tr>';
                     data += '<td>' + classAssignment.g_title + '</td>';
-                    data += '<td><a href="' + classAssignment.g_live_link + '" class="text-decoration-none" target="_blank">Link</a></td>';
+                    data += '<td><a href="' + classAssignment.g_live_link + '" class="text-decoration-none" target="_blank">Check Assignment</a></td>';
+                    data += '<td><a href="' + classAssignment.g_live_link.replace("details", "submissions") + '" class="text-decoration-none" target="_blank">Check Submissions</a></td>';
                     data += '</tr>';
 
                     $('#assignmentList').find('tbody').append(data);
