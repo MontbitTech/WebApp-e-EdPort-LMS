@@ -5,6 +5,8 @@
     padding-left: 20px !important;
   }
 
+
+
   .dataTables_filter {
     padding-right: 20px !important;
   }
@@ -16,33 +18,38 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-md-8 col-xl-8">
-        <div class="classes-box pr-3 min-height-auto">
-          <div class="classes-datetime">
-            <div class="cls-date">22 Apr</div>
-            <div class="cls-from">10:00 AM</div>
-            <div class="cls-separater">to</div>
-            <div class="cls-to">11:00 AM</div>
-          </div>
-          <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
-            <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span> 7th Std</div>
-            <div class="font-weight-bold pt-1"><span class="text-secondary">Section:</span> A</div>
-            <div class="font-weight-bold pt-1"><span class="text-secondary">Subject:</span> Physics</div>
-          </div>
-          <p class="mt-0 mb-1 text-secondary">
-            The branch of science concerned with the nature and properties of matter and energy.
-          </p>
-          <div class="py-2">
-            <div class="row m-0 p-1 border bg-light">
-              <div class="col-md-6 text-center pt-2">Visual Result of quiz</div>
-              <div class="col-md-6">
-                <div id="chart" style="width:300px;height:180px;margin:0 auto"></div>
+        <div class="card">
+          <div class="card-header btn-ui">
+            <div class="row p-0 m-0">
+              <div class="col-md-5 p-0 m-0 col-5 col-lg-5">22 Sep 10:00 AM to 11:00 AM </div>
+              <div class="col-md-4 col-lg-4 col-4 p-0 m-0">Class/Section: 7th A Std</div>
+              <div class="col-md-3 col-lg-3 col-3 p-0 m-0">Subject:Physics
+                <button type="button" class="btn  text-white m-0  p-0 ml-5 collaspe-btn" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-plus "></i>
+                </button>
               </div>
             </div>
           </div>
+          <div class="collapse" id="collapseExample">
+            <div class="card-body  p-0">
+
+              <div class="row m-0 p-0  ">
+                <div class="col-md-4 text-center border-right pt-2">Visual Result of quiz</div>
+                <div class="col-md-8" style="width:18.75rem;height:12.25rem;overflow:hidden">
+                  <div id="chart" style="width:18.75rem;height:11.25rem;margin:0 auto"></div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <p class="mt-0 mb-1 text-secondary">
+                The branch of science concerned with the nature and properties of matter and energy.
+              </p>
+            </div>
+          </div>
         </div>
+
       </div>
       <div class="col-md-4 col-xl-4 mb-3">
-        <div class="p-3 p-md-4 h-100 bg-lightblue">
+        <div class="p-3 p-md-4 h-100 repo-hover bg-lightblue">
           <h5 class="font-weight-bold mb-3">Download Report</h5>
           <div class="form-group">
             <label for="classChoose" class="mb-0">Class:</label>
@@ -82,7 +89,7 @@
     <div class="row">
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-header text-white" style="background-color: #253372;">Assignment Submission Summary</div>
+          <div class="card-header btn-ui">Assignment Submission Summary</div>
           <div class="card body pt-2">
 
             <?php if (count($inviteClassData) > 0) { ?>
@@ -113,7 +120,7 @@
                     }
                   ?>
                     <tr>
-                      <td>{{ $cls }} Std {{ $section_name }}</td>
+                      <td>{{ $cls }} {{ $section_name }} Std </td>
                       <td>{{ $subject_name }}</td>
                       <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
                           <svg class="icon font-10 mr-1">
@@ -207,6 +214,13 @@
 <script>
   $(document).ready(function() {
     $('#teacherlist').DataTable();
+  });
+</script>
+<script>
+  $('.collaspe-btn').click(function() {
+    $(this).find('i').toggleClass('fas fa-minus');
+    $(this).find('i').toggleClass('fas fa-plus');
+    //$(this).find('i').toggle(function(){});
   });
 </script>
 @endsection
