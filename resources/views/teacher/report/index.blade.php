@@ -5,7 +5,26 @@
     padding-left: 20px !important;
   }
 
+  /* .collaspe-btn:hover { */
+  /* animation: mymove 1s; */
+  /* animation-iteration-count: infinite; */
+  /* animation-iteration-count: 1; */
+  /* transition: transform 1s; */
+  /* } */
 
+  /* @keyframes mymove {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(180deg);
+    }
+  } */
+
+  /* .collaspe-btn:hover {
+    transform: rotate(70deg);
+  } */
 
   .dataTables_filter {
     padding-right: 20px !important;
@@ -16,7 +35,7 @@
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.js"></script>
 <section class="main-section">
   <div class="container">
-    <div class="row justify-content-center">
+    <!-- <div class="row justify-content-center">
       <div class="col-md-8 col-xl-8">
         <div class="card">
           <div class="card-header btn-ui">
@@ -85,19 +104,21 @@
           <button type="button" class="btn btn-primary">Download</button>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-sm-12">
         <div class="card">
-          <div class="card-header btn-ui">Assignment Submission Summary</div>
+          <div class="card-header btn-ui">Assignment Submission Summary
+            <a href="#" class="btn bg-white float-right m-0 ">Report</a>
+          </div>
           <div class="card body pt-2">
 
             <?php if (count($inviteClassData) > 0) { ?>
               <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
                 <thead>
                   <tr>
-                    <th>Class/Section</th>
-                    <th>Subject</th>
+                    <th>Class/Section Subject</th>
+                    <!-- <th>Subject</th> -->
                     <th>Submissions</th>
                   </tr>
                 </thead>
@@ -120,8 +141,8 @@
                     }
                   ?>
                     <tr>
-                      <td>{{ $cls }} {{ $section_name }} Std </td>
-                      <td>{{ $subject_name }}</td>
+                      <td>{{ $cls }} {{ $section_name }} Std {{ $subject_name }} </td>
+                      <!-- <td></td> -->
                       <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
                           <svg class="icon font-10 mr-1">
                             <use xlink:href="../images/icons.svg#icon_dot"></use>
@@ -213,7 +234,11 @@
 </script>
 <script>
   $(document).ready(function() {
-    $('#teacherlist').DataTable();
+    $('#teacherlist').DataTable({
+      buttons: [
+        'excelHtml5'
+      ]
+    });
   });
 </script>
 <script>
