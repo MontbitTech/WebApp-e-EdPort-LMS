@@ -68,7 +68,7 @@ class ReportController extends Controller
                 $present[] = $presentStudent;
             }
             if($totalAttendance!=0){
-                $averageOfClasses[$class->id]=(array_sum($present))/($totalAttendance)*100;
+                $averageOfClasses[$class->id]=(array_sum($present))/($totalAttendance);
             }
             else{
                 $averageOfClasses[$class->id]=0;
