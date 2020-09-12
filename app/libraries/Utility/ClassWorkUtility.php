@@ -71,20 +71,21 @@ class ClassWorkUtility
     public static function calculateAttedance ($classrooms)
     {
         $attendanceAverage = array();
-        foreach ( $classrooms as $class ) {
-            $present = array();
-            foreach ( $class->dateClass as $date ) {
-                $totalAttendance = Attendance::where('dateclass_id', $date->id)->count();
-                $presentStudent = Attendance::present()->where('dateclass_id', $date->id)->count();
-                $present[] = $presentStudent;
+        foreach ( $classrooms as $classroom ) {
+            $presentStudent = array();
+            $totalAttendance=array();
+            $i=0;
+            foreach($classroom->dateClass as $dateClass) {
+                $totalAttendance[$i] = Attendance::where('dateclass_id', $dateClass->id)->count();
+                $presentStudent[$i] = Attendance::present()->where('dateclass_id', $dateClass->id)->count();
+                $i++;       
             }
-            if ( $totalAttendance != 0 ) {
-                $attendanceAverage[ $class->id ] = ( array_sum($present) ) / ( $totalAttendance );
-            } else {
-                $attendanceAverage[ $class->id ] = 0;
+            if(count($totalAttendance)) {
+                $attendanceAverage[ $classroom->id ] = ( array_sum($presentStudent) ) / (count($totalAttendance) );
+            }else {
+                $attendanceAverage[ $classroom->id ] = 0;
             }
         }
-
         return $attendanceAverage;
     }
 }
