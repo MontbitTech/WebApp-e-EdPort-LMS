@@ -58,19 +58,25 @@ class ReportController extends Controller
 
     public function assignmentSubmissionGrades (Request $request)
     {
-        $teacherId = Session::get('teacher_session');
-        $classrooms = StudentClass::with('dateClass', 'classwork')->whereHas('dateClass', function ($q) use ($teacherId) {
-            $q->where('teacher_id', $teacherId);
-        })->get();
+        $loggedTeacher = Session::get('teacher_session');
+
+//        $classrooms = StudentClass::with('dateClass', 'classwork')->whereHas('dateClass', function ($q) use ($teacherId) {
+//            $q->where('teacher_id', $teacherId);
+//        })->get();
 
         $classWorks = ClassWork::with('studentClass', 'studentClass.dateClass')
-            ->whereHas('studentClass.dateClass', function ($q) use ($teacherId) {
-                $q->where('teacher_id', $teacherId);
+            ->whereHas('studentClass.dateClass', function ($q) use ($loggedTeacher) {
+                $q->where('teacher_id', $loggedTeacher['teacher_id']);
             })
             ->get();
 
         $gradeAverage = ClassWorkUtility::calculateGrade($classWorks);
+        $inviteClassData = InvitationClass::with('studentClass', 'studentSubject')
+            ->where('teacher_id', $loggedTeacher['teacher_id'])
+            ->orderBy('id', 'DESC')
+            ->get();
+        $helpCategories = HelpTicketCategory::get();
 
-        dd($gradeAverage);
+        return view('teacher.report.report', compact('helpCategories', 'inviteClassData', 'gradeAverage'));
     }
 }
