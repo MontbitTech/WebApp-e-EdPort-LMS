@@ -4,6 +4,7 @@ namespace App\libraries\Utility;
 
 use App\Http\Helpers\CommonHelper;
 use App\Http\Helpers\CustomHelper;
+use App\Models\Attendance;
 
 /**
  * Class ClassWorkUtility
@@ -61,6 +62,26 @@ class ClassWorkUtility
                     $averageOf[] = $classGrade;
                 }
                 $averageOfClasses[ $classId ] = array_sum($averageOf) / count($averageOf);
+            }
+        }
+
+        return $averageOfClasses;
+    }
+
+    public static function calculateAttedance ($classrooms)
+    {
+        $averageOfClasses = array();
+        foreach ( $classrooms as $class ) {
+            $present = array();
+            foreach ( $class->dateClass as $date ) {
+                $totalAttendance = Attendance::where('dateclass_id', $date->id)->count();
+                $presentStudent = Attendance::present()->where('dateclass_id', $date->id)->count();
+                $present[] = $presentStudent;
+            }
+            if ( $totalAttendance != 0 ) {
+                $averageOfClasses[ $class->id ] = ( array_sum($present) ) / ( $totalAttendance );
+            } else {
+                $averageOfClasses[ $class->id ] = 0;
             }
         }
 
