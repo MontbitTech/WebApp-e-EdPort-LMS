@@ -14,6 +14,7 @@
                     <th>Classroom</th>
                     <th>Grade Average</th>
                     <th>Attendace Average</th>
+                    <th>Classes Conducted</th>
                     <th>Submissions</th>
                 </tr>
                 </thead>
@@ -43,6 +44,10 @@
                         @endif
                     </td>
                     <td></td>
+                    <td>
+                        {{count($totalClassesOfClassrooms[$inviteClass->class_id]) - count($cancelledClassesOfClassrooms[$inviteClass->class_id])}}
+                        / {{count($totalClassesOfClassrooms[$inviteClass->class_id])}}
+                    </td>
                     <td>
                         <a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}"
                            id="Inv_live_c_link_{{$i}}"

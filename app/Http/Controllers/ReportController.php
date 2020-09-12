@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\ClassWork;
+use App\DateClass;
 use App\HelpTicketCategory;
 use App\InvitationClass;
 use App\libraries\Utility\ClassWorkUtility;
@@ -29,19 +30,19 @@ class ReportController extends Controller
         $logged_teacher = Session::get('teacher_session');
 
         $helpCategories = HelpTicketCategory::get();
-        $teacherId = Session::get('teacher_session');
-        $classrooms = StudentClass::with('dateClass', 'dateClass.attendance')
-            ->whereHas('dateClass', function ($q) use ($teacherId) {
-                $q->where('teacher_id', $teacherId);
-            })->get()->toArray();
+//        $teacherId = Session::get('teacher_session');
+//        $classrooms = StudentClass::with('dateClass', 'dateClass.attendance')
+//            ->whereHas('dateClass', function ($q) use ($teacherId) {
+//                $q->where('teacher_id', $teacherId);
+//            })->get()->toArray();
 
-        foreach ( $classrooms as $classroom ) {
-            $students[ $classroom['id'] ] = Student::with('class')
-                ->whereHas('class', function ($q) use ($classroom) {
-                    $q->where('class_name', $classroom['class_name']);
-                    $q->where('section_name', $classroom['section_name']);
-                })->get();
-        }
+//        foreach ( $classrooms as $classroom ) {
+//            $students[ $classroom['id'] ] = Student::with('class')
+//                ->whereHas('class', function ($q) use ($classroom) {
+//                    $q->where('class_name', $classroom['class_name']);
+//                    $q->where('section_name', $classroom['section_name']);
+//                })->get();
+//        }
         $inviteClassData = InvitationClass::with('studentClass', 'studentSubject')
             ->where('teacher_id', $logged_teacher['teacher_id'])
             ->orderBy('id', 'DESC')
@@ -60,9 +61,17 @@ class ReportController extends Controller
     {
         $loggedTeacher = Session::get('teacher_session');
 
-//        $classrooms = StudentClass::with('dateClass', 'classwork')->whereHas('dateClass', function ($q) use ($teacherId) {
-//            $q->where('teacher_id', $teacherId);
-//        })->get();
+        $totalClassesOfClassrooms = StudentClass::with('dateClass')
+            ->whereHas('dateClass', function ($q) use ($loggedTeacher) {
+                $q->where('teacher_id', $loggedTeacher['teacher_id']);
+            })->get()->pluck('dateClass.*','id');
+
+        $cancelledClassesOfClassrooms = StudentClass::with(['dateClass' => function ($q) {
+            $q->where('cancelled', 1);
+        }])
+            ->whereHas('dateClass', function ($q) use ($loggedTeacher) {
+                $q->where('teacher_id', $loggedTeacher['teacher_id']);
+            })->get()->pluck('dateClass.*','id');
 
         $classWorks = ClassWork::with('studentClass', 'studentClass.dateClass')
             ->whereHas('studentClass.dateClass', function ($q) use ($loggedTeacher) {
@@ -77,6 +86,6 @@ class ReportController extends Controller
             ->get();
         $helpCategories = HelpTicketCategory::get();
 
-        return view('teacher.report.report', compact('helpCategories', 'inviteClassData', 'gradeAverage'));
+        return view('teacher.report.report', compact('helpCategories', 'inviteClassData', 'gradeAverage', 'totalClassesOfClassrooms', 'cancelledClassesOfClassrooms'));
     }
 }
