@@ -53,8 +53,28 @@ class ReportController extends Controller
 
     public function studentAttendanceAverage (Request $request)
     {
-        $totalAttenndance = Attendance::where('student_id', $request->studentId)->count();
-        $present = Attendance::present()->where('student_id', $request->studentId)->count();
+        $teacherId = Session::get('teacher_session');
+        $classrooms = StudentClass::with('dateClass')->whereHas('dateClass', function ($q) use ($teacherId) {
+            $q->where('teacher_id', $teacherId);
+        })->get();
+        $averageOfClasses = array();
+        foreach ($classrooms as $class ) {
+            // $total = array();
+            $present = array();
+            foreach ($class->dateClass as $date ) {
+                $totalAttendance = Attendance::where('dateclass_id', $date->id)->count();
+                $presentStudent = Attendance::present()->where('dateclass_id', $date->id)->count();
+                // $total[] =$totalAttendance;
+                $present[] = $presentStudent;
+            }
+            if($totalAttendance!=0){
+                $averageOfClasses[$class->id]=(array_sum($present))/($totalAttendance)*100;
+            }
+            else{
+                $averageOfClasses[$class->id]=0;
+            }
+        }
+        return $averageOfClasses;
     }
 
     public function assignmentSubmissionGrades (Request $request)
