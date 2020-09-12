@@ -11,7 +11,7 @@
                         <tr>
                             <th>Classroom</th>
                             <th>Grade Average</th>
-                            <th>Attendace Average</th>
+                            <th>Attendance Percentage</th>
                             <th>Classes Conducted</th>
                             <th>Submissions</th>
                         </tr>

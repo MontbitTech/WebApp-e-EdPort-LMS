@@ -72,20 +72,20 @@ class ClassWorkUtility
     {
         $attendanceAverage = array();
         foreach ( $classrooms as $classroom ) {
-            $presentStudent = array();
-            $totalAttendance=array();
-            $i=0;
-            foreach($classroom->dateClass as $dateClass) {
-                $totalAttendance[$i] = Attendance::where('dateclass_id', $dateClass->id)->count();
-                $presentStudent[$i] = Attendance::present()->where('dateclass_id', $dateClass->id)->count();
-                $i++;       
+            $presentStudent = $totalAttendance = 0;
+
+            foreach ( $classroom->dateClass as $dateClass ) {
+                $totalAttendance += Attendance::where('dateclass_id', $dateClass->id)->count();
+                $presentStudent += Attendance::present()->where('dateclass_id', $dateClass->id)->count();
             }
-            if(count($totalAttendance)) {
-                $attendanceAverage[ $classroom->id ] = ( array_sum($presentStudent) ) / (count($totalAttendance) );
-            }else {
+
+            if ( $totalAttendance ) {
+                $attendanceAverage[ $classroom->id ] = ( $presentStudent / $totalAttendance ) * 100;
+            } else {
                 $attendanceAverage[ $classroom->id ] = 0;
             }
         }
+
         return $attendanceAverage;
     }
 }
