@@ -1,7 +1,7 @@
 <div class="col-sm-12">
     <div class="card">
-        <div class="card-header btn-ui">Assignment Submission Summary
-            <a href="#" class="btn bg-white float-right m-0 ">Report</a>
+        <div class="card-header btn-ui">Classroom Reports
+{{--            <a href="#" class="btn bg-white float-right m-0 ">Report</a>--}}
         </div>
         <div class="card body pt-2">
 
@@ -82,3 +82,13 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        $('#teacherlist').DataTable({
+            buttons: [
+                'excelHtml5'
+            ]
+        });
+    });
+</script>
