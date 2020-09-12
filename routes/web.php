@@ -171,7 +171,7 @@ Route::group(['middleware' => 'teachersession'], function () {
 
     Route::get('/test_email', 'TeacherClassController@html_email'); //->name('teacher.acceptClass');
 
-    Route::get('/teacher/report', 'ReportController@index')->name('teacher.report');
+    Route::get('/teacher/report', 'ReportController@teacherReport')->name('teacher.report');
     Route::match(array('GET', 'POST'), '/student-notify', 'TeacherClassController@notifyStudents')->name('student-notify');
 
     Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
@@ -194,6 +194,8 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/teacher/Attendance', 'StudentAttendanceController@store')->name('save.attendance');
     Route::get('/teacher/Attendance', 'StudentAttendanceController@index')->name('get.attendance');
     Route::post('/teacher/updateAttendance', 'StudentAttendanceController@update');
+
+    Route::get('/teacher/generateReports', 'ReportController@assignmentSubmissionGrades');
 });
 
 
