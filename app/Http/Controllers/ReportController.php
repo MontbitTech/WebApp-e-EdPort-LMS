@@ -47,7 +47,6 @@ class ReportController extends Controller
         set_time_limit(0);
         $loggedTeacher = Session::get('teacher_session');
 
-        dd(ReportUtility::getAttedanceAverage($loggedTeacher['teacher_id']));
         $totalClassesOfClassrooms = StudentClass::with('dateClass')
             ->whereHas('dateClass', function ($q) use ($loggedTeacher) {
                 $q->where('teacher_id', $loggedTeacher['teacher_id']);
@@ -64,10 +63,11 @@ class ReportController extends Controller
         $inviteClassData = InvitationClass::with('studentClass', 'studentSubject')
             ->where('teacher_id', $loggedTeacher['teacher_id'])
             ->orderBy('id', 'DESC')
-            ->get();
-
+            ->get(); 
+        
+        $attendanceAverage = $this->studentAttendanceAverage($request);
         $gradeAverage = ReportUtility::getAssignmentSubmissionGrades($loggedTeacher['teacher_id']);
 
-        return view('teacher.report.report', compact('inviteClassData', 'gradeAverage', 'totalClassesOfClassrooms', 'cancelledClassesOfClassrooms'));
+        return view('teacher.report.report', compact('inviteClassData', 'gradeAverage', 'totalClassesOfClassrooms', 'cancelledClassesOfClassrooms','attendanceAverage'));
     }
 }

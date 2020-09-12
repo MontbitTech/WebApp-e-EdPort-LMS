@@ -41,7 +41,11 @@
                                     {{$gradeAverage[$inviteClass->class_id]}}
                                     @endif
                                 </td>
-                                <td></td>
+                                <td>
+                                   @if(isset($attendanceAverage[$inviteClass->class_id]))
+                                   {{$attendanceAverage[$inviteClass->class_id]}}
+                                    @endif
+                                </td>
                                 <td>
                                     {{count($totalClassesOfClassrooms[$inviteClass->class_id]) - count($cancelledClassesOfClassrooms[$inviteClass->class_id])}}
                                     / {{count($totalClassesOfClassrooms[$inviteClass->class_id])}}

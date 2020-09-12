@@ -70,7 +70,7 @@ class ClassWorkUtility
 
     public static function calculateAttedance ($classrooms)
     {
-        $averageOfClasses = array();
+        $attendanceAverage = array();
         foreach ( $classrooms as $class ) {
             $present = array();
             foreach ( $class->dateClass as $date ) {
@@ -79,12 +79,12 @@ class ClassWorkUtility
                 $present[] = $presentStudent;
             }
             if ( $totalAttendance != 0 ) {
-                $averageOfClasses[ $class->id ] = ( array_sum($present) ) / ( $totalAttendance );
+                $attendanceAverage[ $class->id ] = ( array_sum($present) ) / ( $totalAttendance );
             } else {
-                $averageOfClasses[ $class->id ] = 0;
+                $attendanceAverage[ $class->id ] = 0;
             }
         }
 
-        return $averageOfClasses;
+        return $attendanceAverage;
     }
 }
