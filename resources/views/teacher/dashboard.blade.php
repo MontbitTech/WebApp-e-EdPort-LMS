@@ -24,9 +24,9 @@ $cls = 0;
                     <li class="nav-item mb-1">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#plclasses" role="tab">Past Classes</a>
                     </li>
-                    <li class="nav-item mb-1">
+                    <!-- <li class="nav-item mb-1">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assignment Submission Summary</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item mb-1 futuer-m ">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#upcomingclasses" role="tab">Future
                             Classes</a>
@@ -818,7 +818,7 @@ $cls = 0;
                     <!---
                         Invitation
                          -->
-                    <div class="tab-pane fade" id="newInvitationclasses">
+                    <!-- <div class="tab-pane fade" id="newInvitationclasses">
 
                         <div class="col-sm-12">
                             <?php if (count($inviteClassData) > 0) { ?>
@@ -883,7 +883,7 @@ $cls = 0;
                             }
                             ?>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- ./Teacher-AssignedClasses -->
 
                 </div>

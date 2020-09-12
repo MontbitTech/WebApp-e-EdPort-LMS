@@ -26,7 +26,7 @@ class StudentClass extends Model
 	
 	public function classwork()
     {
-        return $this->hasMany('App\ClassWrok','class_id','id');
+        return $this->hasMany(ClassWork::class,'class_id','id');
     }
 	
 	public function classtopic()
