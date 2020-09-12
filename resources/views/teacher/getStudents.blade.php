@@ -106,7 +106,7 @@
                                     @if($student->attendance[0]->status)
                                         checked
                                     @endif
-                                @else
+                                @elseif(date('y-m-d') <= date('y-m-d',strtotime($dateClass->class_date)))
                                     checked
                                 @endif
                                 @if(date('y-m-d') > date('y-m-d',strtotime($dateClass->class_date)))

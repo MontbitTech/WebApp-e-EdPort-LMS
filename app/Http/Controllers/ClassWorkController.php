@@ -18,6 +18,7 @@ use App\DateClass;
 use Validator;
 use DateTime;
 use DateTimeZone;
+
 class ClassWorkController extends Controller
 {
     /**
@@ -53,7 +54,7 @@ class ClassWorkController extends Controller
 
         $helpCategories = HelpTicketCategory::get();
 
-        return view('teacher.assignment.index', compact('class_list', 'links', 'cmsclass', 'helpCategories','assignment'));
+        return view('teacher.assignment.index', compact('class_list', 'links', 'cmsclass', 'helpCategories', 'assignment'));
     }
 
     public function ajaxLinks (Request $request)
@@ -151,7 +152,7 @@ class ClassWorkController extends Controller
             $topicExists = ClassTopic::where('id', $topic_id)->get()->first();
             $g_topic_id = $topicExists->g_topic_id;
         }
-        
+
         if ( $topic_name != '' && $sel_topic_id == '' ) {
             $data = array("name" => $topic_name);
             $data = json_encode($data);
@@ -189,13 +190,13 @@ class ClassWorkController extends Controller
         $dueDate = array(
             "year"  => date('Y', strtotime($request->dueDate)),
             "month" => date('m', strtotime($request->dueDate)),
-            "day"  => date('d', strtotime($request->dueDate))
+            "day"   => date('d', strtotime($request->dueDate)),
         );
 
         $dueTime = array(
-            "hours"=>date("H",strtotime(DateUtility::getTime(strtotime($request->dueTime)))),
-            "minutes"=>date("i",strtotime(DateUtility::getTime(strtotime($request->dueTime)))),
-            "seconds"=>date("s",strtotime(DateUtility::getTime(strtotime($request->dueTime)))),
+            "hours"   => date("H", strtotime(DateUtility::getTime(strtotime($request->dueTime)))),
+            "minutes" => date("i", strtotime(DateUtility::getTime(strtotime($request->dueTime)))),
+            "seconds" => date("s", strtotime(DateUtility::getTime(strtotime($request->dueTime)))),
         );
         // return json_encode(array('status' => 'error', 'message' =>$dueTime['minutes']));
         $array_data = array(
@@ -205,7 +206,7 @@ class ClassWorkController extends Controller
             "topicId"     => $g_topic_id,
             "dueDate"     => $dueDate,
             "dueTime"     => $dueTime,
-            "maxPoints"   =>  $g_points,
+            "maxPoints"   => $g_points,
             "description" => $request->description,
 
         );
@@ -217,6 +218,7 @@ class ClassWorkController extends Controller
 
         if ( $work_response == 101 ) {
             Log::info($work_response);
+
             return json_encode(array('status' => 'error', 'message' => Config::get('constants.WebMessageCode.119')));
         } else {
             $w_resData = array_merge($w_resData, json_decode($work_response, true));
@@ -227,6 +229,7 @@ class ClassWorkController extends Controller
                     return redirect()->route('teacher.logout');
                 } else {
                     Log::error($w_resData['error']['message']);
+
                     return json_encode(array('status' => 'error', 'message' => $w_resData['error']['message']));
                 }
             } else {
@@ -239,28 +242,29 @@ class ClassWorkController extends Controller
                 $classWork->g_class_id = $g_class_id;
                 $classWork->classwork_type = $w_resData['workType'];
                 $classWork->topic_id = $topic_id;
-                /* $classWork->g_points = '';
-                                    $classWork->g_status = '';
-                                    $classWork->g_action = ''; */
+                $classWork->g_points = $g_points;
+//                                    $classWork->g_status = '';
+//                                    $classWork->g_action = '';
                 $classWork->g_title = $w_resData['title'];
-                //$classWork->g_due_date = '';
+                $classWork->g_due_date = DateUtility::getDate(strtotime($request->dueDate));
                 $classWork->teacher_id = $logged_teacher_id;
                 //$classWork->timetable_id = $timing_id;
                 $classWork->subject_id = $subject_id;
+                $classWork->google_classwork_id = $w_resData['id'];
                 $classWork->save();
                 $classWork_id = $classWork->id;  // Last Insert Id
 
-                if ( $dateClass_id != '') {
+                if ( $dateClass_id != '' ) {
                     $obj = DateClass::find($dateClass_id);
                     $obj->topic_id = $topic_id;
                     //$obj->ass_live_url = $w_resData['alternateLink'];
                     $obj->save();
-                
+
                     $s = \DB::table('tbl_classwork_dateclass')->insert(
                         ['dateclass_id' => $dateClass_id, 'classwork_id' => $classWork_id]
                     );
                 }
-            
+
                 return json_encode(array('status' => 'success', 'cource_url' => $cource_url, 'message' => 'Assigment Created Successfully'));
             }
         }
@@ -383,15 +387,15 @@ class ClassWorkController extends Controller
 
     public function addData_DateClass (Request $request) // Cron JOb Function add data timing table to Past Class
     {
-        for($count = 0;$count<=7;$count++){
+        for ( $count = 0; $count <= 7; $count++ ) {
             $days[] = DateUtility::getDay(DateUtility::getFutureDate($count));
         }
-        
+
         $count = 0;
-        foreach($days as $day){       
+        foreach ( $days as $day ) {
             $teacherData = ClassTiming::with('studentClass')->where('class_day', $day)->get();
 
-            if ( !count($teacherData) ){
+            if ( !count($teacherData) ) {
                 $count++;
                 continue;
             }
@@ -416,18 +420,21 @@ class ClassWorkController extends Controller
             $count++;
         }
         Log::info('cron finished');
+
         return back()->with('success', "Time table for today's class reloaded successfully.");
     }
 
     public function getClassAssignments (Request $request)
     {
-        $assignments = CommonHelper::get_assignment_data($request->class_id); 
+        $assignments = CommonHelper::get_assignment_data($request->class_id);
+
         return json_encode(array('status' => 'success', 'data' => $assignments));
     }
 
-     public function getExamAssignments (Request $request)
-     {
-        $assignments = CommonHelper::get_exam_assignment_data($request->class_id); 
+    public function getExamAssignments (Request $request)
+    {
+        $assignments = CommonHelper::get_exam_assignment_data($request->class_id);
+
         return json_encode(array('status' => 'success', 'data' => $assignments));
-      }
+    }
 }
