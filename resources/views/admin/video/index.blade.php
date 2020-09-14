@@ -44,7 +44,7 @@
                                         <td>{{$video->title}}</td>
                                         <td>{{$video->link}}</td>
                                         <td>
-                                            <a href="{{route('video.edit', encrypt($video->id))}}">Edit</a> |
+                                            <a href="{{route('video.update', encrypt($video->id))}}">Edit</a> |
                                             <a href="javascript:void(0);" data-deleteModal="{{$video->id}}"> {{ __('Delete') }} </a>
 
                                         </td>
