@@ -137,7 +137,7 @@ class TeacherLoginController extends Controller
         $pastDates = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '>', DateUtility::getPastDate(7))
             ->Where('class_date', '<', DateUtility::getDate())
-            ->orderBy('class_date', 'desc')
+            ->orderBy('class_date', 'asc')
             ->limit(7)
             ->distinct('class_date')
             ->get()->unique();
@@ -162,9 +162,9 @@ class TeacherLoginController extends Controller
 
         $helpCategories = HelpTicketCategory::get();
 
-        $chapters   = CmsLink::orderBy('chapter','asc')->get();
+        $chapters   = CmsLink::orderBy('chapter', 'asc')->get();
 
-        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastDates', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData', 'futureDates','chapters'));
+        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastDates', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData', 'futureDates', 'chapters'));
     }
 
     public function viewPastClass(Request $request)
@@ -178,7 +178,7 @@ class TeacherLoginController extends Controller
         $pastDates = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '>', DateUtility::getPastDate(7))
             ->Where('class_date', '<', DateUtility::getDate())
-            ->orderBy('class_date', 'desc')
+            ->orderBy('class_date', 'asc')
             ->limit(7)
             ->distinct('class_date')
             ->get()->unique();
