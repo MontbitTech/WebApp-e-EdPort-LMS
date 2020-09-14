@@ -79,8 +79,8 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
 
 
 <!-- Class Box Help Modal -->
-<div class="modal fade" id="classhelpModal" data-backdrop="static" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
+<div class="modal fade bd-example-modal-lg" id="classhelpModal" data-backdrop="static" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header bg-light d-flex align-items-center mb-0 pb-0">
         <!-- <h5 class="modal-title font-weight-bold">Help Message</h5> -->
@@ -101,7 +101,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
           </svg>
         </button>
       </div>
-      <div class="modal-body pt-4">
+      <div class="modal-body  pt-4">
         <div class="tab-content ">
           <div class="tab-pane fade show active" id="fqa">
             <h2>Popular Questions</h2>
@@ -112,7 +112,30 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
             </ul>
           </div>
           <div class="tab-pane fade" id="video">
-            video
+            <div class="container-fluid">
+              <div class="row">
+                @if($videos)
+
+                @foreach($videos as $video)
+                <div class="col-md-6 col-6 col-lg-6 mb-2">
+                  <div class="card border-none" style="border-radius: 18px;width: 18rem;">
+                    <iframe src="{{$video->link}}" class="card-img-top" width="200" height="200" style="border-top-left-radius: 18px; border-top-right-radius: 18px;"></iframe>
+                    <div class="card-header" style="border-bottom-left-radius: 18px; border-bottom-right-radius: 18px;">
+                      <p class=" card-text"> {{$video->title}}</p>
+                    </div>
+                  </div>
+                </div>
+                @endforeach
+
+
+                @else
+                <div class="col-md-12 col-lg-12 col-12 bg-danger text-white">
+                  Sorray No,Video
+                </div>
+                @endif
+              </div>
+            </div>
+
           </div>
           <div class="tab-pane fade" id="message">
             <form>

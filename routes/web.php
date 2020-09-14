@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -134,6 +135,14 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::get('/deleteAllClassrooms', 'TestController@deleteAllClassroomsFromGoogle');
     Route::get('/listGoogleClassrooms', 'TestController@listGoogleClassrooms');
     Route::get('/admin/weekleyEmails', 'UtilityController@weekleyMailsToStudents');
+    Route::get('admin/video', 'SupportVideoController@index')->name('video');
+    Route::get('admin/video/add', function () {
+        return view('admin.video.add');
+    })->name('video.add');
+    Route::post('admin/video/store', 'SupportVideoController@store')->name('video.store');
+    // Route::get('admin/video/edit/{id}', 'SupportVideoController@edit')->name('video.edit');
+    Route::match(array('GET', 'POST'), 'admin/video/update/{id}', 'SupportVideoController@update')->name('video.update');
+    Route::get('admin/video/destroy/{id}', 'SupportVideoController@destroy')->name('video.destroy');
 });
 
 /*  Teacher  */
