@@ -1267,7 +1267,7 @@ $cls = 0;
 
                         </nav>
                         <div class="col-md-9 col-lg-9 col-9">
-                            <div class="mt-5">
+                            <div class="mt-2">
                                 {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3','style'=>'resize: none')) !!}
                             </div>
                             <div class="form-group  mt-3 ml-5 ">
