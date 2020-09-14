@@ -149,7 +149,7 @@ class TeacherLoginController extends Controller
             ->distinct('class_date')
             ->get()->unique();
         $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher['teacher_id'])
-            ->where('class_date', '<', DateUtility::getFutureDate(7))
+            ->where('class_date', '<', DateUtility::getFutureDate(2))
             ->Where('class_date', '>', DateUtility::getDate())
             ->orderBy('class_date', 'asc')
             ->orderBy('from_timing', 'asc')
