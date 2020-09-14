@@ -19,6 +19,7 @@ use App\InvitationClass;
 use App\Http\Helpers\CommonHelper;
 use App\CmsLink;
 use App\Models\Attendance;
+use App\Support;
 use Response;
 
 
@@ -163,8 +164,9 @@ class TeacherLoginController extends Controller
         $helpCategories = HelpTicketCategory::get();
 
         $chapters   = CmsLink::orderBy('chapter', 'asc')->get();
-
-        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastDates', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData', 'futureDates', 'chapters'));
+        $videos = Support::all();
+        //  dd($video);
+        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastDates', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData', 'futureDates', 'chapters', 'videos'));
     }
 
     public function viewPastClass(Request $request)

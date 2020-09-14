@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SupportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -134,6 +135,12 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::get('/deleteAllClassrooms', 'TestController@deleteAllClassroomsFromGoogle');
     Route::get('/listGoogleClassrooms', 'TestController@listGoogleClassrooms');
     Route::get('/admin/weekleyEmails', 'UtilityController@weekleyMailsToStudents');
+    Route::get('admin/video', 'SupportController@index')->name('video');
+    Route::get('admin/video/add', 'SupportController@create')->name('video.add');
+    Route::post('admin/video/store', 'SupportController@store')->name('video.store');
+    Route::get('admin/video/edit/{id}', 'SupportController@edit')->name('video.edit');
+    Route::post('admin/video/update/{id}', 'SupportController@update')->name('video.update');
+    Route::get('admin/video/destroy/{id}', 'SupportController@destroy')->name('video.destroy');
 });
 
 /*  Teacher  */
