@@ -1306,14 +1306,14 @@ $cls = 0;
                             {!! Form::textarea('past_edit_description', null, array('id'=>'past_edit_description','placeholder' => 'Class Description','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
                         </div>
                     </div> -->
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <label for="class_liveurl" class="col-md-4 col-form-label text-md-right"> Recording URL
                             <small>(Link)</small>:</label>
                         <div class="col-md-6">
                             {!! Form::textarea('past_edit_rec_liveUrl', null, array('id'=>'past_edit_rec_liveUrl','placeholder' => 'Enter Recording Live url','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
 
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group row">
                         <div class="col-md-8 offset-md-4">
                             <button type="button" id="update_pastClass" class="btn btn-primary px-4">Save Class
@@ -1502,7 +1502,7 @@ $cls = 0;
         var val = $(this).data('pasteditmodal');
         $('#pasteditClassModal').modal('show');
         $("#past_edit_description").val($("#past_desc" + val).val());
-        $("#past_edit_rec_liveUrl").val($("#past_recURL" + val).val());
+        //$("#past_edit_rec_liveUrl").val($("#past_recURL" + val).val());
         $("#txt_past_datecalss_id").val($("#pastdateClass_id" + val).val());
         $("#txt_boxID").val(val);
     });
@@ -2056,7 +2056,6 @@ $cls = 0;
             success: function(result) {
                 $('.loader').fadeOut();
                 var response = JSON.parse(result);
-                //console.log(response.data);
                 if (response.status == 'success') {
                     $.fn.notifyMe('success', 5, response.message);
                 } else {
