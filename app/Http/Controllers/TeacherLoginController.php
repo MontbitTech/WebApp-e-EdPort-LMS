@@ -162,10 +162,9 @@ class TeacherLoginController extends Controller
         $teacherData = Teacher::where('id', $logged_teacher['teacher_id'])->get()->first();
 
         $helpCategories = HelpTicketCategory::get();
-
         $chapters   = CmsLink::orderBy('chapter', 'asc')->get();
         $videos = SupportVideo::all();
-        //  dd($video);
+
         return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastDates', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData', 'futureDates', 'chapters', 'videos'));
     }
 
