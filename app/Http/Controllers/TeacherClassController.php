@@ -141,8 +141,9 @@ class TeacherClassController extends Controller
            return back()->with('error','Please add valid live url.');
        }  */
 
-        if ( $class_date == date('Y-m-d') && strtotime($from_time) <= strtotime(date('h:i')) )
+        if($class_date == date('Y-m-d') && strtotime(date("H:i:s", strtotime($request->start_time))) <= strtotime(date('H:i:s'))){
             return back()->with('error', "You can't add a class in the past. Class date time should not be less than current date and time.");
+        }
 
         $obj_class = StudentClass::where('id', $class_id)->get()->first();
 
