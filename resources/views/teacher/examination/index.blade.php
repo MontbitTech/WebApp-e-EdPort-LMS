@@ -13,9 +13,7 @@
 <section class="main-section">
     <div class="container-fluid">
         <div class="row">
-
-            <!-- Examination-Exam-Create -->
-
+            <!--Teacher-Examination-Exam-Create -->
             <div class="col-md-8">
                 <div class="card card-info collapsed-card ">
                     <div class="card-header border-transparent text-white" style="background-color: #373c8e;">
@@ -26,194 +24,66 @@
                             </button>
                         </div>
                     </div>
-
-
                     <div class="card-body card-border">
                         <form role="form">
                             <div class="form-group">
-                                <label for="exampleInputQuestion" class="mb-0">Enter Paper Name</label>
-                                <input type="text" class="form-control input-xs" id="exampleInputQuestion" placeholder="Exam name">
+                                <label for="exampleInputQuestionname" class="mb-0">Enter Paper Name</label>
+                                <input type="text" class="form-control input-xs" id="exampleInputQuestionname" placeholder="Exam name">
                             </div>
                             <hr>
-                            <label for="exampleInputQuestion" class="align-top">Question 1</label>
+                            <label for="exampleInputQuestion1" class="align-top">Question 1</label>
                             <div class="form-group mb-0 pb-1">
-
-                                <textarea name="" id="exampleInputQuestion" class="w-100" rows="3" placeholder="Insert your question" style="resize: none;"></textarea>
-                                <!-- <input type="text" class="form-control form-control-sm" id="exampleInputQuestion" placeholder="Insert your question"> -->
+                                <textarea name="" id="exampleInputQuestion1" class="w-100" rows="3" placeholder="Insert your question" style="resize: none;"></textarea>
                             </div>
-
-
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-
                                         <th scope="col" class="text-center pb-0 pt-0 mb-0 mt-0">Option </th>
                                         <th scope="col" class="pb-0 pt-0 mb-0 mt-0">Answer</th>
                                         <th scope="col" class="text-center pb-0 pt-0 mb-0 mt-0">Option </th>
                                         <th scope="col" class="pb-0 pt-0 mb-0 mt-0">Answer</th>
-
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                     <tr>
-
                                         <td class="mb-0 mt-0 pt-0 pb-1">
                                             <input class="form-control form-control-sm  " type="text" placeholder="option 1">
-
                                         </td>
                                         <td class="mb-0 mt-0 pt-0 pb-0">
                                             <input type="checkbox" class=" form-control-sm  ml-4 ">
                                         </td>
-
                                         <td class="mb-0 mt-0 pt-0 pb-1">
                                             <input class="form-control form-control-sm  " type="text" placeholder="option 2">
-
                                         </td>
                                         <td class="mb-0 mt-0 pt-0 pb-0">
                                             <input type="checkbox" class=" form-control-sm  ml-4 ">
                                         </td>
                                     </tr>
                                     <tr>
-
                                         <td class="mb-0 mt-0 pt-1 pb-0">
                                             <input class="form-control form-control-sm  " type="text" placeholder="option 3">
-
                                         </td>
                                         <td class="mb-0 mt-0 pt-0 pb-0">
                                             <input type="checkbox" class=" form-control-sm  ml-4 ">
                                         </td>
                                         <td class="mb-0 mt-0 pt-1 pb-0">
                                             <input class="form-control form-control-sm  " type="text" placeholder="option 4">
-
                                         </td>
                                         <td class="mb-0 mt-0 pt-0 pb-0">
                                             <input type="checkbox" class=" form-control-sm  ml-4 ">
                                         </td>
                                     </tr>
-
-
-
-
                                 </tbody>
-
                             </table>
                             <div class="newquestion"></div>
-
                             <button class="btn btn-info addquestion w-100 mb-1" style="background-color: #373c8e;"><i class="fas fa-plus mr-3"></i>Add More Question</button>
-
-
                             <button type="submit" class="btn btn-primary w-100">Submit</button>
                         </form>
                     </div>
-
                 </div>
-
-                <!-- ./Examination-Exam-Form-Create -->
-
-                <!-- Examination-Exam-Form-Edit -->
-                <!-- <div class="card card-info collapsed-card">
-                    <div class="card-header border-transparent">
-                        <h3 class="card-title">Modifying My Existing Question Paper</h3>
-                        <div class="card-tools">
-                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                <i class="fas fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-
-
-                    <div class="card-body">
-                        <select class="form-control select2">
-                            <option value="">Select Question Paper</option>
-                            <option value="12th">12th Board Exam</option>
-                            <option value="10th">10th Board Exam</option>
-                            <option value="8th">8th Board Exam</option>
-                        </select>
-                        <div class="12th exam mt-3">
-                            <form role="form">
-                                <div class="form-group">
-                                    <label for="exampleInputQuestion" class="mb-0">Question Paper Name</label>
-                                    <input type="text" class="form-control input-xs" id="exampleInputQuestion" value="Company " placeholder="Exam name">
-                                </div>
-                                <hr>
-                                <label for="exampleInputQuestion" class="align-top">Question 1</label>
-                                <div class="form-group mb-0 pb-1">
-
-                                    <textarea name="" id="exampleInputQuestion" class="w-100" rows="3">your company name</textarea>
-                                   
-                                </div>
-
-
-                                <table class="table table-borderless">
-                                    <thead>
-                                        <tr>
-
-                                            <th scope="col" class="text-center pb-0 pt-0 mb-0 mt-0">Option </th>
-                                            <th scope="col" class="pb-0 pt-0 mb-0 mt-0">Answer</th>
-                                            <th scope="col" class="text-center pb-0 pt-0 mb-0 mt-0">Option </th>
-                                            <th scope="col" class="pb-0 pt-0 mb-0 mt-0">Answer</th>
-
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-
-                                        <tr>
-
-                                            <td class="mb-0 mt-0 pt-0 pb-1">
-                                                <input class="form-control form-control-sm  " value="MontBit" type="text" placeholder="option 1">
-
-                                            </td>
-                                            <td class="mb-0 mt-0 pt-0 pb-0">
-                                                <input type="checkbox" class=" form-control-sm  ml-4 " checked>
-                                            </td>
-
-                                            <td class="mb-0 mt-0 pt-0 pb-1">
-                                                <input class="form-control form-control-sm  " value="info" type="text" placeholder="option 2">
-
-                                            </td>
-                                            <td class="mb-0 mt-0 pt-0 pb-0">
-                                                <input type="checkbox" class=" form-control-sm  ml-4 ">
-                                            </td>
-                                        </tr>
-                                        <tr>
-
-                                            <td class="mb-0 mt-0 pt-1 pb-0">
-                                                <input class="form-control form-control-sm  " value="company" type="text" placeholder="option 3">
-
-                                            </td>
-                                            <td class="mb-0 mt-0 pt-0 pb-0">
-                                                <input type="checkbox" class=" form-control-sm  ml-4 ">
-                                            </td>
-                                            <td class="mb-0 mt-0 pt-1 pb-0">
-                                                <input class="form-control form-control-sm  " value="no" type="text" placeholder="option 4">
-
-                                            </td>
-                                            <td class="mb-0 mt-0 pt-0 pb-0">
-                                                <input type="checkbox" class=" form-control-sm  ml-4 ">
-                                            </td>
-                                        </tr>
-
-
-
-
-                                    </tbody>
-
-                                </table>
-                                <div class="newquestion"></div>
-
-                                <button class="btn btn-info addquestion w-100 mb-1"><i class="fas fa-plus mr-3"></i>Add More Question</button>
-
-
-                                <button type="submit" class="btn btn-primary w-100">Submit</button>
-                            </form>
-                        </div>
-                    </div>
-
-                </div> -->
             </div>
 
-            <!-- ./Examination-Exam-Form-Edit -->
+            <!-- ./Teacher-Examination-Exam-Form-Edit -->
 
 
             <!-- Examination-Exam-Details -->
@@ -226,7 +96,6 @@
                             <button type="button" class="btn btn-tool text-white float-right " data-card-widget="collapse">
                                 <i class="fas fa-minus"></i>
                             </button>
-
                         </div>
                     </div>
                     <div class="card-border">
@@ -294,9 +163,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
 </section>
@@ -312,73 +179,54 @@
             if (x < max_fields) { //max input box allowed
                 x++; //text box increment
                 $(wrapper).append(`
-                                    <div class="">
-                                    <hr>
-                                   
-                                    
-                                    <label for="exampleInputQuestion" class="align-top">Question ` + x + `</label>
+                         <div class="">
+                                    <hr>                     
+                                    <label for="exampleInputQuestion` + x + `" class="align-top">Question ` + x + `</label>
                                     <a href="#" style="float:right;" class="remove_field"><i class="fas fa-times"></i></a>
-                                   <div class="form-group mb-0 pb-1">
-                                   
-                                      <textarea name="" id="exampleInputQuestion" class="w-100" rows="3" placeholder="Insert your question" style="resize: none;" ></textarea>
+                                   <div class="form-group mb-0 pb-1">                                   
+                                      <textarea name="" id="exampleInputQuestion` + x + `" class="w-100" rows="3" placeholder="Insert your question" style="resize: none;" ></textarea>
                                     </div>
-                                   
-
                                     <table class="table table-borderless">
                                         <thead>
                                             <tr>
-
                                                 <th scope="col" class="text-center pb-0 pt-0 mb-0 mt-0">Option </th>
                                                 <th scope="col" class="pb-0 pt-0 mb-0 mt-0">Answer</th>
                                                 <th scope="col" class="text-center pb-0 pt-0 mb-0 mt-0">Option </th>
                                                 <th scope="col" class="pb-0 pt-0 mb-0 mt-0">Answer</th>
-
                                             </tr>
                                         </thead>
                                         <tbody>
-
                                             <tr>
-
                                                 <td class="mb-0 mt-0 pt-0 pb-1">
                                                     <input class="form-control form-control-sm  " type="text" placeholder="option 1">
-
                                                 </td>
                                                 <td class="mb-0 mt-0 pt-0 pb-0">
                                                     <input type="checkbox" class=" form-control-sm  ml-4 ">
                                                 </td>
                                                  <td class="mb-0 mt-0 pt-0 pb-1">
                                                     <input class="form-control form-control-sm  " type="text" placeholder="option 2">
-
                                                 </td>
                                                 <td class="mb-0 mt-0 pt-0 pb-0">
                                                     <input type="checkbox" class=" form-control-sm  ml-4 ">
                                                 </td>
                                             </tr>
                                             <tr>
-
                                                 <td class="mb-0 mt-0 pt-1 pb-0">
                                                     <input class="form-control form-control-sm  " type="text" placeholder="option 3">
-
                                                 </td>
                                                 <td class="mb-0 mt-0 pt-0 pb-0">
                                                     <input type="checkbox" class=" form-control-sm  ml-4 ">
                                                 </td>
                                                 <td class="mb-0 mt-0 pt-0 pb-0">
                                                     <input class="form-control form-control-sm  " type="text" placeholder="option 4">
-
                                                 </td>
                                                 <td class="mb-0 mt-0 pt-1 pb-0">
                                                     <input type="checkbox" class=" form-control-sm  ml-4 ">
                                                 </td>
-                                            </tr>
-                                            
-
-                            
-                           
+                                            </tr>                     
                                         </tbody>
-                                   </table>
-                                    
-                                    </div>`); //add input box
+                                   </table>                                    
+                            </div>`); //add input box
             }
         });
 
