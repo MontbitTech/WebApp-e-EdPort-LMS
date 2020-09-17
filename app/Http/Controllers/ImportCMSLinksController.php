@@ -34,10 +34,19 @@ class ImportCMSLinksController extends Controller
 				'class'   => 'required',
 				'topic'   => 'required',
 				'link'    => 'required_without_all:khan_academy,youtube,others,alink|nullable|regex:' . $regex,
-				'khan_academy' => 'required_without_all:link,youtube,others,alink|nullable|regex:' . $regex,
-				'youtube'   => 'required_without_all:khan_academy,link,others,alink|nullable|regex:' . $regex,
-				'others'  => 'required_without_all:khan_academy,link,youtube,alink|nullable|regex:' . $regex,
-				'alink'   => 'required_without_all:khan_academy,link,youtube,others|nullable|regex:' . $regex
+				'khan_academy' => 'required_without_all:link,youtube,others,alink,book_url|nullable|regex:' . $regex,
+				'youtube'   => 'required_without_all:khan_academy,link,others,alink,book_url|nullable|regex:' . $regex,
+				'others'  => 'required_without_all:khan_academy,link,youtube,alink,book_url|nullable|regex:' . $regex,
+				'alink'   => 'required_without_all:khan_academy,link,youtube,others,book_url|nullable|regex:' . $regex,
+				'book_url'   => 'required_without_all:khan_academy,link,youtube,others,alink|nullable|regex:' . $regex
+			],[
+			
+				'link.regex' => 'Invalid e-Edport URL',
+				'khan_academy.regex' => 'Invalid My School URL',	
+				'youtube.regex' => 'Invalid Youtube URL',	
+				'others.regex' => 'Invalid Wikipedia URL',
+				'alink.regex' => 'Invalid Assignment URL',
+				'book_url.regex' => 'Invalid Book Url'						
 			]);
 
 			$studentClassExist = \DB::select(
@@ -77,11 +86,20 @@ class ImportCMSLinksController extends Controller
 				'class' 		=> 'required',
 				'chapter' 		=> 'required',
 				'topic' 		=> 'required',
-				'link' 			=> 'required_without_all:khan_academy,youtube,others,alink|nullable|regex:' . $regex,
-				'khan_academy' 	=> 'required_without_all:link,youtube,others,alink|nullable|regex:' . $regex,
-				'youtube'      	=> 'required_without_all:khan_academy,link,others,alink|nullable|regex:' . $regex,
-				'others'       	=> 'required_without_all:khan_academy,link,youtube,alink|nullable|regex:' . $regex,
-				'alink'  		=> 'required_without_all:khan_academy,link,youtube,others|nullable|regex:' . $regex
+				'link'    => 'required_without_all:khan_academy,youtube,others,alink|nullable|regex:' . $regex,
+				'khan_academy' => 'required_without_all:link,youtube,others,alink,book_url|nullable|regex:' . $regex,
+				'youtube'   => 'required_without_all:khan_academy,link,others,alink,book_url|nullable|regex:' . $regex,
+				'others'  => 'required_without_all:khan_academy,link,youtube,alink,book_url|nullable|regex:' . $regex,
+				'alink'   => 'required_without_all:khan_academy,link,youtube,others,book_url|nullable|regex:' . $regex,
+				'book_url'   => 'required_without_all:khan_academy,link,youtube,others,alink|nullable|regex:' . $regex
+			],[
+			
+				'link.regex' => 'Invalid e-Edport URL',
+				'khan_academy.regex' => 'Invalid My School URL',	
+				'youtube.regex' => 'Invalid Youtube URL',	
+				'others.regex' => 'Invalid Wikipedia URL',
+				'alink.regex' => 'Invalid Assignment URL',
+				'book_url.regex' => 'Invalid Book Url'						
 			]);
 
 			$id = decrypt($id);
