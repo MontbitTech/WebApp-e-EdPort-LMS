@@ -80,7 +80,7 @@ class ClassWorkUtility
             }
 
             if ( $totalAttendance ) {
-                $attendanceAverage[ $classroom->id ] = ( $presentStudent / $totalAttendance ) * 100;
+                $attendanceAverage[ $classroom->id ] = number_format(( $presentStudent / $totalAttendance ) * 100, 2);
             } else {
                 $attendanceAverage[ $classroom->id ] = 0;
             }

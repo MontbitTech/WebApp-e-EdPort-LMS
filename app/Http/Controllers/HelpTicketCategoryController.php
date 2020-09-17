@@ -36,7 +36,7 @@ class HelpTicketCategoryController extends Controller
         $category->category = $request->category;
         $category->save();
 
-        return back()->with('success', 'Category Created successfully');;
+        return back()->with('success', 'Category Created successfully');
     }
     public function edit($id)
     {

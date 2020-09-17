@@ -19,6 +19,7 @@ use App\InvitationClass;
 use App\Http\Helpers\CommonHelper;
 use App\CmsLink;
 use App\Models\Attendance;
+use App\SupportVideo;
 use Response;
 
 
@@ -137,7 +138,7 @@ class TeacherLoginController extends Controller
         $pastDates = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '>', DateUtility::getPastDate(7))
             ->Where('class_date', '<', DateUtility::getDate())
-            ->orderBy('class_date', 'desc')
+            ->orderBy('class_date', 'asc')
             ->limit(7)
             ->distinct('class_date')
             ->get()->unique();
@@ -149,7 +150,7 @@ class TeacherLoginController extends Controller
             ->distinct('class_date')
             ->get()->unique();
         $futureClassData = DateClass::with('studentClass', 'studentSubject', 'cmsLink')->where('teacher_id', $logged_teacher['teacher_id'])
-            ->where('class_date', '<', DateUtility::getFutureDate(7))
+            ->where('class_date', '<', DateUtility::getFutureDate(2))
             ->Where('class_date', '>', DateUtility::getDate())
             ->orderBy('class_date', 'asc')
             ->orderBy('from_timing', 'asc')
@@ -161,10 +162,10 @@ class TeacherLoginController extends Controller
         $teacherData = Teacher::where('id', $logged_teacher['teacher_id'])->get()->first();
 
         $helpCategories = HelpTicketCategory::get();
+        $chapters   = CmsLink::orderBy('chapter', 'asc')->get();
+        $videos = SupportVideo::all();
 
-        $chapters   = CmsLink::orderBy('chapter','asc')->get();
-
-        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastDates', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData', 'futureDates','chapters'));
+        return view('teacher.dashboard', compact('TodayLiveData', 'todaysDate', 'data', 'pastClassData', 'pastDates', 'inviteClassData', 'teacherData', 'helpCategories', 'schoollogo', 'futureClassData', 'futureDates', 'chapters', 'videos'));
     }
 
     public function viewPastClass(Request $request)
@@ -178,7 +179,7 @@ class TeacherLoginController extends Controller
         $pastDates = DB::table('tbl_dateclass')->select('class_date')->where('teacher_id', $logged_teacher['teacher_id'])
             ->where('class_date', '>', DateUtility::getPastDate(7))
             ->Where('class_date', '<', DateUtility::getDate())
-            ->orderBy('class_date', 'desc')
+            ->orderBy('class_date', 'asc')
             ->limit(7)
             ->distinct('class_date')
             ->get()->unique();
