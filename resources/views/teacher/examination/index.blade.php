@@ -2,7 +2,13 @@
 
 @section('content')
 
-
+<style>
+    .card-border {
+        border-right: 1px solid black !important;
+        border-left: 1px solid black !important;
+        border-bottom: 1px solid black !important;
+    }
+</style>
 
 <section class="main-section">
     <div class="container-fluid">
@@ -11,18 +17,18 @@
             <!-- Examination-Exam-Create -->
 
             <div class="col-md-8">
-                <div class="card card-info collapsed-card">
-                    <div class="card-header border-transparent text-white" style="background-color: #373c8e;;">
+                <div class="card card-info collapsed-card ">
+                    <div class="card-header border-transparent text-white" style="background-color: #373c8e;">
                         <h3 class="card-title d-inline">Create Question Paper</h3>
                         <div class="card-tools d-inline">
                             <button type="button" class="btn btn-tool text-white float-right" data-card-widget="collapse">
-                                <i class="fas fa-plus"></i>
+                                <i class="fas fa-minus"></i>
                             </button>
                         </div>
                     </div>
 
 
-                    <div class="card-body">
+                    <div class="card-body card-border">
                         <form role="form">
                             <div class="form-group">
                                 <label for="exampleInputQuestion" class="mb-0">Enter Paper Name</label>
@@ -94,7 +100,7 @@
                             </table>
                             <div class="newquestion"></div>
 
-                            <button class="btn btn-info addquestion w-100 mb-1"><i class="fas fa-plus mr-3"></i>Add More Question</button>
+                            <button class="btn btn-info addquestion w-100 mb-1" style="background-color: #373c8e;"><i class="fas fa-plus mr-3"></i>Add More Question</button>
 
 
                             <button type="submit" class="btn btn-primary w-100">Submit</button>
@@ -213,78 +219,79 @@
             <!-- Examination-Exam-Details -->
 
             <div class="col-md-4">
-                <div class="card card-info collapsed-card">
+                <div class="card card-info collapsed-card ">
                     <div class="card-header border-transparent text-white" style="background-color: #373c8e;;">
                         <h3 class="card-title d-inline">Assign Question Paper</h3>
                         <div class="card-tools d-inline">
                             <button type="button" class="btn btn-tool text-white float-right " data-card-widget="collapse">
-                                <i class="fas fa-plus"></i>
+                                <i class="fas fa-minus"></i>
                             </button>
 
                         </div>
                     </div>
+                    <div class="card-border">
+                        <div class="card-body pt-2 pb-0 ">
+                            <div class="col-md-12 mt-1">
+                                <label class="d-block mb-2">Question Paper</label>
+                                <select data-placeholder="Question Paper" class="form-control select2" style="width: 100%;">
 
-                    <div class="card-body pt-2 pb-0">
-                        <div class="col-md-12 mt-1">
-                            <label class="d-block mb-2">Question Paper</label>
-                            <select data-placeholder="Question Paper" class="form-control select2" style="width: 100%;">
+                                    <option value="">Question Paper</option>
+                                    <option value="Summer">Summer</option>
+                                    <option value="Winter">Winter</option>
+                                    <option value="Unit">Unit</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 mt-1">
+                                <label class="d-block mb-2">Class</label>
+                                <select class="form-control select1 " data-placeholder="Class" name="select1" id="select1" style="width: 100%;">
+                                    <option value="">Class</option>
+                                    <option value="1">X</option>
+                                    <option value="2">XI</option>
+                                    <option value="3">XII</option>
+                                    <option value="4">V</option>
+                                </select>
+                            </div>
+                            <div class="col-md-12 mt-1">
 
-                                <option value="">Question Paper</option>
-                                <option value="Summer">Summer</option>
-                                <option value="Winter">Winter</option>
-                                <option value="Unit">Unit</option>
-                            </select>
+                                <div class="1 box">
+                                    <strong class="d-block mb-2">Batch</strong>
+                                    <input type="checkbox" id="checkboxSuccess1" checked>
+                                    <label for="checkboxSuccess1" class="mr-3">Evening</label>
+                                    <input type="checkbox" id="checkboxSuccess2" checked>
+                                    <label for="checkboxSuccess2" class="mr-3">Morning</label>
+                                    <input type="checkbox" id="checkboxSuccess3" checked>
+                                    <label for="checkboxSuccess3">Afternoon</label>
+                                </div>
+                                <div class="2 box">
+                                    <strong class="d-block mb-2">Batch</strong>
+                                    <input type="checkbox" id="checkboxSuccess1" checked>
+                                    <label for="checkboxSuccess1" class="mr-3">Evening</label>
+                                    <input type="checkbox" id="checkboxSuccess2" checked>
+                                    <label for="checkboxSuccess2">Morning</label>
+                                </div>
+                                <div class="3 box">
+                                    <strong class="d-block mb-2">Batch</strong>
+                                    <input type="checkbox" id="checkboxSuccess1" checked>
+                                    <label for="checkboxSuccess1" class="mr-3">Afternoon</label>
+                                    <input type="checkbox" id="checkboxSuccess2" checked>
+                                    <label for="checkboxSuccess2">Morning</label>
+                                </div>
+                                <div class="4 box">
+                                    <strong class="d-block mb-2">Batch</strong>
+                                    <input type="checkbox" id="checkboxSuccess1" checked>
+                                    <label for="checkboxSuccess1" class="mr-3">Afternoon</label>
+                                    <input type="checkbox" id="checkboxSuccess2" checked>
+                                    <label for="checkboxSuccess2">Evening</label>
+                                </div>
+
+
+                            </div>
+
+
                         </div>
-                        <div class="col-md-12 mt-1">
-                            <label class="d-block mb-2">Class</label>
-                            <select class="form-control select1 " data-placeholder="Class" name="select1" id="select1" style="width: 100%;">
-                                <option value="">Class</option>
-                                <option value="1">X</option>
-                                <option value="2">XI</option>
-                                <option value="3">XII</option>
-                                <option value="4">V</option>
-                            </select>
+                        <div class="card-footer clearfix">
+                            <a href="javascript:void(0)" class="btn btn-sm btn-info" style="width:100%;background-color: #373c8e;">Assign</a>
                         </div>
-                        <div class="col-md-12 mt-1">
-
-                            <div class="1 box">
-                                <strong class="d-block mb-2">Batch</strong>
-                                <input type="checkbox" id="checkboxSuccess1" checked>
-                                <label for="checkboxSuccess1" class="mr-3">Evening</label>
-                                <input type="checkbox" id="checkboxSuccess2" checked>
-                                <label for="checkboxSuccess2" class="mr-3">Morning</label>
-                                <input type="checkbox" id="checkboxSuccess3" checked>
-                                <label for="checkboxSuccess3">Afternoon</label>
-                            </div>
-                            <div class="2 box">
-                                <strong class="d-block mb-2">Batch</strong>
-                                <input type="checkbox" id="checkboxSuccess1" checked>
-                                <label for="checkboxSuccess1" class="mr-3">Evening</label>
-                                <input type="checkbox" id="checkboxSuccess2" checked>
-                                <label for="checkboxSuccess2">Morning</label>
-                            </div>
-                            <div class="3 box">
-                                <strong class="d-block mb-2">Batch</strong>
-                                <input type="checkbox" id="checkboxSuccess1" checked>
-                                <label for="checkboxSuccess1" class="mr-3">Afternoon</label>
-                                <input type="checkbox" id="checkboxSuccess2" checked>
-                                <label for="checkboxSuccess2">Morning</label>
-                            </div>
-                            <div class="4 box">
-                                <strong class="d-block mb-2">Batch</strong>
-                                <input type="checkbox" id="checkboxSuccess1" checked>
-                                <label for="checkboxSuccess1" class="mr-3">Afternoon</label>
-                                <input type="checkbox" id="checkboxSuccess2" checked>
-                                <label for="checkboxSuccess2">Evening</label>
-                            </div>
-
-
-                        </div>
-
-
-                    </div>
-                    <div class="card-footer clearfix">
-                        <a href="javascript:void(0)" class="btn btn-sm btn-info" style="width:100%;">Assign</a>
                     </div>
                 </div>
 
