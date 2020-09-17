@@ -126,6 +126,10 @@ return [
 
     'deploy_secret' => env('APP_DEPLOY_SECRET'),
 
+    'teacher_uppercap' => env('TEACHER_UPPERCAP',100),
+
+    'school_name' => env('SCHOOL_NAME'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Admin;
 use App\Http\Helpers\CommonHelper;
 use App\Http\Helpers\CustomHelper;
 use App\libraries\Classroom;
@@ -41,7 +42,6 @@ class CreateClassroomsJob implements ShouldQueue
      */
     public function handle()
     {
-        Log::info('inside job');
         $rowCount = 1;
         foreach($this->data as $row){
             $subjects = explode('|', $row['subjects']);
@@ -82,19 +82,22 @@ class CreateClassroomsJob implements ShouldQueue
         if ( !$response['success'] )
             return failure_message($response['data']->message);
 
-        return success_message(Classroom::createClassroom([
-            'class_name'   => $row['division'],
-            'section_name' => $row['section'],
-            'subject_id'   => $subject->id,
-            'g_class_id'   => $response['data']->id,
-            'g_link'       => $response['data']->alternateLink,
-            'g_response'   => serialize($response['data']),
-        ]));
+        $classroom = Classroom::createClassroom([
+                'class_name'   => $row['division'],
+                'section_name' => $row['section'],
+                'subject_id'   => $subject->id,
+                'g_class_id'   => $response['data']->id,
+                'g_link'       => $response['data']->alternateLink,
+                'g_response'   => serialize($response['data']),
+            ]);
+
+        $this->inviteMainAdminToTheClassroom($response['data']->id, $this->token['access_token']);
+
+        return success_message($classroom);
     }
 
     public function createGoogleClassroom ($className, $sectionName, $subjectName)
     {
-        Log::info('creating classroom');
         $data = array(
             "name"               => $className . ' ' . $subjectName,
             "section"            => $sectionName,
@@ -107,7 +110,7 @@ class CreateClassroomsJob implements ShouldQueue
         );
         $data = json_encode($data);
 
-        $response = $this->createClassInGoogleClassroom($this->token['access_token'], $data); // access Google api craete Cource
+        $response = Classroom::createClassInGoogleClassroom($this->token, $data); // access Google api craete Cource
 
         if ( !$response['success'] ) {
             if ( $response['data']->status == 'UNAUTHENTICATED' ) {
@@ -123,23 +126,30 @@ class CreateClassroomsJob implements ShouldQueue
         return $response;
     }
 
-    public function createClassInGoogleClassroom($token, $data)
+    public function inviteMainAdminToTheClassroom($googleCourseId, $token)
     {
-        $url = "https://classroom.googleapis.com/v1/courses";
-        $headers = array(
-            "Authorization: Bearer $token",
-            "Content-Type: application/json",
+        $inv_data = array(
+            "courseId" => $googleCourseId,
+            "role"     => "TEACHER",
+            "userId"   => Admin::find(1)->email,
+
         );
+        $inv_data = json_encode($inv_data);
+        $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // Invite teacher  
+        $inv_resData = array('error' => '');
 
-        $response = RemoteRequest::postJsonRequest($url, $headers, $data);
+        if ($inv_responce == 101) {
+            Log::error('Something went wrong, Please try again.');
+        } else {
+            $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
 
-        if (!$response['success']) {
-            if ($response['data']->status == 'UNAUTHENTICATED') {
-                $token = CustomHelper::get_refresh_token($this->token);
-                Log::info($response['data']->status);
-                $response = $this->createClassInGoogleClassroom($token['access_token'], $data); // access Google api craete Cource
+            if ($inv_resData['error'] != '') {
+                if ($inv_resData['error']['status'] == 'FAILED_PRECONDITION') {
+                    Log::error('The requested user\'s account is disabled or if the user already has this role');
+                } else {
+                    Log::error($inv_resData['error']['message']);
+                }
             }
         }
-        return $response;
     }
 }

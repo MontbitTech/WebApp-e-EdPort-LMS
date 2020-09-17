@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -7,7 +8,6 @@ use Illuminate\Support\Facades\Route;
 | Web Routes
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
@@ -29,7 +29,7 @@ Route::get('/timeTable/{class}/{section}', 'GtestController@TestFilterTimetable'
 Route::get('/test_email_timetable', 'GtestController@send_email_timeTable');
 Route::get('/get_token', 'GtestController@get_token')->name('get_token');
 Route::get('/test', 'TestController@test');
-Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
 
 // ------ //
 
@@ -65,9 +65,13 @@ Route::group(['middleware' => 'adminsession'], function () {
     /* on going class */
     Route::get('admin/ongoingclass', 'OngoingClassController@index')->name('ongoing.index');
 
+    /* csv uploads */
+    Route::get('admin/csv-uploads', 'EventDetailController@index')->name('csvuploads.index');
+
     /*Support Help*/
 
     Route::get('/admin/support-help', 'HelpController@helpList')->name('admin.helplist');
+    Route::get('/admin/show-helpTicket', 'HelpController@showHelpTicktet')->name('admin.show.helpTicket');
     Route::post('/update-help-status', 'HelpController@updateStatus')->name('helpStatus.update');
     Route::post('filter-ticket', 'HelpController@filterTicket')->name('filter-ticket');
 
@@ -125,17 +129,36 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::post('filter-subject', 'ClassController@filterSubject')->name('filter-subject');
     Route::post('filter-student', 'ImportStudentsController@filterStudent')->name('filter-student');
     Route::post('/available/teacher', 'AvailabilityController@availableTeacherAndSubject');
+
+    Route::get('/admin/logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index');
+
+    Route::get('/deleteAllClassrooms', 'TestController@deleteAllClassroomsFromGoogle');
+    Route::get('/listGoogleClassrooms', 'TestController@listGoogleClassrooms');
+    Route::get('/admin/weekleyEmails', 'UtilityController@weekleyMailsToStudents');
+    Route::get('admin/video', 'SupportVideoController@index')->name('video');
+    Route::get('admin/video/add', function () {
+        return view('admin.video.add');
+    })->name('video.add');
+    Route::post('admin/video/store', 'SupportVideoController@store')->name('video.store');
+    // Route::get('admin/video/edit/{id}', 'SupportVideoController@edit')->name('video.edit');
+    Route::match(array('GET', 'POST'), 'admin/video/update/{id}', 'SupportVideoController@update')->name('video.update');
+    Route::get('admin/video/destroy/{id}', 'SupportVideoController@destroy')->name('video.destroy');
 });
 
 /*  Teacher  */
 Route::group(['middleware' => 'AuthCheck'], function () {
     Route::get('/teacher', 'TeacherLoginController@index')->name('teacher.index');
+
     Route::post('/teacher/login', 'TeacherLoginController@teacher_login_post')->name('teacher.login.post');
     Route::get('/teacher/login', 'TeacherLoginController@teacher_login_get')->name('teacher.login');
 });
 Route::group(['middleware' => 'teachersession'], function () {
     Route::get('/teacher/logout', 'TeacherLoginController@logout')->name('teacher.logout');
     Route::get('/teacher/home', 'TeacherLoginController@teacherDashboard')->name('teacher.dashboard');
+    Route::get('/teacher/getStudent', 'TeacherLoginController@getStudent')->name('teacher.student');
+
+    Route::get('get-topic', 'TeacherLoginController@getTopic')->name('get-topic');
+
 
     Route::post('/teacher/add-class', 'TeacherClassController@addClass')->name('add.class');
     Route::post('/teacher/edit-live-class', 'TeacherClassController@ajaxSaveLiveClass')->name('edit.class');
@@ -157,7 +180,7 @@ Route::group(['middleware' => 'teachersession'], function () {
 
     Route::get('/test_email', 'TeacherClassController@html_email'); //->name('teacher.acceptClass');
 
-    Route::get('/teacher/report', 'ReportController@index')->name('teacher.report');
+    Route::get('/teacher/report', 'ReportController@teacherReport')->name('teacher.report');
     Route::match(array('GET', 'POST'), '/student-notify', 'TeacherClassController@notifyStudents')->name('student-notify');
 
     Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
@@ -171,12 +194,18 @@ Route::group(['middleware' => 'teachersession'], function () {
 
     Route::post('/available/classes', 'AvailabilityController@availableClasses');
     Route::post('/teacher/class/assignments', 'ClassWorkController@getClassAssignments');
+    Route::post('/teacher/class/examassignments', 'ClassWorkController@getExamAssignments');
+    Route::get('/teacher/class/viewPastClass', 'TeacherLoginController@viewPastClass');
+    Route::get('/teacher/class/viewFutureClass', 'TeacherLoginController@viewFutureClass');
+
     //Route::post('/generate-help-ticket', 'HelpController@generateHelpTicket')->name('teacher.generate_ticket');
+
+    Route::post('/teacher/Attendance', 'StudentAttendanceController@store')->name('save.attendance');
+    Route::get('/teacher/Attendance', 'StudentAttendanceController@index')->name('get.attendance');
+    Route::post('/teacher/updateAttendance', 'StudentAttendanceController@update');
+
+    Route::get('/teacher/generateReports', 'ReportController@assignmentSubmissionGrades');
 });
-
-
-
-
 
 
 Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass')->name('reload-timetable');

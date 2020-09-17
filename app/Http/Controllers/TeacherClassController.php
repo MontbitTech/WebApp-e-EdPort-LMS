@@ -15,6 +15,7 @@ use App\Http\Helpers\CustomHelper;
 use App\StudentSubject;
 use Illuminate\Support\Facades\Config;
 use App\InvitationClass;
+use Illuminate\Support\Facades\Log;
 use Mail;
 use Validator;
 
@@ -39,100 +40,59 @@ class TeacherClassController extends Controller
 
     public function notifyStudents (Request $request)
     {
-        $logged_teacher = Session::get('teacher_session');
-        $logged_teacher_id = $logged_teacher['teacher_id'];
-        $logged_teacher_name = $logged_teacher['teacher_name'];
-        $logged_teacher_phone = $logged_teacher['teacher_phone'];
-        $from = CustomHelper::getFromMail();
-        $comm = "";
-        $er = "";
-        $number = array();
-
-
         if ( Request()->post() || Request()->ajax() ) {
-            $class_id = $request->class_id;
-            $subject_id = $request->subject_id;
-            $class_join_link = $request->g_meet_url;
-
             $dateClass_id = $request->dateClass_id;
 
-            $class_timing = DateClass::where('id', $dateClass_id)->get()->first();
-            //$class_join_link = $class_timing->g_meet_url;
-            $start_time = $class_timing->from_timing;
-            $std_message = $class_timing->class_student_msg;
+            $class_name = StudentClass::with('dateClass')->whereHas('dateClass', function ($q) use ($dateClass_id) {
+                $q->where('id', $dateClass_id);
+            })->first();
 
-            $subject_name = StudentSubject::where('id', $request->subject_id)->get()->first();
-            $sub_name = $subject_name->subject_name;
 
-            $class_name = StudentClass::where('id', $request->class_id)->get()->first();
-            $cls_name = $class_name->class_name;
-            $section_name = $class_name->section_name;
-
-            $classData = \DB::table('tbl_classes')->select('id')->where('class_name', $cls_name)->where('section_name', $section_name)->get()->first();
-            $c_id = $classData->id;
-            
             $token = CommonHelper::varify_Teachertoken();
             $data = array(
-                        'text'=>'This class will start at '. $start_time.' Please join using '.$class_join_link
-                   );
+                'text' => $request->notificationMsg,
+            );
             $response = CommonHelper::createAnnouncement($token, $class_name->g_class_id, json_encode($data));
-            
-            if(!$response['success']){
-                return json_encode(array('status' => 'error', 'message' => $response['data']->message));
+
+            if ( $request->cancelled != null ) {
+                $dateClass = DateClass::find($dateClass_id);
+                $dateClass->cancelled = $request->cancelled;
+                $dateClass->save();
             }
 
-            // $student_phone = \DB::table('tbl_students')->select('name', 'email', 'phone')->where('class_id', $c_id)->where('notify', 'yes')->get(); // Phone Number
-            // $student_email = \DB::table('tbl_students')->select('name', 'email', 'phone')->where('class_id', $c_id)->get(); // email
+            if ( Request()->ajax() ) {
+                if ( !$response['success'] ) {
+                    return json_encode(array('status' => 'success', 'message' => $response['data']->message));
+                }
 
-            // // foreach ( $student_phone as $p ) {
-            // //     $number[] = $p->phone;
-            // // }
+                return json_encode(array('status' => 'success', 'message' => "Notification sent successfully"));
+            }
+            if ( !$response['success'] ) {
+                return back()->with('error', $response['data']->message);
+            }
 
-            // // if ( count($student_phone) > 0 ) {
-            // //     $numbers = implode(",", $number);
-            // //     $msg = "You have $sub_name class at $start_time. Join using $class_join_link.";
+            return back()->with('success', "Notification Sent Successfully");
+        }
 
-            // //     $s = CommonHelper::send_sms($numbers, $msg);
-            // //     $comm = "SMS ";
-            // // }
+    }
 
-            // if ( count($student_email) > 0 ) {
-            //     foreach ( $student_email as $e ) {
-            //         //$email[] = $e->email;
-            //         $data_mail = array('name' => $e->name, 'subject' => $sub_name, 'start_time' => $start_time, 'class_url' => $class_join_link);
+    public function shareContent (Request $request)
+    {
+        $links = \DB::select('select tc.youtube from tbl_cmslinks tc JOIN tbl_student_classes sc on tc.class=sc.class_name where sc.g_class_id =' . $request->g_class_id);
 
-            //         Mail::send('mail.mail', $data_mail, function ($message) use ($e, $from) {    //dd($message);
-            //             $message->to($e->email)
-            //                 ->subject('Invitation to join live class');
-            //             //$message->from('noreply@montbit.com','MontBIt');
-            //             $message->from($from->value, 'MontBIt');
-            //         });
+        $token = CommonHelper::varify_Teachertoken();
+        $data = array(
+            // 'text'=>'share Link'.$links->youtube
+            'text' => 'share Link',
 
-            //     }
-            //     if ( $comm == "SMS " )
-            //         $comm .= "and Email ";
-            //     else
-            //         $comm = "Email ";
+        );
+        $response = CommonHelper::createAnnouncement($token, $request->g_class_id, json_encode($data));
+        if ( $response['success'] ) {
+            return json_encode(array('status' => 'success', 'message' => 'Shared successfully'));
+        }
 
-
-            //     if ( count(Mail::failures()) > 0 ) {
-            //         foreach ( Mail::failures as $email_address ) {
-            //             $er .= $email_address;
-            //         }
-
-            //     } else {
-            //         $er = "Notification sent successfully!";
-            //     }
-            // }
-            //$emails = implode(",",$email);
-
-
-        //     if ( $comm == "" )
-        //         echo json_encode(array('status' => 'error', 'message' => "No SMS / Email present for notification!!"));
-        //     else
-        //         echo json_encode(array('status' => 'success', 'message' => $er));
-        // } else {
-            echo json_encode(array('status' => 'success', 'message' => "Notification sent successfully"));
+        if ( !$response['success'] ) {
+            return json_encode(array('status' => 'error', 'message' => $response['data']->text));
         }
 
     }
@@ -153,7 +113,7 @@ class TeacherClassController extends Controller
         $class_day = date("l", strtotime($request->class_date));
         $class_id = $request->class_id;
 
-        
+
         $request->validate([
             'class_date'        => 'required',
             'start_time'        => 'required',
@@ -180,9 +140,10 @@ class TeacherClassController extends Controller
        if(!filter_var($class_liveurl, FILTER_VALIDATE_URL)){
            return back()->with('error','Please add valid live url.');
        }  */
-       
-        if ( $class_date == date('Y-m-d') && strtotime($from_time) <= strtotime(date('h:i')) )
+
+        if($class_date == date('Y-m-d') && strtotime(date("H:i:s", strtotime($request->start_time))) <= strtotime(date('H:i:s'))){
             return back()->with('error', "You can't add a class in the past. Class date time should not be less than current date and time.");
+        }
 
         $obj_class = StudentClass::where('id', $class_id)->get()->first();
 
@@ -286,44 +247,32 @@ class TeacherClassController extends Controller
 
     public function ajaxSaveLiveClass (Request $request)
     {
+        $start_time = str_replace(" : ", ":", $request->start_time);
+        $start_time = date("H:i:s", strtotime($start_time));
+        $end_time = str_replace(" : ", ":", $request->end_time);
+        $end_time = date("H:i:s", strtotime($end_time));
+        $class_date = date("Y-m-d", strtotime($request->class_date));
 
+        if ( ( strtotime($end_time) - strtotime($start_time) ) / 60 <= 0 )
+            return back()->with('error', "Class end-time can't be before/equal to class start-time.");
 
-        $logged_teacher = Session::get('teacher_session');
-        $teacher_id = $logged_teacher['teacher_id'];
+        if ( ( ( strtotime(date('H:i:s')) - strtotime($start_time) ) / 60 ) >= 0 )
+            return back()->with('error', "You can't update a class in the past. Class date time should not be less than current date and time.");
 
-        $dateClass_id = $request->txt_datecalss_id;
-
-        $request->validate([
-            'edit_notify_stdMessage' => 'required|max:255',
-            'edit_description'       => 'required|max:255',
-
-        ], [
-            'edit_notify_stdMessage.required' => 'Notify Message required.',
-            //'edit_notify_stdMessage.regex'=>'Notify Message must be letters and numbers.',
-            'edit_description.required'       => 'The Description required.',
-        ]);
-
-
-        $notify_stdMessage = $request->edit_notify_stdMessage;
-        $class_description = isset($request->edit_description) ? $request->edit_description : '';
-        /*     $class_liveurl = isset($request->edit_join_liveUrl)?$request->edit_join_liveUrl:'';
-           if($class_liveurl!=''){
-
-                if(!filter_var($class_liveurl, FILTER_VALIDATE_URL)){
-                     return back()->with('error', 'Please Add Valid URL.');
-                }
-            }
-         */
-
-        $pastClassDetail = DateClass::find($dateClass_id);
-
-        $pastClassDetail->class_description = $class_description;
-        // $pastClassDetail->g_meet_url = $class_liveurl;
-        $pastClassDetail->class_student_msg = $notify_stdMessage;
+        $pastClassDetail = DateClass::find($request->txt_datecalss_id);
+        $pastClassDetail->from_timing = $start_time;
+        $pastClassDetail->to_timing = $end_time;
         $pastClassDetail->save();
+
+        $token = CommonHelper::varify_Teachertoken();
+        $data = array(
+            'text' => 'Class ' . $request->class_name . ' ' . $request->section_name . ' timing for ' . $request->class_date . ' has been changed. Now class timing is ' . $request->start_time . ' to ' . $request->end_time,
+        );
+        $response = CommonHelper::createAnnouncement($token, $request->txt_g_class_id, json_encode($data));
 
         return back()->with('success', sprintf(Config::get('constants.WebMessageCode.123'), 'Updated'));
     }
+
 
     public function ajaxSavePastClass (Request $request)
     {
@@ -335,12 +284,12 @@ class TeacherClassController extends Controller
         $dateClass_id = $request->dateClass_id;
 
         $validator = Validator::make($request->all(), [
-            'description' => 'required|max:100',
-            'rec_url'     => 'required',
+            //'description' => 'required|max:100',
+            'rec_url' => 'required',
 
         ], [
-            'description.required' => 'The Description required.',
-            'rec_url.required'     => 'Recording URL required.',
+            //'description.required' => 'The Description required.',
+            'rec_url.required' => 'Recording URL required.',
         ]);
 
         if ( !$validator->passes() ) {

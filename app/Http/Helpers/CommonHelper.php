@@ -49,12 +49,19 @@ class CommonHelper
 
     }
 
+    public static function get_exam_assignment_data ($g_class_id)
+    {
+        $assignmentData = \DB::select('select tbl_classwork.g_live_link,tbl_classwork.g_title,tbl_classwork.id from tbl_classwork_dateclass JOIN tbl_classwork ON tbl_classwork_dateclass.classwork_id=tbl_classwork.id where tbl_classwork.g_class_id =' . $g_class_id);
+        return $assignmentData;
+    }
+
     public static function send_sms ($number, $message)
     {
         $apiKey = env( 'TEXTLOCAL_APIKEY' );
         $txt_sender = env( 'TXTLCL_SENDER' );
         //$support_number = env( 'SUPPORT_NUMBER' );
         $sender = urlencode($txt_sender);
+        $message = rawurldecode($message);
 
         $data = array('apikey' => $apiKey, 'numbers' => $number, "sender" => $sender, "message" => $message);
 
@@ -64,12 +71,14 @@ class CommonHelper
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         $response = curl_exec($ch);
+
         curl_close($ch);
         // Process your response here
         $result = json_decode($response);
         if ( $result->status == 'success' ) {
             return true;
         } else {
+            Log::error($result->errors[0]->message);
             return false;
         }
     }
@@ -527,8 +536,8 @@ class CommonHelper
         return $response;
     }
 
-    public static function createAnnouncement($token, $classId, $data){
-
+    public static function createAnnouncement($token, $classId, $data)
+    {
         $url = 'https://classroom.googleapis.com/v1/courses/'.$classId.'/announcements';
         $headers = array(
             "Authorization: Bearer $token",
@@ -542,6 +551,27 @@ class CommonHelper
                 $token = CustomHelper::get_refresh_teacher_token();
 
                 $response = CommonHelper::createAnnouncement($token['access_token'], $classId, $data); // access Google api craete Cource
+            }
+        }
+
+        return $response;
+    }
+
+    public static function teacherDeleteFromCourse($token, $classId, $teacherId)
+    {
+        $url = 'https://classroom.googleapis.com/v1/courses/'.$classId.'/teachers/'.$teacherId;
+        $headers = array(
+            "Authorization: Bearer $token",
+            "Content-Type: application/json",
+        );
+
+        $response = RemoteRequest::deleteJsonRequest($url, $headers);
+
+        if (!$response['success'] && isset($response['data']->status)) {
+            if ($response['data']->status == 'UNAUTHENTICATED') {
+                $token = CustomHelper::get_refresh_token();
+
+                $response = CommonHelper::teacherDeleteFromCourse($token['access_token'], $classId, $teacherId); // access Google api craete Cource
             }
         }
 

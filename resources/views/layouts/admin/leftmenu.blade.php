@@ -121,6 +121,7 @@ $support = "disabled";
 
 $s = \App\Http\Helpers\CustomHelper::enableOptions();
 $t = \App\Http\Helpers\CustomHelper::latestTicket();
+$pending = \App\Http\Helpers\CustomHelper::pendingTicket();
 
 if($s["teacher"] > 0)
 {
@@ -171,11 +172,11 @@ $slogo = $logo->value;
 
 			</div>
 			<div class="float-right dropdown-user ">
-				@if($t)
-
-				<a href="{{route('admin.helplist')}}" class=" color-change mr-2 icon-lg align-middle">
-
-					<i class="fa fa-bell " style="font-size:1.3125rem; padding-top: 0.75rem;" aria-hidden="true"></i>
+				@if($pending)
+ 
+				<a href="{{route('admin.helplist')}}" class=" color-change mr-2 icon-lg align-middle">Pending Ticket: {{$pending}}&nbsp;
+                
+                <i class="fa fa-bell " style="font-size:1.3125rem; padding-top: 0.75rem;" aria-hidden="true"></i>
 				</a>
 
 				@else
@@ -291,6 +292,14 @@ $slogo = $logo->value;
 
 					Ongoing Class</a></div>
 		</div>
+
+		<div class="left-card">
+			<div class="left-link {{ Request::segment(2) == 'csvuploads'?'active':''}}"><a href="{{route('csvuploads.index')}}" class="{{$support}} pl-3">
+					<i class="fas fa-file-import icon icon-4x" aria-hidden="true"></i>
+
+					Csv Uploads</a></div>
+		</div>
+
 		<div class="text-center text-white w-100 " style="position:absolute;bottom:0;font-size: 10px;letter-spacing: 1px;">
 			<img src="{{asset('images/logo-1.png')}}" alt="e-edport" width="50px">
 			<div>Powered by e-EdPort</div>

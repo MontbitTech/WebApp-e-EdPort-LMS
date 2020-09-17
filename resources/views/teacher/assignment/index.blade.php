@@ -43,7 +43,6 @@
               <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$list->teacher_id}}">
 
 
-
               <div class="classes-box px-3 min-height-auto" style="overflow:visible!important;">
                 <div class="d-flex justify-content-between align-items-center flex-wrap pt-1 pb-2">
                   <div class="font-weight-bold pt-1"><span class="text-secondary">Class:</span> {{ $cls }} Std</div>
@@ -61,29 +60,18 @@
                       </svg> New Assignment
                     </a>
                     <!-- <ul class="dropdown-menu">data-toggle="dropdown"
-				  	<a class="dropdown-item" href="#">Profile</a>
-				  	<a class="dropdown-item" href="#">Change Password</a>
-				</ul> -->
-                    @if ($links[$list->class_id][$list->subject_id]['id'] != '')
-                    <a href="javascript:void(0);" data-oldlink="{{$links[$list->class_id][$list->subject_id]['g_live_link']}}" id="old_a_link_{{$i}}" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">
-                      <svg class="icon icon-2x mr-1">
-                        <use xlink:href="../images/icons.svg#icon_eye"></use>
-                      </svg> View Given Assignments
-                    </a>
-                  </div>
-                  <div>
-                    <a href="javascript:" data-editlink="{{$links[$list->class_id][$list->subject_id]['g_live_link']}}" class="btn btn-sm btn-outline-secondary mb-1 border-0 btn-shadow" title="Edit">
-                      <svg class="icon mr-1">
-                        <use xlink:href="../images/icons.svg#icon_edit"></use>
-                      </svg> Edit
-                    </a>
-
+                          <a class="dropdown-item" href="#">Profile</a>
+                          <a class="dropdown-item" href="#">Change Password</a>
+                      </ul> -->
+                    <?php
+                    $assignmentData = App\Http\Helpers\CommonHelper::get_exam_assignment_data($g_class_id);
+                    ?>
+                    @if (count($assignmentData) > 0)
+                    <button onclick="viewAssignment('{{$g_class_id}}')" class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
                     @else
-                    <a href="javascript:void(0);" class="btn btn-sm btn-outline-danger mb-1 mr-2 border-0 btn-shadow">
-                      <svg class="icon icon-2x mr-1">
-                        <use xlink:href="../images/icons.svg#icon_eye"></use>
-                      </svg> No Assignments
-                    </a>
+
+                    <button class="btn btn-sm btn-outline-primary mb-1 mr-2 border-0 btn-shadow">No Assigment</button>
+
                     @endif
 
                   </div>
@@ -192,19 +180,72 @@
               <input type="text" class="form-control" name="txt_aTitle" id="txt_aTitle" placeholder="Assigment Title">
             </div>
           </div>
+        <div class="form-group col-md-4">
+        <label for="txt_aTitle" class="col-form-label text-md-left"> Due Date:</label>
+        <div>
+        <input type="date" class="form-control" name="txt_due_date" id="txt_due_date" placeholder="Due Date">
+        </div>
+        </div>
+          <div class="form-group col-md-4">
+            <label for="txt_aTitle" class="col-form-label text-md-left"> Due Time:</label>
+            <div>
+                <input type="text" class="form-control due-time" name="txt_due_time" id="txt_due_time" placeholder="Due Time">
+            </div>
+        </div>
+
+         <div class="form-group col-md-4">
+            <label for="txt_aTitle" class="col-form-label text-md-left"> Point:</label>
+            <div>
+                <input type="number" class="form-control" name="txt_point" id="txt_point" placeholder="Point">
+            </div>
+        </div>
         </div>
         <div class="form-group row">
-          <div class="col-md-8 offset-md-4">
-            <button type="button" id="assignment_create" class="btn btn-primary px-4">Next</button>
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          </div>
-        </div>
-      </div>
+                    <div class="col-md-12" style="text-align: center;">
+                        <button type="button" id="assignment_create" class="btn btn-primary px-4">Create</button>
+                        <button type="button" id="attach_file" class="btn btn-primary px-4">Create and Attach File</button>
+                        <button type="button" id="cancel_assignment" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+                <p style="font-size: smaller;color: red;text-align: center;">Note: Please allow popup for the assignment functionality.</p>
+            </div>
     </div>
   </div>
 </div>
 <!-- ./New Assignment Modal -->
+<!-- ./New Assignment Modal -->
+<div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header bg-light">
+        <h5 class="modal-title font-weight-bold">View Assignment </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body pt-4">
 
+
+        <table id="assignmentList" class="table table-hover btn-shadow table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+          <thead class="text-white" style="background:#253372;">
+            <tr>
+
+              <th>Assignment Name</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+
+
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ./View Assignment Modal -->
 <!-- Open Live link in modal  -->
 <div class="modal fade" id="viewClassModal" data-backdrop="static" tabindex="-1" role="dialog">
   <div class="modal-dialog modal-xl" role="document">
@@ -360,19 +401,23 @@
 
 
   $(document).on('click', '#assignment_create', (function() {
+    $('#assignment_create').prop('disabled', true);
+    $('#attach_file').prop('disabled', true);
+    $('#cancel_assignment').prop('disabled', true);
     var id = $("#row_id").val();
     var class_id = $('#ass_class_id').val();
     var subject_id = $('#ass_subject_id').val();
     var teacher_id = $('#ass_teacher_id').val();
     //var timing_id = $('[data-createmodal="'+id+'"]').data('timing_modal');
-
     var g_class_id = $('#g_class_id').val();
 
     var txt_topic_name = $('#txt_topin_name').val();
     var sel_topic_name = $('#sel_topic').val();
     var assignment_title = $('#txt_aTitle').val();
+    var dueDate = $('#txt_due_date').val();
+    var dueTime = $('#txt_due_time').val();
+    var point = $('#txt_point').val();
     var dateClass_id = ''; //$('#new_assignment').val();
-
 
     $.ajax({
       url: "{{url('create-assignment')}}",
@@ -382,6 +427,9 @@
         txt_topic_name: txt_topic_name,
         sel_topic_name: sel_topic_name,
         assignment_title: assignment_title,
+        dueDate: dueDate,
+        dueTime: dueTime,
+        point: point,
         class_id: class_id,
         subject_id: subject_id,
         teacher_id: teacher_id,
@@ -391,24 +439,83 @@
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       },
       success: function(result) {
-        var response = JSON.parse(result);
+                var response = JSON.parse(result);
+                if (response.status == 'success') {
+                    $.fn.notifyMe('success', 5, response.message);
+                    $('#createAssiModal').modal('hide');
+                    var data = '<option value="' + response.cource_url + '">' + assignment_title + '</option>';
+                    $('#view_a_link_' + id).append(data);
+                    $('#assignment_create').prop('disabled',false);
+                    $('#attach_file').prop('disabled',false);
+                    $('#cancel_assignment').prop('disabled',false);
+                } else {
+                    $.fn.notifyMe('error', 5, response.message);
+                    $('#assignment_create').prop('disabled',false);
+                    $('#attach_file').prop('disabled',false);
+                    $('#cancel_assignment').prop('disabled',false);
+                }
+            }
+        });
+    }));
 
-        if (response.status == 'success') {
+  $(document).on('click', '#attach_file', (function() {
+        $('#assignment_create').prop('disabled', true);
+        $('#attach_file').prop('disabled', true);
+        $('#cancel_assignment').prop('disabled', true);
+        var id = $("#row_id").val();
+        var class_id = $('#ass_class_id').val();
+        var subject_id = $('#ass_subject_id').val();
+        var teacher_id = $('#ass_teacher_id').val();
+        //var timing_id = $('[data-createmodal="'+id+'"]').data('timing_modal');
+        var g_class_id = $('#g_class_id').val();
+        var txt_topic_name = $('#txt_topin_name').val();
+        var sel_topic_name = $('#sel_topic').val();
+        var assignment_title = $('#txt_aTitle').val();
+        var dueDate = $('#txt_due_date').val();
+        var dueTime = $('#txt_due_time').val();
+        var point = $('#txt_point').val();
+        var dateClass_id = ''; //$('#new_assignment').val();
 
-          $.fn.notifyMe('success', 5, response.message);
-          $('#createAssiModal').modal('hide');
-          window.open(response.cource_url, "title", "dialogWidth:400px;dialogHeight:300px");
-          var data = '<option value="' + response.cource_url + '">' + assignment_title + '</option>';
-          $('#view_a_link_' + id).append(data);
+        $.ajax({
+            url: "{{url('create-assignment')}}",
+            type: "POST",
+            data: {
+                g_class_id: g_class_id,
+                txt_topic_name: txt_topic_name,
+                sel_topic_name: sel_topic_name,
+                assignment_title: assignment_title,
+                class_id: class_id,
+                subject_id: subject_id,
+                teacher_id: teacher_id,
+                dateClass_id: dateClass_id,
+                dueDate: dueDate,
+                dueTime: dueTime,
+                point: point
 
-
-
-        } else {
-          $.fn.notifyMe('error', 5, response.message);
-        }
-      }
-    });
-  }));
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                var response = JSON.parse(result);
+                if (response.status == 'success') {
+                    $.fn.notifyMe('success', 5, response.message);
+                    $('#createAssiModal').modal('hide');
+                    window.open(response.cource_url, "title", "dialogWidth:400px;dialogHeight:300px");
+                    var data = '<option value="' + response.cource_url + '">' + assignment_title + '</option>';
+                    $('#view_a_link_' + id).append(data);
+                    $('#assignment_create').prop('disabled',false);
+                    $('#attach_file').prop('disabled',false);
+                    $('#cancel_assignment').prop('disabled',false);
+                } else {
+                    $.fn.notifyMe('error', 5, response.message);
+                    $('#assignment_create').prop('disabled',false);
+                    $('#attach_file').prop('disabled',false);
+                    $('#cancel_assignment').prop('disabled',false);
+                }
+            }
+        });
+    }));
 
 
   $("#classChoose").change(function() {
@@ -603,5 +710,57 @@
         $('.asg1').prop("value", "");
       });
   });
+</script>
+<script>
+  $(document).on('click', '[data-viewAssignment]', function() {
+    var liveurl = $(this).attr("data-viewAssignment");
+    if (liveurl != '') {
+      //$('#viewClassModal').modal('show');
+      //$("#thedialog").attr('src','https://google.com');
+      window.open(liveurl, "dialog name", "dialogWidth:400px;dialogHeight:300px");
+    } else {
+      alert('No assignement url found!');
+    }
+  });
+
+  function viewAssignment(id) {
+
+    $.ajax({
+      type: 'POST',
+      url: '{{ url("/teacher/class/examassignments") }}',
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      },
+      data: {
+        'class_id': id,
+      },
+      success: function(result) {
+        var response = JSON.parse(result);
+        let data = '';
+        response.data.forEach(function(classAssignment) {
+          $('#assignmentList').find('tbody').find('tr').remove();
+          data += '<tr>';
+          data += '<td>' + classAssignment.g_title + '</td>';
+          data += '<td><a href="' + classAssignment.g_live_link + '" class="text-decoration-none" target="_blank">Link</a></td>';
+          data += '</tr>';
+
+          $('#assignmentList').find('tbody').append(data);
+        });
+      },
+      error: function() {
+        $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
+      }
+    });
+  }
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.due-time').timepicker({
+            controlType: 'select',
+            oneLine: true,
+            timeFormat: 'hh:mm tt'
+        });
+    });
 </script>
 @endsection

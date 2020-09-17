@@ -1,5 +1,5 @@
 var SITE_URL = $(".base_url").val();
-$(document).click(function(e) {
+$(document).click(function (e) {
   if (!$(e.target).is('header, .btn-menu, .leftmenu-section, header *, .leftmenu-section *')) {
     $('body').removeClass('menu-active');
   }
@@ -27,9 +27,9 @@ $(document).on('click', '.close-profile,.fullbody-cover', function () {
 
 
 /* Help Button Pause for 30 Sec*/
-$(document).on('click', '.header-help', function(){
-  var helpPause = `<svg class="icon mr-1"><use xlink:href="`+SITE_URL+`/images/icons.svg#icon_pause"></use></svg> Help!`;
-  var helpNormal = `<svg class="icon mr-1"><use xlink:href="`+SITE_URL+`/images/icons.svg#icon_help"></use></svg> Help!`;
+$(document).on('click', '.header-help', function () {
+  var helpPause = `<svg class="icon mr-1"><use xlink:href="` + SITE_URL + `/images/icons.svg#icon_pause"></use></svg> Support!`;
+  var helpNormal = `<svg class="icon mr-1"><use xlink:href="` + SITE_URL + `/images/icons.svg#icon_help"></use></svg> Support!`;
   $(this).addClass('active').html(helpPause);
   //$.fn.notifyMe('error',15,'Your help message send to support team!');
   setTimeout(() => {
