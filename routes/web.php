@@ -205,6 +205,9 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/teacher/updateAttendance', 'StudentAttendanceController@update');
 
     Route::get('/teacher/generateReports', 'ReportController@assignmentSubmissionGrades');
+    // Examination 
+
+    Route::get('/teacher/examination', 'ExaminationController@index')->name('examination');
 });
 
 
