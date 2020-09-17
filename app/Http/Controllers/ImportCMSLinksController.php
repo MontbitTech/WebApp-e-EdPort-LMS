@@ -26,7 +26,7 @@ class ImportCMSLinksController extends Controller
 	{
 		$error = "";
 		if ($request->isMethod('post')) {
-			$regex  = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)([\/\w \.?]*)([\/\w \.=]*)*\/?$/';
+			$regex  = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)([\/\w \.*]*)([\/\w \.#]*)([\/\w \.?]*)([\/\w \.=]*)*\/?$/';
 
 			$request->validate([
 				'subject' => 'required',
@@ -69,7 +69,7 @@ class ImportCMSLinksController extends Controller
 	}
 	public function editLink(Request $request, $id)
 	{
-		$regex  = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)([\/\w \.?]*)([\/\w \.=]*)*\/?$/';
+		$regex  = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)([\/\w \.*]*)([\/\w \.#]*)([\/\w \.?]*)([\/\w \.=]*)*\/?$/';
 
 		if ($request->isMethod('post')) {
 			$request->validate([
