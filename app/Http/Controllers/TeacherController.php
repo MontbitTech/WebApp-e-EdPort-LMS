@@ -300,7 +300,7 @@ class TeacherController extends Controller
         $domain = CustomHelper::getDomain();
         $logged_admin = Session::get('admin_session');
         $logged_admin_email = $logged_admin['admin_email'];
-        if ($request->isMethod('post')) {
+        if (Request()->post()) {
             $request->validate([
                 'file' => 'required',
             ]);
