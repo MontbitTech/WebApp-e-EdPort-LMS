@@ -26,18 +26,26 @@ class ImportCMSLinksController extends Controller
 	{
 		$error = "";
 		if ($request->isMethod('post')) {
-			$regex  = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)([\/\w \.?]*)([\/\w \.=]*)*\/?$/';
 
 			$request->validate([
 				'subject' => 'required',
 				'chapter' => 'required',
 				'class'   => 'required',
 				'topic'   => 'required',
-				'link'    => 'required_without_all:khan_academy,youtube,others,alink|nullable|regex:' . $regex,
-				'khan_academy' => 'required_without_all:link,youtube,others,alink|nullable|regex:' . $regex,
-				'youtube'   => 'required_without_all:khan_academy,link,others,alink|nullable|regex:' . $regex,
-				'others'  => 'required_without_all:khan_academy,link,youtube,alink|nullable|regex:' . $regex,
-				'alink'   => 'required_without_all:khan_academy,link,youtube,others|nullable|regex:' . $regex
+				'link'    => 'required_without_all:khan_academy,youtube,others,alink,book_url|nullable|url',
+				'khan_academy' => 'required_without_all:link,youtube,others,alink,book_url|nullable|url',
+				'youtube'   => 'required_without_all:khan_academy,link,others,alink,book_url|nullable|url',
+				'others'  => 'required_without_all:khan_academy,link,youtube,alink,book_url|nullable|url',
+				'alink'   => 'required_without_all:khan_academy,link,youtube,others,book_url|nullable|url',
+				'book_url'   => 'required_without_all:khan_academy,link,youtube,others,alink|nullable|url'
+			],[
+			
+				'link.url' => 'Invalid e-Edport URL',
+				'khan_academy.url' => 'Invalid My School URL',	
+				'youtube.url' => 'Invalid Youtube URL',	
+				'others.url' => 'Invalid Wikipedia URL',
+				'alink.url' => 'Invalid Assignment URL',
+				'book_url.url' => 'Invalid Book Url'						
 			]);
 
 			$studentClassExist = \DB::select(
@@ -69,19 +77,28 @@ class ImportCMSLinksController extends Controller
 	}
 	public function editLink(Request $request, $id)
 	{
-		$regex  = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)([\/\w \.?]*)([\/\w \.=]*)*\/?$/';
+		// $regex  = '/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.*]*)([\/\w \.]*)([\/\w \.#]*)([\/\w \.?]*)([\/\w \.=]*)([\/\w \.-]*)*\/?$/';
 
 		if ($request->isMethod('post')) {
 			$request->validate([
-				'subject' 		=> 'required|max:100',
-				'class' 		=> 'required',
-				'chapter' 		=> 'required',
-				'topic' 		=> 'required',
-				'link' 			=> 'required_without_all:khan_academy,youtube,others,alink|nullable|regex:' . $regex,
-				'khan_academy' 	=> 'required_without_all:link,youtube,others,alink|nullable|regex:' . $regex,
-				'youtube'      	=> 'required_without_all:khan_academy,link,others,alink|nullable|regex:' . $regex,
-				'others'       	=> 'required_without_all:khan_academy,link,youtube,alink|nullable|regex:' . $regex,
-				'alink'  		=> 'required_without_all:khan_academy,link,youtube,others|nullable|regex:' . $regex
+				'subject' => 'required',
+				'chapter' => 'required',
+				'class'   => 'required',
+				'topic'   => 'required',
+				'link'    => 'required_without_all:khan_academy,youtube,others,alink,book_url|nullable|url',
+				'khan_academy' => 'required_without_all:link,youtube,others,alink,book_url|nullable|url',
+				'youtube'   => 'required_without_all:khan_academy,link,others,alink,book_url|nullable|url',
+				'others'  => 'required_without_all:khan_academy,link,youtube,alink,book_url|nullable|url',
+				'alink'   => 'required_without_all:khan_academy,link,youtube,others,book_url|nullable|url',
+				'book_url'   => 'required_without_all:khan_academy,link,youtube,others,alink|nullable|url'
+			],[
+			
+				'link.url' => 'Invalid e-Edport URL',
+				'khan_academy.url' => 'Invalid My School URL',	
+				'youtube.url' => 'Invalid Youtube URL',	
+				'others.url' => 'Invalid Wikipedia URL',
+				'alink.url' => 'Invalid Assignment URL',
+				'book_url.url' => 'Invalid Book Url'						
 			]);
 
 			$id = decrypt($id);
