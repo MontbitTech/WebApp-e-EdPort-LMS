@@ -242,6 +242,7 @@
             buttons: [{
               extend: 'csvHtml5',
               autoFilter: true,
+              title: 'content',
               sheetName: 'Exported data',
               text: '<i class="fas fa-file-export mr-1 icon-2x"  ></i>Export Content',
               className: 'btn btn-color mr-3 btn-sm text-md-right float-right ml-2',
@@ -249,18 +250,18 @@
                 $(node).removeClass('dt-button')
               },
               exportOptions: {
-                columns: [1, 2, 3, 4, 5, 7, 8, 6],
+                columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                 format: {
                   body: function(data, row, column, node) {
-                    if (column === 3 || column === 4 || column === 5 || column === 6 || column === 7) {
+                    if ( column === 4 || column === 5 || column === 6 || column === 7 || column === 8 || column === 9 || column === 10 ) {
                       data = data.split("\"");
                       var linkUrl = data[1];
-                      linkUrl = data[1].trim("");
+                      linkUrl = linkUrl.trim("");
                       if (linkUrl.includes("admin/edit-link")) {
                         linkUrl = "";
                       }
                     }
-                    return column === 3 || column === 4 || column === 5 || column === 6 || column === 7 ?
+                    return column === 4 || column === 5 || column === 6 || column === 7 || column === 8 || column === 9 || column === 10  ?
                       linkUrl.replace("", "") : data;
                   }
                 }
