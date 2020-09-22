@@ -291,8 +291,6 @@
              </div>
              <div class="modal-footer ">
                  <div class="m-auto">
-
-
                      <button class="btn btn-info addquestion" style="background-color: #373c8e;"><i class="fas fa-plus mr-3"></i>Add Question</button>
                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                      <button type="button" class="btn btn-primary">Save</button>
@@ -302,3 +300,71 @@
      </div>
  </div>
  <!-- *********end******** -->
+ <script>
+     var max_fields = 100000; //maximum input boxes allowed
+     var wrapper = $(".newquestion"); //Fields wrapper
+     var add_button = $(".addquestion"); //Add button ID
+
+     var x = 1; //initlal text box count
+     $(add_button).click(function(e) { //on add input button click
+         e.preventDefault();
+         if (x < max_fields) { //max input box allowed
+             x++; //text box increment
+             $(wrapper).append(`
+                         <div class="">
+                                    <hr>                     
+                                    <label for="exampleInputQuestion` + x + `" class="align-top">Question ` + x + `</label>
+                                    <a href="#" style="float:right;" class="remove_field"><i class="fas fa-times"></i></a>
+                                   <div class="form-group mb-0 pb-1">                                   
+                                      <textarea name="" id="exampleInputQuestion` + x + `" class="w-100 form-control" rows="3" placeholder="Insert your question" style="resize: none;" ></textarea>
+                                    </div>
+                                    <table class="table table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="text-center pb-0 pt-0 mb-0 mt-0">Option </th>
+                                                <th scope="col" class="pb-0 pt-0 mb-0 mt-0">Answer</th>
+                                                <th scope="col" class="text-center pb-0 pt-0 mb-0 mt-0">Option </th>
+                                                <th scope="col" class="pb-0 pt-0 mb-0 mt-0">Answer</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="mb-0 mt-0 pt-0 pb-1">
+                                                    <input class="form-control form-control-sm  " type="text" placeholder="option 1">
+                                                </td>
+                                                <td class="mb-0 mt-0 pt-0 pb-0">
+                                                    <input type="checkbox" class=" form-control-sm  ml-4 ">
+                                                </td>
+                                                 <td class="mb-0 mt-0 pt-0 pb-1">
+                                                    <input class="form-control form-control-sm  " type="text" placeholder="option 2">
+                                                </td>
+                                                <td class="mb-0 mt-0 pt-0 pb-0">
+                                                    <input type="checkbox" class=" form-control-sm  ml-4 ">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="mb-0 mt-0 pt-1 pb-0">
+                                                    <input class="form-control form-control-sm  " type="text" placeholder="option 3">
+                                                </td>
+                                                <td class="mb-0 mt-0 pt-0 pb-0">
+                                                    <input type="checkbox" class=" form-control-sm  ml-4 ">
+                                                </td>
+                                                <td class="mb-0 mt-0 pt-0 pb-0">
+                                                    <input class="form-control form-control-sm  " type="text" placeholder="option 4">
+                                                </td>
+                                                <td class="mb-0 mt-0 pt-1 pb-0">
+                                                    <input type="checkbox" class=" form-control-sm  ml-4 ">
+                                                </td>
+                                            </tr>                     
+                                        </tbody>
+                                   </table>                                    
+                            </div>`); //add input box
+         }
+     });
+
+     $(wrapper).on("click", ".remove_field", function(e) { //user click on remove text
+         e.preventDefault();
+         $(this).parent('div').remove();
+         x--;
+     });
+ </script>
