@@ -148,7 +148,7 @@
                              </tr>
                          </tbody>
                      </table>
-                     <div class="newquestion"></div>
+
                  </form>
              </div>
              <div class="modal-footer ">
