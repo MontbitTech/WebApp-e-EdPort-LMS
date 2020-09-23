@@ -30,17 +30,17 @@
 
     #progressbar #step1:before {
         content: "1";
-        color: #373c8e
+        color: white;
     }
 
     #progressbar #step2:before {
         content: "2";
-        color: #373c8e
+        color: white;
     }
 
     #progressbar #step3:before {
         content: "3";
-        color: #373c8e
+        color: white;
     }
 
     #progressbar li:before {
@@ -137,10 +137,14 @@
         font-weight: 300
     }
 
+    .border-line {
+        border: 1px #373c8e solid !important;
+    }
+
     .color-btn,
     textareas,
     buttons {
-        background-color: #373c8e !important;
+        background-color: white !important;
         padding: 8px 15px 8px 15px;
         border-radius: 0px !important;
         margin-bottom: 25px;
@@ -179,7 +183,7 @@
 
     .fa-long-arrow-right {
         color: #373c8e;
-        background-color: #373c8e;
+        background-color: white;
         padding: 12px;
         margin: 5px;
         border-radius: 50%;
@@ -192,20 +196,56 @@
 
     .fa-long-arrow-right:hover {
         color: #FFF;
-        background-color: #B39DDB
+        background-color: #373c8e;
     }
 
-    .fa-long-arrow-left {
+    /* .fa-long-arrow-left {
         position: absolute;
         left: 20px;
         top: 20px;
         color: #373c8e;
         cursor: pointer
-    }
+    } */
 
     .check-mark {
         width: 180px;
         height: 180px
+    }
+
+    .fa-long-arrow-left:hover {
+        color: #FFF;
+        background-color: #373c8e;
+    }
+
+    .addquestionexam {
+        margin-left: -29px;
+        color: #373c8e;
+        background-color: white;
+        /* padding: 12px;
+        margin-top: 17px; */
+        cursor: pointer;
+        /* margin-right: 6px; */
+        border-radius: 50%;
+        border: 3px solid #373c8e;
+        /* position: absolute; */
+    }
+
+    .addquestionexam:hover {
+        color: #FFF;
+        background-color: #373c8e;
+    }
+
+    .fa-long-arrow-left {
+        margin-left: 48px;
+        color: #373c8e;
+        background-color: white;
+        padding: 12px;
+        margin-top: 17px;
+        cursor: pointer;
+        margin-right: 6px;
+        border-radius: 50%;
+        border: 3px solid #373c8e;
+        position: absolute;
     }
 </style>
 
@@ -213,7 +253,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-8 col-lg-8 col-12">
-                <div class="col-md-12 col-lg-12 col-12 px-0 mb-5">
+                <div class="col-md-12 col-lg-12 col-12 px-0 mb-5 border-line">
                     <ul id="progressbar" class="text-center">
                         <li class="active step0" id="step1">Exam name</li>
                         <li class="step0" id="step2">Create Exam</li>
@@ -237,7 +277,7 @@
                         </div>
                     </div>
                     <div class="card card-hiden b-0">
-                        <div class="fa fa-long-arrow-left prev"> </div>
+                        <!-- <button class="fas fa-plus  addquestionexam"> </button> -->
                         <div class="row justify-content-center">
                             <div class="col-lg-12 col-md-12">
                                 <form>
@@ -264,7 +304,7 @@
                                             </select>
                                         </div>
                                         <div class="circle">
-                                            <button class="fas fa-plus next addquestionexam" id="next2" onclick="validate2(0)">
+                                            <button class="fas fa-plus addquestionexam" data-toggle="tooltip" data-placement="right" title="Add Question">
                                             </button>
                                         </div>
                                     </div>
@@ -296,7 +336,7 @@
 
 
                                     </div>
-                                    <div class="createquestion row px-3"></div>
+                                    <div class="createquestion px-3"></div>
                                     <hr>
                                     <div class="form-group px-3">
                                         <h3 for="exampleInputQuestionname" class="mb-0 text-center"> Exam Name</h3>
@@ -319,11 +359,16 @@
                                 </form>
                             </div>
                         </div>
-                        <div class="row d-flex justify-content-center">
+                        <div class="row d-flex justify-content-center m-auto">
+                            <div class="circle ">
+                                <div class="fa fa-long-arrow-left prev data">
+                                </div>
+                            </div>
                             <div class="circle">
                                 <div class="fa fa-long-arrow-right next" id="next2" onclick="validate2(0)">
                                 </div>
                             </div>
+
                         </div>
                     </div>
                     <div class="card  card-hiden b-0">
@@ -350,10 +395,10 @@
 
                             </div>
                         </div>
-                        <div class="row d-flex justify-content-center">
+                        <!-- <div class="row d-flex justify-content-center">
                             <div class="check"> <img src="https://i.imgur.com/g6KlBWR.gif" class="check-mark">
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 @include('teacher.examination.exam')
@@ -514,12 +559,12 @@
     var wrapper = $(".createquestion"); //Fields wrapper
     var add_button = $(".addquestionexam"); //Add button ID
 
-    var x = 1; //initlal text box count
+    var x = 2; //initlal text box count
     $(add_button).click(function(e) { //on add input button click
         e.preventDefault();
         if (x < max_fields) { //max input box allowed
             x++; //text box increment
-            $(wrapper).append(`
+            $(wrapper).append(`<div class="row">
             <div class="col-md-1 mt-2">
                                             <input type="checkbox" name="" id="" checked>
                                         </div>
@@ -570,13 +615,14 @@
                                             </tr>                     
                                         </tbody>
                                    </table>                                    
+                            </div>
                             </div>`); //add input box
         }
     });
 
     $(wrapper).on("click", ".remove_field", function(e) { //user click on remove text
         e.preventDefault();
-        $(this).parent('div').remove();
+        $(this).parent().parent('div').remove();
         x--;
     });
 </script>
@@ -722,10 +768,11 @@
             }
         });
 
-        $(".prev").click(function() {
-
-            current_fs = $(this).parent();
-            previous_fs = $(this).parent().prev();
+        $(".data").click(function() {
+            current_fs = $(this).parent().parent().parent();
+            previous_fs = $(this).parent().parent().parent().prev();
+            // current_fs = $(this).parent();
+            // previous_fs = $(this).parent().prev();
 
             $(current_fs).removeClass("show");
             $(previous_fs).addClass("show");
