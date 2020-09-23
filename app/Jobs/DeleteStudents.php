@@ -33,6 +33,7 @@ class DeleteStudents implements ShouldQueue
      */
     public function handle()
     {
+        set_time_limit(0);
         $token = CommonHelper::varify_Admintoken();
         foreach ( $this->students as $student ) {
             $invitationResponse = CommonHelper::teacher_invitation_delete($token, $student->invitation_code);
