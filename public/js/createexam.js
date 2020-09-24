@@ -89,15 +89,14 @@ $(document).ready(function () {
             val3 = false;
         }
 
-        if ((!str1.localeCompare($(this).attr('id')) && val1 == true) || (!str2.localeCompare($(
-                this).attr('id')) && val2 == true) || (!str3.localeCompare($(this).attr('id')) && val3 == true)) {
+        if ((!str1.localeCompare($(this).attr('id')) && val1 == true) || (!str2.localeCompare($(this).attr('id')) && val2 == true) || (!str3.localeCompare($(this).attr('id')) && val3 == true)) {
             current_fs = $(this).parent().parent().parent();
             next_fs = $(this).parent().parent().parent().next();
 
             $(current_fs).removeClass("show");
             $(next_fs).addClass("show");
 
-            $("#progressbar li").eq($(".card-hidden").index(next_fs)).addClass("active");
+            $("#progressbar li").eq($(".card").index(next_fs)).addClass("active");
 
             current_fs.animate({}, {
                 step: function () {

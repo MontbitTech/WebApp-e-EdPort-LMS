@@ -208,6 +208,9 @@ Route::group(['middleware' => 'teachersession'], function () {
     // Examination 
 
     Route::get('/teacher/examination', 'ExaminationController@index')->name('examination');
+    Route::get('/teacher/examination/back', 'Examination\ExaminationController@createExamination')->name('examination');
+
+    Route::post('/examination/create','Examination\ExaminationController@store');
 });
 
 

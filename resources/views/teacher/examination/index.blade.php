@@ -12,86 +12,6 @@
                 @include('teacher.examination.createexam')
                 @include('teacher.examination.exam')
                 @include('teacher.examination.questionadd')
-
-                <!--Teacher-Examination-Exam-Create -->
-
-                <!-- <div class="col-md-12 px-0">
-                    <div class="card card-info  ">
-                        <div class="card-header pt-1 pb-0 border-transparent text-white" style="background-color: #373c8e;">
-                            <h4 class="card-title d-inline">Create Question Paper</h4>
-                            <div class="card-tools d-inline">
-                                <button type="button" class="btn btn-tool text-white float-right" data-card-widget="collapse">
-                                    <i class="fas fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="card-body card-border-exam">
-                            <form role="form">
-                                <div class="form-group">
-                                    <label for="exampleInputQuestionname" class="mb-0">Enter Paper Name</label>
-                                    <input type="text" class="form-control input-xs" id="exampleInputQuestionname" placeholder="Exam name">
-                                </div>
-                                <hr>
-                                <label for="exampleInputQuestion1" class="align-top">Question 1</label>
-                                <div class="form-group mb-0 pb-1">
-                                    <textarea name="" id="exampleInputQuestion1" class="w-100 form-control" rows="3" placeholder="Insert your question" style="resize: none;"></textarea>
-                                </div>
-                                <table class="table table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col" class="text-center pb-0 pt-0 mb-0 mt-0">Option </th>
-                                            <th scope="col" class="pb-0 pt-0 mb-0 mt-0">Answer</th>
-                                            <th scope="col" class="text-center pb-0 pt-0 mb-0 mt-0">Option </th>
-                                            <th scope="col" class="pb-0 pt-0 mb-0 mt-0">Answer</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="mb-0 mt-0 pt-0 pb-1">
-                                                <input class="form-control form-control-sm  " type="text" placeholder="option 1">
-                                            </td>
-                                            <td class="mb-0 mt-0 pt-0 pb-0">
-                                                <input type="checkbox" class=" form-control-sm  ml-4 ">
-                                            </td>
-                                            <td class="mb-0 mt-0 pt-0 pb-1">
-                                                <input class="form-control form-control-sm  " type="text" placeholder="option 2">
-                                            </td>
-                                            <td class="mb-0 mt-0 pt-0 pb-0">
-                                                <input type="checkbox" class=" form-control-sm  ml-4 ">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="mb-0 mt-0 pt-1 pb-0">
-                                                <input class="form-control form-control-sm  " type="text" placeholder="option 3">
-                                            </td>
-                                            <td class="mb-0 mt-0 pt-0 pb-0">
-                                                <input type="checkbox" class=" form-control-sm  ml-4 ">
-                                            </td>
-                                            <td class="mb-0 mt-0 pt-1 pb-0">
-                                                <input class="form-control form-control-sm  " type="text" placeholder="option 4">
-                                            </td>
-                                            <td class="mb-0 mt-0 pt-0 pb-0">
-                                                <input type="checkbox" class=" form-control-sm  ml-4 ">
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                <div class="newquestion"></div>
-                                <div class="row">
-                                    <div class="col-md-6 col-6 col-lg-6">
-                                        <button class="btn btn-info addquestion w-100 mb-1" style="background-color: #373c8e;"><i class="fas fa-plus mr-3"></i>Add More Question</button>
-                                    </div>
-                                    <div class="col-md-6 col-6 col-lg-6">
-                                        <button type="submit" class="btn btn-primary w-100">Submit</button>
-                                    </div>
-                                </div>
-
-
-                            </form>
-                        </div>
-                    </div>
-                </div> -->
-
             </div>
             <div class="col-md-4 col-lg-4 col-12">
 
@@ -149,16 +69,6 @@
 
                 </div>
             </div>
-            <!-- <div class="position-fixed bg-white border-radius-2" style="right: 1em;bottom: 1em;">
-                    <a href=""><i class="fas fa-plus "></i> </a>
-                </div> -->
-        </div>
-        <!-- ./Teacher-Examination-Exam-Form-Edit -->
-
-
-        <!-- Examination-Exam-Details -->
-
-
     </div>
     </div>
 </section>
