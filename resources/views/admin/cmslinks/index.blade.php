@@ -242,6 +242,7 @@
             buttons: [{
               extend: 'csvHtml5',
               autoFilter: true,
+              title: 'content',
               sheetName: 'Exported data',
               text: '<i class="fas fa-file-export mr-1 icon-2x"  ></i>Export Content',
               className: 'btn btn-color mr-3 btn-sm text-md-right float-right ml-2',

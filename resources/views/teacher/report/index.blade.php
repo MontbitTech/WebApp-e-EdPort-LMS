@@ -115,6 +115,11 @@
     <div class="row" style="padding: inherit;padding-bottom: 2%;">
       <a href="javascript:getReport()" class="btn btn-ui float-right m-0  btn-gen">Generate Report</a>
     </div>
+    <div class="container">
+      <div class="row">
+        @include('teacher.examination.studentreport')
+      </div>
+    </div>
     <div class="row" style="display: none;" id="reportTable">
       <div class="col-sm-12">
         <div class="card">
