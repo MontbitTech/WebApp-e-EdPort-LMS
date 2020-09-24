@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Examination;
 
+use App\CmsLink;
 use App\HelpTicketCategory;
 use App\Http\Controllers\Controller;
 use App\Models\Examination\ClassroomExaminationMapping;
@@ -73,8 +74,10 @@ class ExaminationController extends Controller
         $questionClasses = Question::groupBy('class')->pluck('class');
         $classes = StudentClass::groupBy('class_name')->pluck('class_name');
         $subjects = StudentSubject::get();
+        $classrooms = StudentClass::with('studentSubject')->get();
 
-        return view('teacher.examination.index', compact('videos', 'helpCategories', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects'));
+//        dd($classrooms);
+        return view('teacher.examination.index', compact('videos', 'helpCategories', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms'));
     }
 
 

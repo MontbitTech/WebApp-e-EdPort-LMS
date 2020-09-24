@@ -39,22 +39,22 @@
                         <div class="col-md-4">
                             <select class="form-control">
                                 <option value="" selected>Select Class</option>
-                                <option value="">10 A</option>
-                                <option value=""> 11</option>
+                                @foreach($classes as $class)
+                                    <option value="{{$class}}">{{$class}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-4">
                             <select class="form-control">
                                 <option value="" selected>Select Subject</option>
-                                <option value="">Hindi</option>
-                                <option value=""> English</option>
+                                @foreach($subjects as $subject)
+                                    <option value="{{$subject->id}}">{{$subject->subject_name}}</option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="col-md-4">
-                            <select class="form-control">
+                            <select class="form-control" id="chapter">
                                 <option value="" selected>Select Chapter</option>
-                                <option value="">Chapter 1</option>
-                                <option value="">Chapter 2</option>
                             </select>
                         </div>
                         <div class="circle">
@@ -62,21 +62,9 @@
                             </button>
                         </div>
                     </div>
-                    <div class="row  px-3">
-                        <div class="col-md-1">
-                            <input type="checkbox" checked checked>
-                        </div>
-                        <div class="col-md-11  ">
-                            <div class="media">
-                                <strong class="mr-1">Q.1 </strong>
-                                <div class="media-body font-weight-bold">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, eligendi.
-                                </div>
-                            </div>
-                        </div>
-
+                    <div class="row  px-3" id="question">
                         <div class="col-md-1 mt-2">
-                            <input type="checkbox" checked checked>
+                            <input type="checkbox" checked>
                         </div>
                         <div class="col-md-11  mt-2">
                             <div class="media">
@@ -88,8 +76,6 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                     <div class="createdata px-3"></div>
                     <hr>
@@ -124,6 +110,7 @@
             </div>
         </div>
     </div>
+
     <div class="card bg-data  card-hiden b-0">
         <div class="row d-flex justify-content-center text-center">
 
@@ -137,12 +124,12 @@
                 </div>
                 <div class="col-md-12 mt-1 ">
                     <label class="d-block mb-2">Class</label>
-                    <select class="form-control select1 " data-placeholder="Class" name="select1" id="select1" style="width: 100%;">
-                        <option value="">Class</option>
-                        <option value="1">X</option>
-                        <option value="2">XI</option>
-                        <option value="3">XII</option>
-                        <option value="4">V</option>
+                    <select class="form-control select1 " data-placeholder="Class" name="select1" id="select1"
+                            style="width: 100%;">
+                        <option value="">Select Classroom</option>
+                        @foreach($classrooms as $classroom)
+                            <option value="{{$classroom->id}}">{{$classroom->class_name}} {{$classroom->section_name}} , {{$classroom->studentSubject->subject_name}}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="col-md-5 d-inline-block  pr-0   mb-4 mt-2  mr-4  ">
@@ -514,119 +501,4 @@
         $(this).parent().parent('div').remove();
         xx--;
     });
-
-    {
-        {
-            --$('#createExam').on('click', function(e) {
-                    --
-                }
-            } {
-                {
-                    --
-                    var title = $('#next1').val();
-                    --
-                }
-            } {
-                {
-                    --console.log(title);
-                    --
-                }
-            } {
-                {
-                    --$('.loader').show();
-                    --
-                }
-            } {
-                {
-                    --$.ajax({
-                            --
-                        }
-                    } {
-                        {
-                            --type: 'POST', --
-                        }
-                    } {
-                        {
-                            --url: '{{ url("/examination/create") }}', --
-                        }
-                    } {
-                        {
-                            --headers: {
-                                --
-                            }
-                        } {
-                            {
-                                --'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') --
-                            }
-                        } {
-                            {
-                                --
-                            }, --
-                        }
-                    } {
-                        {
-                            --data: {
-                                --
-                            }
-                        } {
-                            {
-                                --title: title, --
-                            }
-                        } {
-                            {
-                                --
-                            }, --
-                        }
-                    } {
-                        {
-                            --success: function(result) {
-                                --
-                            }
-                        } {
-                            {
-                                --$('.loader').fadeOut();
-                                --
-                            }
-                        } {
-                            {
-                                --console.log(result);
-                                --
-                            }
-                        } {
-                            {
-                                --
-                            }, --
-                        }
-                    } {
-                        {
-                            --error: function() {
-                                --
-                            }
-                        } {
-                            {
-                                --$('.loader').fadeOut();
-                                --
-                            }
-                        } {
-                            {
-                                --$.fn.notifyMe('error', 4, 'There is some error while creating exam!');
-                                --
-                            }
-                        } {
-                            {
-                                --
-                            }--
-                        }
-                    } {
-                        {
-                            --
-                        });
-                    --
-                }
-            } {
-                {
-                    --
-                }) --
-        }
-    }
 </script>
