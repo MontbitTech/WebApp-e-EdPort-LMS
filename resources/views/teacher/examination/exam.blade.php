@@ -12,21 +12,21 @@
          <div class="card-body card-border-exam">
              <div class="row mb-3">
                  <div class="col-md-4">
-                     <select class="form-control" name="" id="">
+                     <select class="form-control">
                          <option value="" selected>Select Class</option>
                          <option value="">10 A</option>
                          <option value=""> 11</option>
                      </select>
                  </div>
                  <div class="col-md-4">
-                     <select class="form-control" name="" id="">
+                     <select class="form-control">
                          <option value="" selected>Select Subject</option>
                          <option value="">Hindi</option>
                          <option value=""> English</option>
                      </select>
                  </div>
                  <div class="col-md-4">
-                     <select class="form-control" name="" id="">
+                     <select class="form-control">
                          <option value="" selected>Select Exam name</option>
                          <option value="">exam 1</option>
                          <option value="">exam 2</option>
@@ -80,21 +80,21 @@
                  <form>
                      <div class="row mb-3 px-3">
                          <div class="col-md-4">
-                             <select class="form-control" name="" id="">
+                             <select class="form-control">
                                  <option value="" selected>Select Class</option>
                                  <option value="">10 A</option>
                                  <option value=""> 11</option>
                              </select>
                          </div>
                          <div class="col-md-4">
-                             <select class="form-control" name="" id="">
+                             <select class="form-control">
                                  <option value="" selected>Select Subject</option>
                                  <option value="">Hindi</option>
                                  <option value=""> English</option>
                              </select>
                          </div>
                          <div class="col-md-4">
-                             <select class="form-control" name="" id="">
+                             <select class="form-control">
                                  <option value="" selected>Select Chapter</option>
                                  <option value="">Chapter 1</option>
                                  <option value="">Chapter 2</option>
@@ -103,7 +103,7 @@
                      </div>
                      <div class="row  px-3">
                          <div class="col-md-1">
-                             <input type="checkbox" name="" id="" checked>
+                             <input type="checkbox" checked>
                          </div>
                          <div class="col-md-11  ">
                              <div class="media">
@@ -115,7 +115,7 @@
                          </div>
 
                          <div class="col-md-1 mt-2">
-                             <input type="checkbox" name="" id="" checked>
+                             <input type="checkbox" checked>
                          </div>
                          <div class="col-md-11  mt-2">
                              <div class="media">
@@ -137,14 +137,14 @@
                      <div class="media px-3">
                          <strong class="mr-1">Q.1 </strong>
                          <div class="media-body font-weight-bold">
-                             <textarea name="" id="" class="w-100 form-control border-0 rounded-0" style="resize: none;" rows="3" disabled>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, beatae repellat amet  voluptate fugiat expedita laudantium debitis ipsam reprehenderit doloribus.
+                             <textarea class="w-100 form-control border-0 rounded-0" style="resize: none;" rows="3" disabled>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, beatae repellat amet  voluptate fugiat expedita laudantium debitis ipsam reprehenderit doloribus.
                                    </textarea>
                          </div>
                      </div>
                      <div class="media px-3">
                          <strong class="mr-1">Q.2 </strong>
                          <div class="media-body font-weight-bold">
-                             <textarea name="" id="" class="w-100 form-control border-0 rounded-0" style="resize: none;" rows="3" disabled>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, beatae repellat amet  voluptate fugiat expedita laudantium debitis ipsam reprehendeorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, beatae repellat amet  voluptate fugiat expedita laudantium debitis ipsam reprehenderit doloribus.
+                             <textarea class="w-100 form-control border-0 rounded-0" style="resize: none;" rows="3" disabled>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, beatae repellat amet  voluptate fugiat expedita laudantium debitis ipsam reprehendeorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, beatae repellat amet  voluptate fugiat expedita laudantium debitis ipsam reprehenderit doloribus.
                                    </textarea>
                          </div>
                      </div>

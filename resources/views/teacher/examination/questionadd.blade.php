@@ -12,21 +12,21 @@
          <div class="card-body card-border-exam">
              <div class="row mb-3">
                  <div class="col-md-4">
-                     <select class="form-control" name="" id="">
+                     <select class="form-control">
                          <option value="" selected>Select Class</option>
                          <option value="">10 A</option>
                          <option value=""> 11</option>
                      </select>
                  </div>
                  <div class="col-md-4">
-                     <select class="form-control" name="" id="">
+                     <select class="form-control">
                          <option value="" selected>Select Subject</option>
                          <option value="">Hindi</option>
                          <option value=""> English</option>
                      </select>
                  </div>
                  <div class="col-md-4">
-                     <select class="form-control" name="" id="">
+                     <select class="form-control">
                          <option value="" selected>Select Chapter</option>
                          <option value="">Chapter 1</option>
                          <option value="">Chapter 2</option>
@@ -78,7 +78,7 @@
                      <div class="row ">
                          <div class="col-md-4">
                              <div class="form-group">
-                                 <select class="form-control" name="" id="">
+                                 <select class="form-control">
                                      <option value="">Select Class</option>
                                      <option value="" selected>10 A</option>
                                      <option value=""> 11</option>
@@ -87,7 +87,7 @@
                          </div>
                          <div class="col-md-4">
                              <div class="form-group">
-                                 <select class="form-control" name="" id="">
+                                 <select class="form-control">
                                      <option value="">Select Subject</option>
                                      <option value="" selected>Hindi</option>
                                      <option value=""> English</option>
@@ -96,7 +96,7 @@
                          </div>
                          <div class="col-md-4">
                              <div class="form-group">
-                                 <select class="form-control" name="" id="">
+                                 <select class="form-control">
                                      <option value="">Select Chapter</option>
                                      <option value="" selected>Chapter 1</option>
                                      <option value="">Chapter 2</option>
@@ -104,9 +104,9 @@
                              </div>
                          </div>
                      </div>
-                     <label for="exampleInputQuestion1" class="align-top">Question </label>
+                     <label for="exampleInputQuestion2" class="align-top">Question </label>
                      <div class="form-group mb-0 pb-1">
-                         <textarea name="" id="exampleInputQuestion1" class="w-100 form-control" rows="3" placeholder="Insert your question" style="resize: none;"> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque, iusto?</textarea>
+                         <textarea name="" id="exampleInputQuestion2" class="w-100 form-control" rows="3" placeholder="Insert your question" style="resize: none;"> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque, iusto?</textarea>
                      </div>
                      <table class="table table-borderless">
                          <thead>
@@ -216,7 +216,7 @@
                      <div class="row ">
                          <div class="col-md-4">
                              <div class="form-group">
-                                 <select class="form-control" name="" id="">
+                                 <select class="form-control">
                                      <option value="" selected>Select Class</option>
                                      <option value="">10 A</option>
                                      <option value=""> 11</option>
@@ -225,7 +225,7 @@
                          </div>
                          <div class="col-md-4">
                              <div class="form-group">
-                                 <select class="form-control" name="" id="">
+                                 <select class="form-control">
                                      <option value="" selected>Select Subject</option>
                                      <option value="">Hindi</option>
                                      <option value=""> English</option>
@@ -234,7 +234,7 @@
                          </div>
                          <div class="col-md-4">
                              <div class="form-group">
-                                 <select class="form-control" name="" id="">
+                                 <select class="form-control">
                                      <option value="" selected>Select Chapter</option>
                                      <option value="">Chapter 1</option>
                                      <option value="">Chapter 2</option>

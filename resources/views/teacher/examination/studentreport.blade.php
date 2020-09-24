@@ -11,21 +11,21 @@
          <div class="card-body card-border-exam">
              <div class="row mb-3">
                  <div class="col-md-4">
-                     <select class="form-control" name="" id="">
+                     <select class="form-control">
                          <option value="" selected>Select Class</option>
                          <option value="">10 A</option>
                          <option value=""> 11</option>
                      </select>
                  </div>
                  <div class="col-md-4">
-                     <select class="form-control" name="" id="">
+                     <select class="form-control">
                          <option value="" selected>Select Subject</option>
                          <option value="">Hindi</option>
                          <option value=""> English</option>
                      </select>
                  </div>
                  <div class="col-md-4">
-                     <select class="form-control" name="" id="">
+                     <select class="form-control">
                          <option value="" selected>Select Exam name</option>
                          <option value="">exam 1</option>
                          <option value="">exam 2</option>

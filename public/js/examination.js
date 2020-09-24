@@ -11,14 +11,14 @@ $(document).ready(function () {
         "searching": false,
 
     });
-    $(".comment").shorten({
-        "showChars": 100,
-        "moreText": "See More",
-    });
+    // $(".comment").shorten({
+    //     "showChars": 100,
+    //     "moreText": "See More",
+    // });
 
-    $(".comment-small").shorten({
-        showChars: 10
-    });
+    // $(".comment-small").shorten({
+    //     showChars: 10
+    // });
     $("select").change(function () {
         $(this).find("option:selected").each(function () {
             var optionValue = $(this).attr("value");
