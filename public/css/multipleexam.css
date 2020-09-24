@@ -108,7 +108,7 @@
 .card-hiden-new {
     box-shadow: none !important;
     /* padding: 60px 40px 40px 40px; */
-    padding-top: 60px !important;
+    padding-top: 10px !important;
     padding-bottom: 40px !important;
     /* z-index: 0; */
     display: none;
@@ -117,7 +117,7 @@
 .card-hiden {
     /* background-color: #373c8e; */
     box-shadow: none !important;
-    padding: 60px 40px 40px 40px;
+    padding: 10px 40px 40px 40px;
     /* z-index: 0; */
     display: none;
 }
@@ -223,8 +223,14 @@ button:focus {
     width: 180px;
     height: 180px;
 }
-
-.fa-long-arrow-left:hover {
+.last-prev {
+    color: #373c8e;
+    background-color: white;
+    cursor: pointer;
+    border: 3px solid #373c8e;
+}
+.fa-long-arrow-left:hover,
+.last-prev:hover {
     color: #fff;
     background-color: #373c8e;
 }

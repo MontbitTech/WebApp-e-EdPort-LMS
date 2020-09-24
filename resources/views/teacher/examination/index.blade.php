@@ -62,14 +62,14 @@
                                 <input type="number" id="birthdaytime" class="form-control input-xs" name="birthdaytime">
                             </div>
                         </div>
-                    </div>
-                    <div class="card-footer card-border-exam clearfix">
-                        <a href="javascript:void(0)" class="btn btn-sm btn-info" style="width:100%;background-color: #373c8e;">Assign</a>
-                    </div>
 
+                        <div class="card-footer card-border-exam clearfix">
+                            <a href="javascript:void(0)" class="btn btn-sm btn-info" style="width:100%;background-color: #373c8e;">Assign</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-    </div>
+        </div>
     </div>
 </section>
 <script src="{{asset('js/examination.js')}}"></script>

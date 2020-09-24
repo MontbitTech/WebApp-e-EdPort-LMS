@@ -96,7 +96,7 @@ $(document).ready(function () {
             $(current_fs).removeClass("show");
             $(next_fs).addClass("show");
 
-            $("#progressbar li").eq($(".card").index(next_fs)).addClass("active");
+            $("#progressbar li").eq($(".bg-data").index(next_fs)).addClass("active");
 
             current_fs.animate({}, {
                 step: function () {
@@ -123,7 +123,7 @@ $(document).ready(function () {
         $(current_fs).removeClass("show");
         $(previous_fs).addClass("show");
 
-        $("#progressbar li").eq($(".card").index(next_fs)).removeClass("active");
+        $("#progressbar li").eq($(".bg-data").index(next_fs)).removeClass("active");
 
         current_fs.animate({}, {
             step: function () {

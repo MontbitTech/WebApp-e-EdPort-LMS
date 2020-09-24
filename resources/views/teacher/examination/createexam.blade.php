@@ -15,14 +15,13 @@
         <li class="step0" id="step3">Submit</li>
         <li class="step0" id="step4">t/c</li>
     </ul>
-    <div class="card card-hiden-new b-0 show">
+    <div class="card bg-data card-hiden-new b-0 show">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-11">
 
                 <div class="form-group">
                     <label class="form-control-label">Examination Name</label>
-                    <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..."
-                           class="color-btn" onblur="validate1(0)"></div>
+                    <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)"></div>
             </div>
         </div>
 
@@ -32,7 +31,7 @@
             </div>
         </div>
     </div>
-    <div class="card card-hiden-new b-0">
+    <div class="card bg-data card-hiden b-0">
         <div class="row justify-content-center">
             <div class="col-lg-12 col-md-12">
                 <form>
@@ -59,8 +58,7 @@
                             </select>
                         </div>
                         <div class="circle">
-                            <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right"
-                                    title="Add Question">
+                            <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right" title="Add Question">
                             </button>
                         </div>
                     </div>
@@ -102,16 +100,14 @@
                     <div class="media px-3">
                         <strong class="mr-1">Q.1 </strong>
                         <div class="media-body font-weight-bold">
-                             <textarea class="w-100 form-control border-0 rounded-0" style="resize: none;" rows="3"
-                                       disabled>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, beatae repellat amet  voluptate fugiat expedita laudantium debitis ipsam reprehenderit doloribus.
+                            <textarea class="w-100 form-control border-0 rounded-0" style="resize: none;" rows="3" disabled>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, beatae repellat amet  voluptate fugiat expedita laudantium debitis ipsam reprehenderit doloribus.
                                    </textarea>
                         </div>
                     </div>
                     <div class="media px-3">
                         <strong class="mr-1">Q.2 </strong>
                         <div class="media-body font-weight-bold">
-                             <textarea class="w-100 form-control border-0 rounded-0" style="resize: none;" rows="3"
-                                       disabled>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, beatae repellat amet  voluptate fugiat expedita laudantium debitis ipsam reprehendeorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, beatae repellat amet  voluptate fugiat expedita laudantium debitis ipsam reprehenderit doloribus.
+                            <textarea class="w-100 form-control border-0 rounded-0" style="resize: none;" rows="3" disabled>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, beatae repellat amet  voluptate fugiat expedita laudantium debitis ipsam reprehendeorem ipsum dolor, sit amet consectetur adipisicing elit. Aperiam, beatae repellat amet  voluptate fugiat expedita laudantium debitis ipsam reprehenderit doloribus.
                                                 </textarea>
                         </div>
                     </div>
@@ -128,7 +124,7 @@
             </div>
         </div>
     </div>
-    <div class="card  card-hiden-new b-0">
+    <div class="card bg-data  card-hiden b-0">
         <div class="row d-flex justify-content-center text-center">
 
             <div class="col-md-8">
@@ -136,14 +132,12 @@
                 <div class="col-md-12 mt-1 ">
                     <div class="form-group">
                         <label for="times">Date </label>
-                        <input type="datetime-local" id="birthdaytime" class="form-control input-xs"
-                               name="birthdaytime">
+                        <input type="datetime-local" id="birthdaytime" class="form-control input-xs" name="birthdaytime">
                     </div>
                 </div>
                 <div class="col-md-12 mt-1 ">
                     <label class="d-block mb-2">Class</label>
-                    <select class="form-control select1 " data-placeholder="Class" name="select1" id="select1"
-                            style="width: 100%;">
+                    <select class="form-control select1 " data-placeholder="Class" name="select1" id="select1" style="width: 100%;">
                         <option value="">Class</option>
                         <option value="1">X</option>
                         <option value="2">XI</option>
@@ -185,9 +179,9 @@
                            </div>
                        </div> -->
     </div>
-    <div class="card card-hiden-new b-0 ">
+    <div class="card bg-data card-hiden-new b-0 ">
         <div class="row d-flex justify-content-around m-0 p-0">
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test"> Full Screen while giving exam</div>
@@ -202,13 +196,12 @@
                     </div>
                     <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
                     <div class="col-md-4 p-0 my-2 m-0">
-                        <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  "
-                               min="1" max="5">
+                        <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test"> Multitasking while giving exam</div>
@@ -223,13 +216,12 @@
                     </div>
                     <div class="col-md-8 mt-2"> multitaskingAttempts</div>
                     <div class="col-md-4 p-0 my-2 m-0">
-                        <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  "
-                               min="1" max="5">
+                        <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test">User Audio Tracking while giving exam</div>
@@ -244,13 +236,12 @@
                     </div>
                     <div class="col-md-8 mt-2">userAudioWarningCount</div>
                     <div class="col-md-4 p-0 my-2 m-0">
-                        <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  "
-                               min="1" max="5">
+                        <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test"> Full Screen while giving exam</div>
@@ -265,30 +256,27 @@
                     </div>
                     <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
                     <div class="col-md-4 p-0 my-2 m-0">
-                        <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  "
-                               min="1" max="5">
+                        <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test">Examination URLs</div>
                     </div>
 
                     <div class="col-md-12 col-lg-12 col-12 my-3">
-                        <textarea cols="10" rows="1" class="form-control" style="resize: none;"
-                                  placeholder="displayResultURL"></textarea>
+                        <textarea cols="10" rows="1" class="form-control" style="resize: none;" placeholder="displayResultURL"></textarea>
                     </div>
                     <div class="col-md-12 col-lg-12 col-12 my-3">
-                        <textarea cols="10" rows="1" class="form-control" style="resize: none;"
-                                  placeholder="errorPageURL"></textarea>
+                        <textarea cols="10" rows="1" class="form-control" style="resize: none;" placeholder="errorPageURL"></textarea>
                     </div>
 
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test">User Video Tracking while giving exam</div>
@@ -303,19 +291,17 @@
                     </div>
                     <div class="col-md-8 mt-2"> userNotAloneWarningCo</div>
                     <div class="col-md-4 p-0 my-2 m-0">
-                        <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  "
-                               min="1" max="5">
+                        <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                     </div>
                     <div class="col-md-8 mt-2"> userNotVisibleWarning</div>
                     <div class="col-md-4 p-0 my-2 m-0">
-                        <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  "
-                               min="1" max="5">
+                        <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                     </div>
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test">Capture save user image while giving exam</div>
@@ -335,7 +321,7 @@
                     </div> -->
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test"> Keyboard usage while giving exam</div>
@@ -351,7 +337,7 @@
 
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test">Right click usage while giving exam</div>
@@ -367,7 +353,7 @@
 
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test">Time bound exam</div>
@@ -383,7 +369,7 @@
 
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test"> Exam termination</div>
@@ -397,13 +383,12 @@
 
                     </div>
                     <div class="col-md-12 col-lg-12 col-12 mb-2">
-                        <textarea cols="10" rows="1" class="form-control" style="resize: none;"
-                                  placeholder="examTerminationReason"></textarea>
+                        <textarea cols="10" rows="1" class="form-control" style="resize: none;" placeholder="examTerminationReason"></textarea>
                     </div>
 
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test">Exam pause</div>
@@ -417,13 +402,12 @@
 
                     </div>
                     <div class="col-md-12 col-lg-12 col-12 mb-2">
-                        <textarea cols="10" rows="1" class="form-control" style="resize: none;"
-                                  placeholder="examPausedReason"></textarea>
+                        <textarea cols="10" rows="1" class="form-control" style="resize: none;" placeholder="examPausedReason"></textarea>
                     </div>
 
                 </div>
             </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-5 p-0 m-0 border">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
                         <div class="test">System compatibility test</div>
@@ -437,8 +421,7 @@
 
                     </div>
                     <div class="col-md-12 col-lg-12 col-12 mb-2">
-                        <textarea cols="10" rows="1" class="form-control" style="resize: none;"
-                                  placeholder="systemIncompatibleReason"></textarea>
+                        <textarea cols="10" rows="1" class="form-control" style="resize: none;" placeholder="systemIncompatibleReason"></textarea>
                     </div>
                     <!-- <div class="col-md-8 mt-2"> systemIncompatibleReason</div>
                     <div class="col-md-4 p-0 my-2 m-0">
@@ -449,11 +432,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="circle ">
-                <div class="fa-long-arrow-left prev btn">Prev</div>
-            </div>
+
+
+
             <div class="col-md-12 col-lg-12 col-12 text-center">
-                <div class="btn text-white" style="background-color:#373c8e;">Submit</div>
+                <div class="last-prev prev btn mr-4">Prev</div>
+                <div class="btn last-prev">Submit</div>
             </div>
         </div>
     </div>
@@ -465,7 +449,7 @@
     var add_buttons = $(".data"); //Add button ID
     console.log(add_buttons);
     var xx = 2; //initlal text box count
-    $(add_buttons).click(function (e) { //on add input button click
+    $(add_buttons).click(function(e) { //on add input button click
         e.preventDefault();
         if (xx < max_fieldss) { //max input box allowed
             xx++; //text box increment
@@ -525,33 +509,124 @@
         }
     });
 
-    $(wrappers).on("click", ".remove_field", function (e) { //user click on remove text
+    $(wrappers).on("click", ".remove_field", function(e) { //user click on remove text
         e.preventDefault();
         $(this).parent().parent('div').remove();
-        x--;
+        xx--;
     });
 
-    {{--$('#createExam').on('click', function (e) {--}}
-    {{--    var title = $('#next1').val();--}}
-    {{--    console.log(title);--}}
-    {{--    $('.loader').show();--}}
-    {{--    $.ajax({--}}
-    {{--        type   : 'POST',--}}
-    {{--        url    : '{{ url("/examination/create") }}',--}}
-    {{--        headers: {--}}
-    {{--            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')--}}
-    {{--        },--}}
-    {{--        data   : {--}}
-    {{--            title: title,--}}
-    {{--        },--}}
-    {{--        success: function (result) {--}}
-    {{--            $('.loader').fadeOut();--}}
-    {{--            console.log(result);--}}
-    {{--        },--}}
-    {{--        error  : function () {--}}
-    {{--            $('.loader').fadeOut();--}}
-    {{--            $.fn.notifyMe('error', 4, 'There is some error while creating exam!');--}}
-    {{--        }--}}
-    {{--    });--}}
-    {{--})--}}
+    {
+        {
+            --$('#createExam').on('click', function(e) {
+                    --
+                }
+            } {
+                {
+                    --
+                    var title = $('#next1').val();
+                    --
+                }
+            } {
+                {
+                    --console.log(title);
+                    --
+                }
+            } {
+                {
+                    --$('.loader').show();
+                    --
+                }
+            } {
+                {
+                    --$.ajax({
+                            --
+                        }
+                    } {
+                        {
+                            --type: 'POST', --
+                        }
+                    } {
+                        {
+                            --url: '{{ url("/examination/create") }}', --
+                        }
+                    } {
+                        {
+                            --headers: {
+                                --
+                            }
+                        } {
+                            {
+                                --'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') --
+                            }
+                        } {
+                            {
+                                --
+                            }, --
+                        }
+                    } {
+                        {
+                            --data: {
+                                --
+                            }
+                        } {
+                            {
+                                --title: title, --
+                            }
+                        } {
+                            {
+                                --
+                            }, --
+                        }
+                    } {
+                        {
+                            --success: function(result) {
+                                --
+                            }
+                        } {
+                            {
+                                --$('.loader').fadeOut();
+                                --
+                            }
+                        } {
+                            {
+                                --console.log(result);
+                                --
+                            }
+                        } {
+                            {
+                                --
+                            }, --
+                        }
+                    } {
+                        {
+                            --error: function() {
+                                --
+                            }
+                        } {
+                            {
+                                --$('.loader').fadeOut();
+                                --
+                            }
+                        } {
+                            {
+                                --$.fn.notifyMe('error', 4, 'There is some error while creating exam!');
+                                --
+                            }
+                        } {
+                            {
+                                --
+                            }--
+                        }
+                    } {
+                        {
+                            --
+                        });
+                    --
+                }
+            } {
+                {
+                    --
+                }) --
+        }
+    }
 </script>
