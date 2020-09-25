@@ -205,12 +205,16 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/teacher/updateAttendance', 'StudentAttendanceController@update');
 
     Route::get('/teacher/generateReports', 'ReportController@assignmentSubmissionGrades');
-    // Examination 
+    Route::get('/getChapter','ImportCMSLinksController@getChapter');
+
+    // Examination
 
     Route::get('/teacher/examination', 'ExaminationController@index')->name('examination');
     Route::get('/teacher/examination/back', 'Examination\ExaminationController@createExamination')->name('examination');
 
-    Route::post('/examination/create','Examination\ExaminationController@store');
+    Route::post('/examination/create', 'Examination\ExaminationController@store');
+    Route::get('/getQuestions', 'Examination\QuestionController@index');
+    Route::post('/saveQuestion','Examination\QuestionController@store');
 });
 
 

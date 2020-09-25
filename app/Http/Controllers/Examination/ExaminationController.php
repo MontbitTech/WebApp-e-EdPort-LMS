@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Examination;
 
-use App\CmsLink;
 use App\HelpTicketCategory;
 use App\Http\Controllers\Controller;
 use App\Models\Examination\ClassroomExaminationMapping;
@@ -76,7 +75,6 @@ class ExaminationController extends Controller
         $subjects = StudentSubject::get();
         $classrooms = StudentClass::with('studentSubject')->get();
 
-//        dd($classrooms);
         return view('teacher.examination.index', compact('videos', 'helpCategories', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms'));
     }
 
