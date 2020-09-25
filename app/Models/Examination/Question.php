@@ -11,7 +11,7 @@ class Question extends Model
 
     public function subject ()
     {
-        return $this->hasOne(StudentSubject::class);
+        return $this->hasOne(StudentSubject::class,'id','subject_id');
     }
 
     public function examinationQuestionMappings ()
