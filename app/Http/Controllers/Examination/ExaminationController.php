@@ -73,8 +73,9 @@ class ExaminationController extends Controller
         $questionClasses = Question::groupBy('class')->pluck('class');
         $classes = StudentClass::groupBy('class_name')->pluck('class_name');
         $subjects = StudentSubject::get();
+        $classrooms = StudentClass::with('studentSubject')->get();
 
-        return view('teacher.examination.index', compact('videos', 'helpCategories', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects'));
+        return view('teacher.examination.index', compact('videos', 'helpCategories', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms'));
     }
 
 

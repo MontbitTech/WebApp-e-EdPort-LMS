@@ -1192,7 +1192,7 @@ $cls = 0;
                     <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Start Time:
                     </label>
                     <div class="col-md-6">
-                        {!! Form::text('start_time', $teacherData->from_timing, array('id'=>'from_timing','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                        {!! Form::text('start_time','', array('id'=>'from_timing','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
                     </div>
 
                 </div>
@@ -1201,14 +1201,14 @@ $cls = 0;
                     <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">End Time:
                     </label>
                     <div class="col-md-6">
-                        {!! Form::text('end_time', $teacherData->to_timing, array('id'=>'end_timing','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
+                        {!! Form::text('end_time', '', array('id'=>'end_timing','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live
                         <small>(Link)</small>:</label>
                     <div class="col-md-6">
-                        {!! Form::text('edit_join_liveUrl',$teacherData->g_meet_url, array('id'=>'edit_join_liveUrl','placeholder' => 'Enter Live class url','class' => 'form-control','readonly' )) !!}
+                        {!! Form::text('edit_join_liveUrl','', array('id'=>'edit_join_liveUrl','placeholder' => 'Enter Live class url','class' => 'form-control','readonly' )) !!}
 
                     </div>
                 </div>
