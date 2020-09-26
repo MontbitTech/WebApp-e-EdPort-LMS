@@ -14,7 +14,8 @@ class QuestionController extends Controller
         $questions = Question::with('subject');
 
         foreach ( $request->all() as $key => $value ) {
-            $questions = $questions->where($key, $value);
+            if ( $value != null )
+                $questions = $questions->where($key, $value);
         }
 
         return Response::json(['success' => true, 'response' => $questions->get()]);
@@ -37,9 +38,6 @@ class QuestionController extends Controller
         $question->subject_id = $request->subject_id;
         $question->chapter = $request->chapter;
 
-//        foreach ( $request->all() as $key => $value ) {
-//            $question->$key = $value;
-//        }
         $question->save();
 
         return Response::json(['success' => true, 'response' => $question]);
@@ -47,6 +45,13 @@ class QuestionController extends Controller
 
     public function destroy (Request $request, $id)
     {
-        Question::find($id)->delete();
+        $question = Question::find($id);
+
+        if ( !$question )
+            return Response::json(['success' => true, 'response' => 'Invalid Question']);
+
+        $question->delete();
+
+        return Response::json(['success' => true, 'response' => 'deleted successfully']);
     }
 }

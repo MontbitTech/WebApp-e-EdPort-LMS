@@ -99,4 +99,9 @@ class ExaminationController extends Controller
         $questions = ExaminationQuestionMapping::with('questions')->where('examination_id', $classroomExaminationMapping->examination_id)
             ->where('classroom_id', $classroomExaminationMapping->classroom_id)->get();
     }
+
+    public function setExamination (Request $request)
+    {
+        dd($request);
+    }
 }
