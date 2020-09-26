@@ -124,7 +124,7 @@ $(document).ready(function () {
         $(previous_fs).addClass("show");
 
         $("#progressbar li").eq($(".bg-data").index(next_fs)).removeClass("active");
-
+        $("#progressbar li").eq($(".bg-data").index(current_fs)).removeClass("active");
         current_fs.animate({}, {
             step: function () {
 

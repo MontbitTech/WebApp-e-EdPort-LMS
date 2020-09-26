@@ -447,7 +447,6 @@
     var max_fieldss = 100000; //maximum input boxes allowed
     var wrappers = $(".createdata"); //Fields wrapper
     var add_buttons = $(".data"); //Add button ID
-    console.log(add_buttons);
     var xx = 2; //initlal text box count
     $(add_buttons).click(function(e) { //on add input button click
         e.preventDefault();
