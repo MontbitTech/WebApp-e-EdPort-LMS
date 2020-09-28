@@ -122,7 +122,7 @@
                     <div class="fa-long-arrow-left prev btn">Prev</div>
                 </div>
                 <div class="circle">
-                    <div class="fa-long-arrow-right next btn" id="next3" onclick="validate3(0)">Next</div>
+                    <div class="fa-long-arrow-right next btn" id="next3">Next</div>
                 </div>
             </div>
         </div>
@@ -148,11 +148,12 @@
                                 @endforeach
                             </select>
                         </div>
+                        
                         <div class="col-md-6  my-2 ">
                             <label for="times">Time</label>
                             <div class="form-control ">
-                                <input type="number" class="style-houser" name="hh" min="0" max="23" placeholder="23">:
-                                <input type="number" class="style-houser" name="ss" min="0" max="59" placeholder="00">
+                                <input type="number" class="style-houser" id="hh" name="hh" min="0" max="23" placeholder="23">:
+                                <input type="number" class="style-houser" id="ss"s name="ss" min="0" max="59" placeholder="00">
                             </div>
                         </div>
                         <!-- <div class="col-md-5 d-inline-block mt-2 ml-4">
