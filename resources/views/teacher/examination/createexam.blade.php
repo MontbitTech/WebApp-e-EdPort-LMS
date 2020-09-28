@@ -12,10 +12,11 @@
     <ul id="progressbar" class="text-center">
         <li class="active step0" id="step1">Exam name</li>
         <li class="step0" id="step2">Create Exam</li>
-        <li class="step0" id="step3">Assign Examination</li>
-        <li class="step0" id="step4">t/c</li>
+        <li class="step0" id="step3">Exam</li>
+        <li class="step0" id="step4">Assign Examination</li>
+        <li class="step0" id="step5">t/c </li>
     </ul>
-    <hr>
+    <!-- <hr> -->
     {{-- <form action="" method="post">--}}
     <div class="card bg-data card-hiden-new b-0 show">
         <div class="row justify-content-center">
@@ -71,9 +72,9 @@
                 </div>
                 <div class="col-md-6 border-left">
                     <div class="form-group" id="questionPaper">
-                        <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamName"> Exam
-                            Name</h3>
+                        <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamName"> Exam Name</h3>
                     </div>
+
                 </div>
             </div>
         </form>
@@ -87,12 +88,30 @@
             </div>
         </div>
     </div>
+    <div class="card bg-data card-hiden-new b-0">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-11">
 
+                <div class="form-group row">
+                    <div class="form-group" id="questionPapershow">
+                        <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamNameshow"> Exam
+                            Name</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="circle ">
+                <div class="fa-long-arrow-left prev btn">Prev</div>
+            </div>
+            <div class="circle">
+                <div class="fa-long-arrow-right next btn" id="next3" onclick="validate3(0)">Next</div>
+            </div>
+        </div>
+    </div>
     <div class="card bg-data  card-hiden b-0">
         <div class="row d-flex justify-content-center text-center">
-
             <div class="col-md-8">
-
                 <!-- <h2 class="mb-4">Assign Examination</h2> -->
                 <!-- <div class="col-md-12 mt-1 ">
                     <div class="form-group">
@@ -101,8 +120,6 @@
                     </div>
                 </div> -->
                 <div class="row">
-
-
                     <div class="col-md-6 my-2 ">
                         <label class="d-block mb-2">Class</label>
                         <select class="form-control select1 " data-placeholder="Class" name="classroom" id="select1" style="width: 100%;">
@@ -140,7 +157,7 @@
                 <div class="fa-long-arrow-left prev btn">Prev</div>
             </div>
             <div class="circle">
-                <div class="fa-long-arrow-right next btn" id="next3" onclick="validate3(0)">Next</div>
+                <div class="fa-long-arrow-right next btn" id="next4" onclick="validate4(0)">Next</div>
             </div>
         </div>
         <!-- <div class="row d-flex justify-content-center">
@@ -414,8 +431,6 @@
             </div>
         </div>
         <div class="row">
-
-
             <div class="col-md-12 col-lg-12 col-12 text-center">
                 <div class="last-prev prev btn mr-4">Prev</div>
                 <div class="btn last-prev">Submit</div>
@@ -493,6 +508,7 @@
     $('#examname').on('focusout', function() {
         console.log($(this).val());
         $('#displayExamName').html($(this).val());
+        $('#displayExamNameshow').html($(this).val());
     });
 
     $(wrappers).on("click", ".remove_field", function(e) { //user click on remove text
@@ -615,8 +631,14 @@
             // data += '<input type="hidden" value="' + questionId + '">';
             let data = '<p class="bg-light mb-2 font-weight-bold" id="addedQuestion' + questionId + '">' + question + '</p>';
             //data += '</div> </div>';
-
+            let show = '<div class="row mb-2"><div class="col-md-10">';
+            show += ' <p class="bg-light  font-weight-bold" id="addedQuestion' + questionId + '">' + question + '</p>';
+            show += '</div>';
+            show += '<div class="col-md-2">';
+            show += '<input type="number" name="marks" class="form-control" id="questionmarks' + questionId + '" >';
+            show += '</div></div>';
             $('#questionPaper').append(data);
+            $('#questionPapershow').append(show);
 
         } else {
             if (questionId == null) {
@@ -694,4 +716,17 @@
             }
         });
     }
+</script>
+<script>
+    $(document).ready(function() {
+        $('#st').change(function() {
+            var st = $('#timestart').val(); // start time Format: '9:00 PM'
+            var et = $('#timeend').val(); // end time   Format: '11:00 AM' 
+
+            //how do i compare time
+            if (st > et) {
+                alert('end time always greater then start time');
+            }
+        });
+    });
 </script>

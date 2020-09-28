@@ -14,7 +14,7 @@
 $s = \App\Http\Helpers\CustomHelper::getSchool();
 @endphp
 <nav class="navbar fixed-top navbar-expand-xl bg-light">
-  <div class="menu-bars {{ (request()->routeIs('examination')) ? 'text-white' : '' }}">
+  <div class="menu-bars ">
     <svg class="icon icon-bars ">
       <use xlink:href="{{asset('images/icons.svg#icon_bars')}}"></use>
     </svg>
