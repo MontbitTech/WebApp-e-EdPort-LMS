@@ -204,7 +204,8 @@
                         </div>
                         <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
                         <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5"
+                            <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts"
+                                   placeholder="1-5"
                                    class="form-control m-auto w-75  " min="1" max="5">
 
                         </div>
@@ -226,7 +227,8 @@
                         </div>
                         <div class="col-md-8 mt-2"> multitaskingAttempts</div>
                         <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[multitaskingAttempts]" id="multitaskingAttempts" placeholder="1-5"
+                            <input type="number" name="properties[multitaskingAttempts]" id="multitaskingAttempts"
+                                   placeholder="1-5"
                                    class="form-control m-auto w-75  " min="1" max="5">
 
                         </div>
@@ -248,34 +250,35 @@
                         </div>
                         <div class="col-md-8 mt-2">userAudioWarningCount</div>
                         <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[userAudioWarningCount]" id="userAudioWarningCount" placeholder="1-5"
+                            <input type="number" name="properties[userAudioWarningCount]" id="userAudioWarningCount"
+                                   placeholder="1-5"
                                    class="form-control m-auto w-75  " min="1" max="5">
 
                         </div>
                     </div>
                 </div>
-{{--                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
-{{--                    <div class="row m-0 p-0">--}}
-{{--                        <div class="col-md-12 p-0 m-0">--}}
-{{--                            <div class="test"> Full Screen while giving exam</div>--}}
-{{--                        </div>--}}
-{{--                        <div class="col-md-8 mt-2">keepFullScreen</div>--}}
-{{--                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">--}}
-{{--                            <label class="switch  ">--}}
-{{--                                <input type="hidden" name="properties[keepFullScreen]" value="0">--}}
-{{--                                <input type="checkbox" name="properties[keepFullScreen]" checked>--}}
-{{--                                <span class="slider round"></span>--}}
-{{--                            </label>--}}
+                {{--                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
+                {{--                    <div class="row m-0 p-0">--}}
+                {{--                        <div class="col-md-12 p-0 m-0">--}}
+                {{--                            <div class="test"> Full Screen while giving exam</div>--}}
+                {{--                        </div>--}}
+                {{--                        <div class="col-md-8 mt-2">keepFullScreen</div>--}}
+                {{--                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">--}}
+                {{--                            <label class="switch  ">--}}
+                {{--                                <input type="hidden" name="properties[keepFullScreen]" value="0">--}}
+                {{--                                <input type="checkbox" name="properties[keepFullScreen]" checked>--}}
+                {{--                                <span class="slider round"></span>--}}
+                {{--                            </label>--}}
 
-{{--                        </div>--}}
-{{--                        <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>--}}
-{{--                        <div class="col-md-4 p-0 my-2 m-0">--}}
-{{--                            <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5"--}}
-{{--                                   class="form-control m-auto w-75  " min="1" max="5">--}}
+                {{--                        </div>--}}
+                {{--                        <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>--}}
+                {{--                        <div class="col-md-4 p-0 my-2 m-0">--}}
+                {{--                            <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5"--}}
+                {{--                                   class="form-control m-auto w-75  " min="1" max="5">--}}
 
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                {{--                        </div>--}}
+                {{--                    </div>--}}
+                {{--                </div>--}}
                 {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
                 {{-- <div class="row m-0 p-0">--}}
                 {{-- <div class="col-md-12 p-0 m-0">--}}
@@ -309,13 +312,15 @@
                         </div>
                         <div class="col-md-8 mt-2"> userNotAloneWarningCount</div>
                         <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[userNotAloneWarningCo]" id="userNotAloneWarningCo" placeholder="1-5"
+                            <input type="number" name="properties[userNotAloneWarningCo]" id="userNotAloneWarningCo"
+                                   placeholder="1-5"
                                    class="form-control m-auto w-75  " min="1" max="5">
 
                         </div>
                         <div class="col-md-8 mt-2"> userNotVisibleWarning</div>
                         <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[userNotVisibleWarning]" id="userNotVisibleWarning" placeholder="1-5"
+                            <input type="number" name="properties[userNotVisibleWarning]" id="userNotVisibleWarning"
+                                   placeholder="1-5"
                                    class="form-control m-auto w-75  " min="1" max="5">
 
                         </div>
@@ -449,7 +454,8 @@
 
                         </div>
                         <div class="col-md-12 col-lg-12 col-12 mb-2">
-                            <textarea cols="10" rows="1" name="properties[systemIncompatibleReason]" class="form-control"
+                            <textarea cols="10" rows="1" name="properties[systemIncompatibleReason]"
+                                      class="form-control"
                                       style="resize: none;" placeholder="systemIncompatibleReason"></textarea>
                         </div>
                         <!-- <div class="col-md-8 mt-2"> systemIncompatibleReason</div>
@@ -664,7 +670,7 @@
             show += ' <p class="bg-light  font-weight-bold" id="addedQuestion' + questionId + '">' + question + '</p>';
             show += '</div>';
             show += '<div class="col-md-2">';
-            show += '<input type="number" name="marks" class="form-control" id="questionmarks' + questionId + '" >';
+            show += '<input type="number" name="marks[' + questionId + ']" class="form-control" id="questionmarks' + questionId + '" >';
             show += '</div></div>';
             $('#questionPaper').append(data);
             $('#questionPapershow').append(show);
