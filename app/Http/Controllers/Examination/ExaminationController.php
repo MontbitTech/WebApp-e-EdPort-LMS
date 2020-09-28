@@ -102,6 +102,25 @@ class ExaminationController extends Controller
 
     public function setExamination (Request $request)
     {
-        dd($request);
+        dd($request->all());
+        $examination = new Examination();
+        $examination->title = $request->title;
+        $examination->save();
+
+        $classroomExaminationMapping = new ClassroomExaminationMapping();
+        $classroomExaminationMapping->examination_id = $examination->id;
+        $classroomExaminationMapping->classroom_id = $request->classroom_id;
+        $classroomExaminationMapping->duration = $request->duration;
+        $classroomExaminationMapping->start_time = $request->start_time;
+        $classroomExaminationMapping->end_time = $request->end_time;
+        $classroomExaminationMapping->examination_properties = json_encode($request->properties);
+        $classroomExaminationMapping->save();
+
+        $examinationQuestionMapping = new ExaminationQuestionMapping();
+        $examinationQuestionMapping->examination_id = $examination->id;
+        $examinationQuestionMapping->classroom_id = $request->classroom_id;
+        $examinationQuestionMapping->question_id = $request->question_id;
+        $examinationQuestionMapping->marks = $request->marks;
+        $examinationQuestionMapping->save();
     }
 }

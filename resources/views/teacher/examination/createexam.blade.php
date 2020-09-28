@@ -23,34 +23,36 @@
     }
 </style>
 <link rel="stylesheet" href="{{asset('css/multipleexam.css')}}">
-<div class="col-md-12 col-lg-12 col-12 px-0 mb-5 border-line">
-    <ul id="progressbar" class="text-center">
-        <li class="active step0" id="step1">Exam name</li>
-        <li class="step0" id="step2">Create Exam</li>
-        <li class="step0" id="step3">Exam</li>
-        <li class="step0" id="step4">Assign Examination</li>
-        <li class="step0" id="step5">t/c </li>
-    </ul>
-    <!-- <hr> -->
-    {{-- <form action="" method="post">--}}
-    <div class="card bg-data card-hiden-new b-0 show">
-        <div class="row justify-content-center">
-            <div class="col-lg-10 col-md-11">
+<form method="post" action="{{url('/teacher/setExamination')}}">
+    @csrf
+    <div class="col-md-12 col-lg-12 col-12 px-0 mb-5 border-line">
+        <ul id="progressbar" class="text-center">
+            <li class="active step0" id="step1">Exam name</li>
+            <li class="step0" id="step2">Create Exam</li>
+            <li class="step0" id="step3">Exam</li>
+            <li class="step0" id="step4">Assign Examination</li>
+            <li class="step0" id="step5">t/c</li>
+        </ul>
+        <!-- <hr> -->
+        {{-- <form action="" method="post">--}}
+        <div class="card bg-data card-hiden-new b-0 show">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-md-11">
 
-                <div class="form-group">
-                    <label class="form-control-label">Examination Name</label>
-                    <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)"></div>
+                    <div class="form-group">
+                        <label class="form-control-label">Examination Name</label>
+                        <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..."
+                               class="color-btn" onblur="validate1(0)"></div>
+                </div>
+            </div>
+
+            <div class="row d-flex justify-content-center">
+                <div class="circle">
+                    <div class="fa-long-arrow-right next btn" id="next1" onclick="validate1(0)">Next</div>
+                </div>
             </div>
         </div>
-
-        <div class="row d-flex justify-content-center">
-            <div class="circle">
-                <div class="fa-long-arrow-right next btn" id="next1" onclick="validate1(0)">Next</div>
-            </div>
-        </div>
-    </div>
-    <div class="card bg-data card-hiden b-0">
-        <form>
+        <div class="card bg-data card-hiden b-0">
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="row mb-3 px-3">
@@ -58,7 +60,7 @@
                             <select class="form-control" id="class" onchange="getChapter()">
                                 <option value="" selected>Select Class</option>
                                 @foreach($classes as $class)
-                                <option value="{{$class}}">{{$class}}</option>
+                                    <option value="{{$class}}">{{$class}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -66,7 +68,7 @@
                             <select class="form-control" id="subject" onchange="getChapter()">
                                 <option value="" selected>Select Subject</option>
                                 @foreach($subjects as $subject)
-                                <option value="{{$subject->id}}">{{$subject->subject_name}}</option>
+                                    <option value="{{$subject->id}}">{{$subject->subject_name}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -76,7 +78,8 @@
                             </select>
                         </div>
                         <div class="circle">
-                            <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right" title="Add Question">
+                            <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right"
+                                    title="Add Question">
                             </button>
                         </div>
                     </div>
@@ -92,378 +95,387 @@
 
                 </div>
             </div>
-        </form>
-        <div class="row d-flex justify-content-center m-auto">
-            <div class="circle">
-                <div class="fa-long-arrow-left prev btn">Prev</div>
-            </div>
-            <div class="circle">
-                <div class=" fa-long-arrow-right next btn" id="next2">Next
+            <div class="row d-flex justify-content-center m-auto">
+                <div class="circle">
+                    <div class="fa-long-arrow-left prev btn">Prev</div>
+                </div>
+                <div class="circle">
+                    <div class=" fa-long-arrow-right next btn" id="next2">Next
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card bg-data card-hiden-new b-0">
-        <div class="row justify-content-center">
-            <div class="col-lg-10 col-md-11">
+        <div class="card bg-data card-hiden-new b-0">
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-md-11">
 
-                <div class="form-group">
-                    <div class="form-group" id="questionPapershow">
-                        <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamNameshow"> Exam
-                            Name</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row d-flex justify-content-center">
-            <div class="circle ">
-                <div class="fa-long-arrow-left prev btn">Prev</div>
-            </div>
-            <div class="circle">
-                <div class="fa-long-arrow-right next btn" id="next3" onclick="validate3(0)">Next</div>
-            </div>
-        </div>
-    </div>
-    <div class="card bg-data  card-hiden b-0">
-        <div class="row d-flex justify-content-center text-center">
-            <div class="col-md-8">
-                <!-- <h2 class="mb-4">Assign Examination</h2> -->
-                <!-- <div class="col-md-12 mt-1 ">
                     <div class="form-group">
-                        <label for="times">Date </label>
-                        <input type="datetime-local" id="birthdaytime" class="form-control input-xs" name="start_time">
-                    </div>
-                </div> -->
-                <div class="row">
-                    <div class="col-md-6 my-2 ">
-                        <label class="d-block mb-2">Class</label>
-                        <select class="form-control select1 " data-placeholder="Class" name="classroom" id="select1" style="width: 100%;">
-                            <option value="">Select Classroom</option>
-                            @foreach($classrooms as $classroom)
-                            <option value="{{$classroom->id}}">{{$classroom->class_name}} {{$classroom->section_name}}
-                                , {{$classroom->studentSubject->subject_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-md-6  my-2 ">
-                        <label for="times">Time</label>
-                        <div class="form-control ">
-                            <input type="number" class="style-houser" name="hh" min="0" max="23" placeholder="23">:
-                            <input type="number" class="style-houser" name="ss" min="0" max="59" placeholder="00">
+                        <div class="form-group" id="questionPapershow">
+                            <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamNameshow"> Exam
+                                Name</h3>
                         </div>
                     </div>
-                    <!-- <div class="col-md-5 d-inline-block mt-2 ml-4">
-                    <label for="times">Total Point</label>
-                    <input type="number" id="point" class="form-control input-xs" name="birthdaytime">
-                         </div> -->
-                    <div class="col-md-6 my-2 ">
-                        <label for="times">Start Time</label>
-                        <input type="datetime-local" id="timestart" class="form-control input-xs" name="start_time">
-                    </div>
-                    <div class="col-md-6 my-2 ">
-                        <label for="times">End Time</label>
-                        <input type="datetime-local" id="timeend" class="form-control input-xs" name="end_time">
-                    </div>
-                    <!--
-                    <a href="javascript:void(0)" class="btn btn-sm btn-info col-md-12" style="background-color: #373c8e;">Assign</a> -->
-
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <div class="circle ">
+                    <div class="fa-long-arrow-left prev btn">Prev</div>
+                </div>
+                <div class="circle">
+                    <div class="fa-long-arrow-right next btn" id="next3" onclick="validate3(0)">Next</div>
                 </div>
             </div>
         </div>
-        <div class="row d-flex justify-content-center m-auto">
-            <div class="circle ">
-                <div class="fa-long-arrow-left prev btn">Prev</div>
+        <div class="card bg-data  card-hiden b-0">
+            <div class="row d-flex justify-content-center text-center">
+                <div class="col-md-8">
+                    <!-- <h2 class="mb-4">Assign Examination</h2> -->
+                    <!-- <div class="col-md-12 mt-1 ">
+                        <div class="form-group">
+                            <label for="times">Date </label>
+                            <input type="datetime-local" id="birthdaytime" class="form-control input-xs" name="start_time">
+                        </div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col-md-6 my-2 ">
+                            <label class="d-block mb-2">Class</label>
+                            <select class="form-control select1 " data-placeholder="Class" name="classroom" id="select1"
+                                    style="width: 100%;">
+                                <option value="">Select Classroom</option>
+                                @foreach($classrooms as $classroom)
+                                    <option value="{{$classroom->id}}">{{$classroom->class_name}} {{$classroom->section_name}}
+                                        , {{$classroom->studentSubject->subject_name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-6  my-2 ">
+                            <label for="times">Time</label>
+                            <div class="form-control ">
+                                <input type="number" class="style-houser" name="hh" min="0" max="23" placeholder="23">:
+                                <input type="number" class="style-houser" name="ss" min="0" max="59" placeholder="00">
+                            </div>
+                        </div>
+                        <!-- <div class="col-md-5 d-inline-block mt-2 ml-4">
+                        <label for="times">Total Point</label>
+                        <input type="number" id="point" class="form-control input-xs" name="birthdaytime">
+                             </div> -->
+                        <div class="col-md-6 my-2 ">
+                            <label for="times">Start Time</label>
+                            <input type="datetime-local" id="timestart" class="form-control input-xs" name="start_time">
+                        </div>
+                        <div class="col-md-6 my-2 ">
+                            <label for="times">End Time</label>
+                            <input type="datetime-local" id="timeend" class="form-control input-xs" name="end_time">
+                        </div>
+                        <!--
+                        <a href="javascript:void(0)" class="btn btn-sm btn-info col-md-12" style="background-color: #373c8e;">Assign</a> -->
+
+                    </div>
+                </div>
             </div>
-            <div class="circle">
-                <div class="fa-long-arrow-right next btn" id="next4" onclick="validate4(0)">Next</div>
+            <div class="row d-flex justify-content-center m-auto">
+                <div class="circle ">
+                    <div class="fa-long-arrow-left prev btn">Prev</div>
+                </div>
+                <div class="circle">
+                    <div class="fa-long-arrow-right next btn" id="next4" onclick="validate4(0)">Next</div>
+                </div>
             </div>
+            <!-- <div class="row d-flex justify-content-center">
+                                   <div class="check"> <img src="https://i.imgur.com/g6KlBWR.gif" class="check-mark">
+                                   </div>
+                               </div> -->
         </div>
-        <!-- <div class="row d-flex justify-content-center">
-                               <div class="check"> <img src="https://i.imgur.com/g6KlBWR.gif" class="check-mark">
-                               </div>
-                           </div> -->
-    </div>
-    <div class="card bg-data card-hiden-new b-0 ">
-        <div class="row d-flex justify-content-around m-0 p-0">
-            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
-                        <div class="test"> Full Screen while giving exam</div>
-                    </div>
-                    <div class="col-md-8 mt-2">keepFullScreen</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                        <label class="switch  ">
-                            <input type="hidden" name="keepFullScreen" value="0">
-                            <input type="checkbox" name="keepFullScreen" checked>
-                            <span class="slider round"></span>
-                        </label>
+        <div class="card bg-data card-hiden-new b-0 ">
+            <div class="row d-flex justify-content-around m-0 p-0">
+                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                    <div class="row m-0 p-0">
+                        <div class="col-md-12 p-0 m-0">
+                            <div class="test"> Full Screen while giving exam</div>
+                        </div>
+                        <div class="col-md-8 mt-2">keepFullScreen</div>
+                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                            <label class="switch  ">
+                                <input type="hidden" name="properties[keepFullScreen]" value="0">
+                                <input type="checkbox" name="properties[keepFullScreen]" checked>
+                                <span class="slider round"></span>
+                            </label>
 
-                    </div>
-                    <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
-                        <input type="number" name="fullScreenExitAttempts" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
-                        <div class="test"> Multitasking while giving exam</div>
-                    </div>
-                    <div class="col-md-8 mt-2">blockMultitasking</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                        <label class="switch  ">
-                            <input type="hidden" name="blockMultitasking" value="0">
-                            <input type="checkbox" name="blockMultitasking" checked>
-                            <span class="slider round"></span>
-                        </label>
-
-                    </div>
-                    <div class="col-md-8 mt-2"> multitaskingAttempts</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
-                        <input type="number" name="multitaskingAttempts" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
-                        <div class="test">User Audio Tracking while giving exam</div>
-                    </div>
-                    <div class="col-md-8 mt-2">userAudioTracking</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                        <label class="switch  ">
-                            <input type="hidden" name="userAudioTracking" value="0">
-                            <input type="checkbox" name="userAudioTracking" checked>
-                            <span class="slider round"></span>
-                        </label>
-
-                    </div>
-                    <div class="col-md-8 mt-2">userAudioWarningCount</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
-                        <input type="number" name="userAudioWarningCount" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
-                        <div class="test"> Full Screen while giving exam</div>
-                    </div>
-                    <div class="col-md-8 mt-2">keepFullScreen</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                        <label class="switch  ">
-                            <input type="hidden" name="keepFullScreen" value="0">
-                            <input type="checkbox" name="keepFullScreen" checked>
-                            <span class="slider round"></span>
-                        </label>
-
-                    </div>
-                    <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
-                        <input type="number" name="fullScreenExitAttempts" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
-                    </div>
-                </div>
-            </div>
-            {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
-            {{-- <div class="row m-0 p-0">--}}
-            {{-- <div class="col-md-12 p-0 m-0">--}}
-            {{-- <div class="test">Examination URLs</div>--}}
-            {{-- </div>--}}
-
-            {{-- <div class="col-md-12 col-lg-12 col-12 my-3">--}}
-            {{-- <textarea cols="10" rows="1" class="form-control" style="resize: none;"--}}
-            {{-- placeholder="displayResultURL"></textarea>--}}
-            {{-- </div>--}}
-            {{-- <div class="col-md-12 col-lg-12 col-12 my-3">--}}
-            {{-- <textarea cols="10" rows="1" class="form-control" style="resize: none;"--}}
-            {{-- placeholder="errorPageURL"></textarea>--}}
-            {{-- </div>--}}
-
-            {{-- </div>--}}
-            {{-- </div>--}}
-            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
-                        <div class="test">User Video Tracking while giving exam</div>
-                    </div>
-                    <div class="col-md-8 mt-2">userVideoTracking</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                        <label class="switch  ">
-                            <input type="hidden" name="userVideoTracking" value="0">
-                            <input type="checkbox" name="userVideoTracking" checked>
-                            <span class="slider round"></span>
-                        </label>
-
-                    </div>
-                    <div class="col-md-8 mt-2"> userNotAloneWarningCount</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
-                        <input type="number" name="userNotAloneWarningCo" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
-                    </div>
-                    <div class="col-md-8 mt-2"> userNotVisibleWarning</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
-                        <input type="number" name="userNotVisibleWarning" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
-                        <div class="test">Capture save user image while giving exam</div>
-                    </div>
-                    <div class="col-md-8 my-3">userImageCapture</div>
-                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
-                        <label class="switch  ">
-                            <input type="hidden" name="userImageCapture" value="0">
-                            <input type="checkbox" name="userImageCapture" checked>
-                            <span class="slider round"></span>
-                        </label>
-
-                    </div>
-                    <!-- <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
+                        </div>
+                        <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
                         <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
+                            <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5"
+                                   class="form-control m-auto w-75  " min="1" max="5">
 
-                        </div> -->
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
-                        <div class="test"> Keyboard usage while giving exam</div>
-                    </div>
-                    <div class="col-md-8 my-3">blockKeyboard</div>
-                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
-                        <label class="switch  ">
-                            <input type="hidden" name="blockKeyboard" value="0">
-                            <input type="checkbox" name="blockKeyboard" checked>
-                            <span class="slider round"></span>
-                        </label>
+                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                    <div class="row m-0 p-0">
+                        <div class="col-md-12 p-0 m-0">
+                            <div class="test"> Multitasking while giving exam</div>
+                        </div>
+                        <div class="col-md-8 mt-2">blockMultitasking</div>
+                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                            <label class="switch  ">
+                                <input type="hidden" name="properties[blockMultitasking]" value="0">
+                                <input type="checkbox" name="properties[blockMultitasking]" checked>
+                                <span class="slider round"></span>
+                            </label>
 
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
-                        <div class="test">Right click usage while giving exam</div>
-                    </div>
-                    <div class="col-md-8 my-3">blockRightClick</div>
-                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
-                        <label class="switch  ">
-                            <input type="hidden" name="blockRightClick" value="0">
-                            <input type="checkbox" name="blockRightClick" checked>
-                            <span class="slider round"></span>
-                        </label>
-
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
-                        <div class="test">Time bound exam</div>
-                    </div>
-                    <div class="col-md-8 my-3">timeBound</div>
-                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
-                        <label class="switch  ">
-                            <input type="hidden" name="timeBound" value="0">
-                            <input type="checkbox" name="timeBound" checked>
-                            <span class="slider round"></span>
-                        </label>
-
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
-                        <div class="test"> Exam termination</div>
-                    </div>
-                    <div class="col-md-8 mt-2">examTerminated</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                        <label class="switch  ">
-                            <input type="hidden" name="examTerminated" value="0">
-                            <input type="checkbox" name="examTerminated">
-                            <span class="slider round"></span>
-                        </label>
-                    </div>
-                    <div class="col-md-12 col-lg-12 col-12 mb-2">
-                        <textarea cols="10" rows="1" name="examTerminationReason" class="form-control" style="resize: none;" placeholder="examTerminationReason"></textarea>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
-                        <div class="test">Exam pause</div>
-                    </div>
-                    <div class="col-md-8 mt-2">examPaused</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                        <label class="switch  ">
-                            <input type="hidden" name="examPaused" value="0">
-                            <input type="checkbox" name="examPaused">
-                            <span class="slider round"></span>
-                        </label>
-
-                    </div>
-                    <div class="col-md-12 col-lg-12 col-12 mb-2">
-                        <textarea cols="10" rows="1" name="examPausedReason" class="form-control" style="resize: none;" placeholder="examPausedReason"></textarea>
-                    </div>
-
-                </div>
-            </div>
-            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
-                        <div class="test">System compatibility test</div>
-                    </div>
-                    <div class="col-md-8 mt-2">systemIncompatible</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                        <label class="switch  ">
-                            <input type="hidden" name="systemIncompatible" value="0">
-                            <input type="checkbox" name="systemIncompatible">
-                            <span class="slider round"></span>
-                        </label>
-
-                    </div>
-                    <div class="col-md-12 col-lg-12 col-12 mb-2">
-                        <textarea cols="10" rows="1" name="systemIncompatibleReason" class="form-control" style="resize: none;" placeholder="systemIncompatibleReason"></textarea>
-                    </div>
-                    <!-- <div class="col-md-8 mt-2"> systemIncompatibleReason</div>
+                        </div>
+                        <div class="col-md-8 mt-2"> multitaskingAttempts</div>
                         <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
+                            <input type="number" name="properties[multitaskingAttempts]" id="multitaskingAttempts" placeholder="1-5"
+                                   class="form-control m-auto w-75  " min="1" max="5">
 
-                        </div> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                    <div class="row m-0 p-0">
+                        <div class="col-md-12 p-0 m-0">
+                            <div class="test">User Audio Tracking while giving exam</div>
+                        </div>
+                        <div class="col-md-8 mt-2">userAudioTracking</div>
+                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                            <label class="switch  ">
+                                <input type="hidden" name="properties[userAudioTracking]" value="0">
+                                <input type="checkbox" name="properties[userAudioTracking]" checked>
+                                <span class="slider round"></span>
+                            </label>
+
+                        </div>
+                        <div class="col-md-8 mt-2">userAudioWarningCount</div>
+                        <div class="col-md-4 p-0 my-2 m-0">
+                            <input type="number" name="properties[userAudioWarningCount]" id="userAudioWarningCount" placeholder="1-5"
+                                   class="form-control m-auto w-75  " min="1" max="5">
+
+                        </div>
+                    </div>
+                </div>
+{{--                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
+{{--                    <div class="row m-0 p-0">--}}
+{{--                        <div class="col-md-12 p-0 m-0">--}}
+{{--                            <div class="test"> Full Screen while giving exam</div>--}}
+{{--                        </div>--}}
+{{--                        <div class="col-md-8 mt-2">keepFullScreen</div>--}}
+{{--                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">--}}
+{{--                            <label class="switch  ">--}}
+{{--                                <input type="hidden" name="properties[keepFullScreen]" value="0">--}}
+{{--                                <input type="checkbox" name="properties[keepFullScreen]" checked>--}}
+{{--                                <span class="slider round"></span>--}}
+{{--                            </label>--}}
+
+{{--                        </div>--}}
+{{--                        <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>--}}
+{{--                        <div class="col-md-4 p-0 my-2 m-0">--}}
+{{--                            <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5"--}}
+{{--                                   class="form-control m-auto w-75  " min="1" max="5">--}}
+
+{{--                        </div>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+                {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
+                {{-- <div class="row m-0 p-0">--}}
+                {{-- <div class="col-md-12 p-0 m-0">--}}
+                {{-- <div class="test">Examination URLs</div>--}}
+                {{-- </div>--}}
+
+                {{-- <div class="col-md-12 col-lg-12 col-12 my-3">--}}
+                {{-- <textarea cols="10" rows="1" class="form-control" style="resize: none;"--}}
+                {{-- placeholder="displayResultURL"></textarea>--}}
+                {{-- </div>--}}
+                {{-- <div class="col-md-12 col-lg-12 col-12 my-3">--}}
+                {{-- <textarea cols="10" rows="1" class="form-control" style="resize: none;"--}}
+                {{-- placeholder="errorPageURL"></textarea>--}}
+                {{-- </div>--}}
+
+                {{-- </div>--}}
+                {{-- </div>--}}
+                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                    <div class="row m-0 p-0">
+                        <div class="col-md-12 p-0 m-0">
+                            <div class="test">User Video Tracking while giving exam</div>
+                        </div>
+                        <div class="col-md-8 mt-2">userVideoTracking</div>
+                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                            <label class="switch  ">
+                                <input type="hidden" name="properties[userVideoTracking]" value="0">
+                                <input type="checkbox" name="properties[userVideoTracking]" checked>
+                                <span class="slider round"></span>
+                            </label>
+
+                        </div>
+                        <div class="col-md-8 mt-2"> userNotAloneWarningCount</div>
+                        <div class="col-md-4 p-0 my-2 m-0">
+                            <input type="number" name="properties[userNotAloneWarningCo]" id="userNotAloneWarningCo" placeholder="1-5"
+                                   class="form-control m-auto w-75  " min="1" max="5">
+
+                        </div>
+                        <div class="col-md-8 mt-2"> userNotVisibleWarning</div>
+                        <div class="col-md-4 p-0 my-2 m-0">
+                            <input type="number" name="properties[userNotVisibleWarning]" id="userNotVisibleWarning" placeholder="1-5"
+                                   class="form-control m-auto w-75  " min="1" max="5">
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                    <div class="row m-0 p-0">
+                        <div class="col-md-12 p-0 m-0">
+                            <div class="test">Capture save user image while giving exam</div>
+                        </div>
+                        <div class="col-md-8 my-3">userImageCapture</div>
+                        <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                            <label class="switch  ">
+                                <input type="hidden" name="properties[userImageCapture]" value="0">
+                                <input type="checkbox" name="properties[userImageCapture]" checked>
+                                <span class="slider round"></span>
+                            </label>
+
+                        </div>
+                        <!-- <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
+                            <div class="col-md-4 p-0 my-2 m-0">
+                                <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
+
+                            </div> -->
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                    <div class="row m-0 p-0">
+                        <div class="col-md-12 p-0 m-0">
+                            <div class="test"> Keyboard usage while giving exam</div>
+                        </div>
+                        <div class="col-md-8 my-3">blockKeyboard</div>
+                        <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                            <label class="switch  ">
+                                <input type="hidden" name="properties[blockKeyboard]" value="0">
+                                <input type="checkbox" name="properties[blockKeyboard]" checked>
+                                <span class="slider round"></span>
+                            </label>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                    <div class="row m-0 p-0">
+                        <div class="col-md-12 p-0 m-0">
+                            <div class="test">Right click usage while giving exam</div>
+                        </div>
+                        <div class="col-md-8 my-3">blockRightClick</div>
+                        <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                            <label class="switch  ">
+                                <input type="hidden" name="properties[blockRightClick]" value="0">
+                                <input type="checkbox" name="properties[blockRightClick]" checked>
+                                <span class="slider round"></span>
+                            </label>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                    <div class="row m-0 p-0">
+                        <div class="col-md-12 p-0 m-0">
+                            <div class="test">Time bound exam</div>
+                        </div>
+                        <div class="col-md-8 my-3">timeBound</div>
+                        <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                            <label class="switch  ">
+                                <input type="hidden" name="properties[timeBound]" value="0">
+                                <input type="checkbox" name="properties[timeBound]" checked>
+                                <span class="slider round"></span>
+                            </label>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                    <div class="row m-0 p-0">
+                        <div class="col-md-12 p-0 m-0">
+                            <div class="test"> Exam termination</div>
+                        </div>
+                        <div class="col-md-8 mt-2">examTerminated</div>
+                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                            <label class="switch  ">
+                                <input type="hidden" name="properties[examTerminated]" value="0">
+                                <input type="checkbox" name="properties[examTerminated]">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-12 mb-2">
+                            <textarea cols="10" rows="1" name="properties[examTerminationReason]" class="form-control"
+                                      style="resize: none;" placeholder="examTerminationReason"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                    <div class="row m-0 p-0">
+                        <div class="col-md-12 p-0 m-0">
+                            <div class="test">Exam pause</div>
+                        </div>
+                        <div class="col-md-8 mt-2">examPaused</div>
+                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                            <label class="switch  ">
+                                <input type="hidden" name="properties[examPaused]" value="0">
+                                <input type="checkbox" name="properties[examPaused]">
+                                <span class="slider round"></span>
+                            </label>
+
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-12 mb-2">
+                            <textarea cols="10" rows="1" name="properties[examPausedReason]" class="form-control"
+                                      style="resize: none;" placeholder="examPausedReason"></textarea>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                    <div class="row m-0 p-0">
+                        <div class="col-md-12 p-0 m-0">
+                            <div class="test">System compatibility test</div>
+                        </div>
+                        <div class="col-md-8 mt-2">systemIncompatible</div>
+                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                            <label class="switch  ">
+                                <input type="hidden" name="properties[systemIncompatible]" value="0">
+                                <input type="checkbox" name="properties[systemIncompatible]">
+                                <span class="slider round"></span>
+                            </label>
+
+                        </div>
+                        <div class="col-md-12 col-lg-12 col-12 mb-2">
+                            <textarea cols="10" rows="1" name="properties[systemIncompatibleReason]" class="form-control"
+                                      style="resize: none;" placeholder="systemIncompatibleReason"></textarea>
+                        </div>
+                        <!-- <div class="col-md-8 mt-2"> systemIncompatibleReason</div>
+                            <div class="col-md-4 p-0 my-2 m-0">
+                                <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
+
+                            </div> -->
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12 col-lg-12 col-12 text-center">
-                <div class="last-prev prev btn mr-4">Prev</div>
-                <div class="btn last-prev">Submit</div>
+            <div class="row">
+                <div class="col-md-12 col-lg-12 col-12 text-center">
+                    <div class="last-prev prev btn mr-4">Prev</div>
+                    <input type="submit" class="btn last-prev">
+                </div>
             </div>
         </div>
     </div>
-    {{-- </form>--}}
-</div>
+</form>
 <script src="{{asset('js/createexam.js')}}"></script>
 <script>
     var max_fieldss = 100000; //maximum input boxes allowed
     var wrappers = $(".createdata"); //Fields wrapper
     var add_buttons = $(".data"); //Add button ID
     var xx = 2; //initlal text box count
-    $(add_buttons).click(function(e) { //on add input button click
+    $(add_buttons).click(function (e) { //on add input button click
         e.preventDefault();
         if (xx < max_fieldss) { //max input box allowed
             xx++; //text box increment
@@ -523,13 +535,13 @@
         }
     });
 
-    $('#examname').on('focusout', function() {
+    $('#examname').on('focusout', function () {
         console.log($(this).val());
         $('#displayExamName').html($(this).val());
         $('#displayExamNameshow').html($(this).val());
     });
 
-    $(wrappers).on("click", ".remove_field", function(e) { //user click on remove text
+    $(wrappers).on("click", ".remove_field", function (e) { //user click on remove text
         e.preventDefault();
         $(this).parent().parent('div').remove();
         xx--;
@@ -544,28 +556,28 @@
         getQuestion();
         $('.loader').show();
         $.ajax({
-            url: "{{url('/getChapter')}}",
-            type: "GET",
-            data: {
-                class: className,
+            url    : "{{url('/getChapter')}}",
+            type   : "GET",
+            data   : {
+                class  : className,
                 subject: subject
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            success: function(result) {
+            success: function (result) {
                 $('.loader').fadeOut();
                 if (result.success) {
                     $('#chapter').empty();
                     $('#chapter').append('<option value="">Select Chapter </option>');
-                    $.each(result.response, function(key, value) {
+                    $.each(result.response, function (key, value) {
                         $('#chapter').append('<option value="' + value + '">' + value + '</option>');
                     });
                 } else {
                     $.fn.notifyMe('error', 5, result.response);
                 }
             },
-            error: function(error_r) {
+            error  : function (error_r) {
                 $('.loader').fadeOut();
             }
         });
@@ -580,23 +592,23 @@
 
         $('.loader').show();
         $.ajax({
-            url: "{{url('/getQuestions')}}",
-            type: "GET",
-            data: {
-                class: className,
+            url    : "{{url('/getQuestions')}}",
+            type   : "GET",
+            data   : {
+                class     : className,
                 subject_id: subject,
-                chapter: chapter
+                chapter   : chapter
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            success: function(result) {
+            success: function (result) {
                 $('.loader').fadeOut();
                 if (result.success) {
                     $('#question').empty();
                     let count = 1;
                     let data = "";
-                    $.each(result.response, function(key, value) {
+                    $.each(result.response, function (key, value) {
                         data += '<div class="col-md-1 mt-2">';
                         data += '<input type="checkbox" class="questionCheckbox" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" name="questions[]" value="' + value.id + '"> </div>';
                         data += '<div class="col-md-11  mt-2"> ';
@@ -611,7 +623,7 @@
                     $.fn.notifyMe('error', 5, result.response);
                 }
             },
-            error: function(error_r) {
+            error  : function (error_r) {
                 $('.loader').fadeOut();
                 console.log(error_r);
             }
@@ -683,20 +695,20 @@
             // return;
             $('.loader').show();
             $.ajax({
-                url: "{{url('/saveQuestion')}}",
-                type: "POST",
-                data: {
-                    question: questionText,
-                    options: options,
-                    answer: answer,
-                    class: className,
+                url    : "{{url('/saveQuestion')}}",
+                type   : "POST",
+                data   : {
+                    question  : questionText,
+                    options   : options,
+                    answer    : answer,
+                    class     : className,
                     subject_id: subject,
-                    chapter: chapter
+                    chapter   : chapter
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function(result) {
+                success: function (result) {
                     $('.loader').fadeOut();
                     if (result.success) {
                         obj.attr('data-questionId', result.response.id);
@@ -723,7 +735,7 @@
                         $.fn.notifyMe('error', 5, result.response);
                     }
                 },
-                error: function(error_r) {
+                error  : function (error_r) {
                     $('.loader').fadeOut();
                 }
             });
@@ -763,15 +775,15 @@
 
     function deleteQuestion(questionId) {
         $.ajax({
-            url: "{{url('/deleteQuestion/')}}" + "/" + questionId,
-            type: "POST",
-            data: {
+            url    : "{{url('/deleteQuestion/')}}" + "/" + questionId,
+            type   : "POST",
+            data   : {
                 id: questionId,
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            success: function(result) {
+            success: function (result) {
                 $('.loader').fadeOut();
                 if (result.success) {
                     $.fn.notifyMe('success', 5, result.response);
@@ -779,7 +791,7 @@
                     $.fn.notifyMe('error', 5, result.response);
                 }
             },
-            error: function(error_r) {
+            error  : function (error_r) {
                 $('.loader').fadeOut();
             }
         });
