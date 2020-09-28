@@ -451,7 +451,7 @@
             xx++; //text box increment
             $(wrappers).append(`<div class="row">
             <div class="col-md-1 mt-2">
-                                            <input type="checkbox" onclick="addQuestionToPaper($(this), null, null)" value="">
+                                            <input type="checkbox" id="check` + xx + `" onclick="addQuestionToPaper(xx,$(this), null, null)" value="">
                                         </div>
                          <div class=" col-md-11 p-0  mx-0">
                                                    
@@ -581,7 +581,7 @@
                     let data = "";
                     $.each(result.response, function(key, value) {
                         data += '<div class="col-md-1 mt-2">';
-                        data += '<input type="checkbox" class="questionCheckbox" onclick="addQuestionToPaper($(this),\'' + value.question + '\',' + value.id + ')" name="questions[]" value="' + value.id + '"> </div>';
+                        data += '<input type="checkbox" class="questionCheckbox" onclick="addQuestionToPaper(val,$(this),\'' + value.question + '\',' + value.id + ')" name="questions[]" value="' + value.id + '"> </div>';
                         data += '<div class="col-md-11  mt-2"> ';
                         // data += '<strong class="mr-1">Q. </strong>';
                         data += '<p class=" font-weight-bold questionText">' + value.question + '</p>';
@@ -601,7 +601,7 @@
         });
     }
 
-    function addQuestionToPaper(obj, question, questionId) {
+    function addQuestionToPaper(val,obj, question, questionId) {
         if (obj.is(":checked")) {
             ;
             if (questionId == null) {
@@ -622,7 +622,7 @@
                         answer.push(options[answersHtml[i].value]);
                 }
 
-                return insertQuestion(obj, questionText, options, answer, className, subject, chapter);
+                return insertQuestion(val,obj, questionText, options, answer, className, subject, chapter);
 
             }
             //  let data = '<div class="media " id="addedQuestion' + questionId + '"> ' +
@@ -651,8 +651,17 @@
         }
     }
 
-    function insertQuestion(obj, questionText, options, answer, className, subject, chapter) {
-        console.log(obj);
+    function insertQuestion(val,obj, questionText, options, answer, className, subject, chapter) {
+        var checkBox1  = document.getElementById("checkbox1"+val);
+        var checkBox2   = document.getElementById("checkbox2"+val);
+        var checkBox3   = document.getElementById("checkbox3"+val);
+        var checkBox4   = document.getElementById("checkbox4"+val);
+        var opt1        = document.getElementById("option1"+val).value;
+        var opt2        = document.getElementById("option2"+val).value;
+        var opt3        = document.getElementById("option3"+val).value;
+        var opt4        = document.getElementById("option4"+val).value;
+        var question    = document.getElementById("exampleInputQuestion"+val);
+        if(questionText && (checkBox1.checked==true ||checkBox2.checked==true || checkBox3.checked==true || checkBox4.checked==true) && (opt1 !='' && opt2 !='' && opt3 !='' && opt4 !='') ){
 
         // return;
         $('.loader').show();
@@ -691,6 +700,44 @@
                 $('.loader').fadeOut();
             }
         });
+
+        }
+    else{
+        if(!questionText){
+        question.style.borderColor = "red";
+        $("#check"+val).prop("checked", false);
+       }
+       else question.style.borderColor = "#ced4da";
+     
+     if(opt1 ==''){
+        document.getElementById("option1"+val).style.borderColor = "red";
+        $("#check"+val).prop("checked", false);
+     }
+     else  document.getElementById("option1"+val).style.borderColor = "#ced4da";
+
+     if( opt2 ==''){
+        document.getElementById("option2"+val).style.borderColor = "red";
+        $("#check"+val).prop("checked", false);
+     }
+     else  document.getElementById("option2"+val).style.borderColor = "#ced4da";
+
+     if(opt3 ==''){
+        document.getElementById("option3"+val).style.borderColor = "red";
+        $("#check"+val).prop("checked", false);
+     }
+     else  document.getElementById("option3"+val).style.borderColor = "#ced4da";
+     
+     if(opt4 ==''){
+        document.getElementById("option4"+val).style.borderColor = "red";
+        $("#check"+val).prop("checked", false);
+    }
+    else  document.getElementById("option4"+val).style.borderColor = "#ced4da";
+ 
+    if(checkBox1.checked==false && checkBox2.checked==false && checkBox3.checked==false &&checkBox4.checked==false){
+         alert("select atleast one answer");
+        $("#check"+val).prop("checked", false);
+      }
+     }
     }
 
     function deleteQuestion(questionId) {
