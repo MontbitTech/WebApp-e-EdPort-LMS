@@ -92,7 +92,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 col-md-11">
 
-                <div class="form-group row">
+                <div class="form-group">
                     <div class="form-group" id="questionPapershow">
                         <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamNameshow"> Exam
                             Name</h3>
@@ -600,7 +600,7 @@
         });
     }
 
-    function addQuestionToPaper(val,obj, question, questionId) {
+    function addQuestionToPaper(val, obj, question, questionId) {
         if (obj.is(":checked")) {
             ;
             if (questionId == null) {
@@ -621,7 +621,7 @@
                         answer.push(options[answersHtml[i].value]);
                 }
 
-                return insertQuestion(val,obj, questionText, options, answer, className, subject, chapter);
+                return insertQuestion(val, obj, questionText, options, answer, className, subject, chapter);
 
             }
             //  let data = '<div class="media " id="addedQuestion' + questionId + '"> ' +
@@ -650,93 +650,97 @@
         }
     }
 
-    function insertQuestion(val,obj, questionText, options, answer, className, subject, chapter) {
-        var checkBox1  = document.getElementById("checkbox1"+val);
-        var checkBox2   = document.getElementById("checkbox2"+val);
-        var checkBox3   = document.getElementById("checkbox3"+val);
-        var checkBox4   = document.getElementById("checkbox4"+val);
-        var opt1        = document.getElementById("option1"+val).value;
-        var opt2        = document.getElementById("option2"+val).value;
-        var opt3        = document.getElementById("option3"+val).value;
-        var opt4        = document.getElementById("option4"+val).value;
-        var question    = document.getElementById("exampleInputQuestion"+val);
-        if(questionText && (checkBox1.checked==true ||checkBox2.checked==true || checkBox3.checked==true || checkBox4.checked==true) && (opt1 !='' && opt2 !='' && opt3 !='' && opt4 !='') ){
+    function insertQuestion(val, obj, questionText, options, answer, className, subject, chapter) {
+        var checkBox1 = document.getElementById("checkbox1" + val);
+        var checkBox2 = document.getElementById("checkbox2" + val);
+        var checkBox3 = document.getElementById("checkbox3" + val);
+        var checkBox4 = document.getElementById("checkbox4" + val);
+        var opt1 = document.getElementById("option1" + val).value;
+        var opt2 = document.getElementById("option2" + val).value;
+        var opt3 = document.getElementById("option3" + val).value;
+        var opt4 = document.getElementById("option4" + val).value;
+        var question = document.getElementById("exampleInputQuestion" + val);
+        if (questionText && (checkBox1.checked == true || checkBox2.checked == true || checkBox3.checked == true || checkBox4.checked == true) && (opt1 != '' && opt2 != '' && opt3 != '' && opt4 != '')) {
 
-        // return;
-        $('.loader').show();
-        $.ajax({
-            url: "{{url('/saveQuestion')}}",
-            type: "POST",
-            data: {
-                question: questionText,
-                options: options,
-                answer: answer,
-                class: className,
-                subject_id: subject,
-                chapter: chapter
-            },
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function(result) {
-                $('.loader').fadeOut();
-                if (result.success) {
-                    obj.attr('data-questionId', result.response.id);
-                    let data = '<div class="media " id="addedQuestion' + result.response.id + '">' +
-                        '<input type="hidden" name="questions[]" value="' + result.response.id + '" >';
-                    data += '<div class="media-body font-weight-bold">';
-                    data += '<input type="hidden" value="' + result.response.id + '">';
-                    data += '<textarea class="w-100 form-control border-0 rounded-0" style="resize: none;" rows="3" disabled>' +
-                        result.response.question + '</textarea>';
-                    data += '</div> </div>';
+            // return;
+            $('.loader').show();
+            $.ajax({
+                url: "{{url('/saveQuestion')}}",
+                type: "POST",
+                data: {
+                    question: questionText,
+                    options: options,
+                    answer: answer,
+                    class: className,
+                    subject_id: subject,
+                    chapter: chapter
+                },
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(result) {
+                    $('.loader').fadeOut();
+                    if (result.success) {
+                        obj.attr('data-questionId', result.response.id);
+                        // let data = '<div class="media " id="addedQuestion' + result.response.id + '">' +
+                        //     '<input type="hidden" name="questions[]" value="' + result.response.id + '" >';
+                        // data += '<div class="media-body font-weight-bold">';
+                        // data += '<input type="hidden" value="' + result.response.id + '">';
+                        // data += '<textarea class="w-100 form-control border-0 rounded-0" style="resize: none;" rows="3" disabled>' +
+                        //     result.response.question + '</textarea>';
+                        // data += '</div> </div>';
+                        let data = '<p class="bg-light mb-2 font-weight-bold" id="addedQuestion' + result.response.id + '">' + result.response.question + '</p>';
+                        //data += '</div> </div>';
+                        let show = '<div class="row mb-2"><div class="col-md-10">';
+                        show += ' <p class="bg-light  font-weight-bold" id="addedQuestion' + result.response.id + '">' + result.response.question + '</p>';
+                        show += '</div>';
+                        show += '<div class="col-md-2">';
+                        show += '<input type="number" name="marks" class="form-control" id="questionmarks' + result.response.question + '" >';
+                        show += '</div></div>';
+                        $('#questionPaper').append(data);
+                        $('#questionPapershow').append(show);
 
-                    $('#questionPaper').append(data);
-                } else {
-                    $.fn.notifyMe('error', 5, result.response);
+                        // $('#questionPaper').append(data);
+                    } else {
+                        $.fn.notifyMe('error', 5, result.response);
+                    }
+                },
+                error: function(error_r) {
+                    $('.loader').fadeOut();
                 }
-            },
-            error: function(error_r) {
-                $('.loader').fadeOut();
+            });
+
+        } else {
+            if (!questionText) {
+                question.style.borderColor = "red";
+                $("#check" + val).prop("checked", false);
+            } else question.style.borderColor = "#ced4da";
+
+            if (opt1 == '') {
+                document.getElementById("option1" + val).style.borderColor = "red";
+                $("#check" + val).prop("checked", false);
+            } else document.getElementById("option1" + val).style.borderColor = "#ced4da";
+
+            if (opt2 == '') {
+                document.getElementById("option2" + val).style.borderColor = "red";
+                $("#check" + val).prop("checked", false);
+            } else document.getElementById("option2" + val).style.borderColor = "#ced4da";
+
+            if (opt3 == '') {
+                document.getElementById("option3" + val).style.borderColor = "red";
+                $("#check" + val).prop("checked", false);
+            } else document.getElementById("option3" + val).style.borderColor = "#ced4da";
+
+            if (opt4 == '') {
+                document.getElementById("option4" + val).style.borderColor = "red";
+                $("#check" + val).prop("checked", false);
+            } else document.getElementById("option4" + val).style.borderColor = "#ced4da";
+
+            if (checkBox1.checked == false && checkBox2.checked == false && checkBox3.checked == false && checkBox4.checked == false) {
+                alert("select atleast one answer");
+                $("#check" + val).prop("checked", false);
             }
-        });
-
         }
-    else{
-        if(!questionText){
-        question.style.borderColor = "red";
-        $("#check"+val).prop("checked", false);
-       }
-       else question.style.borderColor = "#ced4da";
-     
-     if(opt1 ==''){
-        document.getElementById("option1"+val).style.borderColor = "red";
-        $("#check"+val).prop("checked", false);
-     }
-     else  document.getElementById("option1"+val).style.borderColor = "#ced4da";
-
-     if( opt2 ==''){
-        document.getElementById("option2"+val).style.borderColor = "red";
-        $("#check"+val).prop("checked", false);
-     }
-     else  document.getElementById("option2"+val).style.borderColor = "#ced4da";
-
-     if(opt3 ==''){
-        document.getElementById("option3"+val).style.borderColor = "red";
-        $("#check"+val).prop("checked", false);
-     }
-     else  document.getElementById("option3"+val).style.borderColor = "#ced4da";
-     
-     if(opt4 ==''){
-        document.getElementById("option4"+val).style.borderColor = "red";
-        $("#check"+val).prop("checked", false);
-    }
-    else  document.getElementById("option4"+val).style.borderColor = "#ced4da";
- 
-    if(checkBox1.checked==false && checkBox2.checked==false && checkBox3.checked==false &&checkBox4.checked==false){
-         alert("select atleast one answer");
-        $("#check"+val).prop("checked", false);
-      }
-     }
     }
 
     function deleteQuestion(questionId) {
