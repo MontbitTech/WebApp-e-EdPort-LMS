@@ -23,7 +23,7 @@
      <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.js"></script>
  </head>
 
- <body>
+ <body class="menu-open">
      <div class="loader" style="display:none;"></div>
      @include('layouts.teacher.header')
      @include('layouts.teacher.sidebar')
