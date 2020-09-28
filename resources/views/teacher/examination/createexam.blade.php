@@ -557,7 +557,6 @@
         var subject = $('#subject').val();
         var className = $('#class').val();
         var chapter = $('#chapter').val();
-
         if (subject == '' || className == '')
             return;
 
@@ -581,7 +580,7 @@
                     let data = "";
                     $.each(result.response, function(key, value) {
                         data += '<div class="col-md-1 mt-2">';
-                        data += '<input type="checkbox" class="questionCheckbox" onclick="addQuestionToPaper(val,$(this),\'' + value.question + '\',' + value.id + ')" name="questions[]" value="' + value.id + '"> </div>';
+                        data += '<input type="checkbox" class="questionCheckbox" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" name="questions[]" value="' + value.id + '"> </div>';
                         data += '<div class="col-md-11  mt-2"> ';
                         // data += '<strong class="mr-1">Q. </strong>';
                         data += '<p class=" font-weight-bold questionText">' + value.question + '</p>';
