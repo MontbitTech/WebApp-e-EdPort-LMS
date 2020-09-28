@@ -6,6 +6,21 @@
         padding-right: 0px;
         position: absolute;
     } */
+    /* .timestyle {
+        background-color: white;
+        display: inline-flex;
+        border: 1px solid #ccc;
+        color: #555;
+    } */
+
+    .style-houser,
+    .style-houser:focus,
+    .style-houser:active {
+        border: none;
+        color: #555;
+        text-align: center;
+        width: 60px;
+    }
 </style>
 <link rel="stylesheet" href="{{asset('css/multipleexam.css')}}">
 <div class="col-md-12 col-lg-12 col-12 px-0 mb-5 border-line">
@@ -132,7 +147,10 @@
                     </div>
                     <div class="col-md-6  my-2 ">
                         <label for="times">Time</label>
-                        <input type="number" id="timedate" class="form-control input-xs" name="duration">
+                        <div class="form-control ">
+                            <input type="number" class="style-houser" name="hh" min="0" max="23" placeholder="23">:
+                            <input type="number" class="style-houser" name="ss" min="0" max="59" placeholder="00">
+                        </div>
                     </div>
                     <!-- <div class="col-md-5 d-inline-block mt-2 ml-4">
                     <label for="times">Total Point</label>
@@ -768,15 +786,13 @@
     }
 </script>
 <script>
-    $(document).ready(function() {
-        $('#st').change(function() {
-            var st = $('#timestart').val(); // start time Format: '9:00 PM'
-            var et = $('#timeend').val(); // end time   Format: '11:00 AM' 
-
-            //how do i compare time
-            if (st > et) {
-                alert('end time always greater then start time');
-            }
+    document.querySelectorAll('input[name=hh]', 'input[name=ss]')
+        .forEach(e => e.oninput = () => {
+            // Always 2 digits
+            if (e.value.length >= 2) e.value = e.value.slice(0, 2);
+            // 0 on the left (doesn't work on FF)
+            if (e.value.length === 1) e.value = '0' + e.value;
+            // Avoiding letters on FF
+            if (!e.value) e.value = '00';
         });
-    });
 </script>

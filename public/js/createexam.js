@@ -69,12 +69,12 @@ function validate4(val) {
     v1 = document.getElementById("select1");
     v2 = document.getElementById("timedate");
     v3 = document.getElementById("timestart");
-    v4 = document.getElementById("timeend");
+    // v4 = document.getElementById("timeend");
 
     flag1 = true;
     flag2 = true;
     flag3 = true;
-    flag4 = true;
+    // flag4 = true;
 
     if (val >= 1 || val == 0) {
         if (v1.value == "") {
@@ -104,17 +104,17 @@ function validate4(val) {
             flag2 = true;
         }
     }
-    if (val >= 4 || val == 0) {
-        if (v4.value == "") {
-            v4.style.borderColor = "red";
-            flag4 = false;
-        } else {
-            v4.style.borderColor = "#ced4da";
-            flag4 = true;
-        }
-    }
+    // if (val >= 4 || val == 0) {
+    //     if (v4.value == "") {
+    //         v4.style.borderColor = "red";
+    //         flag4 = false;
+    //     } else {
+    //         v4.style.borderColor = "#ced4da";
+    //         flag4 = true;
+    //     }
+    // }
 
-    flag = flag1 && flag2 && flag3 && flag4;
+    flag = flag1 && flag2 && flag3;
 
     return flag;
 }
