@@ -67,14 +67,16 @@ function validate1(val) {
 
 function validate4(val) {
     v1 = document.getElementById("select1");
-    v2 = document.getElementById("timedate");
-    v3 = document.getElementById("timestart");
-    // v4 = document.getElementById("timeend");
+    v2 = document.getElementById("hh");
+    v3 = document.getElementById("ss");
+    v4 = document.getElementById("timestart");
+    v5 = document.getElementById("timeend");
 
     flag1 = true;
     flag2 = true;
     flag3 = true;
-    // flag4 = true;
+    flag4 = true;
+    flag5 = true;
 
     if (val >= 1 || val == 0) {
         if (v1.value == "") {
@@ -95,26 +97,38 @@ function validate4(val) {
             flag2 = true;
         }
     }
+
     if (val >= 3 || val == 0) {
         if (v3.value == "") {
             v3.style.borderColor = "red";
             flag3 = false;
         } else {
             v3.style.borderColor = "#ced4da";
-            flag2 = true;
+            flag3 = true;
         }
     }
-    // if (val >= 4 || val == 0) {
-    //     if (v4.value == "") {
-    //         v4.style.borderColor = "red";
-    //         flag4 = false;
-    //     } else {
-    //         v4.style.borderColor = "#ced4da";
-    //         flag4 = true;
-    //     }
-    // }
 
-    flag = flag1 && flag2 && flag3;
+    if (val >= 4 || val == 0) {
+        if (v4.value == "" ) {
+            v4.style.borderColor = "red";
+            flag4 = false;
+        } else {
+            v4.style.borderColor = "#ced4da";
+            flag4 = true;
+        }
+    }
+
+    if (val >= 5 || val == 0) {
+        if (v5.value == "" || v5.value <= v4.value) {
+            v5.style.borderColor = "red";
+            flag5 = false;
+        } else {
+            v5.style.borderColor = "#ced4da";
+            flag5 = true;
+        }
+    }
+
+    flag = flag1 && flag4 && flag5;
 
     return flag;
 }
