@@ -132,7 +132,8 @@
                     <div class="row">
                         <div class="col-md-6 my-2 ">
                             <label class="d-block mb-2">Class</label>
-                            <select class="form-control select1 " data-placeholder="Class" name="classroom_id" id="select1"
+                            <select class="form-control select1 " data-placeholder="Class" name="classroom_id"
+                                    id="select1"
                                     style="width: 100%;">
                                 <option value="">Select Classroom</option>
                                 @foreach($classrooms as $classroom)
@@ -144,11 +145,12 @@
 
                         <div class="col-md-6  my-2 ">
                             <label for="times">Duration (In Minutes)</label>
-{{--                            <div class="form-control ">--}}
-                                <input type="number" class="form-control" id="hh" name="duration" placeholder="Duration in Miutes">
-{{--                                <input type="number" class="style-houser" id="ss" s name="duration[mm]" min="0" max="59"--}}
-{{--                                       placeholder="00">--}}
-{{--                            </div>--}}
+                            {{--                            <div class="form-control ">--}}
+                            <input type="number" class="form-control" id="hh" name="duration"
+                                   placeholder="Duration in Miutes">
+                            {{--                                <input type="number" class="style-houser" id="ss" s name="duration[mm]" min="0" max="59"--}}
+                            {{--                                       placeholder="00">--}}
+                            {{--                            </div>--}}
                         </div>
                         <div class="col-md-6 my-2 ">
                             <label for="times">Start Time</label>
@@ -482,7 +484,7 @@
                                 
                                     <a href="#" style="float:right;" class="remove_field"><i class="fas fa-times"></i></a>
                                    <div class="form-group mb-0 pb-1">                                   
-                                      <textarea  id="exampleInputQuestion` + xx + `" class="w-100 newQuestion form-control" name="exampleInputQuestion" rows="3" placeholder="Insert your question" style="resize: none;" ></textarea>
+                                      <textarea  id="exampleInputQuestion` + xx + `" class="w-100 newQuestion form-control" rows="3" placeholder="Insert your question" style="resize: none;" ></textarea>
                                     </div>
                                     <table class="table table-borderless">
                                         <thead>
@@ -603,7 +605,7 @@
                     let data = "";
                     $.each(result.response, function (key, value) {
                         data += '<div class="col-md-1 mt-2">';
-                        data += '<input type="checkbox" class="questionCheckbox" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" name="questions[]" value="' + value.id + '"> </div>';
+                        data += '<input type="checkbox" class="questionCheckbox" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" value="' + value.id + '"> </div>';
                         data += '<div class="col-md-11  mt-2"> ';
                         data += '<p class=" font-weight-bold questionText">' + value.question + '</p>';
                         data += '</div>';
@@ -645,8 +647,8 @@
                 return insertQuestion(val, obj, questionText, options, answer, className, subject, chapter);
 
             }
-            let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question + "</p>";
-
+            let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question ;
+            data +='<input type="hidden" name="questions[]" value="' + questionId + '"></p>';
             let show = '<div class="row mb-2"><div class="col-md-10">';
             show += "<p class='bg-light font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
             show += '</div>';
@@ -699,12 +701,13 @@
                     $('.loader').fadeOut();
                     if (result.success) {
                         obj.attr('data-questionId', result.response.id);
-                        let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + result.response.id + "'>" + result.response.question + "</p>";
+                        let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + result.response.id + "'>" + result.response.question;
+                        data +='<input type="hidden" name="questions[]" value="' + result.response.id + '"></p>';
                         let show = '<div class="row mb-2"><div class="col-md-10">';
                         show += "<p class='bg-light mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
                         show += '</div>';
                         show += '<div class="col-md-2">';
-                        show += '<input type="number" name="marks" class="form-control" id="questionmarks' + result.response.question + '" >';
+                        show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control" id="questionmarks' + result.response.question + '" >';
                         show += '</div></div>';
                         $('#questionPaper').append(data);
                         $('#questionPapershow').append(show);
