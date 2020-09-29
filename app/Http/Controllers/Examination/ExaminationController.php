@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Session;
 
 /**
  * Class ExaminationController
- * @package App\Http\Controllers\ExaminationUtility
+ * @package App\Http\Controllers\Examination
  */
 class ExaminationController extends Controller
 {
