@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Examination;
 
 use App\HelpTicketCategory;
 use App\Http\Controllers\Controller;
+use App\libraries\Utility\ExaminationUtility;
 use App\Models\Examination\ClassroomExaminationMapping;
 use App\Models\Examination\Examination;
 use App\Models\Examination\ExaminationQuestionMapping;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Session;
 
 /**
  * Class ExaminationController
- * @package App\Http\Controllers\Examination
+ * @package App\Http\Controllers\ExaminationUtility
  */
 class ExaminationController extends Controller
 {
@@ -51,7 +52,9 @@ class ExaminationController extends Controller
         $examination->created_by = $loggedTeacher['teacher_id'];
         $examination->save();
 
-        return Response::json(['success' => true, 'response' => $examination]);
+        return $examination;
+
+//        return Response::json(['success' => true, 'response' => $examination]);
     }
 
     public function destroy (Request $request, $id)
@@ -102,25 +105,27 @@ class ExaminationController extends Controller
 
     public function setExamination (Request $request)
     {
-        dd($request->all());
-        $examination = new Examination();
-        $examination->title = $request->title;
-        $examination->save();
+        $examination = $this->store($request);
 
-        $classroomExaminationMapping = new ClassroomExaminationMapping();
-        $classroomExaminationMapping->examination_id = $examination->id;
-        $classroomExaminationMapping->classroom_id = $request->classroom_id;
-        $classroomExaminationMapping->duration = $request->duration;
-        $classroomExaminationMapping->start_time = $request->start_time;
-        $classroomExaminationMapping->end_time = $request->end_time;
-        $classroomExaminationMapping->examination_properties = json_encode($request->properties);
-        $classroomExaminationMapping->save();
+        ExaminationUtility::createClassroomExaminationMapping([
+            'examination_id'         => $examination->id,
+            'classroom_id'           => $request->classroom_id,
+            'duration'               => date('H:i', mktime(0, $request->duration)),
+            'start_time'             => $request->start_time,
+            'end_time'               => $request->end_time,
+            'examination_properties' => json_encode($request->properties),
+        ]);
 
-        $examinationQuestionMapping = new ExaminationQuestionMapping();
-        $examinationQuestionMapping->examination_id = $examination->id;
-        $examinationQuestionMapping->classroom_id = $request->classroom_id;
-        $examinationQuestionMapping->question_id = $request->question_id;
-        $examinationQuestionMapping->marks = $request->marks;
-        $examinationQuestionMapping->save();
+        $examinationQuestionMappings = array();
+        foreach ( $request->questions as $questionId ) {
+            $examinationQuestionMappings[] = ['examination_id' => $examination->id,
+                                              'classroom_id'   => $request->classroom_id,
+                                              'question_id'    => $questionId,
+                                              'marks'          => $request->marks[ $questionId ]];
+        }
+
+        ExaminationQuestionMapping::insert($examinationQuestionMappings);
+
+        return redirect()->route('examination')->with('success', 'added successfully');
     }
 }
