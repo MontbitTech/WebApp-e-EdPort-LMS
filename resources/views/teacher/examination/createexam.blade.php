@@ -29,9 +29,9 @@
         <ul id="progressbar" class="text-center">
             <li class="active step0" id="step1">Exam name</li>
             <li class="step0" id="step2">Create Exam</li>
-            <li class="step0" id="step3">Exam</li>
+            <li class="step0" id="step3">Assign Weightage/Marks</li>
             <li class="step0" id="step4">Assign Examination</li>
-            <li class="step0" id="step5">t/c</li>
+            <li class="step0" id="step5">Environment Settings</li>
         </ul>
         <!-- <hr> -->
         {{-- <form action="" method="post">--}}
