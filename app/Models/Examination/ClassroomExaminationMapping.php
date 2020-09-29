@@ -11,11 +11,11 @@ class ClassroomExaminationMapping extends Model
 
     public function examination ()
     {
-        return $this->hasOne(Examination::class);
+        return $this->hasOne(Examination::class,'id','examination_id');
     }
 
     public function classroom ()
     {
-        return $this->hasOne(StudentClass::class);
+        return $this->hasOne(StudentClass::class,'id','classroom_id');
     }
 }

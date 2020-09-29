@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Examination;
 
 use App\HelpTicketCategory;
 use App\Http\Controllers\Controller;
+use App\libraries\Utility\ExaminationUtility;
 use App\Models\Examination\ClassroomExaminationMapping;
 use App\Models\Examination\Examination;
 use App\Models\Examination\ExaminationQuestionMapping;
@@ -51,7 +52,9 @@ class ExaminationController extends Controller
         $examination->created_by = $loggedTeacher['teacher_id'];
         $examination->save();
 
-        return Response::json(['success' => true, 'response' => $examination]);
+        return $examination;
+
+//        return Response::json(['success' => true, 'response' => $examination]);
     }
 
     public function destroy (Request $request, $id)
@@ -98,5 +101,31 @@ class ExaminationController extends Controller
 
         $questions = ExaminationQuestionMapping::with('questions')->where('examination_id', $classroomExaminationMapping->examination_id)
             ->where('classroom_id', $classroomExaminationMapping->classroom_id)->get();
+    }
+
+    public function setExamination (Request $request)
+    {
+        $examination = $this->store($request);
+
+        ExaminationUtility::createClassroomExaminationMapping([
+            'examination_id'         => $examination->id,
+            'classroom_id'           => $request->classroom_id,
+            'duration'               => date('H:i', mktime(0, $request->duration)),
+            'start_time'             => $request->start_time,
+            'end_time'               => $request->end_time,
+            'examination_properties' => json_encode($request->properties),
+        ]);
+
+        $examinationQuestionMappings = array();
+        foreach ( $request->questions as $questionId ) {
+            $examinationQuestionMappings[] = ['examination_id' => $examination->id,
+                                              'classroom_id'   => $request->classroom_id,
+                                              'question_id'    => $questionId,
+                                              'marks'          => $request->marks[ $questionId ]];
+        }
+
+        ExaminationQuestionMapping::insert($examinationQuestionMappings);
+
+        return redirect()->route('examination')->with('success', 'added successfully');
     }
 }

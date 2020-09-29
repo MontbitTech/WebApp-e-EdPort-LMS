@@ -21,7 +21,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
   </div>
   <div class="container">
     <a class="navbar-brand" href="./home" title="E-Learning">{{$s[0]->value}}</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupport" aria-expanded="false">
+    <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarSupport" aria-expanded="false">
       <span class="navbar-toggler-icon">
         <svg class="icon icon-2x">
           <use xlink:href="{{asset('images/icons.svg#icon_vdots')}}"></use>
@@ -39,7 +39,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
         </li>
 
         <li class="nav-item">
-          <a class="nav-link {{ Request::segment(2) == 'assignment'?'active':''}}" href="{{route('examination')}}">
+          <a class="nav-link {{ (request()->routeIs('examination')) ? 'active' : '' }}" href="{{route('examination')}}">
             <svg class="icon mr-1">
               <use xlink:href="{{asset('images/icons.svg#icon_edit')}}"></use>
             </svg> Examination
@@ -65,7 +65,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
           </a>
         </li>
         <li class="nav-item">
-          <button type="button" class="btn btn-ui header-help" data-toggle="modal" href="#classhelpModal" role="modal">
+          <button type="button" class="btn btn-ui header-help " data-toggle="modal" href="#classhelpModal" role="modal">
             <svg class="icon mr-1">
               <use xlink:href="{{asset('images/icons.svg#icon_help')}}"></use>
             </svg> Support!

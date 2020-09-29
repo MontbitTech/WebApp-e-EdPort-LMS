@@ -32,7 +32,7 @@ $photo = asset('images/teacher/'.$val->photo);
 
 
 <!-- Start | Left Profile Section -->
-<div class="profile-box">
+<div class="profile-box ">
   <div class="close-profile" title="Close">
     <svg class="icon">
       <use xlink:href="../images/icons.svg#icon_times2"></use>

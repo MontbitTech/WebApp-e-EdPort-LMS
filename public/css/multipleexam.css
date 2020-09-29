@@ -14,7 +14,7 @@
 #progressbar li {
     list-style-type: none;
     font-size: 13px;
-    width: 25%;
+    width: 20%;
     float: left;
     position: relative;
     font-weight: 400;
@@ -39,7 +39,10 @@
     content: "4";
     color: white;
 }
-
+#progressbar #step5:before {
+    content: "5";
+    color: white;
+}
 #progressbar li:before {
     width: 40px;
     height: 40px;

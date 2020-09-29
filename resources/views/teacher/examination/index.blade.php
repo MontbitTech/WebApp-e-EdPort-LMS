@@ -8,12 +8,12 @@
 <section class="main-section">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-8 col-lg-8 col-12">
+            <div class="col-md-12 col-lg-12 col-12">
                 @include('teacher.examination.createexam')
-{{--                @include('teacher.examination.exam')--}}
-{{--                @include('teacher.examination.questionadd')--}}
+                {{-- @include('teacher.examination.exam')--}}
+                {{-- @include('teacher.examination.questionadd')--}}
             </div>
-            <div class="col-md-4 col-lg-4 col-12">
+            <!-- <div class="col-md-4 col-lg-4 col-12">
 
                 <div class="col-md-12 px-0">
                     <div class="card card-info ">
@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </section>
