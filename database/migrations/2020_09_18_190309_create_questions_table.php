@@ -21,7 +21,8 @@ class CreateQuestionsTable extends Migration
             $table->string('type_of_question');
             $table->string('class');
             $table->unsignedInteger('subject_id');
-            $table->string('chapter');
+            $table->string('chapter')->nullable();
+            $table->string('topic')->nullable();
 
             $table->foreign('subject_id')->references('id')->on('tbl_student_subjects');
 

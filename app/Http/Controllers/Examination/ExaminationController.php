@@ -16,6 +16,10 @@ use App\SupportVideo;
 use Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\Http\Requests\ExamValidation;
+use App\libraries\Utility\DateUtility;
+
+
 
 /**
  * Class ExaminationController
@@ -43,8 +47,8 @@ class ExaminationController extends Controller
         return $examination ? $examination : 'No record found';
     }
 
-    public function store (Request $request)
-    {
+    public function store (ExamValidation $request)
+    {        
         $loggedTeacher = Session::get('teacher_session');
 
         $examination = new Examination();
@@ -53,8 +57,6 @@ class ExaminationController extends Controller
         $examination->save();
 
         return $examination;
-
-//        return Response::json(['success' => true, 'response' => $examination]);
     }
 
     public function destroy (Request $request, $id)
@@ -103,16 +105,18 @@ class ExaminationController extends Controller
             ->where('classroom_id', $classroomExaminationMapping->classroom_id)->get();
     }
 
-    public function setExamination (Request $request)
+    public function setExamination (ExamValidation $request)
     {
         $examination = $this->store($request);
+        $minutesToAdd = $request->duration + number_format((16/100)*$request->duration,0);
+        $endTime    =    DateUtility::getFutureDateTime($minutesToAdd, $request->start_time);
 
         ExaminationUtility::createClassroomExaminationMapping([
             'examination_id'         => $examination->id,
             'classroom_id'           => $request->classroom_id,
             'duration'               => date('H:i', mktime(0, $request->duration)),
             'start_time'             => $request->start_time,
-            'end_time'               => $request->end_time,
+            'end_time'               => $endTime,
             'examination_properties' => json_encode($request->properties),
         ]);
 

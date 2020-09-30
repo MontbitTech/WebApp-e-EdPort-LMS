@@ -1,11 +1,12 @@
 <style>
-    /* .test {
+    .test {
         background-color: white;
         margin-top: -16px;
         margin-left: 11px;
         padding-right: 0px;
         position: absolute;
-    } */
+    }
+
     /* .timestyle {
         background-color: white;
         display: inline-flex;
@@ -29,9 +30,9 @@
         <ul id="progressbar" class="text-center">
             <li class="active step0" id="step1">Exam name</li>
             <li class="step0" id="step2">Create Exam</li>
-            <li class="step0" id="step3">Exam</li>
+            <li class="step0" id="step3">Assign Weightage/Marks</li>
             <li class="step0" id="step4">Assign Examination</li>
-            <li class="step0" id="step5">t/c</li>
+            <li class="step0" id="step5">Environment Settings</li>
         </ul>
         <!-- <hr> -->
         {{-- <form action="" method="post">--}}
@@ -41,8 +42,7 @@
 
                     <div class="form-group">
                         <label class="form-control-label">Examination Name</label>
-                        <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..."
-                               class="color-btn" onblur="validate1(0)"></div>
+                        <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)"></div>
                 </div>
             </div>
 
@@ -56,30 +56,34 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="row mb-3 px-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <select class="form-control" id="class" onchange="getChapter()">
                                 <option value="" selected>Select Class</option>
                                 @foreach($classes as $class)
-                                    <option value="{{$class}}">{{$class}}</option>
+                                <option value="{{$class}}">{{$class}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <select class="form-control" id="subject" onchange="getChapter()">
                                 <option value="" selected>Select Subject</option>
                                 @foreach($subjects as $subject)
-                                    <option value="{{$subject->id}}">{{$subject->subject_name}}</option>
+                                <option value="{{$subject->id}}">{{$subject->subject_name}}</option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4">
-                            <select class="form-control" id="chapter" onchange="getQuestion()">
+                        <div class="col-md-3">
+                            <select class="form-control" id="chapter" onchange="getTopic()">
                                 <option value="" selected>Select Chapter</option>
                             </select>
                         </div>
+                        <div class="col-md-3">
+                            <select class="form-control" id="topic" onchange="getQuestion()">
+                                <option value="" selected>Select Topic</option>
+                            </select>
+                        </div>
                         <div class="circle">
-                            <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right"
-                                    title="Add Question">
+                            <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right" title="Add Question">
                             </button>
                         </div>
                     </div>
@@ -100,7 +104,7 @@
                     <div class="fa-long-arrow-left prev btn">Prev</div>
                 </div>
                 <div class="circle">
-                    <div class=" fa-long-arrow-right next btn" id="next2">Next
+                    <div class=" fa-long-arrow-right next btn" id="next2" onclick="validate2(0)">Next
                     </div>
                 </div>
             </div>
@@ -111,8 +115,12 @@
 
                     <div class="form-group">
                         <div class="form-group" id="questionPapershow">
-                            <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamNameshow"> Exam
+                            <h3 for="exampleInputQuestionname" class="text-center" id="displayExamNameshow"> Exam
                                 Name</h3>
+                            <div class="row">
+                                <div class="col-md-10">question</div>
+                                <div class="col-md-2"> marks</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -130,36 +138,33 @@
             <div class="row d-flex justify-content-center text-center">
                 <div class="col-md-8">
                     <div class="row">
-                        <div class="col-md-6 my-2 ">
+                        <div class="col-md-4 my-2 ">
                             <label class="d-block mb-2">Class</label>
-                            <select class="form-control select1 " data-placeholder="Class" name="classroom_id"
-                                    id="select1"
-                                    style="width: 100%;">
+                            <select class="form-control select1 " data-placeholder="Class" name="classroom_id" id="select1" style="width: 100%;">
                                 <option value="">Select Classroom</option>
                                 @foreach($classrooms as $classroom)
-                                    <option value="{{$classroom->id}}">{{$classroom->class_name}} {{$classroom->section_name}}
-                                        , {{$classroom->studentSubject->subject_name}}</option>
+                                <option value="{{$classroom->id}}">{{$classroom->class_name}} {{$classroom->section_name}}
+                                    , {{$classroom->studentSubject->subject_name}}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="col-md-6  my-2 ">
+                        <div class="col-md-4  my-2 ">
                             <label for="times">Duration (In Minutes)</label>
-                            {{--                            <div class="form-control ">--}}
-                            <input type="number" class="form-control" id="hh" name="duration"
-                                   placeholder="Duration in Miutes">
-                            {{--                                <input type="number" class="style-houser" id="ss" s name="duration[mm]" min="0" max="59"--}}
-                            {{--                                       placeholder="00">--}}
-                            {{--                            </div>--}}
+                            {{-- <div class="form-control ">--}}
+                            <input type="number" class="form-control" id="hh" name="duration" placeholder="Duration in Miutes">
+                            {{-- <input type="number" class="style-houser" id="ss" s name="duration[mm]" min="0" max="59"--}}
+                            {{-- placeholder="00">--}}
+                            {{-- </div>--}}
                         </div>
-                        <div class="col-md-6 my-2 ">
+                        <div class="col-md-4 my-2 ">
                             <label for="times">Start Time</label>
                             <input type="datetime-local" id="timestart" class="form-control input-xs" name="start_time">
                         </div>
-                        <div class="col-md-6 my-2 ">
+                        {{-- <div class="col-md-6 my-2 ">
                             <label for="times">End Time</label>
                             <input type="datetime-local" id="timeend" class="form-control input-xs" name="end_time">
-                        </div>
+                        </div>--}}
                     </div>
                 </div>
             </div>
@@ -177,7 +182,16 @@
                                </div> -->
         </div>
         <div class="card bg-data card-hiden-new b-0 ">
-            <div class="row d-flex justify-content-around m-0 p-0">
+            <div class="mb-3 text-center">
+                advanced setting
+                <label class="switch   ">
+                    <!-- <input type="hidden" name="properties[keepFullScreen]" value="0"> -->
+                    <input type="checkbox" name="setting" value="1" onchange="valueChanged()" class="data-show">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+
+            <div class="row  hidden-data justify-content-around d-none m-0 p-0">
                 <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                     <div class="row m-0 p-0">
                         <div class="col-md-12 p-0 m-0">
@@ -194,9 +208,7 @@
                         </div>
                         <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
                         <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts"
-                                   placeholder="1-5"
-                                   class="form-control m-auto w-75  " min="1" max="5">
+                            <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5" class="form-control m-auto w-75  " value="3" min="1" max="5">
 
                         </div>
                     </div>
@@ -217,9 +229,7 @@
                         </div>
                         <div class="col-md-8 mt-2"> multitaskingAttempts</div>
                         <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[multitaskingAttempts]" id="multitaskingAttempts"
-                                   placeholder="1-5"
-                                   class="form-control m-auto w-75  " min="1" max="5">
+                            <input type="number" name="properties[multitaskingAttempts]" id="multitaskingAttempts" value="3" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                         </div>
                     </div>
@@ -240,35 +250,33 @@
                         </div>
                         <div class="col-md-8 mt-2">userAudioWarningCount</div>
                         <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[userAudioWarningCount]" id="userAudioWarningCount"
-                                   placeholder="1-5"
-                                   class="form-control m-auto w-75  " min="1" max="5">
+                            <input type="number" name="properties[userAudioWarningCount]" value="3" id="userAudioWarningCount" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                         </div>
                     </div>
                 </div>
-                {{--                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
-                {{--                    <div class="row m-0 p-0">--}}
-                {{--                        <div class="col-md-12 p-0 m-0">--}}
-                {{--                            <div class="test"> Full Screen while giving exam</div>--}}
-                {{--                        </div>--}}
-                {{--                        <div class="col-md-8 mt-2">keepFullScreen</div>--}}
-                {{--                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">--}}
-                {{--                            <label class="switch  ">--}}
-                {{--                                <input type="hidden" name="properties[keepFullScreen]" value="0">--}}
-                {{--                                <input type="checkbox" name="properties[keepFullScreen]" checked>--}}
-                {{--                                <span class="slider round"></span>--}}
-                {{--                            </label>--}}
+                {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
+                {{-- <div class="row m-0 p-0">--}}
+                {{-- <div class="col-md-12 p-0 m-0">--}}
+                {{-- <div class="test"> Full Screen while giving exam</div>--}}
+                {{-- </div>--}}
+                {{-- <div class="col-md-8 mt-2">keepFullScreen</div>--}}
+                {{-- <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">--}}
+                {{-- <label class="switch  ">--}}
+                {{-- <input type="hidden" name="properties[keepFullScreen]" value="0">--}}
+                {{-- <input type="checkbox" name="properties[keepFullScreen]" checked>--}}
+                {{-- <span class="slider round"></span>--}}
+                {{-- </label>--}}
 
-                {{--                        </div>--}}
-                {{--                        <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>--}}
-                {{--                        <div class="col-md-4 p-0 my-2 m-0">--}}
-                {{--                            <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5"--}}
-                {{--                                   class="form-control m-auto w-75  " min="1" max="5">--}}
+                {{-- </div>--}}
+                {{-- <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>--}}
+                {{-- <div class="col-md-4 p-0 my-2 m-0">--}}
+                {{-- <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5"--}}
+                {{-- class="form-control m-auto w-75  " min="1" max="5">--}}
 
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                </div>--}}
+                {{-- </div>--}}
+                {{-- </div>--}}
+                {{-- </div>--}}
                 {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
                 {{-- <div class="row m-0 p-0">--}}
                 {{-- <div class="col-md-12 p-0 m-0">--}}
@@ -302,16 +310,12 @@
                         </div>
                         <div class="col-md-8 mt-2"> userNotAloneWarningCount</div>
                         <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[userNotAloneWarningCo]" id="userNotAloneWarningCo"
-                                   placeholder="1-5"
-                                   class="form-control m-auto w-75  " min="1" max="5">
+                            <input type="number" name="properties[userNotAloneWarningCo]" value="3" id="userNotAloneWarningCo" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                         </div>
                         <div class="col-md-8 mt-2"> userNotVisibleWarning</div>
                         <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[userNotVisibleWarning]" id="userNotVisibleWarning"
-                                   placeholder="1-5"
-                                   class="form-control m-auto w-75  " min="1" max="5">
+                            <input type="number" name="properties[userNotVisibleWarning]" value="3" id="userNotVisibleWarning" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                         </div>
                     </div>
@@ -402,8 +406,7 @@
                             </label>
                         </div>
                         <div class="col-md-12 col-lg-12 col-12 mb-2">
-                            <textarea cols="10" rows="1" name="properties[examTerminationReason]" class="form-control"
-                                      style="resize: none;" placeholder="examTerminationReason"></textarea>
+                            <textarea cols="10" rows="1" name="properties[examTerminationReason]" class="form-control" style="resize: none;" placeholder="examTerminationReason"></textarea>
                         </div>
 
                     </div>
@@ -423,8 +426,7 @@
 
                         </div>
                         <div class="col-md-12 col-lg-12 col-12 mb-2">
-                            <textarea cols="10" rows="1" name="properties[examPausedReason]" class="form-control"
-                                      style="resize: none;" placeholder="examPausedReason"></textarea>
+                            <textarea cols="10" rows="1" name="properties[examPausedReason]" class="form-control" style="resize: none;" placeholder="examPausedReason"></textarea>
                         </div>
 
                     </div>
@@ -444,9 +446,7 @@
 
                         </div>
                         <div class="col-md-12 col-lg-12 col-12 mb-2">
-                            <textarea cols="10" rows="1" name="properties[systemIncompatibleReason]"
-                                      class="form-control"
-                                      style="resize: none;" placeholder="systemIncompatibleReason"></textarea>
+                            <textarea cols="10" rows="1" name="properties[systemIncompatibleReason]" class="form-control" style="resize: none;" placeholder="systemIncompatibleReason"></textarea>
                         </div>
                         <!-- <div class="col-md-8 mt-2"> systemIncompatibleReason</div>
                             <div class="col-md-4 p-0 my-2 m-0">
@@ -471,7 +471,7 @@
     var wrappers = $(".createdata"); //Fields wrapper
     var add_buttons = $(".data"); //Add button ID
     var xx = 2; //initlal text box count
-    $(add_buttons).click(function (e) { //on add input button click
+    $(add_buttons).click(function(e) { //on add input button click
         e.preventDefault();
         if (xx < max_fieldss) { //max input box allowed
             xx++; //text box increment
@@ -531,12 +531,12 @@
         }
     });
 
-    $('#examname').on('focusout', function () {
+    $('#examname').on('focusout', function() {
         $('#displayExamName').html($(this).val());
         $('#displayExamNameshow').html($(this).val());
     });
 
-    $(wrappers).on("click", ".remove_field", function (e) { //user click on remove text
+    $(wrappers).on("click", ".remove_field", function(e) { //user click on remove text
         e.preventDefault();
         $(this).parent().parent('div').remove();
         xx--;
@@ -551,28 +551,67 @@
         getQuestion();
         $('.loader').show();
         $.ajax({
-            url    : "{{url('/getChapter')}}",
-            type   : "GET",
-            data   : {
-                class  : className,
+            url: "{{url('/getChapter')}}",
+            type: "GET",
+            data: {
+                class: className,
                 subject: subject
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (result) {
+            success: function(result) {
                 $('.loader').fadeOut();
                 if (result.success) {
                     $('#chapter').empty();
                     $('#chapter').append('<option value="">Select Chapter </option>');
-                    $.each(result.response, function (key, value) {
+                    $.each(result.response, function(key, value) {
                         $('#chapter').append('<option value="' + value + '">' + value + '</option>');
                     });
                 } else {
                     $.fn.notifyMe('error', 5, result.response);
                 }
             },
-            error  : function (error_r) {
+            error: function(error_r) {
+                $('.loader').fadeOut();
+            }
+        });
+    }
+
+    function getTopic() {
+        var subject = $('#subject').val();
+        var className = $('#class').val();
+        var chapter = $('#chapter').val();
+
+        if (subject == '' || className == '')
+            return;
+
+        getQuestion();
+        $('.loader').show();
+        $.ajax({
+            url: "{{url('/getTopic')}}",
+            type: "GET",
+            data: {
+                class: className,
+                subject: subject,
+                chapter: chapter
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                $('.loader').fadeOut();
+                if (result.success) {
+                    $('#topic').empty();
+                    $('#topic').append('<option value="">Select Topic </option>');
+                    $.each(result.response, function(key, value) {
+                        $('#topic').append('<option value="' + value + '">' + value + '</option>');
+                    });
+                } else {
+                    $.fn.notifyMe('error', 5, result.response);
+                }
+            },
+            error: function(error_r) {
                 $('.loader').fadeOut();
             }
         });
@@ -582,28 +621,31 @@
         var subject = $('#subject').val();
         var className = $('#class').val();
         var chapter = $('#chapter').val();
+        var topic = $('#topic').val();
+
         if (subject == '' || className == '')
             return;
 
         $('.loader').show();
         $.ajax({
-            url    : "{{url('/getQuestions')}}",
-            type   : "GET",
-            data   : {
-                class     : className,
+            url: "{{url('/getQuestions')}}",
+            type: "GET",
+            data: {
+                class: className,
                 subject_id: subject,
-                chapter   : chapter
+                chapter: chapter,
+                topic: topic
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (result) {
+            success: function(result) {
                 $('.loader').fadeOut();
                 if (result.success) {
                     $('#question').empty();
                     let count = 1;
                     let data = "";
-                    $.each(result.response, function (key, value) {
+                    $.each(result.response, function(key, value) {
                         data += '<div class="col-md-1 mt-2">';
                         data += '<input type="checkbox" class="questionCheckbox" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" value="' + value.id + '"> </div>';
                         data += '<div class="col-md-11  mt-2"> ';
@@ -617,7 +659,7 @@
                     $.fn.notifyMe('error', 5, result.response);
                 }
             },
-            error  : function (error_r) {
+            error: function(error_r) {
                 $('.loader').fadeOut();
                 console.log(error_r);
             }
@@ -630,6 +672,7 @@
                 let className = $('#class').val();
                 let subject = $('#subject').val();
                 let chapter = $('#chapter').val();
+                let topic = $('#topic').val();
                 let questionText = obj.parent().next().find('.newQuestion').val();
                 let optionsHtml = obj.parent().next().find('.options');
                 let answersHtml = obj.parent().next().find('.answers');
@@ -644,16 +687,16 @@
                         answer.push(options[answersHtml[i].value]);
                 }
 
-                return insertQuestion(val, obj, questionText, options, answer, className, subject, chapter);
+                return insertQuestion(val, obj, questionText, options, answer, className, subject, chapter, topic);
 
             }
-            let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question ;
-            data +='<input type="hidden" name="questions[]" value="' + questionId + '"></p>';
+            let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question;
+            data += '<input type="hidden" id="ques" name="questions[]" value="' + questionId + '"></p>';
             let show = '<div class="row mb-2"><div class="col-md-10">';
             show += "<p class='bg-light font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
             show += '</div>';
             show += '<div class="col-md-2">';
-            show += '<input type="number" name="marks[' + questionId + ']" class="form-control" id="questionmarks' + questionId + '" >';
+            show += '<input type="number" name="marks[' + questionId + ']" class="form-control" id="questionmarks' + questionId + '" value="1" >';
             show += '</div></div>';
             $('#questionPaper').append(data);
             $('#questionPapershow').append(show);
@@ -670,7 +713,7 @@
         }
     }
 
-    function insertQuestion(val, obj, questionText, options, answer, className, subject, chapter) {
+    function insertQuestion(val, obj, questionText, options, answer, className, subject, chapter, topic) {
         var checkBox1 = document.getElementById("checkbox1" + val);
         var checkBox2 = document.getElementById("checkbox2" + val);
         var checkBox3 = document.getElementById("checkbox3" + val);
@@ -684,39 +727,41 @@
 
             $('.loader').show();
             $.ajax({
-                url    : "{{url('/saveQuestion')}}",
-                type   : "POST",
-                data   : {
-                    question  : questionText,
-                    options   : options,
-                    answer    : answer,
-                    class     : className,
+                url: "{{url('/saveQuestion')}}",
+                type: "POST",
+                data: {
+                    question: questionText,
+                    options: options,
+                    answer: answer,
+                    class: className,
                     subject_id: subject,
-                    chapter   : chapter
+                    chapter: chapter,
+                    topic: topic
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function (result) {
+                success: function(result) {
                     $('.loader').fadeOut();
                     if (result.success) {
                         obj.attr('data-questionId', result.response.id);
                         let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + result.response.id + "'>" + result.response.question;
-                        data +='<input type="hidden" name="questions[]" value="' + result.response.id + '"></p>';
+                        data += '<input type="hidden" id="ques" name="questions[]" value="' + result.response.id + '"></p>';
                         let show = '<div class="row mb-2"><div class="col-md-10">';
                         show += "<p class='bg-light mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
                         show += '</div>';
                         show += '<div class="col-md-2">';
-                        show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control" id="questionmarks' + result.response.question + '" >';
+                        show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control" id="questionmarks' + result.response.question + '" value="1" >';
                         show += '</div></div>';
                         $('#questionPaper').append(data);
                         $('#questionPapershow').append(show);
+                        $.fn.notifyMe('error', 5, 'Question added successfully');
 
                     } else {
                         $.fn.notifyMe('error', 5, result.response);
                     }
                 },
-                error  : function (error_r) {
+                error: function(error_r) {
                     $('.loader').fadeOut();
                 }
             });
@@ -756,15 +801,15 @@
 
     function deleteQuestion(questionId) {
         $.ajax({
-            url    : "{{url('/deleteQuestion/')}}" + "/" + questionId,
-            type   : "POST",
-            data   : {
+            url: "{{url('/deleteQuestion/')}}" + "/" + questionId,
+            type: "POST",
+            data: {
                 id: questionId,
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            success: function (result) {
+            success: function(result) {
                 $('.loader').fadeOut();
                 if (result.success) {
                     $.fn.notifyMe('success', 5, result.response);
@@ -772,7 +817,7 @@
                     $.fn.notifyMe('error', 5, result.response);
                 }
             },
-            error  : function (error_r) {
+            error: function(error_r) {
                 $('.loader').fadeOut();
             }
         });
@@ -788,4 +833,12 @@
             // Avoiding letters on FF
             if (!e.value) e.value = '00';
         });
+</script>
+<script type="text/javascript">
+    function valueChanged() {
+        if ($('.data-show').is(":checked"))
+            $(".hidden-data").removeClass("d-none");
+        else
+            $(".hidden-data").addClass("d-none");
+    }
 </script>
