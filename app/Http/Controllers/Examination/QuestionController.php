@@ -37,6 +37,7 @@ class QuestionController extends Controller
         $question->class = $request->class;
         $question->subject_id = $request->subject_id;
         $question->chapter = $request->chapter;
+        $question->topic = $request->topic;
 
         $question->save();
 

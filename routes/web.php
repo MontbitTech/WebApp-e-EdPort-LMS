@@ -206,6 +206,7 @@ Route::group(['middleware' => 'teachersession'], function () {
 
     Route::get('/teacher/generateReports', 'ReportController@assignmentSubmissionGrades');
     Route::get('/getChapter', 'ImportCMSLinksController@getChapter');
+    Route::get('/getTopic','ImportCMSLinksController@getTopic');
 
     // Examination
 

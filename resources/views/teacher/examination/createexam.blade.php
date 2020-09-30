@@ -56,7 +56,7 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12">
                     <div class="row mb-3 px-3">
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <select class="form-control" id="class" onchange="getChapter()">
                                 <option value="" selected>Select Class</option>
                                 @foreach($classes as $class)
@@ -64,7 +64,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-3">
                             <select class="form-control" id="subject" onchange="getChapter()">
                                 <option value="" selected>Select Subject</option>
                                 @foreach($subjects as $subject)
@@ -72,9 +72,14 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-4">
-                            <select class="form-control" id="chapter" onchange="getQuestion()">
+                        <div class="col-md-3">
+                            <select class="form-control" id="chapter" onchange="getTopic()">
                                 <option value="" selected>Select Chapter</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" id="topic" onchange="getQuestion()">
+                                <option value="" selected>Select Topic</option>
                             </select>
                         </div>
                         <div class="circle">
@@ -195,8 +200,7 @@
                         <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
                         <div class="col-md-4 p-0 my-2 m-0">
                             <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts"
-                                   placeholder="1-5"
-                                   class="form-control m-auto w-75  " min="1" max="5">
+                                   placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5" value="">
 
                         </div>
                     </div>
@@ -578,10 +582,51 @@
         });
     }
 
+    function getTopic() {
+        var subject = $('#subject').val();
+        var className = $('#class').val();
+        var chapter = $('#chapter').val();
+
+        if (subject == '' || className == '')
+            return;
+
+        getQuestion();
+        $('.loader').show();
+        $.ajax({
+            url    : "{{url('/getTopic')}}",
+            type   : "GET",
+            data   : {
+                class  : className,
+                subject: subject,
+                chapter: chapter
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (result) {
+                $('.loader').fadeOut();
+                if (result.success) {
+                    $('#topic').empty();
+                    $('#topic').append('<option value="">Select Topic </option>');
+                    $.each(result.response, function (key, value) {
+                        $('#topic').append('<option value="' + value + '">' + value + '</option>');
+                    });
+                } else {
+                    $.fn.notifyMe('error', 5, result.response);
+                }
+            },
+            error  : function (error_r) {
+                $('.loader').fadeOut();
+            }
+        });
+    }
+
     function getQuestion() {
         var subject = $('#subject').val();
         var className = $('#class').val();
         var chapter = $('#chapter').val();
+        var topic = $('#topic').val();
+
         if (subject == '' || className == '')
             return;
 
@@ -592,7 +637,8 @@
             data   : {
                 class     : className,
                 subject_id: subject,
-                chapter   : chapter
+                chapter   : chapter,
+                topic     : topic
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -630,6 +676,7 @@
                 let className = $('#class').val();
                 let subject = $('#subject').val();
                 let chapter = $('#chapter').val();
+                let topic = $('#topic').val();
                 let questionText = obj.parent().next().find('.newQuestion').val();
                 let optionsHtml = obj.parent().next().find('.options');
                 let answersHtml = obj.parent().next().find('.answers');
@@ -644,16 +691,16 @@
                         answer.push(options[answersHtml[i].value]);
                 }
 
-                return insertQuestion(val, obj, questionText, options, answer, className, subject, chapter);
+                return insertQuestion(val, obj, questionText, options, answer, className, subject, chapter, topic);
 
             }
-            let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question ;
-            data +='<input type="hidden" name="questions[]" value="' + questionId + '"></p>';
+            let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question;
+            data += '<input type="hidden" name="questions[]" value="' + questionId + '"></p>';
             let show = '<div class="row mb-2"><div class="col-md-10">';
             show += "<p class='bg-light font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
             show += '</div>';
             show += '<div class="col-md-2">';
-            show += '<input type="number" name="marks[' + questionId + ']" class="form-control" id="questionmarks' + questionId + '" >';
+            show += '<input type="number" name="marks[' + questionId + ']" class="form-control" id="questionmarks' + questionId + '" value="1" >';
             show += '</div></div>';
             $('#questionPaper').append(data);
             $('#questionPapershow').append(show);
@@ -670,7 +717,7 @@
         }
     }
 
-    function insertQuestion(val, obj, questionText, options, answer, className, subject, chapter) {
+    function insertQuestion(val, obj, questionText, options, answer, className, subject, chapter, topic) {
         var checkBox1 = document.getElementById("checkbox1" + val);
         var checkBox2 = document.getElementById("checkbox2" + val);
         var checkBox3 = document.getElementById("checkbox3" + val);
@@ -692,7 +739,8 @@
                     answer    : answer,
                     class     : className,
                     subject_id: subject,
-                    chapter   : chapter
+                    chapter   : chapter,
+                    topic     : topic
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -702,15 +750,16 @@
                     if (result.success) {
                         obj.attr('data-questionId', result.response.id);
                         let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + result.response.id + "'>" + result.response.question;
-                        data +='<input type="hidden" name="questions[]" value="' + result.response.id + '"></p>';
+                        data += '<input type="hidden" name="questions[]" value="' + result.response.id + '"></p>';
                         let show = '<div class="row mb-2"><div class="col-md-10">';
                         show += "<p class='bg-light mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
                         show += '</div>';
                         show += '<div class="col-md-2">';
-                        show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control" id="questionmarks' + result.response.question + '" >';
+                        show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control" id="questionmarks' + result.response.question + '" value="1" >';
                         show += '</div></div>';
                         $('#questionPaper').append(data);
                         $('#questionPapershow').append(show);
+                        $.fn.notifyMe('error', 5, 'Question added successfully');
 
                     } else {
                         $.fn.notifyMe('error', 5, result.response);

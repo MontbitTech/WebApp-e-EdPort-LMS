@@ -326,4 +326,13 @@ class ImportCMSLinksController extends Controller
 
         return Response::json(['success' => true, 'response' => $chapters]);
     }
+
+    public function getTopic (Request $request)
+    {
+        $topics = CmsLink::where('class', $request->class)->where('subject', $request->subject)
+            ->where('chapter', $request->chapter)
+            ->groupBy('topic')->pluck('topic');
+
+        return Response::json(['success' => true, 'response' => $topics]);
+    }
 }
