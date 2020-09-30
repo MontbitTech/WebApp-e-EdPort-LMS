@@ -755,7 +755,7 @@
                         show += '</div></div>';
                         $('#questionPaper').append(data);
                         $('#questionPapershow').append(show);
-                        $.fn.notifyMe('error', 5, 'Question added successfully');
+                        $.fn.notifyMe('success', 5, 'Question added successfully');
 
                     } else {
                         $.fn.notifyMe('error', 5, result.response);
