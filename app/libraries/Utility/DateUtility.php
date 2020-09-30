@@ -95,7 +95,7 @@ class DateUtility
      * @return bool|string
      */
     public static function getFutureDateTime ($minutes, $date = false)
-    {
+    {    
         if ( $date ) {
             return self::getDateTime(strtotime($date) + $minutes * 60);
         } else {
@@ -194,12 +194,5 @@ class DateUtility
             return date('l');
         }
     }
-
-    public static function calculateEndTime ($startTime,$duration)
-    {
-        $minutesToAdd = $duration + number_format((16/100)*$duration,0);
-        $endTime = date('Y-m-d H:i:s', strtotime("+{$minutesToAdd} minutes", strtotime($startTime)));
-        
-         return $endTime;
-    }
+    
 }

@@ -108,7 +108,8 @@ class ExaminationController extends Controller
     public function setExamination (ExamValidation $request)
     {
         $examination = $this->store($request);
-        $endTime     = DateUtility::calculateEndTime($request->start_time,$request->duration);
+        $minutesToAdd = $request->duration + number_format((16/100)*$request->duration,0);
+        $endTime    =    DateUtility::getFutureDateTime($minutesToAdd, $request->start_time);
 
         ExaminationUtility::createClassroomExaminationMapping([
             'examination_id'         => $examination->id,
