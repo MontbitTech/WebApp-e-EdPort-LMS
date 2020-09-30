@@ -19,19 +19,22 @@ function validate1(val) {
 function validate2(val) {
     v1 = document.getElementById("class");
     v2 = document.getElementById("subject");
-    v3 = document.getElementById("chapter").value;
+    question  = document.getElementById("ques");
 
     flag1 = true;
     flag2 = true;
+
 
     if (val >= 1 || val == 0) {
         if (v1.value == "") {
             v1.style.borderColor = "red";
             document.getElementById("chapter").style.borderColor = "red";
+            document.getElementById("topic").style.borderColor = "red";
             flag1 = false;
         } else {
             v1.style.borderColor = "#ced4da";
             document.getElementById("chapter").style.borderColor = "#ced4da";
+            document.getElementById("topic").style.borderColor = "#ced4da";
             flag1 = true;
         }
     }
@@ -40,13 +43,22 @@ function validate2(val) {
         if (v2.value == "") {
             v2.style.borderColor = "red";
             document.getElementById("chapter").style.borderColor = "red";
+            document.getElementById("topic").style.borderColor = "red";
             flag2 = false;
         } else {
             v2.style.borderColor = "#ced4da";
             document.getElementById("chapter").style.borderColor = "#ced4da";
+            document.getElementById("topic").style.borderColor = "#ced4da";
             flag2 = true;
         }
     }
+
+    if(!(document.getElementById("questionPaper").contains(question))){
+        // alert('Please select question');
+        flag1 = false;
+    }
+    else  flag1 = true;
+
     flag = flag1 && flag2;
 
     return flag;

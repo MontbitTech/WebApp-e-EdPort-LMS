@@ -16,6 +16,8 @@ use App\SupportVideo;
 use Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use App\Http\Requests\ExamValidation;
+
 
 /**
  * Class ExaminationController
@@ -43,15 +45,8 @@ class ExaminationController extends Controller
         return $examination ? $examination : 'No record found';
     }
 
-    public function store (Request $request)
-    {
-        $request->validate([
-            'title'        => 'required',
-        ],
-        [
-            'title.required'  => 'Exam name is required',
-        ]);
-        
+    public function store (ExamValidation $request)
+    {        
         $loggedTeacher = Session::get('teacher_session');
 
         $examination = new Examination();
@@ -60,8 +55,6 @@ class ExaminationController extends Controller
         $examination->save();
 
         return $examination;
-
-//        return Response::json(['success' => true, 'response' => $examination]);
     }
 
     public function destroy (Request $request, $id)
@@ -112,36 +105,17 @@ class ExaminationController extends Controller
 
     public function calculateEndTime (Request $request)
     {
-        $dateTime                 = (strtotime($request->start_time));
-        $date                     = date('Y.m.d', $dateTime);
-        $timeInHours              = date('H', $dateTime);
-        $timeInMin                = date('i', $dateTime);
-        $durationInHours          = date('H', mktime(0, $request->duration));
-        $durationInMin            = date('i', mktime(0, $request->duration));
-        $durationPercentage       = number_format((16/100)*$request->duration,0);
-        $endTimeMin               = $timeInMin+$durationInMin+$durationPercentage;
-        $durationPercentageHours  = date('H', mktime(0, $endTimeMin));
-        $durationPercentageMins   = date('i', mktime(0, $endTimeMin));
-        $endTimeHours             = $timeInHours+$durationInHours+$durationPercentageHours;
-        $endTime                  = $date.'T'.$endTimeHours.':'.$durationPercentageMins;
+        $dateTime       =  (strtotime($request->start_time));
+        $endTimeMin     =  date('i', $dateTime)+date('i', mktime(0, $request->duration))+number_format((16/100)*$request->duration,0);
+        $endTimeHours   =  date('H', $dateTime)+date('H', mktime(0, $request->duration))+(date('H', mktime(0, $endTimeMin)));
+        $endTime        =  date('Y.m.d', $dateTime).'T'.$endTimeHours.':'.date('i', mktime(0, $endTimeMin));
 
-        return $endTime;
+         return $endTime;
     }
 
 
-    public function setExamination (Request $request)
+    public function setExamination (ExamValidation $request)
     {
-        $request->validate([
-            'classroom_id'  => 'required',
-            'duration'      => 'required',
-            'start_time'    => 'required',
-        ],
-        [
-            'classroom_id.required'  => 'Select Classroom',
-            'duration.required'      => 'Duration is required',
-            'start_time.required'    => 'Start time is required',
-        ]);
-
         $examination = $this->store($request);
         $endTime     = $this->calculateEndTime($request);
 
