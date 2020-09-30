@@ -1,82 +1,65 @@
 function validate1(val) {
     v1 = document.getElementById("examname");
-    // v2 = document.getElementById("examname");
 
     flag1 = true;
-    //  flag2 = true;
 
     if (val >= 1 || val == 0) {
         if (v1.value == "") {
             v1.style.borderColor = "red";
-            // v1.style.color = "red";
             flag1 = false;
         } else {
             v1.style.borderColor = "#373c8e";
             flag1 = true;
         }
     }
-
-    // if (val >= 2 || val == 0) {
-    //     if (v2.value == "") {
-    //         v2.style.borderColor = "red";
-    //         flag2 = false;
-    //     } else {
-    //         v2.style.borderColor = "#ced4da";
-    //         flag2 = true;
-    //     }
-    // }
-
-    //flag = flag1 && flag2;
     flag = flag1;
     return flag;
 }
 
-// function validate3(val) {
-//     // v1 = $('#questionmarks');
-//     // console.log(v1);
-//     v1 = document.getElementById("questionmarks");
-//     // v2 = document.getElementById("examname");
+function validate2(val) {
+    v1 = document.getElementById("class");
+    v2 = document.getElementById("subject");
+    v3 = document.getElementById("chapter").value;
 
-//     flag1 = true;
-//     //  flag2 = true;
+    flag1 = true;
+    flag2 = true;
 
-//     if (val >= 1 || val == 0) {
-//         if (v1.value == "") {
-//             v1.style.borderColor = "red";
-//             flag1 = false;
-//         } else {
-//             v1.style.borderColor = "pink";
-//             flag1 = true;
-//         }
-//     }
+    if (val >= 1 || val == 0) {
+        if (v1.value == "") {
+            v1.style.borderColor = "red";
+            document.getElementById("chapter").style.borderColor = "red";
+            flag1 = false;
+        } else {
+            v1.style.borderColor = "#ced4da";
+            document.getElementById("chapter").style.borderColor = "#ced4da";
+            flag1 = true;
+        }
+    }
 
-//     // if (val >= 2 || val == 0) {
-//     //     if (v2.value == "") {
-//     //         v2.style.borderColor = "red";
-//     //         flag2 = false;
-//     //     } else {
-//     //         v2.style.borderColor = "#ced4da";
-//     //         flag2 = true;
-//     //     }
-//     // }
+    if (val >= 2 || val == 0) {
+        if (v2.value == "") {
+            v2.style.borderColor = "red";
+            document.getElementById("chapter").style.borderColor = "red";
+            flag2 = false;
+        } else {
+            v2.style.borderColor = "#ced4da";
+            document.getElementById("chapter").style.borderColor = "#ced4da";
+            flag2 = true;
+        }
+    }
+    flag = flag1 && flag2;
 
-//     //flag = flag1 && flag2;
-//     flag = flag1;
-//     return flag;
-// }
+    return flag;
+}
 
 function validate4(val) {
     v1 = document.getElementById("select1");
     v2 = document.getElementById("hh");
-    // v3 = document.getElementById("ss");
-    v4 = document.getElementById("timestart");
-    v5 = document.getElementById("timeend");
+    v3 = document.getElementById("timestart");
 
     flag1 = true;
     flag2 = true;
     flag3 = true;
-    flag4 = true;
-    flag5 = true;
 
     if (val >= 1 || val == 0) {
         if (v1.value == "") {
@@ -98,37 +81,17 @@ function validate4(val) {
         }
     }
 
-    // if (val >= 3 || val == 0) {
-    //     if (v3.value == "") {
-    //         v3.style.borderColor = "red";
-    //         flag3 = false;
-    //     } else {
-    //         v3.style.borderColor = "#ced4da";
-    //         flag3 = true;
-    //     }
-    // }
-
-    if (val >= 4 || val == 0) {
-        if (v4.value == "" ) {
-            v4.style.borderColor = "red";
-            flag4 = false;
+    if (val >= 3 || val == 0) {
+        if (v3.value == "" ) {
+            v3.style.borderColor = "red";
+            flag3 = false;
         } else {
-            v4.style.borderColor = "#ced4da";
-            flag4 = true;
+            v3.style.borderColor = "#ced4da";
+            flag3 = true;
         }
     }
 
-    if (val >= 5 || val == 0) {
-        if (v5.value == "" || v5.value <= v4.value) {
-            v5.style.borderColor = "red";
-            flag5 = false;
-        } else {
-            v5.style.borderColor = "#ced4da";
-            flag5 = true;
-        }
-    }
-
-    flag = flag1 && flag4 && flag5;
+    flag = flag1 && flag2 && flag3;
 
     return flag;
 }
@@ -195,60 +158,6 @@ function validate4(val) {
 //     return flag;
 // }
 
-// function validate2(val) {
-//     v1 = document.getElementById("web-title");
-//     v2 = document.getElementById("desc");
-
-//     flag1 = true;
-//     flag2 = true;
-
-//     if (val >= 1 || val == 0) {
-//         if (v1.value == "") {
-//             v1.style.borderColor = "red";
-//             flag1 = false;
-//         } else {
-//             v1.style.borderColor = "#ced4da";
-//             flag1 = true;
-//         }
-//     }
-
-//     if (val >= 2 || val == 0) {
-//         if (v2.value == "") {
-//             v2.style.borderColor = "red";
-//             flag2 = false;
-//         } else {
-//             v2.style.borderColor = "#ced4da";
-//             flag2 = true;
-//         }
-//     }
-
-//     flag = flag1 && flag2;
-
-//     return flag;
-// }
-// $(document).ready(function () {
-//     $.validator.setDefaults({
-//         ClickHandler: function (form) {
-//             form.click();
-//         }
-//     });
-//     $('#createdata').validate({
-//         rules: {
-//             exampleInputQuestion: {
-//                 required: true,
-//                 minlength: 5
-//             },
-//         },
-//         messages: {
-//             exampleInputQuestion: {
-//                 required: "Enter The Name",
-//                 minlength: "Please, at least {0} characters are necessary"
-//             },
-//         }
-
-
-//     });
-// });
 $(document).ready(function () {
 
     var current_fs, next_fs, previous_fs;
@@ -267,7 +176,7 @@ $(document).ready(function () {
             val1 = false;
         }
 
-        if (!str2.localeCompare($(this).attr('id')) == true) {
+        if (!str2.localeCompare($(this).attr('id')) && validate2(0) == true) {
             val2 = true;
         } else {
             val2 = false;

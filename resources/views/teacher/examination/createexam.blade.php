@@ -100,7 +100,7 @@
                     <div class="fa-long-arrow-left prev btn">Prev</div>
                 </div>
                 <div class="circle">
-                    <div class=" fa-long-arrow-right next btn" id="next2">Next
+                    <div class=" fa-long-arrow-right next btn" id="next2" onclick="validate2(0)">Next
                     </div>
                 </div>
             </div>
@@ -130,7 +130,7 @@
             <div class="row d-flex justify-content-center text-center">
                 <div class="col-md-8">
                     <div class="row">
-                        <div class="col-md-6 my-2 ">
+                        <div class="col-md-4 my-2 ">
                             <label class="d-block mb-2">Class</label>
                             <select class="form-control select1 " data-placeholder="Class" name="classroom_id"
                                     id="select1"
@@ -143,7 +143,7 @@
                             </select>
                         </div>
 
-                        <div class="col-md-6  my-2 ">
+                        <div class="col-md-4  my-2 ">
                             <label for="times">Duration (In Minutes)</label>
                             {{--                            <div class="form-control ">--}}
                             <input type="number" class="form-control" id="hh" name="duration"
@@ -152,14 +152,14 @@
                             {{--                                       placeholder="00">--}}
                             {{--                            </div>--}}
                         </div>
-                        <div class="col-md-6 my-2 ">
+                        <div class="col-md-4 my-2 ">
                             <label for="times">Start Time</label>
                             <input type="datetime-local" id="timestart" class="form-control input-xs" name="start_time">
                         </div>
-                        <div class="col-md-6 my-2 ">
+                       {{--  <div class="col-md-6 my-2 ">
                             <label for="times">End Time</label>
                             <input type="datetime-local" id="timeend" class="form-control input-xs" name="end_time">
-                        </div>
+                        </div>--}}
                     </div>
                 </div>
             </div>

@@ -45,6 +45,13 @@ class ExaminationController extends Controller
 
     public function store (Request $request)
     {
+        $request->validate([
+            'title'        => 'required',
+        ],
+        [
+            'title.required'  => 'Exam name is required',
+        ]);
+        
         $loggedTeacher = Session::get('teacher_session');
 
         $examination = new Examination();
@@ -103,16 +110,47 @@ class ExaminationController extends Controller
             ->where('classroom_id', $classroomExaminationMapping->classroom_id)->get();
     }
 
+    public function calculateEndTime (Request $request)
+    {
+        $dateTime                 = (strtotime($request->start_time));
+        $date                     = date('Y.m.d', $dateTime);
+        $timeInHours              = date('H', $dateTime);
+        $timeInMin                = date('i', $dateTime);
+        $durationInHours          = date('H', mktime(0, $request->duration));
+        $durationInMin            = date('i', mktime(0, $request->duration));
+        $durationPercentage       = number_format((16/100)*$request->duration,0);
+        $endTimeMin               = $timeInMin+$durationInMin+$durationPercentage;
+        $durationPercentageHours  = date('H', mktime(0, $endTimeMin));
+        $durationPercentageMins   = date('i', mktime(0, $endTimeMin));
+        $endTimeHours             = $timeInHours+$durationInHours+$durationPercentageHours;
+        $endTime                  = $date.'T'.$endTimeHours.':'.$durationPercentageMins;
+
+        return $endTime;
+    }
+
+
     public function setExamination (Request $request)
     {
+        $request->validate([
+            'classroom_id'  => 'required',
+            'duration'      => 'required',
+            'start_time'    => 'required',
+        ],
+        [
+            'classroom_id.required'  => 'Select Classroom',
+            'duration.required'      => 'Duration is required',
+            'start_time.required'    => 'Start time is required',
+        ]);
+
         $examination = $this->store($request);
+        $endTime     = $this->calculateEndTime($request);
 
         ExaminationUtility::createClassroomExaminationMapping([
             'examination_id'         => $examination->id,
             'classroom_id'           => $request->classroom_id,
             'duration'               => date('H:i', mktime(0, $request->duration)),
             'start_time'             => $request->start_time,
-            'end_time'               => $request->end_time,
+            'end_time'               => $endTime,
             'examination_properties' => json_encode($request->properties),
         ]);
 
