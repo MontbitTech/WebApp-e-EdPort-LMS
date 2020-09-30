@@ -42,6 +42,7 @@ class CreateClassroomsJob implements ShouldQueue
      */
     public function handle()
     {
+        set_time_limit(0);
         $rowCount = 1;
         foreach($this->data as $row){
             $subjects = explode('|', $row['subjects']);

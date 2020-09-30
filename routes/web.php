@@ -205,9 +205,19 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/teacher/updateAttendance', 'StudentAttendanceController@update');
 
     Route::get('/teacher/generateReports', 'ReportController@assignmentSubmissionGrades');
-    // Examination 
+    Route::get('/getChapter', 'ImportCMSLinksController@getChapter');
+    Route::get('/getTopic','ImportCMSLinksController@getTopic');
 
-    Route::get('/teacher/examination', 'ExaminationController@index')->name('examination');
+    // Examination
+
+    Route::get('/teacher/examination', 'Examination\ExaminationController@createExamination')->name('examination');
+//    Route::get('/teacher/examination/back', 'Examination\ExaminationController@createExamination')->name('examination');
+    Route::post('/teacher/setExamination','Examination\ExaminationController@setExamination');
+
+    Route::post('/examination/create', 'Examination\ExaminationController@store');
+    Route::get('/getQuestions', 'Examination\QuestionController@index');
+    Route::post('/saveQuestion', 'Examination\QuestionController@store');
+    Route::post('/deleteQuestion/{id}', 'Examination\QuestionController@destroy');
 });
 
 
