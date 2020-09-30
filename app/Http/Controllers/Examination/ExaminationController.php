@@ -17,6 +17,8 @@ use Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\ExamValidation;
+use App\libraries\Utility\DateUtility;
+
 
 
 /**
@@ -103,21 +105,10 @@ class ExaminationController extends Controller
             ->where('classroom_id', $classroomExaminationMapping->classroom_id)->get();
     }
 
-    public function calculateEndTime (Request $request)
-    {
-        $dateTime       =  (strtotime($request->start_time));
-        $endTimeMin     =  date('i', $dateTime)+date('i', mktime(0, $request->duration))+number_format((16/100)*$request->duration,0);
-        $endTimeHours   =  date('H', $dateTime)+date('H', mktime(0, $request->duration))+(date('H', mktime(0, $endTimeMin)));
-        $endTime        =  date('Y.m.d', $dateTime).'T'.$endTimeHours.':'.date('i', mktime(0, $endTimeMin));
-
-         return $endTime;
-    }
-
-
     public function setExamination (ExamValidation $request)
     {
         $examination = $this->store($request);
-        $endTime     = $this->calculateEndTime($request);
+        $endTime     = DateUtility::calculateEndTime($request->start_time,$request->duration);
 
         ExaminationUtility::createClassroomExaminationMapping([
             'examination_id'         => $examination->id,
