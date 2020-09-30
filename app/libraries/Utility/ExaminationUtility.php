@@ -19,5 +19,7 @@ class ExaminationUtility
         }
 
         $classroomExaminationMapping->save();
+
+        return $classroomExaminationMapping;
     }
 }

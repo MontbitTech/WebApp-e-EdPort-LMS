@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Examination;
 use App\HelpTicketCategory;
 use App\Http\Controllers\Controller;
 use App\libraries\Utility\ExaminationUtility;
+use App\libraries\Utility\TeacherUtility;
 use App\Models\Examination\ClassroomExaminationMapping;
 use App\Models\Examination\Examination;
 use App\Models\Examination\ExaminationQuestionMapping;
@@ -18,7 +19,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use App\Http\Requests\ExamValidation;
 use App\libraries\Utility\DateUtility;
-
 
 
 /**
@@ -38,6 +38,11 @@ class ExaminationController extends Controller
         return Examination::where('created_by', $loggedTeacher['teacher_id'])->get();
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return string
+     */
     public function show (Request $request, $id)
     {
         $loggedTeacher = Session::get('teacher_session');
@@ -47,8 +52,12 @@ class ExaminationController extends Controller
         return $examination ? $examination : 'No record found';
     }
 
+    /**
+     * @param ExamValidation $request
+     * @return Examination
+     */
     public function store (ExamValidation $request)
-    {        
+    {
         $loggedTeacher = Session::get('teacher_session');
 
         $examination = new Examination();
@@ -59,6 +68,10 @@ class ExaminationController extends Controller
         return $examination;
     }
 
+    /**
+     * @param Request $request
+     * @param $id
+     */
     public function destroy (Request $request, $id)
     {
         $loggedTeacher = Session::get('teacher_session');
@@ -68,6 +81,10 @@ class ExaminationController extends Controller
             $examination->delete();
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function createExamination (Request $request)
     {
         $helpCategories = HelpTicketCategory::get();
@@ -84,34 +101,57 @@ class ExaminationController extends Controller
     }
 
 
+    /**
+     * @param Request $request
+     * @param $id
+     * @return mixed
+     */
     public function takeExamination (Request $request, $id)
     {
-        return ClassroomExaminationMapping::with('examination', 'classroom')->find($id);
+        $examClassroom = ClassroomExaminationMapping::with('examination', 'classroom')->find($id);
+
+        if ( !$examClassroom )
+            return Response::json(['success' => false, 'response' => 'Invalid Exam']);
+
+        if ( $examClassroom->start_time > DateUtility::getDateTime() )
+            return Response::json(['success' => false, 'response' => 'Please wait till the start time of the exam']);
+
+        return Response::json(['success' => true, 'response' => $examClassroom]);
     }
 
+    /**
+     * @param Request $request
+     * @return mixed
+     */
     public function getQuestions (Request $request)
     {
-        $classroomExaminationMapping = ClassroomExaminationMapping::with('examination', 'classroom')->find($request->classroom_examiation_mapping_id);
+        $examinationData['classroomExaminationMapping'] = ClassroomExaminationMapping::with('examination', 'classroom')->find($request->classroom_examiation_mapping_id);
 
-        $student = Student::whereHas('class', function ($q) use ($classroomExaminationMapping) {
-            $q->where('class_name', $classroomExaminationMapping->classroom->class_name);
-            $q->where('section_name', $classroomExaminationMapping->classroom->section_name);
+        $student = Student::whereHas('class', function ($q) use ($examinationData) {
+            $q->where('class_name', $examinationData['classroomExaminationMapping']->classroom->class_name);
+            $q->where('section_name', $examinationData['classroomExaminationMapping']->classroom->section_name);
         })->where('email', $request->email)->first();
 
         if ( !$student )
-            return false;
+            return Response::json(['success' => false, 'response' => 'Invalid Student']);
 
-        $questions = ExaminationQuestionMapping::with('questions')->where('examination_id', $classroomExaminationMapping->examination_id)
-            ->where('classroom_id', $classroomExaminationMapping->classroom_id)->get();
+        $examinationData['questions'] = ExaminationQuestionMapping::with('questions')->where('examination_id', $examinationData['classroomExaminationMapping']->examination_id)
+            ->where('classroom_id', $examinationData['classroomExaminationMapping']->classroom_id)->get();
+
+        return Response::json(['success' => true, 'response' => $examinationData]);
     }
 
+    /**
+     * @param ExamValidation $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function setExamination (ExamValidation $request)
     {
         $examination = $this->store($request);
-        $minutesToAdd = $request->duration + number_format((16/100)*$request->duration,0);
-        $endTime    =    DateUtility::getFutureDateTime($minutesToAdd, $request->start_time);
+        $minutesToAdd = $request->duration + number_format(( 16 / 100 ) * $request->duration, 0);
+        $endTime = DateUtility::getFutureDateTime($minutesToAdd, $request->start_time);
 
-        ExaminationUtility::createClassroomExaminationMapping([
+        $classroomExaminationMapping = ExaminationUtility::createClassroomExaminationMapping([
             'examination_id'         => $examination->id,
             'classroom_id'           => $request->classroom_id,
             'duration'               => date('H:i', mktime(0, $request->duration)),
@@ -129,6 +169,11 @@ class ExaminationController extends Controller
         }
 
         ExaminationQuestionMapping::insert($examinationQuestionMappings);
+
+        TeacherUtility::createAnnouncementInClassroom(
+            env('APP_URL') . '/student/takeExam/' . $classroomExaminationMapping->id . '  is the url to take your exam',
+            StudentClass::find($request->classroom_id)->g_class_id
+        );
 
         return redirect()->route('examination')->with('success', 'added successfully');
     }
