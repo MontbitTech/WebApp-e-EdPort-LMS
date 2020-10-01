@@ -90,6 +90,7 @@
                 </div>
                 <div class="col-md-6 ">
                     <div class="row" id="question"></div>
+                    <div class="row" id="validateCheckbox"></div>
                     <div class="createdata pr-2"></div>
                 </div>
                 <div class="col-md-6 border-left">
