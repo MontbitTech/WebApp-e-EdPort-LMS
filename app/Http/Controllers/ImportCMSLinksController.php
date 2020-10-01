@@ -248,6 +248,10 @@ class ImportCMSLinksController extends Controller
 						Log::error('Invalid subject name : ROW - ' . $i);
 						$error = "found";
 						$rows .= $i . ",";
+					}elseif (!empty($reader["book_url"]) && !CustomHelper::is_url($reader['book_url'])) {
+						Log::error('Invalid Link url : ROW - ' . $i);
+						$error = "found";
+						$rows .= $i . ",";
 					} elseif (!empty($reader["link"]) && !CustomHelper::is_url($reader['link'])) {
 						Log::error('Invalid Link url : ROW - ' . $i);
 						$error = "found";
@@ -268,7 +272,7 @@ class ImportCMSLinksController extends Controller
 						Log::error('Invalid Assignment url : ROW - ' . $i);
 						$error = "found";
 						$rows .= $i . ",";
-					} elseif (empty($reader["link"]) && empty($reader["youtube"]) && empty($reader["khan_academy"]) && empty($reader["others"]) && empty($reader["assignment"])) {
+					} elseif (empty($reader["book_url"]) && empty($reader["link"]) && empty($reader["youtube"]) && empty($reader["khan_academy"]) && empty($reader["others"]) && empty($reader["assignment"])) {
 						Log::error('Either one CMS link  should be present : ROW - ' . $i);
 						$error = "found";
 						$rows .= $i . ",";
@@ -276,7 +280,7 @@ class ImportCMSLinksController extends Controller
 						//$subjects = \DB::table('tbl_student_subjects')->where('subject_name',$reader["subject"])->get();
 
 						if ($subjects->count() > 0) {
-							$studentClassExist = \DB::select('select id from tbl_cmslinks where class="' . $reader["class"] . '" and subject="' . $subjects[0]->id . '" and topic="' . $reader["topic"] . '" and link="' . $reader["link"] . '" and youtube="' . $reader["youtube"] . '"and khan_academy="' . $reader["khan_academy"] . '"and others="' . $reader["others"] . '" and assignment_link="' . $reader["assignment"] . '"');
+							$studentClassExist = \DB::select('select id from tbl_cmslinks where class="' . $reader["class"] . '" and subject="' . $subjects[0]->id . '" and topic="' . $reader["topic"] . '" and link="' . $reader["link"] . '" and youtube="' . $reader["youtube"] . '"and khan_academy="' . $reader["khan_academy"] . '"and others="' . $reader["others"] . '" and assignment_link="' . $reader["assignment"] . '"and book_url="' . $reader["book_url"] . '"');
 
 							if (count($studentClassExist) > 0) {
 								Log::error('Link already exists : ROW - ' . $i);
