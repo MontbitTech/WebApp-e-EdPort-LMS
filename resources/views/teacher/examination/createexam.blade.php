@@ -717,16 +717,6 @@
     }
 
     function insertQuestion(val, obj, questionText, options, answer, className, subject, chapter, topic) {
-        var checkBox1 = document.getElementById("checkbox1" + val);
-        var checkBox2 = document.getElementById("checkbox2" + val);
-        var checkBox3 = document.getElementById("checkbox3" + val);
-        var checkBox4 = document.getElementById("checkbox4" + val);
-        var opt1 = document.getElementById("option1" + val).value;
-        var opt2 = document.getElementById("option2" + val).value;
-        var opt3 = document.getElementById("option3" + val).value;
-        var opt4 = document.getElementById("option4" + val).value;
-        var question = document.getElementById("exampleInputQuestion" + val);
-        if (questionText && (checkBox1.checked == true || checkBox2.checked == true || checkBox3.checked == true || checkBox4.checked == true) && (opt1 != '' && opt2 != '' && opt3 != '' && opt4 != '')) {
 
             $('.loader').show();
             $.ajax({
@@ -761,45 +751,16 @@
                         $.fn.notifyMe('success', 5, 'Question added successfully');
 
                     } else {
-                        $.fn.notifyMe('error', 5, result.response);
+                        $.each(result.response, function(key, value) {
+                        $.fn.notifyMe('error', 10, value);
+                    });
                     }
                 },
                 error: function(error_r) {
                     $('.loader').fadeOut();
                 }
             });
-
-        } else {
-            if (!questionText) {
-                question.style.borderColor = "red";
-                $("#check" + val).prop("checked", false);
-            } else question.style.borderColor = "#ced4da";
-
-            if (opt1 == '') {
-                document.getElementById("option1" + val).style.borderColor = "red";
-                $("#check" + val).prop("checked", false);
-            } else document.getElementById("option1" + val).style.borderColor = "#ced4da";
-
-            if (opt2 == '') {
-                document.getElementById("option2" + val).style.borderColor = "red";
-                $("#check" + val).prop("checked", false);
-            } else document.getElementById("option2" + val).style.borderColor = "#ced4da";
-
-            if (opt3 == '') {
-                document.getElementById("option3" + val).style.borderColor = "red";
-                $("#check" + val).prop("checked", false);
-            } else document.getElementById("option3" + val).style.borderColor = "#ced4da";
-
-            if (opt4 == '') {
-                document.getElementById("option4" + val).style.borderColor = "red";
-                $("#check" + val).prop("checked", false);
-            } else document.getElementById("option4" + val).style.borderColor = "#ced4da";
-
-            if (checkBox1.checked == false && checkBox2.checked == false && checkBox3.checked == false && checkBox4.checked == false) {
-                alert("select atleast one answer");
-                $("#check" + val).prop("checked", false);
-            }
-        }
+        
     }
 
     function deleteQuestion(questionId) {
