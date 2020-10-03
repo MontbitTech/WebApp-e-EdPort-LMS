@@ -38,6 +38,7 @@ class CreateTeacherJob implements ShouldQueue
      */
     public function handle()
     {
+        set_time_limit(0);
         $rowCount = 1;
         foreach($this->data as $row){
             $response = $this->createTeacher($row, $rowCount);
