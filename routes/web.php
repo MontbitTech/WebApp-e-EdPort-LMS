@@ -226,3 +226,12 @@ Route::get('/student/takeExam/{id}', 'Examination\ExaminationController@takeExam
 Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass')->name('reload-timetable');
 Route::get('/timeTable/{class}/{section}', 'ImportTimetableController@download_Timetable');
 //Reload Timetable URL - http://<domain>/addData_pastClass
+
+
+//  **************** student examination  ************
+Route::get('/student/exam', function () {
+    return view('examination.exam');
+})->name('student.exam');
+Route::get('/student/result', function () {
+    return view('examination.result');
+})->name('student.result');
