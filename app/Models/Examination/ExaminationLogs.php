@@ -9,9 +9,9 @@ class ExaminationLogs extends Model
 {
     protected $table = 'ex_examination_logs';
 
-    public function examination ()
+    public function classroom_examination_mapping ()
     {
-        return $this->hasOne(Examination::class);
+        return $this->hasOne(ClassroomExaminationMapping::class);
     }
 
     public function student ()

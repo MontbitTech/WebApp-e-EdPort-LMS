@@ -13,7 +13,7 @@ class ExaminationQuestionMapping extends Model
         return $this->hasOne(Examination::class, 'id', 'examination_id');
     }
 
-    public function questionss()
+    public function questions()
     {
         return $this->hasOne(Question::class, 'id', 'question_id');
     }

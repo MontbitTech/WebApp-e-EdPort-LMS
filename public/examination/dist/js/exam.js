@@ -1,60 +1,60 @@
 // Dummy Data (Replace by API)
 var examProperties = {
-    keepFullScreen: true,
-    fullScreenExitAttempts: 3,
-    blockMultitasking: true,
-    multitaskingAttempts: 3,
-    userImageCapture: true,
-    userVideoTracking: true,
-    userNotAloneWarningCount: 3,
+    keepFullScreen            : true,
+    fullScreenExitAttempts    : 3,
+    blockMultitasking         : true,
+    multitaskingAttempts      : 3,
+    userImageCapture          : true,
+    userVideoTracking         : true,
+    userNotAloneWarningCount  : 3,
     userNotVisibleWarningCount: 3,
-    userAudioTracking: true,
-    userAudioWarningCount: 3,
-    blockKeyboard: true,
-    blockRightClick: true,
-    timeBound: true,
+    userAudioTracking         : true,
+    userAudioWarningCount     : 3,
+    blockKeyboard             : true,
+    blockRightClick           : true,
+    timeBound                 : true,
 }
 
 var questions = [
     {
         question: "_______ is the practice and precautions taken to protect valuable information from unauthorized access, recording, disclosure or destruction.",
-        options: ["Network Security", "Database Security", "Information Security", "Physical Security"]
+        options : ["Network Security", "Database Security", "Information Security", "Physical Security"]
     },
     {
         question: "From the options below, which of them is not a threat to information security?",
-        options: ["Disaster", "Eavesdropping", "Information leakage", "Unchanged default password"]
+        options : ["Disaster", "Eavesdropping", "Information leakage", "Unchanged default password"]
     },
     {
         question: "From the options below, which of them is not a vulnerability to information security?",
-        options: ["flood", "without deleting data, disposal of storage media", "unchanged default password", "latest patches and updates not done"]
+        options : ["flood", "without deleting data, disposal of storage media", "unchanged default password", "latest patches and updates not done"]
     },
     {
         question: "_______ platforms are used for safety and protection of information in the cloud.",
-        options: ["Cloud workload protection platforms", "Cloud security protocols", "AWS", "One Drive"]
+        options : ["Cloud workload protection platforms", "Cloud security protocols", "AWS", "One Drive"]
     },
     {
         question: "Which of the following information security technology is used for avoiding browser-based hacking?",
-        options: ["Anti-malware in browsers", "Remote browser access", "Adware remover in browsers", "Incognito mode in a browser"]
+        options : ["Anti-malware in browsers", "Remote browser access", "Adware remover in browsers", "Incognito mode in a browser"]
     },
     {
         question: "The full form of EDR is _______",
-        options: ["Endpoint Detection and recovery", "Early detection and response", "Endpoint Detection and response", "Endless Detection and Recovery"]
+        options : ["Endpoint Detection and recovery", "Early detection and response", "Endpoint Detection and response", "Endless Detection and Recovery"]
     },
     {
         question: "_______ technology is used for analyzing and monitoring traffic in network and information flow.",
-        options: ["Cloud access security brokers (CASBs)", "Managed detection and response (MDR)", "Network Security Firewall", "Network traffic analysis (NTA)"]
+        options : ["Cloud access security brokers (CASBs)", "Managed detection and response (MDR)", "Network Security Firewall", "Network traffic analysis (NTA)"]
     },
     {
         question: "Compromising confidential information comes under _______",
-        options: ["Bug", "Threat", "Vulnerability", "Attack"]
+        options : ["Bug", "Threat", "Vulnerability", "Attack"]
     },
     {
         question: "Lack of access control policy is a _______",
-        options: ["Bug", "Threat", "Vulnerability", "Attack"]
+        options : ["Bug", "Threat", "Vulnerability", "Attack"]
     },
     {
         question: "Possible threat to any information cannot be _______",
-        options: ["reduced", "transferred", "protected", "ignored"]
+        options : ["reduced", "transferred", "protected", "ignored"]
     },
 ]
 
@@ -101,9 +101,7 @@ var userPreviousResponse = [
     },
 ]
 
-var userPreviousLog = [
-
-]
+var userPreviousLog = []
 
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -171,25 +169,25 @@ var finalResponse = new Array()
 
 // Proctor Speech Dictionary
 var d = {
-    'lessTimeRemaining': {
+    'lessTimeRemaining'    : {
         0: 'less time remaining',
         1: 'hurry up exam time is about to finish',
         2: 'hurry up very less time remaining',
         3: 'hurry the exam is about to finish soon',
     },
-    'fullScreenWarning': {
+    'fullScreenWarning'    : {
         0: 'Fullscreen Exit',
         1: 'do not exit the full screen',
         2: 'remain in full screen while giving exam',
         3: 'please do not switch from full screen mode'
     },
-    'multitaskingWarning': {
+    'multitaskingWarning'  : {
         0: 'Tab/Browser Switch',
         1: 'avoid multitasking while giving exam',
         2: 'kindly do not switch tabs or applications',
         3: 'focus only on your exam'
     },
-    'userNotAloneWarning': {
+    'userNotAloneWarning'  : {
         0: 'Not Alone',
         1: 'remain alone while giving exam',
         2: 'kindly do not involve others in your exam',
@@ -201,19 +199,19 @@ var d = {
         2: 'please stay in front of camera and ensure proper lighting',
         3: 'remain in front of the camera'
     },
-    'userAudioWarning': {
+    'userAudioWarning'     : {
         0: 'Too Noisy',
         1: 'please stay quiet',
         2: 'do not make noise while giving exam',
         3: 'don\'t talk! remain quiet'
     },
-    'keyboardUsed': {
+    'keyboardUsed'         : {
         0: 'Keyboard Used',
         1: 'please do not use keyboard',
         2: 'do not use keyboard while giving exam',
         3: 'using keyboard is not allowed'
     },
-    'rightClickUsed': {
+    'rightClickUsed'       : {
         0: 'Right-Click Used',
         1: 'please do not use right-click',
         2: 'do not use right-click while giving exam',
@@ -259,8 +257,7 @@ function monitorFullScreen() {
                 --fullScreenExitAttempts
                 if (fullScreenExitAttempts <= 0) {
                     terminateExam('Closed full screen')
-                }
-                else {
+                } else {
                     // Proctor Warning
                     proctorLog('fullScreenWarning')
                     proctorSpeak('fullScreenWarning')
@@ -280,8 +277,7 @@ function trackSwitchTabApplication() {
             --multitaskingAttempts
             if (multitaskingAttempts <= 0) {
                 terminateExam('Switched tab/browser')
-            }
-            else {
+            } else {
                 // Proctor Warning
                 proctorLog('multitaskingWarning')
                 proctorSpeak('multitaskingWarning')
@@ -328,10 +324,14 @@ function startTimer(hh = 3, mm = 0, ss = 0) {
                 clearInterval(timerInterval)
                 finishExamConfirmation()
                 finishExam('Time Over')
-            }
-            else {
-                if (hh == 0 && mm == 15 && ss == 0) { $('#timer').css('color', 'red'); proctorSpeak('lessTimeRemaining') }
-                if (examTerminated) { window.location.replace(displayResultURL) }
+            } else {
+                if (hh == 0 && mm == 15 && ss == 0) {
+                    $('#timer').css('color', 'red');
+                    proctorSpeak('lessTimeRemaining')
+                }
+                if (examTerminated) {
+                    window.location.replace(displayResultURL)
+                }
             }
             $('#timer').html((hh < 10 ? '0' + hh : hh) + ':' + (mm < 10 ? '0' + mm : mm) + ':' + (ss < 10 ? '0' + ss : ss))
         }
@@ -344,36 +344,55 @@ function startTimer(hh = 3, mm = 0, ss = 0) {
 // Gather user detail
 async function gatherUserDetail() {
     const { value: email } = await Swal.fire({
-        icon: 'question',
-        title: 'Registered Email ID',
-        input: 'email',
-        inputPlaceholder: 'Enter your registered email ID',
-        inputValue: student,
-        inputAttributes: {
+        icon             : 'question',
+        title            : 'Registered Email ID',
+        input            : 'email',
+        inputPlaceholder : 'Enter your registered email ID',
+        inputValue       : student,
+        inputAttributes  : {
             'aria-label': 'Registered email ID'
         },
         allowOutsideClick: false,
-        allowEscapeKey: false
+        allowEscapeKey   : false
     })
     checkValidUser(email)
 }
 
 // Check if user is valid
 function checkValidUser(email) {
-    // TODO: server side check user
-    if (email === 'correct@user.com') {
-        // TODO: Update username and examination code
-        // TODO: Pull exam properties
-        setEnvironment()
-        // TODO: Pull questions
-        // TODO: Pull userPreviousResponse
-        // TODO: Pull userPreviousLog
-        // Take User Permissions
-        return acquireUserPermissionHelper()
-    }
-    else {
-        endExam('userDetailsIncorrect')
-    }
+    var examId = $('#classroomExaminationId').val();
+    var url = $('#validateStudentUrl').val();
+    $.ajax({
+        url    : url,
+        type   : "POST",
+        data   : {
+            email                          : email,
+            classroom_examiation_mapping_id: examId
+        },
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        success: function (result) {
+            if (result.success) {
+                // TODO: Update username and examination code
+                console.log(result.response.classroomExaminationMapping);
+                examProperties = JSON.parse(result.response.classroomExaminationMapping.examination_properties);// TODO: Pull exam properties
+                setEnvironment()
+                // console.log(examProperties);
+                questions = result.response.questions; // TODO: Pull questions
+                userPreviousResponse = result.response.previousResponse; // TODO: Pull userPreviousResponse
+                userPreviousLog = result.response.logs// TODO: Pull userPreviousLog
+                console.log(questions, userPreviousLog, userPreviousResponse);
+                return acquireUserPermissionHelper()
+            } else {
+
+                endExam('userDetailsIncorrect')
+            }
+        },
+        error  : function (error_r) {
+
+        }
+    });
 }
 
 // Add question for each question in exam
@@ -383,7 +402,7 @@ function displayQuestion(q) {
     $('#questions').append('<div id="question' + qc + '" style="padding-top:60px;" class="col-lg-12"><div id="q' + qc + '" class="card"></div></div>')
     $('#q' + qc).append('<div class="card-header"><h3 class="card-title">Question ' + qc + '</h3><div class="card-tools"><button id="q' + qc + '_flag" type="button" onclick="toggleFlag(' + qc + ')" class="btn btn-tool"><i class="fas fa-flag"> Flag</i></button><button id="q' + qc + '_checked" type="button" onclick="toggleChecked(' + qc + ')" class="btn btn-tool"><i class="fas fa-check-double"> Checked</i></button></div ></div>')
     $('#q' + qc).append('<div id="q' + qc + '_body" class="card-body"><h6 class= "card-title">' + q.question + '</h6><br/><br/></div>')
-    q.options.forEach(populateOptions)
+    q.options.forEach(populateOptions);
     $('#questionList').append('<li class="nav-item"><a href="#question' + qc + '" class="nav-link"><i id="question' + qc + '_button" class="far fa-circle text-warning fa-sm nav-icon"></i><p>&nbsp;Question ' + qc + '</p></a></li>')
 }
 
@@ -413,26 +432,50 @@ async function startExam() {
     // Prepare environment
     $('#start_exam_button').remove()
     if (userVideoTracking) {
-        if (audioVideoAllowedByUser && audioVideoAllowedByUser) { proctorVideo() }
-        else { if (!audioVideoSupportedByUser) { return endExam('cameraNotFound') } else { return endExam('cameraNotAllowed') } }
+        if (audioVideoAllowedByUser && audioVideoAllowedByUser) {
+            proctorVideo()
+        } else {
+            if (!audioVideoSupportedByUser) {
+                return endExam('cameraNotFound')
+            } else {
+                return endExam('cameraNotAllowed')
+            }
+        }
     }
     if (userAudioTracking) {
-        if (audioVideoAllowedByUser && audioVideoAllowedByUser) { proctorAudio() }
-        else { if (!audioVideoSupportedByUser) { return endExam('microphoneNotFound') } else { return endExam('microphoneNotAllowed') } }
+        if (audioVideoAllowedByUser && audioVideoAllowedByUser) {
+            proctorAudio()
+        } else {
+            if (!audioVideoSupportedByUser) {
+                return endExam('microphoneNotFound')
+            } else {
+                return endExam('microphoneNotAllowed')
+            }
+        }
     }
-    if (keepFullScreen) { gotoFullScreen(); monitorFullScreen(); }
-    if (blockMultitasking) { trackSwitchTabApplication() }
-    if (blockKeyboard) { trackKeyboard() }
+    if (keepFullScreen) {
+        gotoFullScreen();
+        monitorFullScreen();
+    }
+    if (blockMultitasking) {
+        trackSwitchTabApplication()
+    }
+    if (blockKeyboard) {
+        trackKeyboard()
+    }
     if (blockRightClick) (trackRightClick())
 
     // Load questions and previous responses
+    // console.log(questions);
     questions.forEach(displayQuestion)
     userPreviousResponse.forEach(displayUserResponse)
     $('#submitButton').show()
 
     // Start timer
     examPaused = false
-    if (timeBound) { startTimer() }
+    if (timeBound) {
+        startTimer()
+    }
 
     //Auto-save user response
     saveResponse()
@@ -447,28 +490,68 @@ async function startExam() {
 function endExam(reason) {
     if (reason == 'cameraNotAllowed') {
         ErrorBox.fire({
-            timer: 10000, allowOutsideClick: false, allowEscapeKey: false, title: 'Cannot Begin Exam!', html: 'You cannot begin the exam without allowing access to camera.'
-        }).then((result) => { if (result.dismiss === Swal.DismissReason.timer) { window.location.replace(errorPageURL) } })
+            timer            : 10000,
+            allowOutsideClick: false,
+            allowEscapeKey   : false,
+            title            : 'Cannot Begin Exam!',
+            html             : 'You cannot begin the exam without allowing access to camera.'
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+                window.location.replace(errorPageURL)
+            }
+        })
     }
     if (reason == 'cameraNotFound') {
         ErrorBox.fire({
-            timer: 10000, allowOutsideClick: false, allowEscapeKey: false, title: 'Cannot Begin Exam!', html: 'You cannot give the exam on a device which does not have camera'
-        }).then((result) => { if (result.dismiss === Swal.DismissReason.timer) { window.location.replace(errorPageURL) } })
+            timer            : 10000,
+            allowOutsideClick: false,
+            allowEscapeKey   : false,
+            title            : 'Cannot Begin Exam!',
+            html             : 'You cannot give the exam on a device which does not have camera'
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+                window.location.replace(errorPageURL)
+            }
+        })
     }
     if (reason == 'microphoneNotAllowed') {
         ErrorBox.fire({
-            timer: 10000, allowOutsideClick: false, allowEscapeKey: false, title: 'Cannot Begin Exam!', html: 'You cannot begin the exam without allowing access to microphone.'
-        }).then((result) => { if (result.dismiss === Swal.DismissReason.timer) { window.location.replace(errorPageURL) } })
+            timer            : 10000,
+            allowOutsideClick: false,
+            allowEscapeKey   : false,
+            title            : 'Cannot Begin Exam!',
+            html             : 'You cannot begin the exam without allowing access to microphone.'
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+                window.location.replace(errorPageURL)
+            }
+        })
     }
     if (reason == 'microphoneNotFound') {
         ErrorBox.fire({
-            timer: 10000, allowOutsideClick: false, allowEscapeKey: false, title: 'Cannot Begin Exam!', html: 'You cannot give the exam on a device which does not have microphone.'
-        }).then((result) => { if (result.dismiss === Swal.DismissReason.timer) { window.location.replace(errorPageURL) } })
+            timer            : 10000,
+            allowOutsideClick: false,
+            allowEscapeKey   : false,
+            title            : 'Cannot Begin Exam!',
+            html             : 'You cannot give the exam on a device which does not have microphone.'
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+                window.location.replace(errorPageURL)
+            }
+        })
     }
     if (reason == 'userDetailsIncorrect') {
         ErrorBox.fire({
-            timer: 10000, allowOutsideClick: false, allowEscapeKey: false, title: 'Incorrect Details!', html: 'The email ID provided by you is incorrect. Kindly enter your registered email ID.'
-        }).then((result) => { if (result.dismiss === Swal.DismissReason.timer) { window.location.replace(errorPageURL) } })
+            timer            : 10000,
+            allowOutsideClick: false,
+            allowEscapeKey   : false,
+            title            : 'Incorrect Details!',
+            html             : 'The email ID provided by you is incorrect. Kindly enter your registered email ID.'
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+                window.location.replace(errorPageURL)
+            }
+        })
     }
 }
 
@@ -509,20 +592,29 @@ function finishExam(max = 10, delay = 1000) {
         if (examTerminated) {
             Toast.fire({
                 timer: 10000, allowEscapeKey: false, showConfirmButton: false, timerProgressBar: true,
-                icon: 'error', title: 'Examination Terminated!', html: '<b>' + examTerminationReason + '</b>'
-            }).then((result) => { if (result.dismiss === Swal.DismissReason.timer) { window.location.replace(displayResultURL) } })
-        }
-        else {
+                icon : 'error', title: 'Examination Terminated!', html: '<b>' + examTerminationReason + '</b>'
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    window.location.replace(displayResultURL)
+                }
+            })
+        } else {
             Toast.fire({
                 timer: 10000, allowEscapeKey: false, showConfirmButton: false, timerProgressBar: true,
-                icon: 'success', title: 'Saved & submitted!'
-            }).then((result) => { if (result.dismiss === Swal.DismissReason.timer) { window.location.replace(displayResultURL) } })
+                icon : 'success', title: 'Saved & submitted!'
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    window.location.replace(displayResultURL)
+                }
+            })
         }
-    }
-    else {
+    } else {
         Toast.fire({ icon: 'error', title: 'Internet Unavailable! Retrying...', timer: delay })
-        if (max > 0) { setTimeout(function () { finishExam(--max, delay * 2); }, delay + Math.random() * 100); }
-        else {
+        if (max > 0) {
+            setTimeout(function () {
+                finishExam(--max, delay * 2);
+            }, delay + Math.random() * 100);
+        } else {
             Toast.fire({ icon: 'error', title: 'Retrying Submission...', timer: delay })
             finishExam(max * 10, delay = 1000)
         }
@@ -546,8 +638,11 @@ function prepareResponse() {
     for (i = 0; i < userResponse.length; i++) {
         res = userResponse[i]['id']
         res = res.split('_')
-        if (res[1] in finalResponse) { finalResponse[res[1]] += res[2] }
-        else { finalResponse[res[1]] = res[2] }
+        if (res[1] in finalResponse) {
+            finalResponse[res[1]] += res[2]
+        } else {
+            finalResponse[res[1]] = res[2]
+        }
     }
     return finalResponse
 }
@@ -557,12 +652,10 @@ function updateResponseSummary(finalResponse) {
     if (examTerminated) {
         $('#finishExamTitle').text('Examination Terminated!')
         $('#finishExamBodyText').html('You examination was terminated by the proctor.Reason: <b>' + examTerminationReason + '</b>')
-    }
-    else if (timeOver) {
+    } else if (timeOver) {
         $('#finishExamTitle').text('Time Over!')
         $('#finishExamBodyText').text('Time is over for the current examination. We are currently saving your response on the server. Kindly do not close the tab/browser until this is done.')
-    }
-    else {
+    } else {
         $('#finishExamTitle').text('Finish Early?')
         $('#finishExamBody').html('<p>You are trying to finish the examination before the permitted time. Are you sure you want to finish this examination?</p>')
     }
@@ -582,7 +675,10 @@ function pushResponseToServer(finalResponse) {
 // Save user response every few seconds 
 function saveResponse() {
     var autoSaveInterval = setInterval(function () {
-        if (examFinished) { clearInterval(autoSaveInterval); return }
+        if (examFinished) {
+            clearInterval(autoSaveInterval);
+            return
+        }
         online = pushResponseToServer(updateResponseSummary(prepareResponse()))
         if (!online) {
             Toast.fire({ icon: 'error', title: 'Internet Unavailable! Retrying...', timer: 15000 })
@@ -594,12 +690,13 @@ function saveResponse() {
 
 // Toggle flag for questions
 function toggleFlag(qn) {
-    if ($('#q' + qn + '_checked').children('.fa-check-double').hasClass('text-success')) { toggleChecked(qn) }
+    if ($('#q' + qn + '_checked').children('.fa-check-double').hasClass('text-success')) {
+        toggleChecked(qn)
+    }
     if ($('#q' + qn + '_flag').children('.fa-flag').hasClass('text-danger')) {
         $('#q' + qn + '_flag').children('.fa-flag').removeClass('text-danger')
         $('#question' + qn + '_button').removeClass('text-danger fa-flag').addClass('text-warning fa-circle')
-    }
-    else {
+    } else {
         $('#q' + qn + '_flag').children('.fa-flag').addClass('text-danger')
         $('#question' + qn + '_button').removeClass('text-warning fa-circle').addClass('text-danger fa-flag')
     }
@@ -607,12 +704,13 @@ function toggleFlag(qn) {
 
 // Toggle checked for questions
 function toggleChecked(qn) {
-    if ($('#q' + qn + '_flag').children('.fa-flag').hasClass('text-danger')) { toggleFlag(qn) }
+    if ($('#q' + qn + '_flag').children('.fa-flag').hasClass('text-danger')) {
+        toggleFlag(qn)
+    }
     if ($('#q' + qn + '_checked').children('.fa-check-double').hasClass('text-success')) {
         $('#q' + qn + '_checked').children('.fa-check-double').removeClass('text-success')
         $('#question' + qn + '_button').removeClass('text-danger fa-check-circle').addClass('text-warning fa-circle')
-    }
-    else {
+    } else {
         $('#q' + qn + '_checked').children('.fa-check-double').addClass('text-success')
         $('#question' + qn + '_button').removeClass('text-warning fa-circle').addClass('text-success fa-check-circle')
     }
@@ -621,28 +719,32 @@ function toggleChecked(qn) {
 // MISCELLANEOUS UI/UX + CLEAN CODE
 
 const ErrorBox = Swal.mixin({
-    icon: 'error',
-    timerProgressBar: true,
+    icon             : 'error',
+    timerProgressBar : true,
     showConfirmButton: false,
-    onBeforeOpen: () => { Swal.showLoading() }
+    onBeforeOpen     : () => {
+        Swal.showLoading()
+    }
 });
 
 const Toast = Swal.mixin({
-    toast: true,
-    position: 'bottom',
+    toast            : true,
+    position         : 'bottom',
     showConfirmButton: false,
-    timer: 3000
+    timer            : 3000
 });
 
 function acquireUserPermissionHelper() {
     if (!(audioVideoAllowedByUser && audioVideoSupportedByUser)) {
         Swal.queue([{
-            icon: 'info',
-            title: 'Allow Permissions',
-            text: 'Camera and microphone access might be needed for this examination. Kindly allow the access if prompted.',
-            confirmButtonText: 'Understood!',
+            icon               : 'info',
+            title              : 'Allow Permissions',
+            text               : 'Camera and microphone access might be needed for this examination. Kindly allow the access if prompted.',
+            confirmButtonText  : 'Understood!',
             showLoaderOnConfirm: true,
-            preConfirm: () => { return acquireUserPermissions() }
+            preConfirm         : () => {
+                return acquireUserPermissions()
+            }
         }])
 
     }
@@ -662,8 +764,7 @@ async function acquireUserPermissions() {
                 return acquireUserPermissionResult()
             }
         );
-    }
-    else {
+    } else {
         audioVideoSupportedByUser = false
         return acquireUserPermissionResult()
     }
@@ -672,18 +773,29 @@ async function acquireUserPermissions() {
 function acquireUserPermissionResult() {
     if (audioVideoAllowedByUser && audioVideoSupportedByUser) {
         $('#start_exam_button').show()
-        return Swal.fire({ icon: 'success', title: 'Permissions Granted', text: 'Camera & Microphone Permissions Allowed!' })
-    }
-    else {
+        return Swal.fire({
+            icon : 'success',
+            title: 'Permissions Granted',
+            text : 'Camera & Microphone Permissions Allowed!'
+        })
+    } else {
         $('#start_exam_button').show()
-        return Swal.fire({ icon: 'warning', title: 'Permissions Dismissed', text: 'Camera & Microphone Permissions NOT Allowed!' })
+        return Swal.fire({
+            icon : 'warning',
+            title: 'Permissions Dismissed',
+            text : 'Camera & Microphone Permissions NOT Allowed!'
+        })
     }
 }
 
 function fillData() {
     for (const entry of entries) {
-        if (entry[0] == 'student') { student = entry[1] }
-        if (entry[0] == 'examID') { examID = entry[1] }
+        if (entry[0] == 'student') {
+            student = entry[1]
+        }
+        if (entry[0] == 'examID') {
+            examID = entry[1]
+        }
     }
     document.title = `परीक्षा | ${examID}`
     $('.examID').html(examID)

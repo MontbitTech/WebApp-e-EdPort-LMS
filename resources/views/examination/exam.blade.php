@@ -12,6 +12,7 @@ Refer https://www.youtube.com/watch?v=CVClHLwv-4I for face-api tutorial.
   <meta name="description" content="Pareeksha platform for conducting online examination.">
   <meta name="theme-color" content="#343a40">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <title>परीक्षा | {Examination Code}</title>
 
@@ -53,6 +54,9 @@ Refer https://www.youtube.com/watch?v=CVClHLwv-4I for face-api tutorial.
 </head>
 
 <body onselectstart="return false" class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+
+<input type="hidden" id="classroomExaminationId" value="{{$classroomExamination->id}}">
+<input type="hidden" id="validateStudentUrl" value="{{url('/student/validateStudent')}}">
   <div class="wrapper">
 
     <!-- Navbar -->

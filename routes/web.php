@@ -223,6 +223,7 @@ Route::group(['middleware' => 'teachersession'], function () {
 });
 
 Route::get('/student/takeExam/{id}', 'Examination\ExaminationController@takeExamination');
+Route::post('/student/validateStudent', 'Examination\ExaminationController@validateStudent');
 Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass')->name('reload-timetable');
 Route::get('/timeTable/{class}/{section}', 'ImportTimetableController@download_Timetable');
 //Reload Timetable URL - http://<domain>/addData_pastClass

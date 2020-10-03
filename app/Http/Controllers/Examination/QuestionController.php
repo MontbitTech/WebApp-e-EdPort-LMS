@@ -30,7 +30,7 @@ class QuestionController extends Controller
     {
         $question = new Question();
         $question->question = $request->question;
-        $question->options = json_encode($request->options);
+        $question->options = $request->options;
         $question->answer = implode(',', $request->answer);
         $question->type_of_question = count($request->answer) <= 1 ? 'single_choice' : 'multiple_choice';
 
