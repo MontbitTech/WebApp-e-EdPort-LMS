@@ -178,7 +178,7 @@ class ExaminationController extends Controller
             StudentClass::find($request->classroom_id)->g_class_id
         );
 
-        return redirect()->route('examination')->with('success', 'added successfully');
+        return redirect()->route('examination')->with('success', 'Added successfully');
     }
     public function getExamination(Request $request)
     {
