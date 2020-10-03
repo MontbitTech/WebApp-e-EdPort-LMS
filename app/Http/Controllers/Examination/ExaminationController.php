@@ -97,7 +97,8 @@ class ExaminationController extends Controller
         $subjects = StudentSubject::get();
         $classrooms = StudentClass::with('studentSubject')->get();
         $examinationshow = ClassroomExaminationMapping::all();
-        return view('teacher.examination.index', compact('videos', 'helpCategories', 'examinationshow', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms'));
+        $classroomlist = ClassroomExaminationMapping::all();
+        return view('teacher.examination.index', compact('videos', 'classroomlist', 'helpCategories', 'examinationshow', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms'));
     }
 
 
@@ -191,8 +192,11 @@ class ExaminationController extends Controller
         $examinationlist = ClassroomExaminationMapping::with('examination', 'classroom')
             ->where('classroom_id', $request->classroom_id)
             ->get();
+        //  $classrooms = StudentClass::with('studentSubject')->get();
+        //   $classroom = StudentClass::with('studentSubject')->get();
         // $assignments = ExaminationQuestionMapping::with('examinationss', 'questionss')->where('examination_id', $request->examination_id)
         //     ->where('classroom_id', $request->classroom_id)->get();
-        return json_encode(array('status' => 'success', 'data' => $examinationlist));
+        return json_encode(array('status' => 'success', 'data' => $examinationlist,));
+        //  'classroom' => $classroom,));
     }
 }

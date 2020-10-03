@@ -29,9 +29,8 @@
                      <!-- <label class="d-block mb-2">Class</label> -->
                      <select class="form-control select1 " id="examlist" onchange="getExamlist()" style="width: 100%;">
                          <option value="">Select Classroom</option>
-                         @foreach($classrooms as $classroom)
-                         <option value="{{$classroom->id}}">{{$classroom->class_name}} {{$classroom->section_name}}
-                             , {{$classroom->studentSubject->subject_name}}</option>
+                         @foreach($classroomlist->unique('classroom_id') as $classroom)
+                         <option value="{{$classroom->id}}">{{$classroom->classroom->class_name}} {{$classroom->classroom->section_name}}, {{$classroom->classroom->studentSubject->subject_name}}</option>
                          @endforeach
                      </select>
                  </div>
@@ -156,8 +155,7 @@
                  let data = "";
                  var response = JSON.parse(result);
                  response.data.forEach(function(exam) {
-                     data += '<td>' + exam.classroom.class_name + exam.classroom.section_name + '</td>';
-                     // exam.classroom.studentSubject.subject_name + '</td>';
+                     data += '<td >' + exam.classroom.class_name + exam.classroom.section_name + exam.classroom.studentSubject.subject_name + '</td>';
                      data += '<td>' + exam.examination.title + '</td>';
                      data += '<td><button type="button" data-Examination="{{$i}}" class="btn" data-toggle="modal" data-target="#showexam" > Show </button> ||';
                      data += '<button class ="btn" data-toggle="modal"   data-target="#deleteexam" > Delete </button> </td > ';
