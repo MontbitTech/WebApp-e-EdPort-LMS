@@ -460,7 +460,7 @@
             <div class="row">
                 <div class="col-md-12 col-lg-12 col-12 text-center">
                     <div class="last-prev prev btn mr-4">Prev</div>
-                    <input type="submit" class="btn last-prev">
+                    <input type="submit" class="btn last-prev" value="submit">
                 </div>
             </div>
         </div>
