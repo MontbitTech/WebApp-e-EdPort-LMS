@@ -23,6 +23,7 @@
         width: 60px;
     }
 </style>
+<link rel="stylesheet" href="{{asset('css/datepicker.css')}}">
 <link rel="stylesheet" href="{{asset('css/multipleexam.css')}}">
 <form method="post" action="{{url('/teacher/setExamination')}}">
     @csrf
@@ -160,7 +161,7 @@
                         </div>
                         <div class="col-md-4 my-2 ">
                             <label for="times">Start Time</label>
-                            <input type="datetime-local" id="timestart" class="form-control input-xs" name="start_time">
+                            <input type="datetime-local" id="timestart" class="form-control input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
                         </div>
                         {{-- <div class="col-md-6 my-2 ">
                             <label for="times">End Time</label>
@@ -467,6 +468,7 @@
     </div>
 </form>
 <script src="{{asset('js/createexam.js')}}"></script>
+<script src="{{asset('js/datepicker.js')}}"></script>
 <script>
     var max_fieldss = 100000; //maximum input boxes allowed
     var wrappers = $(".createdata"); //Fields wrapper
@@ -842,4 +844,10 @@
         else
             $(".hidden-data").addClass("d-none");
     }
+</script>
+<script>
+    flatpickr("#timestart", {
+        enableTime: true,
+        dateFormat: "Y-m-d H:i",
+    });
 </script>
