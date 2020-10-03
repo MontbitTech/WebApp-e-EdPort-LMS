@@ -161,11 +161,11 @@
                         </div>
                         <div class="col-md-4 my-2 ">
                             <label for="times">Start Time</label>
-                            <input type="datetime-local" id="timestart" class="form-control input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
+                            <input type="datetime-local" id="timestart" class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
                         </div>
                         {{-- <div class="col-md-6 my-2 ">
                             <label for="times">End Time</label>
-                            <input type="datetime-local" id="timeend" class="form-control input-xs" name="end_time">
+                            <input type="datetime-local" id="timeend" class="form-control  input-xs" name="end_time">
                         </div>--}}
                     </div>
                 </div>
