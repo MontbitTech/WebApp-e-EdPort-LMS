@@ -2336,8 +2336,10 @@ $cls = 0;
             });
     });
 
-    function shareContent(url, dateClass_id) {
+    function shareContent(url, val) {
         var notificationMsg = "Please go through " + url + " for today's notes";
+        var dateClass_id = $("#dateClass_id" + val).val();
+
         $('.loader').show();
         $.ajax({
             url: "{{url('student-notify')}}",
@@ -2353,7 +2355,7 @@ $cls = 0;
                 $('.loader').fadeOut();
                 var response = JSON.parse(result);
                 if (response.status == 'success') {
-                    $.fn.notifyMe('success', 5, response.message);
+                    $.fn.notifyMe('success', 5, 'Content shared successfully');
                 } else {
                     $.fn.notifyMe('error', 5, response.message);
                 }
