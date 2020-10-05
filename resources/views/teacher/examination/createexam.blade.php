@@ -90,9 +90,9 @@
                     </div>
                 </div>
                 <div class="col-md-6 ">
+                    <div class="createdata pr-2"></div>
                     <div class="row" id="question"></div>
                     <div class="row" id="validateCheckbox"></div>
-                    <div class="createdata pr-2"></div>
                 </div>
                 <div class="col-md-6 border-left">
                     <div class="form-group" id="questionPaper">
@@ -675,8 +675,8 @@
             if (questionId == null) {
                 let className = $('#class').val();
                 let subject = $('#subject').val();
-                let chapter = $('#chapter').val();
-                let topic = $('#topic').val();
+                // let chapter = $('#chapter').val();
+                // let topic = $('#topic').val();
                 let questionText = obj.parent().next().find('.newQuestion').val();
                 let optionsHtml = obj.parent().next().find('.options');
                 let answersHtml = obj.parent().next().find('.answers');
@@ -691,7 +691,7 @@
                         answer.push(options[answersHtml[i].value]);
                 }
 
-                return insertQuestion(val, obj, questionText, options, answer, className, subject, chapter, topic);
+                return insertQuestion(val, obj, questionText, options, answer, className, subject, );
 
             }
             let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question;
@@ -717,8 +717,8 @@
         }
     }
 
-    function insertQuestion(val, obj, questionText, options, answer, className, subject, chapter, topic) {
-          if(questionText && options[0] && options[1] && options[2] && options[3] && answer.length>=1 && className && subject && chapter && topic){
+    function insertQuestion(val, obj, questionText, options, answer, className, subject) {
+        if (questionText && options[0] && options[1] && options[2] && options[3] && answer.length >= 1 && className && subject) {
             $('.loader').show();
             $.ajax({
                 url: "{{url('/saveQuestion')}}",
@@ -728,9 +728,9 @@
                     options: options,
                     answer: answer,
                     class: className,
-                    subject_id: subject,
-                    chapter: chapter,
-                    topic: topic
+                    subject_id: subject
+                    // chapter: chapter,
+                    // topic: topic
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -759,51 +759,49 @@
 
                     } else {
                         $.each(result.response, function(key, value) {
-                        $.fn.notifyMe('error', 10, value);
-                        $(obj).prop("checked", false);
+                            $.fn.notifyMe('error', 10, value);
+                            $(obj).prop("checked", false);
 
-                    });
+                        });
                     }
                 },
                 error: function(error_r) {
                     $('.loader').fadeOut();
                 }
             });
-        }
-        else {
+        } else {
             if (!questionText) {
                 obj.parent().next().find('.newQuestion').css('borderColor', 'red');
                 $(obj).prop("checked", false);
-            } 
-              else obj.parent().next().find('.newQuestion').css('borderColor', '#ced4da');
+            } else obj.parent().next().find('.newQuestion').css('borderColor', '#ced4da');
 
-            if (options[0]=="" || options[1]=="" || options[2]=="" || options[3]=="") {
+            if (options[0] == "" || options[1] == "" || options[2] == "" || options[3] == "") {
                 obj.parent().next().find('.options').css('borderColor', 'red');
                 $(obj).prop("checked", false);
-            } else  obj.parent().next().find('.options').css('borderColor', '#ced4da');
+            } else obj.parent().next().find('.options').css('borderColor', '#ced4da');
 
-            if (answer.length==0) {
+            if (answer.length == 0) {
                 alert("select atleast one answer");
                 $(obj).prop("checked", false);
             }
             if (!className) {
-               $('#class').css('borderColor', 'red');
+                $('#class').css('borderColor', 'red');
                 $(obj).prop("checked", false);
-            }else $('#class').css('borderColor', '#ced4da');
-           if (!subject) {
-               $('#subject').css('borderColor', 'red');
+            } else $('#class').css('borderColor', '#ced4da');
+            if (!subject) {
+                $('#subject').css('borderColor', 'red');
                 $(obj).prop("checked", false);
-            }else $('#subject').css('borderColor', '#ced4da');
-             if (!topic) {
-               $('#topic').css('borderColor', 'red');
-                $(obj).prop("checked", false);
-            }else $('#topic').css('borderColor', '#ced4da');
-             if (!chapter) {
-               $('#chapter').css('borderColor', 'red');
-                $(obj).prop("checked", false);
-            }else $('#chapter').css('borderColor', '#ced4da');
+            } else $('#subject').css('borderColor', '#ced4da');
+            // if (!topic) {
+            //     $('#topic').css('borderColor', 'red');
+            //     $(obj).prop("checked", false);
+            // } else $('#topic').css('borderColor', '#ced4da');
+            // if (!chapter) {
+            //     $('#chapter').css('borderColor', 'red');
+            //     $(obj).prop("checked", false);
+            // } else $('#chapter').css('borderColor', '#ced4da');
         }
-        
+
     }
 
     function deleteQuestion(questionId) {
