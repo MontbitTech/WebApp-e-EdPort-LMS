@@ -215,7 +215,7 @@ $cls = 0;
                                                                         <!-- Edport Content -->
                                                                         <span class="m-auto font-weight-bolder text-capitalize">{{$cms_link_name}}</span>
                                                                     </a>
-                                                                    <button class="col-md-3 col-3 col-lg-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$i}}')">
+                                                                    <button class="col-md-3 col-3 col-lg-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$t->id}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -236,7 +236,7 @@ $cls = 0;
                                                                         <span class="m-auto font-weight-bolder text-capitalize">{{$academy_name}}</span>
                                                                     </a>
 
-                                                                    <button class="col-3 col-md-3 col-lg-3  btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$i}}')">
+                                                                    <button class="col-3 col-md-3 col-lg-3  btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$t->id}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -258,7 +258,7 @@ $cls = 0;
                                                                         <span class="m-auto font-weight-bolder text-capitalize">{{$youtube_name}}</span>
                                                                     </a>
 
-                                                                    <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0" onclick="shareContent('{{$youtube}}','{{$i}}')">
+                                                                    <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0" onclick="shareContent('{{$youtube}}','{{$t->id}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -279,7 +279,7 @@ $cls = 0;
                                                                         <span class="m-auto font-weight-bolder text-capitalize">{{$other_name}}</span>
                                                                     </a>
 
-                                                                    <button class="col-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$i}}')">
+                                                                    <button class="col-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$t->id}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -299,7 +299,7 @@ $cls = 0;
                                                                         <span class="m-auto font-weight-bolder text-capitalize">{{$book_name}}</span>
                                                                     </a>
 
-                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$book}}','{{$i}}')">
+                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$book}}','{{$t->id}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -548,7 +548,7 @@ $cls = 0;
                                                                         <!-- Edport Content -->
                                                                         <span class="m-auto font-weight-bolder">e-Edport</span>
                                                                     </a>
-                                                                    <button class="col-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$i}}')">
+                                                                    <button class="col-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$t->id}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -572,7 +572,7 @@ $cls = 0;
                                                                         <span class="m-auto font-weight-bolder">{{$academy_name}}</span>
                                                                     </a>
 
-                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$i}}')">
+                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$t->id}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -594,7 +594,7 @@ $cls = 0;
                                                                         <span class="m-auto font-weight-bolder">{{$youtube_name}}</span>
                                                                     </a>
 
-                                                                    <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0" onclick="shareContent('{{$youtube}}','{{$i}}')">
+                                                                    <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0" onclick="shareContent('{{$youtube}}','{{$t->id}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -616,7 +616,7 @@ $cls = 0;
                                                                         <span class="m-auto font-weight-bolder">{{$other_name}}</span>
                                                                     </a>
 
-                                                                    <button class="col-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$i}}')">
+                                                                    <button class="col-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$t->id}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -636,7 +636,7 @@ $cls = 0;
                                                                         <span class="m-auto font-weight-bolder">{{$book_name}}</span>
                                                                     </a>
 
-                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$book}}','{{$i}}')">
+                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$book}}','{{$t->id}}')">
                                                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                                                     </button>
                                                                 </div>
@@ -2336,9 +2336,8 @@ $cls = 0;
             });
     });
 
-    function shareContent(url, val) {
+    function shareContent(url, dateClass_id) {
         var notificationMsg = "Please go through " + url + " for today's notes";
-        var dateClass_id = $("#dateClass_id" + val).val();
 
         $('.loader').show();
         $.ajax({
