@@ -8,7 +8,7 @@ class ExaminationQuestionMapping extends Model
 {
     protected $table = 'ex_examination_question_mappings';
 
-    public function examinationss()
+    public function examinations()
     {
         return $this->hasOne(Examination::class, 'id', 'examination_id');
     }
