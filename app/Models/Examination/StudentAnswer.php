@@ -11,7 +11,7 @@ class StudentAnswer extends Model
 
     public function examQuestionMapping ()
     {
-        return $this->hasOne(ExaminationQuestionMapping::class);
+        return $this->hasOne(ExaminationQuestionMapping::class,'id','examination_question_mapping_id');
     }
 
     public function student ()

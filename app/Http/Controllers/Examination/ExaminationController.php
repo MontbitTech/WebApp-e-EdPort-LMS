@@ -8,8 +8,10 @@ use App\libraries\Utility\ExaminationUtility;
 use App\libraries\Utility\TeacherUtility;
 use App\Models\Examination\ClassroomExaminationMapping;
 use App\Models\Examination\Examination;
+use App\Models\Examination\ExaminationLogs;
 use App\Models\Examination\ExaminationQuestionMapping;
 use App\Models\Examination\Question;
+use App\Models\Examination\StudentAnswer;
 use App\Models\Student;
 use App\StudentClass;
 use App\StudentSubject;
@@ -96,34 +98,35 @@ class ExaminationController extends Controller
         $classes = StudentClass::groupBy('class_name')->pluck('class_name');
         $subjects = StudentSubject::get();
         $classrooms = StudentClass::with('studentSubject')->get();
+        $examinationshow = ClassroomExaminationMapping::all();
+        $classroomlist = ClassroomExaminationMapping::all();
 
-        return view('teacher.examination.index', compact('videos', 'helpCategories', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms'));
+        return view('teacher.examination.index', compact('videos', 'classroomlist', 'helpCategories', 'examinationshow', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms'));
     }
-
 
     /**
      * @param Request $request
      * @param $id
-     * @return mixed
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function takeExamination (Request $request, $id)
     {
-        $examClassroom = ClassroomExaminationMapping::with('examination', 'classroom')->find($id);
+        $classroomExamination = ClassroomExaminationMapping::with('examination', 'classroom', 'logs')->find($id);
 
-        if ( !$examClassroom )
+        if ( !$classroomExamination )
             return Response::json(['success' => false, 'response' => 'Invalid Exam']);
 
-        if ( $examClassroom->start_time > DateUtility::getDateTime() )
+        if ( $classroomExamination->start_time > DateUtility::getDateTime() )
             return Response::json(['success' => false, 'response' => 'Please wait till the start time of the exam']);
 
-        return Response::json(['success' => true, 'response' => $examClassroom]);
+        return view('examination.exam', compact('classroomExamination'));
     }
 
     /**
      * @param Request $request
      * @return mixed
      */
-    public function getQuestions (Request $request)
+    public function validateStudent (Request $request)
     {
         $examinationData['classroomExaminationMapping'] = ClassroomExaminationMapping::with('examination', 'classroom')->find($request->classroom_examiation_mapping_id);
 
@@ -135,8 +138,17 @@ class ExaminationController extends Controller
         if ( !$student )
             return Response::json(['success' => false, 'response' => 'Invalid Student']);
 
-        $examinationData['questions'] = ExaminationQuestionMapping::with('questions')->where('examination_id', $examinationData['classroomExaminationMapping']->examination_id)
-            ->where('classroom_id', $examinationData['classroomExaminationMapping']->classroom_id)->get();
+        $examinationData['logs'] = ExaminationLogs::where('student_id', $student->id)->get();
+        $examinationData['previousResponse'] = StudentAnswer::whereHas('examQuestionMapping', function ($q) use ($examinationData) {
+            $q->where('examination_id', $examinationData['classroomExaminationMapping']->examination_id);
+            $q->where('classroom_id', $examinationData['classroomExaminationMapping']->classroom_id);
+        })->where('student_id', $student->id)->get();
+
+        $examinationData['questions'] = Question::whereHas('examinationQuestionMappings', function ($q) use ($examinationData) {
+            $q->where('examination_id', $examinationData['classroomExaminationMapping']->examination_id);
+            $q->where('classroom_id', $examinationData['classroomExaminationMapping']->classroom_id);
+        })->get();
+
 
         return Response::json(['success' => true, 'response' => $examinationData]);
     }
@@ -162,10 +174,12 @@ class ExaminationController extends Controller
 
         $examinationQuestionMappings = array();
         foreach ( $request->questions as $questionId ) {
-            $examinationQuestionMappings[] = ['examination_id' => $examination->id,
-                                              'classroom_id'   => $request->classroom_id,
-                                              'question_id'    => $questionId,
-                                              'marks'          => $request->marks[ $questionId ]];
+            $examinationQuestionMappings[] = [
+                'examination_id' => $examination->id,
+                'classroom_id'   => $request->classroom_id,
+                'question_id'    => $questionId,
+                'marks'          => $request->marks[ $questionId ],
+            ];
         }
 
         ExaminationQuestionMapping::insert($examinationQuestionMappings);
@@ -175,6 +189,27 @@ class ExaminationController extends Controller
             StudentClass::find($request->classroom_id)->g_class_id
         );
 
-        return redirect()->route('examination')->with('success', 'added successfully');
+        return redirect()->route('examination')->with('success', 'Added successfully');
+    }
+
+    public function getExamination (Request $request)
+    {
+        $assignments = ExaminationQuestionMapping::with('examinationss', 'questionss')->where('examination_id', $request->examination_id)
+            ->where('classroom_id', $request->classroom_id)->get();
+
+        return json_encode(array('status' => 'success', 'data' => $assignments));
+    }
+
+    public function getExaminationList (Request $request)
+    {
+        $examinationlist = ClassroomExaminationMapping::with('examination', 'classroom')
+            ->where('classroom_id', $request->classroom_id)
+            ->get();
+        //  $classrooms = StudentClass::with('studentSubject')->get();
+        //   $classroom = StudentClass::with('studentSubject')->get();
+        // $assignments = ExaminationQuestionMapping::with('examinationss', 'questionss')->where('examination_id', $request->examination_id)
+        //     ->where('classroom_id', $request->classroom_id)->get();
+        return json_encode(array('status' => 'success', 'data' => $examinationlist,));
+        //  'classroom' => $classroom,));
     }
 }

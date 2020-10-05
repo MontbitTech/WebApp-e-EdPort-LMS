@@ -206,13 +206,15 @@ Route::group(['middleware' => 'teachersession'], function () {
 
     Route::get('/teacher/generateReports', 'ReportController@assignmentSubmissionGrades');
     Route::get('/getChapter', 'ImportCMSLinksController@getChapter');
-    Route::get('/getTopic','ImportCMSLinksController@getTopic');
+    Route::get('/getTopic', 'ImportCMSLinksController@getTopic');
 
     // Examination
 
     Route::get('/teacher/examination', 'Examination\ExaminationController@createExamination')->name('examination');
-//    Route::get('/teacher/examination/back', 'Examination\ExaminationController@createExamination')->name('examination');
-    Route::post('/teacher/setExamination','Examination\ExaminationController@setExamination');
+    //    Route::get('/teacher/examination/back', 'Examination\ExaminationController@createExamination')->name('examination');
+    Route::post('/teacher/setExamination', 'Examination\ExaminationController@setExamination');
+    Route::post('/teacher/examination/exampaper', 'Examination\ExaminationController@getExamination');
+    Route::post('/teacher/examination/exampaperlist', 'Examination\ExaminationController@getExaminationList');
 
     Route::post('/examination/create', 'Examination\ExaminationController@store');
     Route::get('/getQuestions', 'Examination\QuestionController@index');
@@ -220,7 +222,17 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/deleteQuestion/{id}', 'Examination\QuestionController@destroy');
 });
 
-Route::get('/student/takeExam/{id}','Examination\ExaminationController@takeExamination');
+//Route::get('/student/takeExam/{id}', 'Examination\ExaminationController@takeExamination');
+Route::post('/student/validateStudent', 'Examination\ExaminationController@validateStudent');
 Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass')->name('reload-timetable');
 Route::get('/timeTable/{class}/{section}', 'ImportTimetableController@download_Timetable');
 //Reload Timetable URL - http://<domain>/addData_pastClass
+
+
+//  **************** student examination  ************
+Route::get('/student/exam', function () {
+    return view('examination.exam');
+})->name('student.exam');
+Route::get('/student/result', function () {
+    return view('examination.result');
+})->name('student.result');

@@ -31,4 +31,9 @@ class ExaminationResultController extends Controller
 
         return $examinationResult;
     }
+
+    public function calculateResult (Request $request)
+    {
+
+    }
 }
