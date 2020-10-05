@@ -480,7 +480,7 @@
             xx++; //text box increment
             $(wrappers).append(`<div class="row">
             <div class="col-md-1 mt-2">
-                                            <input type="checkbox" id="check` + xx + `" onclick="addQuestionToPaper(xx,$(this), null, null)" value="">
+                                            <input type="checkbox" id="check" onclick="addQuestionToPaper(xx,$(this), null, null)" value="">
                                         </div>
                          <div class=" col-md-11 p-0  mx-0">
                                                    
@@ -670,6 +670,7 @@
     }
 
     function addQuestionToPaper(val, obj, question, questionId) {
+
         if (obj.is(":checked")) {
             if (questionId == null) {
                 let className = $('#class').val();
@@ -717,7 +718,7 @@
     }
 
     function insertQuestion(val, obj, questionText, options, answer, className, subject, chapter, topic) {
-
+          if(questionText && options[0] && options[1] && options[2] && options[3] && answer.length>=1 && className && subject && chapter && topic){
             $('.loader').show();
             $.ajax({
                 url: "{{url('/saveQuestion')}}",
@@ -749,10 +750,18 @@
                         $('#questionPaper').append(data);
                         $('#questionPapershow').append(show);
                         $.fn.notifyMe('success', 5, 'Question added successfully');
+                        obj.parent().next().find('.newQuestion').css('borderColor', '#ced4da');
+                        obj.parent().next().find('.options').css('borderColor', '#ced4da');
+                        $('#class').css('borderColor', '#ced4da');
+                        $('#subject').css('borderColor', '#ced4da');
+                        $('#topic').css('borderColor', '#ced4da');
+                        $('#chapter').css('borderColor', '#ced4da');
 
                     } else {
                         $.each(result.response, function(key, value) {
                         $.fn.notifyMe('error', 10, value);
+                        $(obj).prop("checked", false);
+
                     });
                     }
                 },
@@ -760,6 +769,40 @@
                     $('.loader').fadeOut();
                 }
             });
+        }
+        else {
+            if (!questionText) {
+                obj.parent().next().find('.newQuestion').css('borderColor', 'red');
+                $(obj).prop("checked", false);
+            } 
+              else obj.parent().next().find('.newQuestion').css('borderColor', '#ced4da');
+
+            if (options[0]=="" || options[1]=="" || options[2]=="" || options[3]=="") {
+                obj.parent().next().find('.options').css('borderColor', 'red');
+                $(obj).prop("checked", false);
+            } else  obj.parent().next().find('.options').css('borderColor', '#ced4da');
+
+            if (answer.length==0) {
+                alert("select atleast one answer");
+                $(obj).prop("checked", false);
+            }
+            if (!className) {
+               $('#class').css('borderColor', 'red');
+                $(obj).prop("checked", false);
+            }else $('#class').css('borderColor', '#ced4da');
+           if (!subject) {
+               $('#subject').css('borderColor', 'red');
+                $(obj).prop("checked", false);
+            }else $('#subject').css('borderColor', '#ced4da');
+             if (!topic) {
+               $('#topic').css('borderColor', 'red');
+                $(obj).prop("checked", false);
+            }else $('#topic').css('borderColor', '#ced4da');
+             if (!chapter) {
+               $('#chapter').css('borderColor', 'red');
+                $(obj).prop("checked", false);
+            }else $('#chapter').css('borderColor', '#ced4da');
+        }
         
     }
 
