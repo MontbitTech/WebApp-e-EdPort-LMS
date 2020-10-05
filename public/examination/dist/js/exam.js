@@ -380,12 +380,11 @@ function checkValidUser(email) {
                 userPreviousLog = result.response.logs// TODO: Pull userPreviousLog
                 return acquireUserPermissionHelper()
             } else {
-
                 endExam('userDetailsIncorrect')
             }
         },
         error  : function (error_r) {
-
+            endExam('userDetailsIncorrect')
         }
     });
 }
