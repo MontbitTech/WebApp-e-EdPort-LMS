@@ -13,10 +13,10 @@ const isNoisyBackground = (currentValue) => currentValue > 10
 // Proctor video as exam starts
 function proctorVideo() {
     Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri('dist/js/models'),
-        faceapi.nets.faceLandmark68Net.loadFromUri('dist/js/models'),
-        faceapi.nets.faceRecognitionNet.loadFromUri('dist/js/models'),
-        faceapi.nets.faceExpressionNet.loadFromUri('dist/js/models')
+        faceapi.nets.tinyFaceDetector.loadFromUri('/examination/dist/js/models'),
+        faceapi.nets.faceLandmark68Net.loadFromUri('/examination/dist/js/models'),
+        faceapi.nets.faceRecognitionNet.loadFromUri('/examination/dist/js/models'),
+        faceapi.nets.faceExpressionNet.loadFromUri('/examination/dist/js/models')
     ]).then(startVideoFeed)
     setInterval(async () => {
         const detections = await faceapi.detectAllFaces(videoFeed, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceExpressions()
@@ -57,8 +57,11 @@ function videoAssistantAI(detections) {
         var message = ''
 
         // Visual feedback if user not visible or not alone
-        if (peopleCount == 1) { $('#video').css('border-color', 'whitesmoke') }
-        else { $('#video').css('border-color', 'red'); }
+        if (peopleCount == 1) {
+            $('#video').css('border-color', 'whitesmoke')
+        } else {
+            $('#video').css('border-color', 'red');
+        }
 
         // Update the buffer array
         peopleCounts.unshift(peopleCount)
@@ -69,8 +72,7 @@ function videoAssistantAI(detections) {
             --userNotAloneWarningCount
             if (userNotAloneWarningCount <= 0) {
                 return terminateExam('User not alone')
-            }
-            else {
+            } else {
                 peopleCounts.fill(1)
                 // Proctor Warning
                 proctorLog('userNotAloneWarning')
@@ -78,13 +80,11 @@ function videoAssistantAI(detections) {
                 // Pause Exam
                 return pauseExam('You must be alone while giving exam: ' + userNotAloneWarningCount + ' attempt(s) remaining.')
             }
-        }
-        else if (peopleCounts.every(isNotVisible)) {
+        } else if (peopleCounts.every(isNotVisible)) {
             --userNotVisibleWarningCount
             if (userNotVisibleWarningCount <= 0) {
                 return terminateExam('User not visible')
-            }
-            else {
+            } else {
                 peopleCounts.fill(1)
                 // Proctor Warning
                 proctorLog('userNotVisibleWarning')
@@ -92,8 +92,7 @@ function videoAssistantAI(detections) {
                 // Pause Exam
                 return pauseExam('You must be visible in camera while giving exam: ' + userNotVisibleWarningCount + ' attempt(s) remaining.')
             }
-        }
-        else if (peopleCount == 1) {
+        } else if (peopleCount == 1) {
             $('#emotion').html(
                 emojiFromExpression(detections[0]['expressions'])
             )
@@ -127,19 +126,22 @@ function proctorAudio() {
                         }
                         audioAssistantAI(values / length)
                     }
-                }
-                catch (err) {
+                } catch (err) {
                     $('#noise').html(err)
                 }
 
             },
             function (err) {
                 console.log("ERROR: The following error occurred: " + err.name)
-                if (userAudioTracking) { endExam('microphoneNotAllowed') }
+                if (userAudioTracking) {
+                    endExam('microphoneNotAllowed')
+                }
             });
     } else {
         console.log("getUserMedia not supported, try another device and give all necessary permissions.");
-        if (userAudioTracking) { endExam('microphoneNotFound') }
+        if (userAudioTracking) {
+            endExam('microphoneNotFound')
+        }
     }
 }
 
@@ -158,8 +160,7 @@ function audioAssistantAI(detections) {
             --userAudioWarningCount
             if (userAudioWarningCount <= 0) {
                 return terminateExam('Noisy environment')
-            }
-            else {
+            } else {
                 audioLevels.fill(0)
                 // Proctor Warning
                 proctorLog('userAudioWarning')
@@ -187,19 +188,35 @@ function proctorLog(warningCode) {
     var ss = elapsedTime % 60
     examLog.unshift((hh < 10 ? '0' + hh : hh) + ':' + (mm < 10 ? '0' + mm : mm) + ':' + (ss < 10 ? '0' + ss : ss) + ' - ' + message)
     $('#warning').empty()
-    examLog.forEach(function showExamLog(l) { $('#warning').append(l + '<br/>'); })
+    examLog.forEach(function showExamLog(l) {
+        $('#warning').append(l + '<br/>');
+    })
 }
 
 // Return the emotion emoji based on values
 function emojiFromExpression(expression) {
     e = sortByValue(expression)[0][1]
-    if (e == 'angry') { return '<i class="far fa-2x fa-angry"></i>' }
-    if (e == 'disgusted') { return '<i class="far fa-2x fa-frown-open"></i>' }
-    if (e == 'fearful') { return '<i class="far fa-2x fa-flushed"></i>' }
-    if (e == 'happy') { return '<i class="far fa-2x fa-laugh"></i>' }
-    if (e == 'neutral') { return '<i class="far fa-2x fa-meh"></i>' }
-    if (e == 'sad') { return '<i class="far fa-2x fa-sad-tear"></i>' }
-    if (e == 'surprised') { return '<i class="far fa-2x fa-surprise"></i>' }
+    if (e == 'angry') {
+        return '<i class="far fa-2x fa-angry"></i>'
+    }
+    if (e == 'disgusted') {
+        return '<i class="far fa-2x fa-frown-open"></i>'
+    }
+    if (e == 'fearful') {
+        return '<i class="far fa-2x fa-flushed"></i>'
+    }
+    if (e == 'happy') {
+        return '<i class="far fa-2x fa-laugh"></i>'
+    }
+    if (e == 'neutral') {
+        return '<i class="far fa-2x fa-meh"></i>'
+    }
+    if (e == 'sad') {
+        return '<i class="far fa-2x fa-sad-tear"></i>'
+    }
+    if (e == 'surprised') {
+        return '<i class="far fa-2x fa-surprise"></i>'
+    }
 }
 
 // Return sorted array

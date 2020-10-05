@@ -107,8 +107,7 @@ var userPreviousLog = []
 const urlParams = new URLSearchParams(window.location.search);
 const entries = urlParams.entries()
 var student = ''
-var examID = ''
-
+var examID = urlParams.get('examId')
 // Defining default exam parameters, irrespective of properties
 
 // Full Screen while giving exam
@@ -360,14 +359,13 @@ async function gatherUserDetail() {
 
 // Check if user is valid
 function checkValidUser(email) {
-    var examId = $('#classroomExaminationId').val();
     var url = $('#validateStudentUrl').val();
     $.ajax({
         url    : url,
         type   : "POST",
         data   : {
             email                          : email,
-            classroom_examiation_mapping_id: examId
+            classroom_examiation_mapping_id: examID
         },
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -375,14 +373,11 @@ function checkValidUser(email) {
         success: function (result) {
             if (result.success) {
                 // TODO: Update username and examination code
-                console.log(result.response.classroomExaminationMapping);
                 examProperties = JSON.parse(result.response.classroomExaminationMapping.examination_properties);// TODO: Pull exam properties
                 setEnvironment()
-                // console.log(examProperties);
                 questions = result.response.questions; // TODO: Pull questions
                 userPreviousResponse = result.response.previousResponse; // TODO: Pull userPreviousResponse
                 userPreviousLog = result.response.logs// TODO: Pull userPreviousLog
-                console.log(questions, userPreviousLog, userPreviousResponse);
                 return acquireUserPermissionHelper()
             } else {
 
