@@ -68,7 +68,7 @@
                              ||
                              <button class="btn" data-toggle="modal" data-examdelete="{{$examinationshows->id}}">Delete</button>
                              ||
-                             <button type="button" class="btn">Assigen</button>
+                              <button type="button" data-Exam="{{$i}}" class="btn" data-toggle="modal" >Assign</button>
                          </td>
 
                      </tr>
@@ -132,6 +132,40 @@
              },
              error: function() {
                  $('.loader').fadeOut();
+                 $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
+             }
+         });
+     });
+ </script>
+
+ <script>
+     $(document).on('click', '[data-Exam]', function() {
+         var val = $(this).data('exam');
+         var examination_id = $("#examination_id" + val).val();
+         var classroom_id = $("#classroom_id" + val).val();
+         $('.loader').show();
+         $('.main-section').hide();
+         $.ajax({
+             type: 'POST',
+             url: '{{ url("/teacher/assign-examination") }}',
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             data: {
+                 'examination_id': examination_id,
+                 'classroom_id': classroom_id,
+             },
+             success: function(result) {
+                $('.main-section').html(result);
+                $('.main-section').show();
+                $('.main-section').css("paddingTop","40px");
+                $("#step2").attr("class", "active");
+                $("#step3").attr("class", "active");
+                $("#step4").attr("class", "active");
+                $("#step01").removeClass("show");
+                $("#step04").addClass("show");
+             },
+             error: function() {
                  $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
              }
          });
