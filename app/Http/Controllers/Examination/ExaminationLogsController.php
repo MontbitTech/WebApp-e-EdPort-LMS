@@ -44,15 +44,15 @@ class ExaminationLogsController extends Controller
         if ( $classroomExaminationMapping->start_time > DateUtility::getDateTime() )
             return Response::json(['success' => false, 'response' => 'Please wait till the start time of the exam']);
 
-        $this->post($request);
+        $logs = $this->post($request);
 
         foreach ( $request->questions as $questionId => $answer ) {
-            $examQuestionMappingId = ExaminationQuestionMapping::where('examination_id', $classroomExaminationMapping->examination_id)
-                ->where('classroom_id', $classroomExaminationMapping->classroom_id)->where('question_id', $questionId)->pluck('id')->first();
+            $examQuestionMapping = ExaminationQuestionMapping::where('examination_id', $classroomExaminationMapping->examination_id)
+                ->where('classroom_id', $classroomExaminationMapping->classroom_id)->where('question_id', $questionId)->first();
 
             $studentAnswer = new StudentAnswer();
             $studentAnswer->student_id = $request->student_id;
-            $studentAnswer->examination_question_mapping_id = $examQuestionMappingId;
+            $studentAnswer->examination_question_mapping_id = $examQuestionMapping->id;
             $studentAnswer->answer = $answer;
             $studentAnswer->save();
         }

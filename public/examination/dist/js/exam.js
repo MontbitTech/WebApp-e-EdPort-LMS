@@ -1,18 +1,18 @@
 // Dummy Data (Replace by API)
 var examProperties = {
-    keepFullScreen            : true,
+    keepFullScreen            : false,
     fullScreenExitAttempts    : 3,
-    blockMultitasking         : true,
+    blockMultitasking         : false,
     multitaskingAttempts      : 3,
-    userImageCapture          : true,
-    userVideoTracking         : true,
+    userImageCapture          : false,
+    userVideoTracking         : false,
     userNotAloneWarningCount  : 3,
     userNotVisibleWarningCount: 3,
-    userAudioTracking         : true,
+    userAudioTracking         : false,
     userAudioWarningCount     : 3,
-    blockKeyboard             : true,
-    blockRightClick           : true,
-    timeBound                 : true,
+    blockKeyboard             : false,
+    blockRightClick           : false,
+    timeBound                 : false,
 }
 
 var questions = [
@@ -107,7 +107,7 @@ var userPreviousLog = []
 const urlParams = new URLSearchParams(window.location.search);
 const entries = urlParams.entries()
 var student = ''
-var examID = urlParams.get('examId')
+var examID = ''
 // Defining default exam parameters, irrespective of properties
 
 // Full Screen while giving exam
@@ -569,6 +569,7 @@ function resumeExam() {
 
 // Terminate the exam due to repeated user actions
 function terminateExam(examTerminationReason) {
+    console.log(examTerminationReason);
     examPaused = true
     examTerminated = true
     finishExamConfirmation()
@@ -787,7 +788,7 @@ function fillData() {
         if (entry[0] == 'student') {
             student = entry[1]
         }
-        if (entry[0] == 'examID') {
+        if (entry[0] == 'examId') {
             examID = entry[1]
         }
     }

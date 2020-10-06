@@ -28,10 +28,10 @@ class ExaminationUtility
 
     public static function calculateResult ($examinationId, $classroomId, $studentId)
     {
-        $classroomExaminationMappig = ClassroomExaminationMapping::where('examination_id',$examinationId)
+        $classroomExaminationMappig = ClassroomExaminationMapping::where('examination_id', $examinationId)
             ->where('classroom_id', $classroomId)->get();
 
-        $examinationQuestionMapping = ExaminationQuestionMapping::where('examination_id',$examinationId)
+        $examinationQuestionMapping = ExaminationQuestionMapping::where('examination_id', $examinationId)
             ->where('classroom_id', $classroomId)->get();
 
         $totalMarks = $examinationQuestionMapping->sum('marks');
@@ -39,6 +39,14 @@ class ExaminationUtility
 //        $studentResponse = StudentAnswer::where('examination_question_mapping_id',$examinationQuestionMapping)->
 
 
+    }
 
+    public static function calculateMarks ($examQuestionMapping, $answer, $classroomExamProperties = null)
+    {
+        if($examQuestionMapping->question->answer == $answer){
+            return $examQuestionMapping->marks;
+        }else{
+            
+        }
     }
 }
