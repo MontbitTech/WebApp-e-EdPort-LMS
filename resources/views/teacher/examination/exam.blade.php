@@ -53,7 +53,7 @@
                      @foreach ($examinationshow as $examinationshows)
                      <input type="hidden" id="classroom_id{{$i}}" value="{{$examinationshows->classroom_id}}">
                      <input type="hidden" id="examination_id{{$i}}" value="{{$examinationshows->examination_id}}">
-
+                     <input type="hidden" id="examDeleteId{{$i}}" value="{{$examinationshows->id}}">
                      <tr id="test">
 
                          <td>{{$examinationshows->classroom->class_name}} {{$examinationshows->classroom->section_name}} {{$examinationshows->classroom->studentSubject->subject_name}}</td>
@@ -64,8 +64,11 @@
                          <td>
                              <button type="button" data-Examination="{{$i}}" class="btn" data-toggle="modal" data-target="#showexam">Show</button>
                              ||
-                             <button class="btn" data-toggle="modal" data-target="#deleteexam">Delete</button>||
-
+                             <form action="{{route('examination.delete',$examinationshows->id)}}" class="d-inline" method="POST">
+                                 @csrf
+                                 @method('delete')
+                                 <button class="btn">Delete</button>
+                             </form>||
                              <button type="button" class="btn">Assigen</button>
                          </td>
 
@@ -85,8 +88,7 @@
          var val = $(this).data('examination');
          var examination_id = $("#examination_id" + val).val();
          var classroom_id = $("#classroom_id" + val).val();
-         console.log(examination_id);
-         console.log(classroom_id);
+
 
          $('.loader').show();
          $.ajax({
@@ -177,9 +179,6 @@
          });
      }
  </script>
-
-
-
  <!-- modal add exam -->
  <div class="modal fade" id="addexam" tabindex="-1" role="dialog" aria-labelledby="addexamTitle" aria-hidden="true">
      <div class="modal-dialog modal-dialog-centered modal-lg" role="document">

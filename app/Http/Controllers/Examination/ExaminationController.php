@@ -212,4 +212,16 @@ class ExaminationController extends Controller
         return json_encode(array('status' => 'success', 'data' => $examinationlist,));
         //  'classroom' => $classroom,));
     }
+    public function examDelete(Request $request, $id)
+    {
+        $examclassroom = ClassroomExaminationMapping::where('id', $id)
+            ->firstorFail();
+        $examquestion = ExaminationQuestionMapping::where('examination_id', $examclassroom->examination_id)
+            ->where('classroom_id', $examclassroom->classroom_id)
+            ->firstorFail();
+        $examclassroom->delete();
+        $examquestion->delete();
+
+        return back()->with('success', "delete");
+    }
 }
