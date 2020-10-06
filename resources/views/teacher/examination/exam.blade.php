@@ -66,7 +66,7 @@
                              ||
                              <button class="btn" data-toggle="modal" data-target="#deleteexam">Delete</button>||
 
-                             <button type="button" data-Examination="{{$i}}" class="btn" data-toggle="modal" data-target="#showexam">Assigen</button>
+                             <button type="button" class="btn">Assigen</button>
                          </td>
 
                      </tr>
@@ -108,7 +108,7 @@
                  response.data.forEach(function(da) {
                      data += '<div class="media px-3 mb-2">';
                      data += '<strong class="mr-1">' + count + ' </strong>';
-                     data += '<div class="media-body font-weight-bold">' + da.questionss.question + '</div>';
+                     data += '<div class="media-body font-weight-bold">' + da.questions.question + '</div>';
                      data += '</div></div>';
                      count++;
 

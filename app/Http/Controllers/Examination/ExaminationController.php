@@ -33,7 +33,7 @@ class ExaminationController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function index (Request $request)
+    public function index(Request $request)
     {
         $loggedTeacher = Session::get('teacher_session');
 
@@ -45,7 +45,7 @@ class ExaminationController extends Controller
      * @param $id
      * @return string
      */
-    public function show (Request $request, $id)
+    public function show(Request $request, $id)
     {
         $loggedTeacher = Session::get('teacher_session');
 
@@ -58,7 +58,7 @@ class ExaminationController extends Controller
      * @param ExamValidation $request
      * @return Examination
      */
-    public function store (ExamValidation $request)
+    public function store(ExamValidation $request)
     {
         $loggedTeacher = Session::get('teacher_session');
 
@@ -74,12 +74,12 @@ class ExaminationController extends Controller
      * @param Request $request
      * @param $id
      */
-    public function destroy (Request $request, $id)
+    public function destroy(Request $request, $id)
     {
         $loggedTeacher = Session::get('teacher_session');
         $examination = Examination::where('created_by', $loggedTeacher['teacher_id'])->find($id);
 
-        if ( $examination )
+        if ($examination)
             $examination->delete();
     }
 
@@ -87,7 +87,7 @@ class ExaminationController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function createExamination (Request $request)
+    public function createExamination(Request $request)
     {
         $helpCategories = HelpTicketCategory::get();
         $videos = SupportVideo::all();
@@ -109,14 +109,14 @@ class ExaminationController extends Controller
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function takeExamination (Request $request, $id)
+    public function takeExamination(Request $request, $id)
     {
         $classroomExamination = ClassroomExaminationMapping::with('examination', 'classroom', 'logs')->find($id);
 
-        if ( !$classroomExamination )
+        if (!$classroomExamination)
             return Response::json(['success' => false, 'response' => 'Invalid Exam']);
 
-        if ( $classroomExamination->start_time > DateUtility::getDateTime() )
+        if ($classroomExamination->start_time > DateUtility::getDateTime())
             return Response::json(['success' => false, 'response' => 'Please wait till the start time of the exam']);
 
         return view('examination.exam', compact('classroomExamination'));
@@ -126,7 +126,7 @@ class ExaminationController extends Controller
      * @param Request $request
      * @return mixed
      */
-    public function validateStudent (Request $request)
+    public function validateStudent(Request $request)
     {
         $examinationData['classroomExaminationMapping'] = ClassroomExaminationMapping::with('examination', 'classroom')->find($request->classroom_examiation_mapping_id);
 
@@ -135,7 +135,7 @@ class ExaminationController extends Controller
             $q->where('section_name', $examinationData['classroomExaminationMapping']->classroom->section_name);
         })->where('email', $request->email)->first();
 
-        if ( !$examinationData['student'] )
+        if (!$examinationData['student'])
             return Response::json(['success' => false, 'response' => 'Invalid Student']);
 
         $examinationData['logs'] = ExaminationLogs::where('student_id', $examinationData['student']->id)->get();
@@ -157,10 +157,10 @@ class ExaminationController extends Controller
      * @param ExamValidation $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function setExamination (ExamValidation $request)
+    public function setExamination(ExamValidation $request)
     {
         $examination = $this->store($request);
-        $minutesToAdd = $request->duration + number_format(( 16 / 100 ) * $request->duration, 0);
+        $minutesToAdd = $request->duration + number_format((16 / 100) * $request->duration, 0);
         $endTime = DateUtility::getFutureDateTime($minutesToAdd, $request->start_time);
 
         $classroomExaminationMapping = ExaminationUtility::createClassroomExaminationMapping([
@@ -173,12 +173,12 @@ class ExaminationController extends Controller
         ]);
 
         $examinationQuestionMappings = array();
-        foreach ( $request->questions as $questionId ) {
+        foreach ($request->questions as $questionId) {
             $examinationQuestionMappings[] = [
                 'examination_id' => $examination->id,
                 'classroom_id'   => $request->classroom_id,
                 'question_id'    => $questionId,
-                'marks'          => $request->marks[ $questionId ],
+                'marks'          => $request->marks[$questionId],
             ];
         }
 
@@ -192,15 +192,15 @@ class ExaminationController extends Controller
         return redirect()->route('examination')->with('success', 'Added successfully');
     }
 
-    public function getExamination (Request $request)
+    public function getExamination(Request $request)
     {
-        $assignments = ExaminationQuestionMapping::with('examinationss', 'questionss')->where('examination_id', $request->examination_id)
+        $assignments = ExaminationQuestionMapping::with('examinations', 'questions')->where('examination_id', $request->examination_id)
             ->where('classroom_id', $request->classroom_id)->get();
 
         return json_encode(array('status' => 'success', 'data' => $assignments));
     }
 
-    public function getExaminationList (Request $request)
+    public function getExaminationList(Request $request)
     {
         $examinationlist = ClassroomExaminationMapping::with('examination', 'classroom')
             ->where('classroom_id', $request->classroom_id)
