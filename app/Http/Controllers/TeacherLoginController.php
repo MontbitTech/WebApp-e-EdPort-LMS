@@ -162,8 +162,6 @@ class TeacherLoginController extends Controller
         $teacherData = Teacher::where('id', $logged_teacher['teacher_id'])->get()->first();
 
         $helpCategories = HelpTicketCategory::get();
-        // $topic = CmsLink::orderBy('topic')->get();
-        // $topics = $topic->sortBY('topic');
         $chapter   = CmsLink::orderBy('chapter', 'ASC')->get();
         $chapters = $chapter->sort();
         $videos = SupportVideo::all();
