@@ -64,11 +64,8 @@
                          <td>
                              <button type="button" data-Examination="{{$i}}" class="btn" data-toggle="modal" data-target="#showexam">Show</button>
                              ||
-                             <form action="{{route('examination.delete',$examinationshows->id)}}" class="d-inline" method="POST">
-                                 @csrf
-                                 @method('delete')
-                                 <button class="btn">Delete</button>
-                             </form>||
+                             <button class="btn" data-toggle="modal" data-examdelete="{{$examinationshows->id}}">Delete</button>
+                             ||
                              <button type="button" class="btn">Assigen</button>
                          </td>
 
@@ -315,3 +312,52 @@
      </div>
  </div>
  <!-- *********end******** -->
+ <!-- delete exam paper -->
+ <div class="modal fade" id="examdeletModal" data-backdrop="static" tabindex="-1" role="dialog">
+     <div class="modal-dialog" role="document">
+         <div class="modal-content">
+             <div class="modal-header bg-light d-flex align-items-center">
+                 <h5 class="modal-title font-weight-bold">Delete Examination </h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <svg class="icon">
+                         <use xlink:href="../images/icons.svg#icon_times2"></use>
+                     </svg>
+                 </button>
+             </div>
+             <div class="modal-body pt-4">
+                 <form id="deleteform" method="POST">
+                     @csrf
+                     <input type="hidden" name="txt_student_id" id="txt_student_id" />
+                     <div class="form-group text-center">
+                         <h4>Type "delete" to confirm</h4>
+                     </div>
+                     <div class="form-group text-center ">
+                         <input type="text" name="delete" class="form-control" id="delete" required>
+
+                     </div>
+                     <div class="form-group text-center">
+                         <button type="submit" class="btn btn-back mr-2 px-4">
+                             Delete
+                         </button>
+                         <button type="button" class="btn submit-btn" class="close" data-dismiss="modal" aria-label="Close">
+                             Cancel
+                         </button>
+                     </div>
+                 </form>
+             </div>
+         </div>
+     </div>
+ </div>
+ <!-- ********end  delete exam paper ******* -->
+
+ <script>
+     // exam delete query
+     $(document).on('click', '[data-examdelete]', function() {
+         var val = $(this).data('examdelete');
+
+         $('#examdeletModal').modal('show');
+         var route = "{{url('/teacher/examination/examdelete')}}" + "/" + val;
+         $("#deleteform").attr('action', route);
+
+     });
+ </script>

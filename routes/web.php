@@ -215,7 +215,7 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::post('/teacher/setExamination', 'Examination\ExaminationController@setExamination');
     Route::post('/teacher/examination/exampaper', 'Examination\ExaminationController@getExamination');
     Route::post('/teacher/examination/exampaperlist', 'Examination\ExaminationController@getExaminationList');
-    Route::delete('/teacher/examination/examdelete/{id}', 'Examination\ExaminationController@examDelete')->name('examination.delete');
+    Route::post('/teacher/examination/examdelete/{id}', 'Examination\ExaminationController@examDelete')->name('examination.delete');
     Route::post('/examination/create', 'Examination\ExaminationController@store');
     Route::get('/getQuestions', 'Examination\QuestionController@index');
     Route::post('/saveQuestion', 'Examination\QuestionController@store');

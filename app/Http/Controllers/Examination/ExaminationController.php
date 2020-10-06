@@ -214,14 +214,18 @@ class ExaminationController extends Controller
     }
     public function examDelete(Request $request, $id)
     {
-        $examclassroom = ClassroomExaminationMapping::where('id', $id)
-            ->firstorFail();
-        $examquestion = ExaminationQuestionMapping::where('examination_id', $examclassroom->examination_id)
-            ->where('classroom_id', $examclassroom->classroom_id)
-            ->firstorFail();
-        $examclassroom->delete();
-        $examquestion->delete();
+        if ($request->delete == 'delete') {
+            $examclassroom = ClassroomExaminationMapping::where('id', $id)
+                ->firstorFail();
+            $examquestion = ExaminationQuestionMapping::where('examination_id', $examclassroom->examination_id)
+                ->where('classroom_id', $examclassroom->classroom_id)
+                ->firstorFail();
+            // $examclassroom->delete();
+            // $examquestion->delete();
 
-        return back()->with('success', "delete");
+            return back()->with('success', "delete");
+        } else {
+            return back()->with('error', "Type delete to confirm");
+        }
     }
 }
