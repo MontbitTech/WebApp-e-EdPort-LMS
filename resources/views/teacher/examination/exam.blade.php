@@ -68,7 +68,7 @@
                              ||
                              <button class="btn" data-toggle="modal" data-examdelete="{{$examinationshows->id}}">Delete</button>
                              ||
-                              <button type="button" data-Exam="{{$i}}" class="btn" data-toggle="modal" >Assign</button>
+                             <button type="button" data-Exam="{{$i}}" class="btn" data-toggle="modal">Assign</button>
                          </td>
 
                      </tr>
@@ -156,14 +156,14 @@
                  'classroom_id': classroom_id,
              },
              success: function(result) {
-                $('.main-section').html(result);
-                $('.main-section').show();
-                $('.main-section').css("paddingTop","40px");
-                $("#step2").attr("class", "active");
-                $("#step3").attr("class", "active");
-                $("#step4").attr("class", "active");
-                $("#step01").removeClass("show");
-                $("#step04").addClass("show");
+                 $('.main-section').html(result);
+                 $('.main-section').show();
+                 $('.main-section').css("paddingTop", "40px");
+                 $("#step2").attr("class", "active");
+                 $("#step3").attr("class", "active");
+                 $("#step4").attr("class", "active");
+                 $("#step01").removeClass("show");
+                 $("#step04").addClass("show");
              },
              error: function() {
                  $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
@@ -196,27 +196,27 @@
              },
              success: function(result) {
                  $('.loader').fadeOut();
-                 $('#test').find('td').remove();
-                 //  if (result.success) {
+                 $('#test').find('tr').empty();
+                 if (result.success) {
 
-                 let count = 1;
-                 let data = "";
-                 var response = JSON.parse(result);
-                 response.data.forEach(function(exam) {
-                     data += '<td >' + exam.classroom.class_name + exam.classroom.section_name + exam.classroom.studentSubject.subject_name + '</td>';
-                     data += '<td>' + exam.examination.title + '</td>';
-                     data += '<td><button type="button" data-Examination="{{$i}}" class="btn" data-toggle="modal" data-target="#showexam" > Show </button> ||';
-                     data += '<button class ="btn" data-toggle="modal"   data-target="#deleteexam" > Delete </button> </td > ';
+                     let count = 1;
+                     let data = "";
+                     var response = JSON.parse(result);
+                     response.data.forEach(function(exam) {
+                         data += '<td >' + exam.classroom.class_name + exam.classroom.section_name + exam.classroom.studentSubject.subject_name + '</td>';
+                         data += '<td>' + exam.examination.title + '</td>';
+                         data += '<td><button type="button" data-Examination="{{$i}}" class="btn" data-toggle="modal" data-target="#showexam" > Show </button> ||';
+                         data += '<button class ="btn" data-toggle="modal"   data-target="#deleteexam" > Delete </button> </td > ';
 
-                     count++;
-                 });
+                         count++;
+                     });
 
 
-                 $('#test').append(data);
+                     $('#test').append(data);
 
-                 //  } else {
-                 //      $.fn.notifyMe('error', 5, result.response);
-                 //  }
+                 } else {
+                     $.fn.notifyMe('error', 5, result.response);
+                 }
              },
              error: function(error_r) {
                  $('.loader').fadeOut();

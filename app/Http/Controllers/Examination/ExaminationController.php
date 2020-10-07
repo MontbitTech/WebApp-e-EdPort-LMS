@@ -100,11 +100,11 @@ class ExaminationController extends Controller
         $classrooms = StudentClass::with('studentSubject')->get();
         $examinationshow = ClassroomExaminationMapping::all();
         $classroomlist = ClassroomExaminationMapping::all();
-        $classrooms_data  ="";
+        $classrooms_data  = "";
         $questionData     = "";
-        $examDetail       ="";
+        $examDetail       = "";
 
-        return view('teacher.examination.index', compact('videos', 'classroomlist', 'helpCategories', 'examinationshow', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms','classrooms_data','questionData','examDetail'));
+        return view('teacher.examination.index', compact('videos', 'classroomlist', 'helpCategories', 'examinationshow', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms', 'classrooms_data', 'questionData', 'examDetail'));
     }
 
     /**
@@ -227,14 +227,14 @@ class ExaminationController extends Controller
         $helpCategories  = HelpTicketCategory::get();
         $videos          = SupportVideo::all();
         $questionData    = ExaminationQuestionMapping::with('examinations', 'questions')
-                          ->where('examination_id', $request->examination_id)
-                          ->where('classroom_id', $request->classroom_id)->first();
-       $classroomExaminationMapping = ClassroomExaminationMapping::with('examination', 'classroom')->get();
-       $examDetail        = ClassroomExaminationMapping::where('classroom_id',$request->classroom_id)->first();
-       $classrooms_data   = StudentClass::with('studentSubject')
-                                      ->where('id',$request->classroom_id)->first();
+            ->where('examination_id', $request->examination_id)
+            ->where('classroom_id', $request->classroom_id)->first();
+        $classroomExaminationMapping = ClassroomExaminationMapping::with('examination', 'classroom')->get();
+        $examDetail        = ClassroomExaminationMapping::where('classroom_id', $request->classroom_id)->first();
+        $classrooms_data   = StudentClass::with('studentSubject')
+            ->where('id', $request->classroom_id)->first();
 
-      return view('teacher.examination.index', compact('examDetail','videos','classrooms_data', 'classroomlist', 'helpCategories', 'examinationshow', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms','questionData'));
+        return view('teacher.examination.index', compact('examDetail', 'videos', 'classrooms_data', 'classroomlist', 'helpCategories', 'examinationshow', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms', 'questionData'));
     }
     public function examDelete(Request $request, $id)
     {
@@ -244,8 +244,8 @@ class ExaminationController extends Controller
             $examquestion = ExaminationQuestionMapping::where('examination_id', $examclassroom->examination_id)
                 ->where('classroom_id', $examclassroom->classroom_id)
                 ->firstorFail();
-            // $examclassroom->delete();
-            // $examquestion->delete();
+            $examclassroom->delete();
+            $examquestion->delete();
 
             return back()->with('success', "delete");
         } else {
