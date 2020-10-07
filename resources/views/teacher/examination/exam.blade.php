@@ -36,14 +36,11 @@
                      </select>
                  </div>
              </div>
-             <table id="exam" class="table  table-sm table-bordered display" style="width:100%" data-order="[[ 0, &quot;asc&quot; ]]" data-col1="60" data-collast="120">
+             <table id="exam" class="table table-bordered">
                  <thead>
                      <tr>
-                         <!-- <th scope="col">Question</th> -->
                          <th scope="col">Classroom</th>
                          <th scope="col">Exam name</th>
-                         <!-- <th scope="col">Marks</th> -->
-                         <!-- <th scope="col">Percent</th> -->
                          <th scope="col">Action</th>
                      </tr>
                  </thead>
@@ -80,6 +77,39 @@
          </div>
      </div>
  </div>
+ <!-- <div class="col-md-4 col-lg-4 col-12 px-0 mb-3">
+     <div class="card card-info  ">
+         <div class="card-header pt-1 pb-0 border-transparent text-white" style="background-color: #373c8e;">
+             <h4 class="card-title d-inline">Examination Name</h4>
+             <div class="card-tools d-inline float-right">
+               
+                 <button type="button" class="btn border ml-2 btn-tool text-white " data-card-widget="collapse">
+                     <i class="fas fa-minus"></i>
+                 </button>
+             </div>
+         </div>
+         <div class="card-body card-border-exam">
+             <table id="exam" class="table  table-sm table-bordered display" style="width:100%" data-order="[[ 0, &quot;asc&quot; ]]" data-col1="60" data-collast="120">
+                 <thead>
+                     <tr>
+                         <th scope="col">Exam name</th>
+                         <th scope="col">Action</th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                     <tr>
+                         <td>Exame name</td>
+                         <td>
+                             <button type="button" class="btn" data-toggle="modal" data-target="#showexam">Edit</button>
+                             ||
+                             <button class="btn" data-toggle="modal" data-examdelete="{{$examinationshows->id}}">Delete</button>
+                         </td>
+                     </tr>
+                 </tbody>
+             </table>
+         </div>
+     </div>
+ </div> -->
  <script>
      $(document).on('click', '[data-Examination]', function() {
          var val = $(this).data('examination');
@@ -189,18 +219,28 @@
 
                  let count = 1;
                  let data = "";
+
+
                  var response = JSON.parse(result);
                  response.data.forEach(function(exam) {
-                     $('#test').find('tr').empty();
-                     // data += exam;
-                     data += '<td>' + exam.classroom.class_name + ' ' + exam.classroom.section_name + ' ' + exam.classroom.student_subject.subject_name + '</td>';
+                     $('#exam').find('tbody').remove();
+                     data += '<tbody>';
+                     data += '<input type="hidden" id="classroom_id' + count + '" value="' + exam.classroom_id + '"/>';
+                     data += '<input type="hidden" id="examination_id' + count + '" value="' + exam.examination_id + '"/>';
+                     data += '<input type="hidden" id="examDeleteId' + count + '" value="' + exam.id + '"/>';
+                     data += '<input type="hidden" id="examname' + count + '" value="' + exam.examination.title + '"/>';
+                     data += '<input type="hidden" id="classroomname' + count + '" value="' + exam.classroom.class_name + ' ' + exam.classroom.section_name + ' ' + exam.classroom.student_subject.subject_name + '">';
+                     data += '<input type="hidden" id="examtime' + count + '" value="' + exam.duration + '"/>';
+                     data += '<tr class=""><td>' + exam.classroom.class_name + ' ' + exam.classroom.section_name + ' ' + exam.classroom.student_subject.subject_name + '</td>';
                      data += '<td>' + exam.examination.title + '</td>';
                      data += '<td><button type="button" data-Examination="' + count + '"  class="btn" data-toggle="modal" data-target ="#showexam"> Show </button> ||';
                      data += '<button class="btn" data-toggle="modal"  data-examdelete="' + exam.id + '"> Delete </button> ||';
-                     data += '<button type="button" data-Exam="' + count + '" class="btn"  data-toggle="modal"> Assign </button> </td>';
+                     data += '<button type="button" data-Exam="' + count + '" class="btn"  data-toggle="modal"> Assign </button> </td></tr>';
+                     data += '</tbody>';
                      count++;
                  });
-                 $('#test').find('tr').append(data);
+                 console.log(data);
+                 $('#exam').append(data);
                  // console.log(data);
 
 
