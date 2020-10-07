@@ -1,113 +1,123 @@
 // Dummy Data (Replace by API)
 var examProperties = {
-    keepFullScreen            : false,
+    keepFullScreen            : true,
     fullScreenExitAttempts    : 3,
-    blockMultitasking         : false,
+    blockMultitasking         : true,
     multitaskingAttempts      : 3,
-    userImageCapture          : false,
-    userVideoTracking         : false,
+    userImageCapture          : true,
+    userVideoTracking         : true,
     userNotAloneWarningCount  : 3,
     userNotVisibleWarningCount: 3,
-    userAudioTracking         : false,
+    userAudioTracking         : true,
     userAudioWarningCount     : 3,
-    blockKeyboard             : false,
-    blockRightClick           : false,
-    timeBound                 : false,
+    blockKeyboard             : true,
+    blockRightClick           : true,
+    timeBound                 : true,
 }
 
 var questions = [
     {
-        question: "_______ is the practice and precautions taken to protect valuable information from unauthorized access, recording, disclosure or destruction.",
-        options : ["Network Security", "Database Security", "Information Security", "Physical Security"]
+        id              : 4,
+        question        : '_______ is the practice and precautions taken to protect valuable information from unauthorized access, recording, disclosure or destruction.',
+        options         : ['Network Security', 'Database Security', 'Information Security', 'Physical Security'],
+        type_of_question: "single_choice",
+        topic           : 'Introduction to Cyber Security',
+        marks           : 2
     },
     {
-        question: "From the options below, which of them is not a threat to information security?",
-        options : ["Disaster", "Eavesdropping", "Information leakage", "Unchanged default password"]
+        id              : 6,
+        question        : 'From the options below, which of them is not a threat to information security?',
+        options         : ['Disaster', 'Eavesdropping', 'Information leakage', 'Unchanged default password'],
+        type_of_question: "single_choice",
+        topic           : 'Introduction to Cyber Security',
+        marks           : 2
     },
     {
-        question: "From the options below, which of them is not a vulnerability to information security?",
-        options : ["flood", "without deleting data, disposal of storage media", "unchanged default password", "latest patches and updates not done"]
+        id              : 8,
+        question        : 'From the options below, which of them is not a vulnerability to information security?',
+        options         : ['flood', 'without deleting data, disposal of storage media', 'unchanged default password', 'latest patches and updates not done'],
+        type_of_question: "single_choice",
+        topic           : 'Introduction to Cyber Security',
+        marks           : 2
     },
     {
-        question: "_______ platforms are used for safety and protection of information in the cloud.",
-        options : ["Cloud workload protection platforms", "Cloud security protocols", "AWS", "One Drive"]
+        id              : 10,
+        question        : '_______ platforms are used for safety and protection of information in the cloud.',
+        options         : ['Cloud workload protection platforms', 'Cloud security protocols', 'AWS', 'One Drive'],
+        type_of_question: "single_choice",
+        topic           : 'Deep Dive into Cyber Security',
+        marks           : 2
     },
     {
-        question: "Which of the following information security technology is used for avoiding browser-based hacking?",
-        options : ["Anti-malware in browsers", "Remote browser access", "Adware remover in browsers", "Incognito mode in a browser"]
+        id              : 12,
+        question        : 'Which of the following information security technology is used for avoiding browser-based hacking?',
+        options         : ['Anti-malware in browsers', 'Remote browser access', 'Adware remover in browsers', 'Incognito mode in a browser'],
+        type_of_question: "single_choice",
+        topic           : 'Deep Dive into Cyber Security',
+        marks           : 2
     },
     {
-        question: "The full form of EDR is _______",
-        options : ["Endpoint Detection and recovery", "Early detection and response", "Endpoint Detection and response", "Endless Detection and Recovery"]
+        id              : 14,
+        question        : 'The full form of EDR is _______',
+        options         : ['Endpoint Detection and recovery', 'Early detection and response', 'Endpoint Detection and response', 'Endless Detection and Recovery'],
+        type_of_question: "single_choice",
+        topic           : 'Deep Dive into Cyber Security',
+        marks           : 2
     },
     {
-        question: "_______ technology is used for analyzing and monitoring traffic in network and information flow.",
-        options : ["Cloud access security brokers (CASBs)", "Managed detection and response (MDR)", "Network Security Firewall", "Network traffic analysis (NTA)"]
+        id              : 16,
+        question        : '_______ technology is used for analyzing and monitoring traffic in network and information flow.',
+        options         : ['Cloud access security brokers (CASBs)', 'Managed detection and response (MDR)', 'Network Security Firewall', 'Network traffic analysis (NTA)'],
+        type_of_question: "single_choice",
+        topic           : 'Deep Dive into Cyber Security',
+        marks           : 2
     },
     {
-        question: "Compromising confidential information comes under _______",
-        options : ["Bug", "Threat", "Vulnerability", "Attack"]
+        id              : 18,
+        question        : 'Compromising confidential information comes under _______',
+        options         : ['Bug', 'Threat', 'Vulnerability', 'Attack'],
+        type_of_question: "single_choice",
+        topic           : 'Threats of Digital World',
+        marks           : 2
     },
     {
-        question: "Lack of access control policy is a _______",
-        options : ["Bug", "Threat", "Vulnerability", "Attack"]
+        id              : 20,
+        question        : 'Lack of access control policy is a _______',
+        options         : ['Bug', 'Threat', 'Vulnerability', 'Attack'],
+        type_of_question: "single_choice",
+        topic           : 'Threats of Digital World',
+        marks           : 2
     },
     {
-        question: "Possible threat to any information cannot be _______",
-        options : ["reduced", "transferred", "protected", "ignored"]
+        id              : 22,
+        question        : 'Possible threat to any information cannot be _______',
+        options         : ['reduced', 'transferred', 'protected', 'ignored'],
+        type_of_question: "single_choice",
+        topic           : 'Threats of Digital World',
+        marks           : 2
     },
 ]
 
-var userPreviousResponse = [
-    {
-        question: 1,
-        response: [1, 3]
-    },
-    {
-        question: 2,
-        response: [4]
-    },
-    {
-        question: 3,
-        response: [1]
-    },
-    {
-        question: 4,
-        response: [1]
-    },
-    {
-        question: 5,
-        response: [2]
-    },
-    {
-        question: 6,
-        response: [3]
-    },
-    {
-        question: 7,
-        response: [4]
-    },
-    {
-        question: 8,
-        response: [2]
-    },
-    {
-        question: 9,
-        response: [3]
-    },
-    {
-        question: 10,
-        response: [4]
-    },
-]
+var myLog = []
 
-var userPreviousLog = []
+var myResponse = [
+    { id: 4, response: 0 },
+    { id: 6, response: 1234 },
+    { id: 8, response: 2 },
+    { id: 10, response: 3 },
+    { id: 12, response: 4 },
+    { id: 14, response: 0 },
+    { id: 16, response: 1 },
+    { id: 18, response: 2 },
+    { id: 20, response: 3 },
+    { id: 22, response: 4 }]
 
 
 const urlParams = new URLSearchParams(window.location.search);
 const entries = urlParams.entries()
 var student = ''
 var examID = ''
+var studentId = 0;
 // Defining default exam parameters, irrespective of properties
 
 // Full Screen while giving exam
@@ -357,15 +367,16 @@ async function gatherUserDetail() {
     checkValidUser(email)
 }
 
-// Check if user is valid
+// BACKEND_DEPENDENT Check if user is valid
 function checkValidUser(email) {
-    var url = $('#validateStudentUrl').val();
+    // TODO: server side check user
+    let url = $('#validateStudentUrl').val();
     $.ajax({
         url    : url,
         type   : "POST",
         data   : {
-            email                          : email,
-            classroom_examiation_mapping_id: examID
+            email                           : email,
+            classroom_examination_mapping_id: examID
         },
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -377,7 +388,8 @@ function checkValidUser(email) {
                 setEnvironment()
                 questions = result.response.questions; // TODO: Pull questions
                 userPreviousResponse = result.response.previousResponse; // TODO: Pull userPreviousResponse
-                userPreviousLog = result.response.logs// TODO: Pull userPreviousLog
+                userPreviousLog = result.response.logs;// TODO: Pull userPreviousLog
+                studentId = result.response.student.id;
                 return acquireUserPermissionHelper()
             } else {
                 endExam('userDetailsIncorrect')
@@ -393,29 +405,29 @@ function checkValidUser(email) {
 function displayQuestion(q) {
     ++qc
     oc = 0
-    $('#questions').append('<div id="question' + qc + '" style="padding-top:60px;" class="col-lg-12"><div id="q' + qc + '" class="card"></div></div>')
-    $('#q' + qc).append('<div class="card-header"><h3 class="card-title">Question ' + qc + '</h3><div class="card-tools"><button id="q' + qc + '_flag" type="button" onclick="toggleFlag(' + qc + ')" class="btn btn-tool"><i class="fas fa-flag"> Flag</i></button><button id="q' + qc + '_checked" type="button" onclick="toggleChecked(' + qc + ')" class="btn btn-tool"><i class="fas fa-check-double"> Checked</i></button></div ></div>')
-    $('#q' + qc).append('<div id="q' + qc + '_body" class="card-body"><h6 class= "card-title">' + q.question + '</h6><br/><br/></div>')
-    q.options.forEach(populateOptions);
-    $('#questionList').append('<li class="nav-item"><a href="#question' + qc + '" class="nav-link"><i id="question' + qc + '_button" class="far fa-circle text-warning fa-sm nav-icon"></i><p>&nbsp;Question ' + qc + '</p></a></li>')
-}
-
-// Add option for each option in question
-function populateOptions(o) {
-    ++oc
-    $('#q' + qc + '_body').append('<div class="form-check"><input class= "form-check-input" type="checkbox" id="o_' + qc + '_' + oc + '" ><label class="form-check-label">' + o + '</label></div >')
+    $('#questions').append('<div id="question' + q.id + '" style="padding-top:4rem;" class="col-lg-12"><div id="q' + q.id + '" class="card"></div></div>')
+    $('#q' + q.id).append('<div class="card-header"><h3 class="card-title">Question ' + qc + '</h3><div class="card-tools"><button id="q' + q.id + '_flag" type="button" onclick="toggleFlag(' + q.id + ')" class="btn btn-tool"><i class="fas fa-flag"> Flag</i></button><button id="q' + q.id + '_checked" type="button" onclick="toggleChecked(' + q.id + ')" class="btn btn-tool"><i class="fas fa-check-double"> Checked</i></button></div ></div>')
+    $('#q' + q.id).append('<div id="q' + q.id + '_body" class="card-body"><h6 class= "card-title">' + q.question + '</h6><br/><br/></div>')
+    for (const o of q.options) {
+        ++oc
+        $('#q' + q.id + '_body').append('<div class="form-check"><input class= "form-check-input" type="checkbox" id="o_' + q.id + '_' + oc + '" ><label class="form-check-label">' + o + '</label></div >')
+    }
+    $('#questionList').append('<li class="nav-item"><a href="#question' + q.id + '" class="nav-link"><i id="question' + q.id + '_button" class="far fa-circle text-warning fa-sm nav-icon"></i><p>&nbsp;Question ' + qc + '</p></a></li>')
+    $('#q' + q.id).append('<div class="card-footer text-secondary"><span class="font-italic font-weight-light">' + q.topic + '</span><span class="float-right font-weight-normal">Marks: ' + q.marks + '</span></div>')
 }
 
 // Add user response if present
 function displayUserResponse(r) {
-    for (var i = 0; i < r.response.length; i++) {
-        populateUserResponse(r.question, r.response[i]);
+    for (var i = 0; i < r.response.toString().length; i++) {
+        populateUserResponse(r.id, r.response.toString()[i])
     }
 }
 
 // Check mark the option if selected previously
 function populateUserResponse(q, c) {
-    document.getElementById('o_' + q + '_' + c).checked = true
+    for (var i = 0; i < c.length; i++) {
+        // if (c[i] !== '0') { document.getElementById('o_' + q + '_' + c[i]).checked = true }
+    }
 }
 
 
@@ -460,9 +472,8 @@ async function startExam() {
     if (blockRightClick) (trackRightClick())
 
     // Load questions and previous responses
-    // console.log(questions);
     questions.forEach(displayQuestion)
-    userPreviousResponse.forEach(displayUserResponse)
+    myResponse.forEach(displayUserResponse)
     $('#submitButton').show()
 
     // Start timer
@@ -474,7 +485,8 @@ async function startExam() {
     //Auto-save user response
     saveResponse()
 
-    // UI feedback
+    // UI feedback & Enhancement
+    $('html, body').animate({ scrollTop: $("#question1").offset().top }, 1000)
     Toast.fire({ icon: 'success', title: 'Proctor joined' })
     $('#toggle_sidebar').addClass('text-info')
     $('#guidelines_button').removeClass('fa-circle').addClass('text-info fa-check-circle')
@@ -569,7 +581,6 @@ function resumeExam() {
 
 // Terminate the exam due to repeated user actions
 function terminateExam(examTerminationReason) {
-    console.log(examTerminationReason);
     examPaused = true
     examTerminated = true
     finishExamConfirmation()
@@ -654,20 +665,53 @@ function updateResponseSummary(finalResponse) {
         $('#finishExamTitle').text('Finish Early?')
         $('#finishExamBody').html('<p>You are trying to finish the examination before the permitted time. Are you sure you want to finish this examination?</p>')
     }
-    $('#totalQuestionCount').text(qc)
+    $('#totalQuestionCount').text(questions.length)
     $('#attemptedQuestionCount').text(finalResponse.filter(Boolean).length)
-    $('#remainingQuestionCount').text(qc - finalResponse.filter(Boolean).length)
+    $('#remainingQuestionCount').text(questions.length - finalResponse.filter(Boolean).length)
     return finalResponse
 }
 
-//Push user response to server
+// BACKEND_DEPENDENT Push user response to server
 function pushResponseToServer(finalResponse) {
+    console.log(finalResponse);
+    let logsUrl = $('#saveExamLogsUrl').val();
+    console.log(studentId);
+    let data = [
+        classroom_examination_mapping_id => examID,
+        questionResponses => finalResponse
+
+    ];
+    console.log(data);
     if (finalResponse) {
-        return Math.random() >= 0.01
+        $.ajax({
+            url    : logsUrl,
+            type   : "POST",
+            data   : {
+                classroom_examination_mapping_id: examID,
+                questionResponses               : finalResponse,
+                student_id                      : studentId
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function (result) {
+                console.log(result);
+                if (result.success) {
+                    console.log(result);
+                } else {
+                    console.log(result);
+                }
+            },
+            error  : function (error_r) {
+                console.log(result);
+            }
+        });
+
+        return true
     }
 }
 
-// Save user response every few seconds 
+// Save user response every few seconds
 function saveResponse() {
     var autoSaveInterval = setInterval(function () {
         if (examFinished) {
@@ -788,7 +832,7 @@ function fillData() {
         if (entry[0] == 'student') {
             student = entry[1]
         }
-        if (entry[0] == 'examId') {
+        if (entry[0] == 'examID') {
             examID = entry[1]
         }
     }

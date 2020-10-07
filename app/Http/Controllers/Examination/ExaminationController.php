@@ -131,7 +131,7 @@ class ExaminationController extends Controller
      */
     public function validateStudent(Request $request)
     {
-        $examinationData['classroomExaminationMapping'] = ClassroomExaminationMapping::with('examination', 'classroom')->find($request->classroom_examiation_mapping_id);
+        $examinationData['classroomExaminationMapping'] = ClassroomExaminationMapping::with('examination', 'classroom')->find($request->classroom_examination_mapping_id);
 
         $examinationData['student'] = Student::whereHas('class', function ($q) use ($examinationData) {
             $q->where('class_name', $examinationData['classroomExaminationMapping']->classroom->class_name);
@@ -150,7 +150,7 @@ class ExaminationController extends Controller
         $examinationData['questions'] = Question::whereHas('examinationQuestionMappings', function ($q) use ($examinationData) {
             $q->where('examination_id', $examinationData['classroomExaminationMapping']->examination_id);
             $q->where('classroom_id', $examinationData['classroomExaminationMapping']->classroom_id);
-        })->get();
+        })->get(['id','question','options','type_of_question','topic']);
 
 
         return Response::json(['success' => true, 'response' => $examinationData]);

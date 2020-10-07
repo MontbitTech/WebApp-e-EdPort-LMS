@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Examination;
 
 use App\Http\Controllers\Controller;
 use App\libraries\Utility\DateUtility;
+use Response;
+use App\libraries\Utility\ExaminationUtility;
 use App\Models\Examination\ClassroomExaminationMapping;
 use App\Models\Examination\ExaminationLogs;
 use App\Models\Examination\ExaminationQuestionMapping;
@@ -44,17 +46,10 @@ class ExaminationLogsController extends Controller
         if ( $classroomExaminationMapping->start_time > DateUtility::getDateTime() )
             return Response::json(['success' => false, 'response' => 'Please wait till the start time of the exam']);
 
-        $logs = $this->post($request);
+//        $logs = $this->post($request);
+//        return Response::json(['success' => true, 'response' => $request->questionResponses]);
+        ExaminationUtility::saveStudentAnswers($request, $classroomExaminationMapping);
 
-        foreach ( $request->questions as $questionId => $answer ) {
-            $examQuestionMapping = ExaminationQuestionMapping::where('examination_id', $classroomExaminationMapping->examination_id)
-                ->where('classroom_id', $classroomExaminationMapping->classroom_id)->where('question_id', $questionId)->first();
-
-            $studentAnswer = new StudentAnswer();
-            $studentAnswer->student_id = $request->student_id;
-            $studentAnswer->examination_question_mapping_id = $examQuestionMapping->id;
-            $studentAnswer->answer = $answer;
-            $studentAnswer->save();
-        }
+        return Response::json(['success' => true, 'response' => 'Response saved']);
     }
 }
