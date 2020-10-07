@@ -11,14 +11,14 @@ class CreateStudentAnswers extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up ()
     {
         Schema::create('ex_student_answers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('examination_question_mapping_id');
             $table->unsignedInteger('student_id');
-            $table->text('answer');
-            $table->decimal('marks',3,1);
+            $table->text('answer')->nullable();
+            $table->decimal('marks', 3, 1)->nullable();
 
             $table->foreign('examination_question_mapping_id')->references('id')->on('ex_examination_question_mappings');
             $table->foreign('student_id')->references('id')->on('tbl_students');
@@ -32,7 +32,7 @@ class CreateStudentAnswers extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down ()
     {
         Schema::dropIfExists('ex_student_answers');
     }
