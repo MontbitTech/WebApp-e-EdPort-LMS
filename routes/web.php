@@ -214,8 +214,9 @@ Route::group(['middleware' => 'teachersession'], function () {
     //    Route::get('/teacher/examination/back', 'Examination\ExaminationController@createExamination')->name('examination');
     Route::post('/teacher/setExamination', 'Examination\ExaminationController@setExamination');
     Route::post('/teacher/examination/exampaper', 'Examination\ExaminationController@getExamination');
+    Route::post('/teacher/assign-examination', 'Examination\ExaminationController@assignExamination');
     Route::post('/teacher/examination/exampaperlist', 'Examination\ExaminationController@getExaminationList');
-
+    Route::post('/teacher/examination/examdelete/{id}', 'Examination\ExaminationController@examDelete')->name('examination.delete');
     Route::post('/examination/create', 'Examination\ExaminationController@store');
     Route::get('/getQuestions', 'Examination\QuestionController@index');
     Route::post('/saveQuestion', 'Examination\QuestionController@store');
@@ -224,6 +225,7 @@ Route::group(['middleware' => 'teachersession'], function () {
 
 //Route::get('/student/takeExam/{id}', 'Examination\ExaminationController@takeExamination');
 Route::post('/student/validateStudent', 'Examination\ExaminationController@validateStudent');
+Route::post('/student/saveExamLogs', 'Examination\ExaminationLogsController@saveExamLogs');
 Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass')->name('reload-timetable');
 Route::get('/timeTable/{class}/{section}', 'ImportTimetableController@download_Timetable');
 //Reload Timetable URL - http://<domain>/addData_pastClass

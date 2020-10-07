@@ -37,13 +37,17 @@
         </ul>
         <!-- <hr> -->
         {{-- <form action="" method="post">--}}
-        <div class="card bg-data card-hiden-new b-0 show">
+        <div class="card bg-data card-hiden-new b-0 show"  id="step01">
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-11">
 
                     <div class="form-group">
                         <label class="form-control-label">Examination Name</label>
-                        <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)"></div>
+                        @if($examDetail!='')
+                        <input type="text" id="examname" value="{{$examDetail->examination->title}}" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)"></div>
+                        @else
+                         <input type="text" id="examname"  name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)"></div>
+                         @endif
                 </div>
             </div>
 
@@ -59,7 +63,11 @@
                     <div class="row mb-3 px-3">
                         <div class="col-md-3">
                             <select class="form-control" id="class" onchange="getChapter()">
-                                <option value="" selected>Select Class</option>
+                                 @if($classrooms_data)
+                                <option value="{{$classrooms_data->class_name}}">{{$classrooms_data->class_name}}</option>
+                                 @else
+                                <option value="">Select Classroom</option>
+                                @endif
                                 @foreach($classes as $class)
                                 <option value="{{$class}}">{{$class}}</option>
                                 @endforeach
@@ -67,7 +75,11 @@
                         </div>
                         <div class="col-md-3">
                             <select class="form-control" id="subject" onchange="getChapter()">
+                                 @if($classrooms_data)
+                                <option value="{{$classrooms_data->studentSubject->subject_name}}">{{$classrooms_data->studentSubject->subject_name}} </option>
+                                 @else
                                 <option value="" selected>Select Subject</option>
+                                @endif
                                 @foreach($subjects as $subject)
                                 <option value="{{$subject->id}}">{{$subject->subject_name}}</option>
                                 @endforeach
@@ -90,13 +102,17 @@
                     </div>
                 </div>
                 <div class="col-md-6 ">
+                    <div class="createdata pr-2"></div>
                     <div class="row" id="question"></div>
                     <div class="row" id="validateCheckbox"></div>
-                    <div class="createdata pr-2"></div>
                 </div>
                 <div class="col-md-6 border-left">
                     <div class="form-group" id="questionPaper">
                         <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamName"> Exam Name</h3>
+                        @if($questionData!='')
+                         <input type="hidden" id="ques" name="questions[]" value="{{$questionData->question_id}}">
+                        <p>{{$questionData->questions->question}}</p>
+                        @endif
                     </div>
 
                 </div>
@@ -123,6 +139,20 @@
                                 <div class="col-md-10">question</div>
                                 <div class="col-md-2"> marks</div>
                             </div>
+                            <div class="row mb-2">
+                                @if($questionData!="")
+                                <div class="col-md-10">
+                                <p class='bg-light mb-2 font-weight-bold'>{{$questionData->questions->question}}</p>
+                                </div>
+                                <div class="col-md-2">
+                                    @if($questionData!="")
+                                    <?php $marks = number_format($questionData->marks,0);
+                                   ?>
+                                <input type="number" name="marks[{{$questionData->question_id}}]" class="form-control" id="questionmarks' + {{$questionData->question_id}} + '" value="{{$marks}}">
+                                    @endif
+                                </div>
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -136,14 +166,19 @@
                 </div>
             </div>
         </div>
-        <div class="card bg-data  card-hiden b-0">
+        <div class="card bg-data  card-hiden b-0"  id="step04">
             <div class="row d-flex justify-content-center text-center">
                 <div class="col-md-8">
                     <div class="row">
                         <div class="col-md-4 my-2 ">
                             <label class="d-block mb-2">Class</label>
                             <select class="form-control select1 " data-placeholder="Class" name="classroom_id" id="select1" style="width: 100%;">
+                               @if($classrooms_data && $questionData)
+                                <option value="{{$questionData->classroom_id}}">{{$classrooms_data->class_name}} {{$classrooms_data->section_name}}
+                                    , {{$classrooms_data->studentSubject->subject_name}}</option>
+                                 @else
                                 <option value="">Select Classroom</option>
+                                @endif
                                 @foreach($classrooms as $classroom)
                                 <option value="{{$classroom->id}}">{{$classroom->class_name}} {{$classroom->section_name}}
                                     , {{$classroom->studentSubject->subject_name}}</option>
@@ -153,15 +188,22 @@
 
                         <div class="col-md-4  my-2 ">
                             <label for="times">Duration (In Minutes)</label>
-                            {{-- <div class="form-control ">--}}
-                            <input type="number" class="form-control" id="hh" name="duration" placeholder="Duration in Miutes">
-                            {{-- <input type="number" class="style-houser" id="ss" s name="duration[mm]" min="0" max="59"--}}
-                            {{-- placeholder="00">--}}
-                            {{-- </div>--}}
+                             @if($examDetail!="")
+                            <?php   $parsed  =  date_parse($examDetail->duration);
+                            $durations    =  $parsed['hour'] * 60 +$parsed['minute'];?>
+                            <input type="number" class="form-control" id="hh" name="duration" value="{{$durations}}" placeholder="Duration in Miutes">
+                            @else
+                             <input type="number" class="form-control" id="hh" name="duration"  placeholder="Duration in Miutes">
+                            @endif
+
                         </div>
                         <div class="col-md-4 my-2 ">
                             <label for="times">Start Time</label>
-                            <input type="datetime-local" id="timestart" class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
+                            @if($examDetail!="")
+                            <input type="datetime-local" id="timestart" value="{{ date('Y-m-d\TH:i', strtotime($examDetail->start_time)) }}" class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
+                            @else
+                            <input type="datetime-local" id="timestart"  class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
+                            @endif
                         </div>
                         {{-- <div class="col-md-6 my-2 ">
                             <label for="times">End Time</label>
@@ -675,8 +717,8 @@
             if (questionId == null) {
                 let className = $('#class').val();
                 let subject = $('#subject').val();
-                let chapter = $('#chapter').val();
-                let topic = $('#topic').val();
+                // let chapter = $('#chapter').val();
+                // let topic = $('#topic').val();
                 let questionText = obj.parent().next().find('.newQuestion').val();
                 let optionsHtml = obj.parent().next().find('.options');
                 let answersHtml = obj.parent().next().find('.answers');
@@ -691,7 +733,7 @@
                         answer.push(options[answersHtml[i].value]);
                 }
 
-                return insertQuestion(val, obj, questionText, options, answer, className, subject, chapter, topic);
+                return insertQuestion(val, obj, questionText, options, answer, className, subject, );
 
             }
             let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question;
@@ -717,8 +759,8 @@
         }
     }
 
-    function insertQuestion(val, obj, questionText, options, answer, className, subject, chapter, topic) {
-          if(questionText && options[0] && options[1] && options[2] && options[3] && answer.length>=1 && className && subject && chapter && topic){
+    function insertQuestion(val, obj, questionText, options, answer, className, subject) {
+        if (questionText && options[0] && options[1] && options[2] && options[3] && answer.length >= 1 && className && subject) {
             $('.loader').show();
             $.ajax({
                 url: "{{url('/saveQuestion')}}",
@@ -728,9 +770,9 @@
                     options: options,
                     answer: answer,
                     class: className,
-                    subject_id: subject,
-                    chapter: chapter,
-                    topic: topic
+                    subject_id: subject
+                    // chapter: chapter,
+                    // topic: topic
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -759,51 +801,49 @@
 
                     } else {
                         $.each(result.response, function(key, value) {
-                        $.fn.notifyMe('error', 10, value);
-                        $(obj).prop("checked", false);
+                            $.fn.notifyMe('error', 10, value);
+                            $(obj).prop("checked", false);
 
-                    });
+                        });
                     }
                 },
                 error: function(error_r) {
                     $('.loader').fadeOut();
                 }
             });
-        }
-        else {
+        } else {
             if (!questionText) {
                 obj.parent().next().find('.newQuestion').css('borderColor', 'red');
                 $(obj).prop("checked", false);
-            } 
-              else obj.parent().next().find('.newQuestion').css('borderColor', '#ced4da');
+            } else obj.parent().next().find('.newQuestion').css('borderColor', '#ced4da');
 
-            if (options[0]=="" || options[1]=="" || options[2]=="" || options[3]=="") {
+            if (options[0] == "" || options[1] == "" || options[2] == "" || options[3] == "") {
                 obj.parent().next().find('.options').css('borderColor', 'red');
                 $(obj).prop("checked", false);
-            } else  obj.parent().next().find('.options').css('borderColor', '#ced4da');
+            } else obj.parent().next().find('.options').css('borderColor', '#ced4da');
 
-            if (answer.length==0) {
+            if (answer.length == 0) {
                 alert("select atleast one answer");
                 $(obj).prop("checked", false);
             }
             if (!className) {
-               $('#class').css('borderColor', 'red');
+                $('#class').css('borderColor', 'red');
                 $(obj).prop("checked", false);
-            }else $('#class').css('borderColor', '#ced4da');
-           if (!subject) {
-               $('#subject').css('borderColor', 'red');
+            } else $('#class').css('borderColor', '#ced4da');
+            if (!subject) {
+                $('#subject').css('borderColor', 'red');
                 $(obj).prop("checked", false);
-            }else $('#subject').css('borderColor', '#ced4da');
-             if (!topic) {
-               $('#topic').css('borderColor', 'red');
-                $(obj).prop("checked", false);
-            }else $('#topic').css('borderColor', '#ced4da');
-             if (!chapter) {
-               $('#chapter').css('borderColor', 'red');
-                $(obj).prop("checked", false);
-            }else $('#chapter').css('borderColor', '#ced4da');
+            } else $('#subject').css('borderColor', '#ced4da');
+            // if (!topic) {
+            //     $('#topic').css('borderColor', 'red');
+            //     $(obj).prop("checked", false);
+            // } else $('#topic').css('borderColor', '#ced4da');
+            // if (!chapter) {
+            //     $('#chapter').css('borderColor', 'red');
+            //     $(obj).prop("checked", false);
+            // } else $('#chapter').css('borderColor', '#ced4da');
         }
-        
+
     }
 
     function deleteQuestion(questionId) {

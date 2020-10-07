@@ -56,6 +56,7 @@ Refer https://www.youtube.com/watch?v=CVClHLwv-4I for face-api tutorial.
 <body onselectstart="return false" class="sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 
 <input type="hidden" id="validateStudentUrl" value="{{url('/student/validateStudent')}}">
+<input type="hidden" id="saveExamLogsUrl" value="{{url('/student/saveExamLogs')}}">
   <div class="wrapper">
 
     <!-- Navbar -->
