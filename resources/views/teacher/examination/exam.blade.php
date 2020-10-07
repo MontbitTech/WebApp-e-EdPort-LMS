@@ -27,10 +27,11 @@
                  </div> -->
                  <div class="col-md-4 ">
                      <!-- <label class="d-block mb-2">Class</label> -->
-                     <select class="form-control select1 " id="examlist" onchange="getExamlist()" style="width: 100%;">
+                     <select class="form-control select1 " id="examlist" style="width: 100%;">
                          <option value="">Select Classroom</option>
                          @foreach($classroomlist->unique('classroom_id') as $classroom)
-                         <option value="{{$classroom->id}}">{{$classroom->classroom->class_name}} {{$classroom->classroom->section_name}}, {{$classroom->classroom->studentSubject->subject_name}}</option>
+
+                         <option value="{{$classroom->classroom_id}}">{{$classroom->classroom->class_name}} {{$classroom->classroom->section_name}}, {{$classroom->classroom->studentSubject->subject_name}}</option>
                          @endforeach
                      </select>
                  </div>
@@ -46,7 +47,7 @@
                          <th scope="col">Action</th>
                      </tr>
                  </thead>
-                 <tbody>
+                 <tbody id="test">
                      @php
                      $i=1;
                      @endphp
@@ -57,12 +58,9 @@
                      <input type="hidden" id="examname{{$i}}" value="{{$examinationshows->examination->title}}">
                      <input type="hidden" id="classroomname{{$i}}" value="{{$examinationshows->classroom->class_name}} {{$examinationshows->classroom->section_name}} {{$examinationshows->classroom->studentSubject->subject_name}}">
                      <input type="hidden" id="examtime{{$i}}" value="{{date('i',strtotime($examinationshows->duration))}}">
-                     <tr id="test">
+                     <tr>
                          <td>{{$examinationshows->classroom->class_name}} {{$examinationshows->classroom->section_name}} {{$examinationshows->classroom->studentSubject->subject_name}}</td>
                          <td>{{$examinationshows->examination->title}}</td>
-                         <!-- <td></td> -->
-                         <!-- <td>15</td> -->
-                         <!-- <td>80% </td> -->
                          <td>
                              <button type="button" data-Examination="{{$i}}" class="btn" data-toggle="modal" data-target="#showexam">Show</button>
                              ||
@@ -172,58 +170,51 @@
      });
  </script>
  <script>
-     function getExamlist() {
-         var classroom_id = $('#examlist').val();
-         //  var className = $('#class').val();
-         //  var chapter = $('#chapter').val();
-         //  var topic = $('#topic').val();
-
-         //  if (subject == '' || className == '')
-         //      return;
-
+     $('#examlist').on('change', function() {
+         var classroom_id = $(this).val();
+         console.log(classroom_id);
          $('.loader').show();
          $.ajax({
              url: "{{url('/teacher/examination/exampaperlist')}}",
              type: "POST",
              data: {
                  classroom_id: classroom_id,
-                 //  subject_id: subject,
-                 //  chapter: chapter,
-                 //  topic: topic
              },
              headers: {
                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
              },
              success: function(result) {
                  $('.loader').fadeOut();
-                 $('#test').find('tr').empty();
-                 if (result.success) {
+                 //  if (result.success) {
 
-                     let count = 1;
-                     let data = "";
-                     var response = JSON.parse(result);
-                     response.data.forEach(function(exam) {
-                         data += '<td >' + exam.classroom.class_name + exam.classroom.section_name + exam.classroom.studentSubject.subject_name + '</td>';
-                         data += '<td>' + exam.examination.title + '</td>';
-                         data += '<td><button type="button" data-Examination="{{$i}}" class="btn" data-toggle="modal" data-target="#showexam" > Show </button> ||';
-                         data += '<button class ="btn" data-toggle="modal"   data-target="#deleteexam" > Delete </button> </td > ';
+                 let count = 1;
+                 let data = "";
+                 var response = JSON.parse(result);
+                 response.data.forEach(function(exam) {
+                     $('#test').find('tr').empty();
+                     // data += exam;
+                     data += '<td>' + exam.classroom.class_name + ' ' + exam.classroom.section_name + ' ' + exam.classroom.student_subject.subject_name + '</td>';
+                     data += '<td>' + exam.examination.title + '</td>';
+                     data += '<td><button type="button" data-Examination="' + count + '"  class="btn" data-toggle="modal" data-target ="#showexam"> Show </button> ||';
+                     data += '<button class="btn" data-toggle="modal"  data-examdelete="' + exam.id + '"> Delete </button> ||';
+                     data += '<button type="button" data-Exam="' + count + '" class="btn"  data-toggle="modal"> Assign </button> </td>';
+                     count++;
+                 });
+                 $('#test').find('tr').append(data);
+                 // console.log(data);
 
-                         count++;
-                     });
 
-
-                     $('#test').append(data);
-
-                 } else {
-                     $.fn.notifyMe('error', 5, result.response);
-                 }
+                 // }
+                 // else {
+                 //      $.fn.notifyMe('error', 5, result.response);
+                 //  }
              },
              error: function(error_r) {
                  $('.loader').fadeOut();
                  console.log(error_r);
              }
          });
-     }
+     });
  </script>
  <!-- modal add exam -->
  <!-- <div class="modal fade" id="addexam" tabindex="-1" role="dialog" aria-labelledby="addexamTitle" aria-hidden="true">
