@@ -54,13 +54,18 @@ function validate2(val) {
     }
 
     if(!(document.getElementById("questionPaper").contains(question))){
-        // alert('Please select question');
+        if(document.getElementById("validateCheckbox").innerHTML.indexOf("select/add atleast one question")==-1){
+        document.getElementById("validateCheckbox").append("select/add atleast one question");
+        }
+        document.getElementById("validateCheckbox").style.display = "block";
+        document.getElementById("validateCheckbox").style.color = "red";
         flag1 = false;
-    }
-    else  flag1 = true;
-
+        }
+    else {
+        document.getElementById("validateCheckbox").style.display = "none";
+        flag1 = true;
+    }  
     flag = flag1 && flag2;
-
     return flag;
 }
 
@@ -93,11 +98,20 @@ function validate4(val) {
         }
     }
 
+    var date = v3.value;
+    var selectedDate = new Date(date);
+    var today = new Date();
+
     if (val >= 3 || val == 0) {
-        if (v3.value == "" ) {
+        if (v3.value == "") {
             v3.style.borderColor = "red";
             flag3 = false;
-        } else {
+        }     
+        else if(selectedDate <= today){
+         v3.style.borderColor = "red";
+           flag3 = false;
+          }
+        else {
             v3.style.borderColor = "#ced4da";
             flag3 = true;
         }

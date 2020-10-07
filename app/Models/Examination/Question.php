@@ -11,11 +11,21 @@ class Question extends Model
 
     public function subject ()
     {
-        return $this->hasOne(StudentSubject::class,'id','subject_id');
+        return $this->hasOne(StudentSubject::class, 'id', 'subject_id');
     }
 
     public function examinationQuestionMappings ()
     {
         return $this->hasMany(ExaminationQuestionMapping::class);
+    }
+
+    public function setOptionsAttribute ($value)
+    {
+        $this->attributes['options'] = json_encode($value);
+    }
+
+    public function getOptionsAttribute ($value)
+    {
+        return json_decode($value);
     }
 }

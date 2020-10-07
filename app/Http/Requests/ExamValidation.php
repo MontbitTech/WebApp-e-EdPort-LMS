@@ -12,9 +12,10 @@ class ExamValidation extends BaseRequest
     {
         return [
             'title'          => 'required',
-            'classroom_id'   => 'required',
+            'classroom_id'   => 'required|exists:tbl_student_classes,id',
             'duration'       => 'required',
             'start_time'     => 'required',
+
         ];
     }
 

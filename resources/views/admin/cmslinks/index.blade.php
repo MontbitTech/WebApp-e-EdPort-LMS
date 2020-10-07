@@ -181,7 +181,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header bg-light d-flex align-items-center">
-        <h5 class="modal-title font-weight-bold">Delete Class</h5>
+        <h5 class="modal-title font-weight-bold">Delete Content</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <svg class="icon">
             <use xlink:href="../images/icons.svg#icon_times2"></use>
@@ -253,7 +253,7 @@
                 columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
                 format: {
                   body: function(data, row, column, node) {
-                    if ( column === 4 || column === 5 || column === 6 || column === 7 || column === 8 || column === 9 || column === 10 ) {
+                    if (column === 4 || column === 5 || column === 6 || column === 7 || column === 8 || column === 9 || column === 10) {
                       data = data.split("\"");
                       var linkUrl = data[1];
                       linkUrl = linkUrl.trim("");
@@ -261,7 +261,7 @@
                         linkUrl = "";
                       }
                     }
-                    return column === 4 || column === 5 || column === 6 || column === 7 || column === 8 || column === 9 || column === 10  ?
+                    return column === 4 || column === 5 || column === 6 || column === 7 || column === 8 || column === 9 || column === 10 ?
                       linkUrl.replace("", "") : data;
                   }
                 }

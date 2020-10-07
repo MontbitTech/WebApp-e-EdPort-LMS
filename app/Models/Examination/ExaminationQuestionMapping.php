@@ -8,13 +8,13 @@ class ExaminationQuestionMapping extends Model
 {
     protected $table = 'ex_examination_question_mappings';
 
-    public function examination ()
+    public function examinations()
     {
-        return $this->hasOne(Examination::class);
+        return $this->hasOne(Examination::class, 'id', 'examination_id');
     }
 
-    public function question ()
+    public function questions()
     {
-        return $this->hasOne(Question::class);
+        return $this->hasOne(Question::class, 'id', 'question_id');
     }
 }
