@@ -102,7 +102,7 @@
                          <td>
                              <button type="button" class="btn" data-toggle="modal" data-target="#showexam">Edit</button>
                              ||
-                             <button class="btn" data-toggle="modal" data-examdelete="{{$examinationshows->id}}">Delete</button>
+                             <button class="btn" data-toggle="modal" data-examdelete="">Delete</button>
                          </td>
                      </tr>
                  </tbody>
