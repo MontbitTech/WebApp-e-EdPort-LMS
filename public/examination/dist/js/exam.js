@@ -319,6 +319,7 @@ function trackRightClick() {
 
 // Track Time
 function startTimer(hh = 3, mm = 0, ss = 0) {
+    // console.log(hh);
     let secondsRemaining = hh * 60 * 60 + mm * 60 + ss;
     var timerInterval = setInterval(function () {
         if (!examPaused) {
@@ -387,9 +388,11 @@ function checkValidUser(email) {
                 examProperties = JSON.parse(result.response.classroomExaminationMapping.examination_properties);// TODO: Pull exam properties
                 setEnvironment()
                 questions = result.response.questions; // TODO: Pull questions
-                userPreviousResponse = result.response.previousResponse; // TODO: Pull userPreviousResponse
+                myResponse = result.response.previousResponse; // TODO: Pull userPreviousResponse
                 userPreviousLog = result.response.logs;// TODO: Pull userPreviousLog
                 studentId = result.response.student.id;
+                examProperties.timeBound = result.response.classroomExaminationMapping.duration;
+                console.log( examProperties.timeBound);
                 return acquireUserPermissionHelper()
             } else {
                 endExam('userDetailsIncorrect')
@@ -418,15 +421,17 @@ function displayQuestion(q) {
 
 // Add user response if present
 function displayUserResponse(r) {
-    for (var i = 0; i < r.response.toString().length; i++) {
-        populateUserResponse(r.id, r.response.toString()[i])
+    for (var i = 0; i < r.answer.toString().length; i++) {
+        populateUserResponse(r.exam_question_mapping.question_id, r.answer.toString()[i])
     }
 }
 
 // Check mark the option if selected previously
 function populateUserResponse(q, c) {
     for (var i = 0; i < c.length; i++) {
-        // if (c[i] !== '0') { document.getElementById('o_' + q + '_' + c[i]).checked = true }
+        if (c[i] !== '0') {
+            document.getElementById('o_' + q + '_' + c[i]).checked = true
+        }
     }
 }
 
@@ -478,15 +483,16 @@ async function startExam() {
 
     // Start timer
     examPaused = false
-    if (timeBound) {
-        startTimer()
+    if (examProperties.timeBound) {
+        var time = examProperties.timeBound.split(":")
+        startTimer(Number(time[0]), Number(time[1]), Number(time[2]))
     }
 
     //Auto-save user response
     saveResponse()
 
     // UI feedback & Enhancement
-    $('html, body').animate({ scrollTop: $("#question1").offset().top }, 1000)
+    $('html, body').animate({ scrollTop: $("#question1").offset() }, 1000)
     Toast.fire({ icon: 'success', title: 'Proctor joined' })
     $('#toggle_sidebar').addClass('text-info')
     $('#guidelines_button').removeClass('fa-circle').addClass('text-info fa-check-circle')
@@ -673,15 +679,7 @@ function updateResponseSummary(finalResponse) {
 
 // BACKEND_DEPENDENT Push user response to server
 function pushResponseToServer(finalResponse) {
-    console.log(finalResponse);
     let logsUrl = $('#saveExamLogsUrl').val();
-    console.log(studentId);
-    let data = [
-        classroom_examination_mapping_id => examID,
-        questionResponses => finalResponse
-
-    ];
-    console.log(data);
     if (finalResponse) {
         $.ajax({
             url    : logsUrl,
