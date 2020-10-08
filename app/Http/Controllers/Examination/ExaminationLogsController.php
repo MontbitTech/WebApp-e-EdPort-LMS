@@ -47,8 +47,8 @@ class ExaminationLogsController extends Controller
             return Response::json(['success' => false, 'response' => 'Please wait till the start time of the exam']);
 
 //        $logs = $this->post($request);
-//        return Response::json(['success' => true, 'response' => $request->questionResponses]);
-        ExaminationUtility::saveStudentAnswers($request, $classroomExaminationMapping);
+        if ( $request->questionResponses )
+            ExaminationUtility::saveStudentAnswers($request, $classroomExaminationMapping);
 
         return Response::json(['success' => true, 'response' => 'Response saved']);
     }
