@@ -142,7 +142,7 @@ class ExaminationController extends Controller
             return Response::json(['success' => false, 'response' => 'Invalid Student']);
 
         $examinationData['logs'] = ExaminationLogs::where('student_id', $examinationData['student']->id)->get();
-        $examinationData['previousResponse'] = StudentAnswer::with('examQuestionMapping.questions')->whereHas('examQuestionMapping', function ($q) use ($examinationData) {
+        $examinationData['previousResponse'] = StudentAnswer::with('examQuestionMapping.question')->whereHas('examQuestionMapping', function ($q) use ($examinationData) {
             $q->where('examination_id', $examinationData['classroomExaminationMapping']->examination_id);
             $q->where('classroom_id', $examinationData['classroomExaminationMapping']->classroom_id);
         })->where('student_id', $examinationData['student']->id)->get();
