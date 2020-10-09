@@ -142,7 +142,7 @@ class ExaminationController extends Controller
             return Response::json(['success' => false, 'response' => 'Invalid Student']);
 
         $examinationData['logs'] = ExaminationLogs::where('student_id', $examinationData['student']->id)->get();
-        $examinationData['previousResponse'] = StudentAnswer::with('examQuestionMapping.questions')->whereHas('examQuestionMapping', function ($q) use ($examinationData) {
+        $examinationData['previousResponse'] = StudentAnswer::with('examQuestionMapping.question')->whereHas('examQuestionMapping', function ($q) use ($examinationData) {
             $q->where('examination_id', $examinationData['classroomExaminationMapping']->examination_id);
             $q->where('classroom_id', $examinationData['classroomExaminationMapping']->classroom_id);
         })->where('student_id', $examinationData['student']->id)->get();
@@ -188,7 +188,7 @@ class ExaminationController extends Controller
         ExaminationQuestionMapping::insert($examinationQuestionMappings);
 
         TeacherUtility::createAnnouncementInClassroom(
-            env('APP_URL') . '/student/takeExam/' . $classroomExaminationMapping->id . '  is the url to take your exam',
+            env('APP_URL') . '/student/exam?examID=' . $classroomExaminationMapping->id . '  is the url to take your exam',
             StudentClass::find($request->classroom_id)->g_class_id
         );
 

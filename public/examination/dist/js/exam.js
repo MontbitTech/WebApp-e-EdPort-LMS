@@ -102,7 +102,7 @@ var myLog = []
 
 var myResponse = [
     { id: 4, response: 0 },
-    { id: 6, response: 1234 },
+    { id: 6, response: "1,2,3,4" },
     { id: 8, response: 2 },
     { id: 10, response: 3 },
     { id: 12, response: 4 },
@@ -392,7 +392,7 @@ function checkValidUser(email) {
                 userPreviousLog = result.response.logs;// TODO: Pull userPreviousLog
                 studentId = result.response.student.id;
                 examProperties.timeBound = result.response.classroomExaminationMapping.duration;
-                console.log( examProperties.timeBound);
+                // console.log( examProperties.timeBound);
                 return acquireUserPermissionHelper()
             } else {
                 endExam('userDetailsIncorrect')
@@ -421,8 +421,9 @@ function displayQuestion(q) {
 
 // Add user response if present
 function displayUserResponse(r) {
-    for (var i = 0; i < r.answer.toString().length; i++) {
-        populateUserResponse(r.exam_question_mapping.question_id, r.answer.toString()[i])
+    let answers = r.answer.split(',');
+    for (var i = 0; i < answers.length; i++) {
+        populateUserResponse(r.exam_question_mapping.question_id, answers[i])
     }
 }
 
@@ -651,11 +652,12 @@ function prepareResponse() {
         res = userResponse[i]['id']
         res = res.split('_')
         if (res[1] in finalResponse) {
-            finalResponse[res[1]] += res[2]
+            finalResponse[res[1]] += ',' + res[2]
         } else {
             finalResponse[res[1]] = res[2]
         }
     }
+    console.log(finalResponse);
     return finalResponse
 }
 
@@ -695,9 +697,9 @@ function pushResponseToServer(finalResponse) {
             success: function (result) {
                 console.log(result);
                 if (result.success) {
-                    console.log(result);
+                    // console.log(result);
                 } else {
-                    console.log(result);
+                    // console.log(result);
                 }
             },
             error  : function (error_r) {
