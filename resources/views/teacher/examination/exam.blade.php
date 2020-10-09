@@ -41,6 +41,7 @@
                      <tr>
                          <th scope="col">Classroom</th>
                          <th scope="col">Exam name</th>
+                         <th scope="col">Exam Link</th>
                          <th scope="col">Action</th>
                      </tr>
                  </thead>
@@ -58,6 +59,7 @@
                      <tr>
                          <td>{{$examinationshows->classroom->class_name}} {{$examinationshows->classroom->section_name}} {{$examinationshows->classroom->studentSubject->subject_name}}</td>
                          <td>{{$examinationshows->examination->title}}</td>
+                         <td>{{env('APP_URL') . '/student/exam?examID=' . $examinationshows->id}}</td>
                          <td>
                              <button type="button" data-Examination="{{$i}}" class="btn" data-toggle="modal" data-target="#showexam">Show</button>
                              ||
@@ -82,7 +84,7 @@
          <div class="card-header pt-1 pb-0 border-transparent text-white" style="background-color: #373c8e;">
              <h4 class="card-title d-inline">Examination Name</h4>
              <div class="card-tools d-inline float-right">
-               
+
                  <button type="button" class="btn border ml-2 btn-tool text-white " data-card-widget="collapse">
                      <i class="fas fa-minus"></i>
                  </button>
@@ -233,6 +235,7 @@
                      data += '<input type="hidden" id="examtime' + count + '" value="' + exam.duration + '"/>';
                      data += '<tr class=""><td>' + exam.classroom.class_name + ' ' + exam.classroom.section_name + ' ' + exam.classroom.student_subject.subject_name + '</td>';
                      data += '<td>' + exam.examination.title + '</td>';
+                     data += '<td>' + env('APP_URL') . '/student/exam?examID=' . exam.id + '</td>';
                      data += '<td><button type="button" data-Examination="' + count + '"  class="btn" data-toggle="modal" data-target ="#showexam"> Show </button> ||';
                      data += '<button class="btn" data-toggle="modal"  data-examdelete="' + exam.id + '"> Delete </button> ||';
                      data += '<button type="button" data-Exam="' + count + '" class="btn"  data-toggle="modal"> Assign </button> </td></tr>';

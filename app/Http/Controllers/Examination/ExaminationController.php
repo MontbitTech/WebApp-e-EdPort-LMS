@@ -188,7 +188,7 @@ class ExaminationController extends Controller
         ExaminationQuestionMapping::insert($examinationQuestionMappings);
 
         TeacherUtility::createAnnouncementInClassroom(
-            env('APP_URL') . '/student/takeExam/' . $classroomExaminationMapping->id . '  is the url to take your exam',
+            env('APP_URL') . '/student/exam?examID=' . $classroomExaminationMapping->id . '  is the url to take your exam',
             StudentClass::find($request->classroom_id)->g_class_id
         );
 
