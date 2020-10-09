@@ -26,24 +26,23 @@ class ExaminationUtility
     }
 
 
-    public static function calculateResult ($examinationId, $classroomId, $studentId)
+    public static function calculateResult ($classroomExaminationMappingId, $classroomId, $studentId)
     {
-        $classroomExaminationMappig = ClassroomExaminationMapping::where('examination_id', $examinationId)
-            ->where('classroom_id', $classroomId)->get();
+        $classroomExaminationMapping = ClassroomExaminationMapping::find($classroomExaminationMappingId);
 
-        $examinationQuestionMapping = ExaminationQuestionMapping::where('examination_id', $examinationId)
+        $examinationQuestionMapping = ExaminationQuestionMapping::with(['answers' => function ($query) use ($studentId) {
+            $query->where('student_id', $studentId);
+        }])->where('examination_id', $classroomExaminationMapping->examination_id)
             ->where('classroom_id', $classroomId)->get();
 
         $totalMarks = $examinationQuestionMapping->sum('marks');
-
-//        $studentResponse = StudentAnswer::where('examination_question_mapping_id',$examinationQuestionMapping)->
 
 
     }
 
     public static function saveStudentAnswers ($request, $classroomExaminationMapping)
     {
-        foreach ( $request->questionResponses as $questionId => $answer ) {
+        foreach ( $request->questionResponses as $questionId => $answerIds ) {
             $examQuestionMapping = ExaminationQuestionMapping::where('examination_id', $classroomExaminationMapping->examination_id)
                 ->where('classroom_id', $classroomExaminationMapping->classroom_id)->where('question_id', $questionId)->first();
 
@@ -54,20 +53,48 @@ class ExaminationUtility
                 'student_id'                      => $request->student_id,
                 'examination_question_mapping_id' => $examQuestionMapping->id,
             ]);
-            $studentAnswer->answer = $answer;
+            $studentAnswer->answer = $answerIds;
 
             if ( $examQuestionMapping->question )
-                $studentAnswer->marks = ExaminationUtility::calculateMarks($examQuestionMapping, $answer);
+                $studentAnswer->marks = self::calculateMarks($examQuestionMapping, $answerIds);
             $studentAnswer->save();
         }
     }
 
-    public static function calculateMarks ($examQuestionMapping, $answer, $classroomExamProperties = null)
+    public static function calculateMarks ($examQuestionMapping, $answerIds, $classroomExamProperties = null)
     {
-        if ( $examQuestionMapping->question->answer == $answer ) {
-            return $examQuestionMapping->marks;
+        $answers = self::getAnswers($examQuestionMapping->question, $answerIds);
+
+        if ( $examQuestionMapping->question->type_of_question == 'multiple_choice' ) {
+            $rightAnswers = explode($examQuestionMapping->question->answer);
+            if ( count($rightAnswers) < $answers )
+                return 0;
+            $studentCorrectResponses = array_intersect($answers, $rightAnswers);
+            $perRightOptionMarks = $examQuestionMapping->marks / $rightAnswers;
+
+            return $studentCorrectResponses * $perRightOptionMarks;
+
         } else {
-            return 0;
+            if ( $examQuestionMapping->question->answer == $answers ) {
+                return $examQuestionMapping->marks;
+            } else {
+                return 0;
+            }
         }
+    }
+
+    public static function getAnswers ($question, $answerIds)
+    {
+        $answer = '';
+        $answerIds = explode(',', $answerIds);
+        if ( count($answerIds) > 1 ) {
+            foreach ( $answerIds as $answerId ) {
+                $answers[] = $question->options[ $answerId - 1 ];
+                $answer = implode(',', $answers);
+            }
+        } else
+            $answer = $question->options[ $answerIds[0] - 1 ];
+
+        return $answer;
     }
 }
