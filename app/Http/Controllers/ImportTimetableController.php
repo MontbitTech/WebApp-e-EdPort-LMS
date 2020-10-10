@@ -1014,8 +1014,6 @@ class ImportTimetableController extends Controller
     {
 
         if ($request->isMethod('post')) {
-
-
             $request->validate([
                 'class_id'   => 'required',
                 'teacher'    => 'required',
@@ -1025,15 +1023,14 @@ class ImportTimetableController extends Controller
 
             ]);
 
-            $class_id = $request->class_id;
             $teacher_id = $request->teacher;
 
-            $obj_teacher = Teacher::where('id', $request->teacher)->get()->first();
+            $teacher = Teacher::where('id', $request->teacher)->get()->first();
 
-            $g_teacher_id = $obj_teacher['g_user_id'];
-            $phone = $obj_teacher['phone'];
+            $g_teacher_id = $teacher['g_user_id'];
+            $phone = $teacher['phone'];
 
-            $obj_class = StudentClass::where('id', $class_id)->get()->first();
+            $obj_class = StudentClass::where('id', $request->class_id)->get()->first();
 
             $g_class_id = $obj_class['g_class_id'];
             $g_live_link = $obj_class['g_link'];
@@ -1060,7 +1057,7 @@ class ImportTimetableController extends Controller
             $today = date("Y-m-d");
 
 
-            $TimeTableExist = ClassTiming::where('class_id', $class_id)
+            $TimeTableExist = ClassTiming::where('class_id', $request->class_id)
             ->where('teacher_id', $teacher_id)
             ->where('subject_id', $subject_id)
             ->where('class_day', $class_day)
@@ -1068,12 +1065,12 @@ class ImportTimetableController extends Controller
             ->where('to_timing', '>=', DateUtility::getFutureTime(1, $from_time))
             ->get()->first();
 
-            $classTimingExist = ClassTiming::where('class_id', $class_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
+            $classTimingExist = ClassTiming::where('class_id', $request->class_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
 
             $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
 
 
-            $dateClassExist = DateClass::where('class_id', $class_id)
+            $dateClassExist = DateClass::where('class_id', $request->class_id)
             ->where('teacher_id', $teacher_id)
             ->where('subject_id', $subject_id)
             ->where('class_date', $class_date)
@@ -1081,7 +1078,7 @@ class ImportTimetableController extends Controller
             ->where('to_timing', '>=', DateUtility::getFutureTime(1, $from_time))
             ->get()->first();
 
-            $dateClassTimeExist = DateClass::where('class_id', $class_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
+            $dateClassTimeExist = DateClass::where('class_id', $request->class_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
 
             $dateClassTeacherExist = DateClass::where('teacher_id', $teacher_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
 
@@ -1108,10 +1105,25 @@ class ImportTimetableController extends Controller
                 $obj_time->to_timing = $to_time;
                 $obj_time->is_lunch = $islunch;
                 $obj_time->save();  */
+                // if()
+
+                if($request->recurring_days){
+                    foreach($request->recurring_days as $day){
+                        $obj_time = new ClassTiming();
+                        $obj_time->class_id = $request->class_id;
+                        $obj_time->teacher_id = $teacher_id;
+                        $obj_time->subject_id = $subject_id;
+                        $obj_time->class_day = $day;
+                        $obj_time->from_timing = $from_time;
+                        $obj_time->to_timing = $to_time;
+                        $obj_time->is_lunch = 0;
+                        $obj_time->save();
+                    }
+                }
 
 
                 $pastClassDetail = new DateClass;
-                $pastClassDetail->class_id = $class_id;
+                $pastClassDetail->class_id = $request->class_id;
                 $pastClassDetail->subject_id = $subject_id;
                 $pastClassDetail->teacher_id = $teacher_id;
                 $pastClassDetail->from_timing = $from_time;
@@ -1163,7 +1175,7 @@ class ImportTimetableController extends Controller
 
                         $inv_res_code = $inv_resData['id'];
                         $obj_inv = new InvitationClass;
-                        $obj_inv->class_id = $class_id;
+                        $obj_inv->class_id = $request->class_id;
                         $obj_inv->subject_id = $subject_id;
                         $obj_inv->teacher_id = $teacher_id;
                         $obj_inv->g_code = $inv_res_code;
@@ -1182,7 +1194,6 @@ class ImportTimetableController extends Controller
         //$data['teacher'] = DB::table('tbl_techers')->select('id', DB::raw("CONCAT(first_name,' ',last_name) AS full_name"))->get()->pluck('full_name', 'id');
         $data['teacher']->prepend('Select Teacher', '');
         $days = array(
-            ''          => 'Select Days',
             'Monday'    => 'Monday',
             'Tuesday'   => 'Tuesday',
             'Wednesday' => 'Wednesday',

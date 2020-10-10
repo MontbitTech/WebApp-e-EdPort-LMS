@@ -77,7 +77,12 @@
 											</div>
 														-->
 
-
+						<div class="form-group row">
+							<label for="colFormLabel" class="col-md-4 col-form-label">Recurring:</label>
+							<div class="col-md-6">
+							{!! Form::select('recurring_days[]',$days,null,array('multiple'=>'multiple', 'id'=>'recurring_days', 'class' => 'multi-select','style'=>'width:100%','data-placeholder'=>'Select Days')) !!}
+							</div>
+						</div>
 
 
 
@@ -114,6 +119,9 @@
 			oneLine: true,
 			timeFormat: 'hh:mm tt'
 		});
+		$(function() {
+		$('.multi-select').select2();
+	})
 	});
 </script>
 @endsection
