@@ -1014,8 +1014,6 @@ class ImportTimetableController extends Controller
     {
 
         if ($request->isMethod('post')) {
-
-
             $request->validate([
                 'class_id'   => 'required',
                 'teacher'    => 'required',
@@ -1025,156 +1023,135 @@ class ImportTimetableController extends Controller
 
             ]);
 
-            $class_id = $request->class_id;
-            $teacher_id = $request->teacher;
+            $teacher = Teacher::find($request->teacher);
 
-            $obj_teacher = Teacher::where('id', $request->teacher)->get()->first();
+            $classroom = StudentClass::with('studentSubject')->find($request->class_id);
 
-            $g_teacher_id = $obj_teacher['g_user_id'];
-            $phone = $obj_teacher['phone'];
-
-            $obj_class = StudentClass::where('id', $class_id)->get()->first();
-
-            $g_class_id = $obj_class['g_class_id'];
-            $g_live_link = $obj_class['g_link'];
-            $subject_id = $obj_class['subject_id'];
-            $class_name = $obj_class['class_name'];
-            $section_name = $obj_class['section_name'];
-
-            $subject_name = StudentSubject::where('id', $subject_id)->get()->first();
-
-            $sub_name = $subject_name['subject_name'];
-
-
-            /* if($request->islunch == 1){
-            $islunch = $request->islunch;
-            } */
-            //$allocate_email = $obj_teacher[0]['email'];
+            $classDays = $request->recurring_days;
+            $classDays[] = date("l", strtotime($request->class_date));
 
             $class_date = date("Y-m-d", strtotime($request->class_date));
             $from_time = str_replace(" : ", ":", $request->start_time);
             $from_time = date("H:i:s", strtotime($from_time));
             $to_time = str_replace(" : ", ":", $request->end_time);
             $to_time = date("H:i:s", strtotime($to_time));
-            $class_day = date("l", strtotime($request->class_date));
-            $today = date("Y-m-d");
 
-
-            $TimeTableExist = ClassTiming::where('class_id', $class_id)
-            ->where('teacher_id', $teacher_id)
-            ->where('subject_id', $subject_id)
-            ->where('class_day', $class_day)
+            $TimeTableExist = ClassTiming::where('class_id', $request->class_id)
+            ->where('teacher_id', $teacher->id)
+            ->where('subject_id', $classroom->subject_id)
+            ->whereIn('class_day', $classDays)
             ->where('from_timing', '<=', DateUtility::getPastTime(1, $to_time))
             ->where('to_timing', '>=', DateUtility::getFutureTime(1, $from_time))
             ->get()->first();
 
-            $classTimingExist = ClassTiming::where('class_id', $class_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
+            if ($TimeTableExist) {
+                return back()->with('error', "Class already allocated to selected teacher at selected time!.");
+            } 
 
-            $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
+            $classTimingExist = ClassTiming::where('class_id', $request->class_id)->whereIn('class_day', $classDays)->where('from_timing', $from_time)->get()->first();
+
+            if ($classTimingExist) {
+                return back()->with('error', "Class have already assigned lecture at selected time.");
+            }
+            // $teacherTimeExist = ClassTiming::where('teacher_id', $teacher_id)->where('class_day', $class_day)->where('from_timing', $from_time)->get()->first();
 
 
-            $dateClassExist = DateClass::where('class_id', $class_id)
-            ->where('teacher_id', $teacher_id)
-            ->where('subject_id', $subject_id)
+            $dateClassExist = DateClass::where('class_id', $request->class_id)
+            ->where('teacher_id', $teacher->id)
+            ->where('subject_id', $classroom->subject_id)
             ->where('class_date', $class_date)
             ->where('from_timing', '<=', DateUtility::getPastTime(1, $to_time))
             ->where('to_timing', '>=', DateUtility::getFutureTime(1, $from_time))
             ->get()->first();
 
-            $dateClassTimeExist = DateClass::where('class_id', $class_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
-
-            $dateClassTeacherExist = DateClass::where('teacher_id', $teacher_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
-
-            if ($TimeTableExist) {
+            if ($dateClassExist) {
                 return back()->with('error', "Class already allocated to selected teacher at selected time!.");
-            } else if ($classTimingExist) {
-                return back()->with('error', "Class have already assigned lecture at selected time.");
-            } else if ($teacherTimeExist) {
-                return back()->with('error', "Teacher have already assigned lecture at selected time.");
-            } else if ($dateClassExist) {
-                return back()->with('error', "Class already allocated to selected teacher at selected time!.");
-            } else if ($dateClassTimeExist) {
-                return back()->with('error', "Class have already assigned lecture at selected time.");
-            } else if ($dateClassTeacherExist) {
-                return back()->with('error', "Teacher have already assigned lecture at selected time.");
-            } else {
-
-                /* $obj_time = new ClassTiming;
-                $obj_time->class_id = $class_id;
-                $obj_time->teacher_id = $teacher_id;
-                $obj_time->subject_id = $subject_id;
-                $obj_time->class_day = $days;
-                $obj_time->from_timing = $from_time;
-                $obj_time->to_timing = $to_time;
-                $obj_time->is_lunch = $islunch;
-                $obj_time->save();  */
-
-
-                $pastClassDetail = new DateClass;
-                $pastClassDetail->class_id = $class_id;
-                $pastClassDetail->subject_id = $subject_id;
-                $pastClassDetail->teacher_id = $teacher_id;
-                $pastClassDetail->from_timing = $from_time;
-                $pastClassDetail->to_timing = $to_time;
-
-                $pastClassDetail->class_date = $class_date;
-                //$pastClassDetail->class_description = $description;
-                //$pastClassDetail->class_student_msg = $class_student_msg;
-                $pastClassDetail->live_link = $g_live_link;
-                //$pastClassDetail->g_meet_url = $class_liveurl;
-                $pastClassDetail->save();
-
-
-                /// Send SMS to Teacher for assigned new Class
-                if (strlen($phone) <= 10) {
-                    $number = '91' . $phone;
-                } else {
-                    $number = $phone;
-                }
-
-                $message = "You are invited for a new class $class_name - $section_name - $sub_name.";
-
-                $s = CommonHelper::send_sms($number, $message);
-
-                $token = CommonHelper::varify_Admintoken(); // verify admin token
-                $inv_data = array(
-                    "courseId" => $g_class_id,
-                    "role"     => "TEACHER",
-                    "userId"   => $g_teacher_id,
-
-                );
-                $inv_data = json_encode($inv_data);
-                $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // access Google api craete Cource
-                $inv_resData = array('error' => '');
-
-
-                if ($inv_responce == 101) {
-                    return back()->with('error', Config::get('constants.WebMessageCode.119'));
-                } else {
-                    $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
-                    if ($inv_resData['error'] != '') {
-
-                        if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
-                            return redirect()->route('admin.login.post');
-                        } else {
-                            return back()->with('error', $inv_resData['error']['message']);
-                        }
-                    } else {
-
-                        $inv_res_code = $inv_resData['id'];
-                        $obj_inv = new InvitationClass;
-                        $obj_inv->class_id = $class_id;
-                        $obj_inv->subject_id = $subject_id;
-                        $obj_inv->teacher_id = $teacher_id;
-                        $obj_inv->g_code = $inv_res_code;
-                        //$obj_inv->g_responce = '';
-                        //$obj_inv->is_accept = 0;
-                        $obj_inv->save();
-                    }
-                }
-
-                return redirect()->route('add.extracalss')->with('success', "Extra class created successfully.");
             }
+
+            $dateClassTimeExist = DateClass::where('class_id', $request->class_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
+
+            // $dateClassTeacherExist = DateClass::where('teacher_id', $teacher_id)->where('class_date', $class_date)->where('from_timing', $from_time)->get()->first();
+
+             if ($dateClassTimeExist) {
+                return back()->with('error', "Class have already assigned lecture at selected time.");
+            }
+
+            if($request->recurring_days){
+                foreach($request->recurring_days as $day){
+                    $obj_time = new ClassTiming();
+                    $obj_time->class_id = $request->class_id;
+                    $obj_time->teacher_id = $teacher->id;
+                    $obj_time->subject_id = $classroom->subject_id;
+                    $obj_time->class_day = $day;
+                    $obj_time->from_timing = $from_time;
+                    $obj_time->to_timing = $to_time;
+                    $obj_time->is_lunch = 0;
+                    $obj_time->save();
+                }
+            }
+
+
+            $pastClassDetail = new DateClass;
+            $pastClassDetail->class_id = $request->class_id;
+            $pastClassDetail->subject_id = $classroom->subject_id;
+            $pastClassDetail->teacher_id = $teacher->id;
+            $pastClassDetail->from_timing = $from_time;
+            $pastClassDetail->to_timing = $to_time;
+            $pastClassDetail->class_date = $class_date;
+            $pastClassDetail->live_link = $classroom->g_link;
+
+            $pastClassDetail->save();
+
+
+            /// Send SMS to Teacher for assigned new Class
+            if (strlen($teacher->phone) <= 10) {
+                $number = '91' . $teacher->phone;
+            } else {
+                $number = $teacher->phone;
+            }
+
+            $message = "You are invited for a new class ".$classroom['class_name']." - ".
+                        $classroom->section_name." - ".$classroom->studentSubject->subject_name.".";
+
+            $s = CommonHelper::send_sms($number, $message);
+
+            $token = CommonHelper::varify_Admintoken(); // verify admin token
+            $inv_data = array(
+                "courseId" => $classroom->g_class_id,
+                "role"     => "TEACHER",
+                "userId"   => $teacher->g_user_id,
+
+            );
+            $inv_data = json_encode($inv_data);
+            $inv_responce = CommonHelper::teacher_invitation_forClass($token, $inv_data); // access Google api craete Cource
+            $inv_resData = array('error' => '');
+
+
+            if ($inv_responce == 101) {
+                return back()->with('error', Config::get('constants.WebMessageCode.119'));
+            } else {
+                $inv_resData = array_merge($inv_resData, json_decode($inv_responce, true));
+                if ($inv_resData['error'] != '') {
+
+                    if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
+                        return redirect()->route('admin.login.post');
+                    } else {
+                        return back()->with('error', $inv_resData['error']['message']);
+                    }
+                } else {
+
+                    $inv_res_code = $inv_resData['id'];
+                    $obj_inv = new InvitationClass;
+                    $obj_inv->class_id = $request->class_id;
+                    $obj_inv->subject_id = $classroom->subject_id;
+                    $obj_inv->teacher_id = $teacher->id;
+                    $obj_inv->g_code = $inv_res_code;
+                    $obj_inv->save();
+                }
+            }
+
+            return redirect()->route('add.extracalss')->with('success', "Extra class created successfully.");
+            
         }
 
         $data['classData'] = DB::table('tbl_student_classes as c')->select('c.id', 'c.class_name', 'c.section_name', 'c.subject_id', 's.subject_name')->join('tbl_student_subjects as s', 'c.subject_id', 's.id')->get();
@@ -1182,7 +1159,6 @@ class ImportTimetableController extends Controller
         //$data['teacher'] = DB::table('tbl_techers')->select('id', DB::raw("CONCAT(first_name,' ',last_name) AS full_name"))->get()->pluck('full_name', 'id');
         $data['teacher']->prepend('Select Teacher', '');
         $days = array(
-            ''          => 'Select Days',
             'Monday'    => 'Monday',
             'Tuesday'   => 'Tuesday',
             'Wednesday' => 'Wednesday',
