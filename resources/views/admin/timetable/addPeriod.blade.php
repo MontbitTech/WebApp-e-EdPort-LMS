@@ -1,9 +1,5 @@
 @extends('layouts.admin.app')
 @section('content')
-<?php
-
-
-?>
 
 <section class="main-section">
 	<div class="container">
@@ -15,10 +11,6 @@
 					</div>
 					<div class="card-body pt-4">
 						{!! Form::open(array('route' => ['add.extracalss'],'method'=>'POST','autocomplete'=>'off')) !!}
-
-
-
-
 
 						<div class="form-group row">
 							<label for="colFormLabel" class="col-md-4 col-form-label">Division:</label>
@@ -84,18 +76,12 @@
 							</div>
 						</div>
 
-
-
-
-
 						<div class="form-group row">
 							<div class="col-md-6 offset-md-4">
 								<button type="submit" class="btn submit-btn btn-w140">Submit</button>
 								<a href="{{route('list.timetable')}}" class="btn btn-back ml-3"><i class="fa fa-arrow-left mr-1" aria-hidden="true"></i>Back</a>
 							</div>
 						</div>
-
-
 
 						{!! Form::close() !!}
 
