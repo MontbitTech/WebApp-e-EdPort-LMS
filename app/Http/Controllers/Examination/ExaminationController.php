@@ -133,6 +133,9 @@ class ExaminationController extends Controller
     {
         $examinationData['classroomExaminationMapping'] = ClassroomExaminationMapping::with('examination', 'classroom')->find($request->classroom_examination_mapping_id);
 
+        if ( $examinationData['classroomExaminationMapping']->start_time > DateUtility::getDateTime() )
+            return Response::json(['success' => false, 'response' => 'Please wait till the start time of the exam']);
+
         $examinationData['student'] = Student::whereHas('class', function ($q) use ($examinationData) {
             $q->where('class_name', $examinationData['classroomExaminationMapping']->classroom->class_name);
             $q->where('section_name', $examinationData['classroomExaminationMapping']->classroom->section_name);

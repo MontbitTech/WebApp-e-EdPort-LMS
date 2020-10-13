@@ -395,7 +395,10 @@ function checkValidUser(email) {
                 // console.log( examProperties.timeBound);
                 return acquireUserPermissionHelper()
             } else {
-                endExam('userDetailsIncorrect')
+                if(result.response == 'Invalid Student')
+                    endExam('Incorrect Details!', 'The email ID provided by you is incorrect. Kindly enter your registered email ID.');
+                else
+                    endExam('Exam Not Started!', result.response);
             }
         },
         error  : function (error_r) {
@@ -500,7 +503,7 @@ async function startExam() {
 }
 
 // End the exam upon encountering system issues
-function endExam(reason) {
+function endExam(reason, html = null) {
     if (reason == 'cameraNotAllowed') {
         ErrorBox.fire({
             timer            : 10000,
@@ -566,6 +569,21 @@ function endExam(reason) {
             }
         })
     }
+
+    if(html){
+        ErrorBox.fire({
+            timer            : 10000,
+            allowOutsideClick: false,
+            allowEscapeKey   : false,
+            title            : reason,
+            html             : html
+        }).then((result) => {
+            if (result.dismiss === Swal.DismissReason.timer) {
+                window.location.replace(errorPageURL)
+            }
+        })
+    }
+
 }
 
 // Pause the exam due to user actions
