@@ -1076,44 +1076,6 @@ class ImportTimetableController extends Controller
                 return back()->with('error', "Class have already assigned lecture at selected time.");
             }
 
-            if($request->recurring_days){
-                foreach($request->recurring_days as $day){
-                    $obj_time = new ClassTiming();
-                    $obj_time->class_id = $request->class_id;
-                    $obj_time->teacher_id = $teacher->id;
-                    $obj_time->subject_id = $classroom->subject_id;
-                    $obj_time->class_day = $day;
-                    $obj_time->from_timing = $from_time;
-                    $obj_time->to_timing = $to_time;
-                    $obj_time->is_lunch = 0;
-                    $obj_time->save();
-                }
-            }
-
-
-            $pastClassDetail = new DateClass;
-            $pastClassDetail->class_id = $request->class_id;
-            $pastClassDetail->subject_id = $classroom->subject_id;
-            $pastClassDetail->teacher_id = $teacher->id;
-            $pastClassDetail->from_timing = $from_time;
-            $pastClassDetail->to_timing = $to_time;
-            $pastClassDetail->class_date = $class_date;
-            $pastClassDetail->live_link = $classroom->g_link;
-
-            $pastClassDetail->save();
-
-
-            /// Send SMS to Teacher for assigned new Class
-            if (strlen($teacher->phone) <= 10) {
-                $number = '91' . $teacher->phone;
-            } else {
-                $number = $teacher->phone;
-            }
-
-            $message = "You are invited for a new class ".$classroom['class_name']." - ".
-                        $classroom->section_name." - ".$classroom->studentSubject->subject_name.".";
-
-            $s = CommonHelper::send_sms($number, $message);
 
             $token = CommonHelper::varify_Admintoken(); // verify admin token
             $inv_data = array(
@@ -1147,6 +1109,46 @@ class ImportTimetableController extends Controller
                     $obj_inv->teacher_id = $teacher->id;
                     $obj_inv->g_code = $inv_res_code;
                     $obj_inv->save();
+
+
+                    if($request->recurring_days){
+                        foreach($request->recurring_days as $day){
+                            $obj_time = new ClassTiming();
+                            $obj_time->class_id = $request->class_id;
+                            $obj_time->teacher_id = $teacher->id;
+                            $obj_time->subject_id = $classroom->subject_id;
+                            $obj_time->class_day = $day;
+                            $obj_time->from_timing = $from_time;
+                            $obj_time->to_timing = $to_time;
+                            $obj_time->is_lunch = 0;
+                            $obj_time->save();
+                        }
+                    }
+        
+        
+                    $pastClassDetail = new DateClass;
+                    $pastClassDetail->class_id = $request->class_id;
+                    $pastClassDetail->subject_id = $classroom->subject_id;
+                    $pastClassDetail->teacher_id = $teacher->id;
+                    $pastClassDetail->from_timing = $from_time;
+                    $pastClassDetail->to_timing = $to_time;
+                    $pastClassDetail->class_date = $class_date;
+                    $pastClassDetail->live_link = $classroom->g_link;
+        
+                    $pastClassDetail->save();
+
+
+            /// Send SMS to Teacher for assigned new Class
+            if (strlen($teacher->phone) <= 10) {
+                $number = '91' . $teacher->phone;
+            } else {
+                $number = $teacher->phone;
+            }
+
+            $message = "You are invited for a new class ".$classroom['class_name']." - ".
+                        $classroom->section_name." - ".$classroom->studentSubject->subject_name.".";
+
+            $s = CommonHelper::send_sms($number, $message);
                 }
             }
 
