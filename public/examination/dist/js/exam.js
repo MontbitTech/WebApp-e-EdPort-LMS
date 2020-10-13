@@ -395,7 +395,7 @@ function checkValidUser(email) {
                 // console.log( examProperties.timeBound);
                 return acquireUserPermissionHelper()
             } else {
-                if(result.response == 'Invalid Student')
+                if(result.error_code == 2)
                     endExam('Incorrect Details!', 'The email ID provided by you is incorrect. Kindly enter your registered email ID.');
                 else
                     endExam('Exam Not Started!', result.response);
