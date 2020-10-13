@@ -134,7 +134,7 @@ class ExaminationController extends Controller
         $examinationData['classroomExaminationMapping'] = ClassroomExaminationMapping::with('examination', 'classroom')->find($request->classroom_examination_mapping_id);
 
         if ( $examinationData['classroomExaminationMapping']->start_time > DateUtility::getDateTime() )
-            return Response::json(['success' => false, 'response' => 'Please wait till the start time of the exam','error_code' => 1]);
+            return Response::json(['success' => false, 'response' => 'Please wait till the start time of the exam']);
 
         $examinationData['student'] = Student::whereHas('class', function ($q) use ($examinationData) {
             $q->where('class_name', $examinationData['classroomExaminationMapping']->classroom->class_name);
@@ -142,7 +142,7 @@ class ExaminationController extends Controller
         })->where('email', $request->email)->first();
 
         if ( !$examinationData['student'] )
-            return Response::json(['success' => false, 'response' => 'Invalid Student','error_code' => 2]);
+            return Response::json(['success' => false, 'response' => 'Invalid Student']);
 
         $examinationData['logs'] = ExaminationLogs::where('student_id', $examinationData['student']->id)->get();
         $examinationData['previousResponse'] = StudentAnswer::with('examQuestionMapping.question')->whereHas('examQuestionMapping', function ($q) use ($examinationData) {
