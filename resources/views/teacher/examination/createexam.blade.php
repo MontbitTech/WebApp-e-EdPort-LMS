@@ -148,7 +148,7 @@
                                     @if($questionData!="")
                                     <?php $marks = number_format($questionData->marks,0);
                                    ?>
-                                <input type="number" name="marks[{{$questionData->question_id}}]" class="form-control" id="questionmarks' + {{$questionData->question_id}} + '" value="{{$marks}}" min="0" max="100">
+                                <input type="number" name="marks[{{$questionData->question_id}}]" class="form-control" id="questionmarks' + {{$questionData->question_id}} + '" value="{{$marks}}" min="1">
                                     @endif
                                 </div>
                                 @endif
@@ -742,7 +742,7 @@
             show += "<p class='bg-light font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
             show += '</div>';
             show += '<div class="col-md-2">';
-            show += '<input type="number" name="marks[' + questionId + ']" class="form-control" id="questionmarks' + questionId + '" value="1" min="0" max="100" >';
+            show += '<input type="number" name="marks[' + questionId + ']" class="form-control" id="questionmarks' + questionId + '" value="1" min="1">';
             show += '</div></div>';
             $('#questionPaper').append(data);
             $('#questionPapershow').append(show);
@@ -787,7 +787,7 @@
                         show += "<p class='bg-light mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
                         show += '</div>';
                         show += '<div class="col-md-2">';
-                        show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control" id="questionmarks' + result.response.question + '" value="1" min="0" max="100" >';
+                        show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control" id="questionmarks' + result.response.question + '" value="1" min="1">';
                         show += '</div></div>';
                         $('#questionPaper').append(data);
                         $('#questionPapershow').append(show);
