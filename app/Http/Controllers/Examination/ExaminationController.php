@@ -226,7 +226,7 @@ class ExaminationController extends Controller
         $classroomlist = ClassroomExaminationMapping::all();
         $helpCategories = HelpTicketCategory::get();
         $videos = SupportVideo::all();
-        $questionData = ExaminationQuestionMapping::with('examinations', 'questions')
+        $questionData = ExaminationQuestionMapping::with('examinations', 'question')
             ->where('examination_id', $request->examination_id)
             ->where('classroom_id', $request->classroom_id)->first();
         $classroomExaminationMapping = ClassroomExaminationMapping::with('examination', 'classroom')->get();
