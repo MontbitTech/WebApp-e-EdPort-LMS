@@ -200,10 +200,11 @@ class ExaminationController extends Controller
 
     public function getExamination (Request $request)
     {
-        $assignments = ExaminationQuestionMapping::with('examinations', 'questions')->where('examination_id', $request->examination_id)
+        $assignments = ExaminationQuestionMapping::with('examinations', 'question')->where('examination_id', $request->examination_id)
             ->where('classroom_id', $request->classroom_id)->get();
 
-        return json_encode(array('status' => 'success', 'data' => $assignments));
+
+        return json_encode(array('status' => 'success', 'data' => $assignments, 'total_marks' => $assignments->sum('marks')));
     }
 
     public function getExaminationList (Request $request)

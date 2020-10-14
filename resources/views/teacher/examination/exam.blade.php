@@ -120,7 +120,6 @@
          var examname = $("#examname" + val).val();
          var examtime = $("#examtime" + val).val();
          var classroomname = $("#classroomname" + val).val();
-         //console.log(examtime);
 
          $('.loader').show();
          $.ajax({
@@ -136,6 +135,7 @@
              success: function(result) {
                  $('.loader').fadeOut();
                  $('#viewExaminationpaper').empty();
+                 var response = JSON.parse(result);
                  let count = 1;
                  let data = '';
                  data += '<div class="px-3 m-auto ">';
@@ -143,22 +143,17 @@
                  data += '<div class= "px-3 d-flex justify-content-between font-weight-bold mt-2 mb-4 ">';
                  data += '<strong> Classroom:' + classroomname + ' </strong>';
                  data += '<span > time:' + examtime + ' min </span>';
-                 data += '<span> marks: 50 </span> </div> ';
-                 var response = JSON.parse(result);
+                 data += '<span> marks: '+ response.total_marks +' </span> </div> ';
+           
                  response.data.forEach(function(da) {
 
                      data += '<div class="media px-3 mb-2">';
                      data += '<strong class="mr-1">' + count + ' </strong>';
-                     data += '<div class="media-body font-weight-bold">' + da.questions.question + '</div>';
+                     data += '<div class="media-body font-weight-bold">' + da.question.question + '</div>';
                      data += '</div></div>';
                      count++;
-
-                     $('#viewExaminationpaper').append(data);
-
-
-
                  });
-                 //  $('#showexam').find('.modal-body').append(data);
+                 $('#viewExaminationpaper').append(data);
              },
              error: function() {
                  $('.loader').fadeOut();
@@ -196,6 +191,7 @@
                  $("#step04").addClass("show");
              },
              error: function() {
+                $('.loader').hide();
                  $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
              }
          });
@@ -204,7 +200,7 @@
  <script>
      $('#examlist').on('change', function() {
          var classroom_id = $(this).val();
-         console.log(classroom_id);
+ 
          $('.loader').show();
          $.ajax({
              url: "{{url('/teacher/examination/exampaperlist')}}",
@@ -225,7 +221,7 @@
 
                  var response = JSON.parse(result);
                  response.data.forEach(function(exam) {
-                     $('#exam').find('tbody').remove();
+                     $('#showexam').find('tbody').remove();
                      data += '<tbody>';
                      data += '<input type="hidden" id="classroom_id' + count + '" value="' + exam.classroom_id + '"/>';
                      data += '<input type="hidden" id="examination_id' + count + '" value="' + exam.examination_id + '"/>';
@@ -235,22 +231,16 @@
                      data += '<input type="hidden" id="examtime' + count + '" value="' + exam.duration + '"/>';
                      data += '<tr class=""><td>' + exam.classroom.class_name + ' ' + exam.classroom.section_name + ' ' + exam.classroom.student_subject.subject_name + '</td>';
                      data += '<td>' + exam.examination.title + '</td>';
-                     data += '<td>' + env('APP_URL') . '/student/exam?examID=' . exam.id + '</td>';
+                     data += '<td> {{env('APP_URL')}}/student/exam?examID=' . exam.id + '</td>';
                      data += '<td><button type="button" data-Examination="' + count + '"  class="btn" data-toggle="modal" data-target ="#showexam"> Show </button> ||';
                      data += '<button class="btn" data-toggle="modal"  data-examdelete="' + exam.id + '"> Delete </button> ||';
                      data += '<button type="button" data-Exam="' + count + '" class="btn"  data-toggle="modal"> Assign </button> </td></tr>';
                      data += '</tbody>';
                      count++;
                  });
-                 console.log(data);
-                 $('#exam').append(data);
-                 // console.log(data);
-
-
-                 // }
-                 // else {
-                 //      $.fn.notifyMe('error', 5, result.response);
-                 //  }
+ 
+                 $('#showexam').append(data);
+        
              },
              error: function(error_r) {
                  $('.loader').fadeOut();
