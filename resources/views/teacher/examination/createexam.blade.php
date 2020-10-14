@@ -172,15 +172,16 @@
                     <div class="row">
                         <div class="col-md-4 my-2 ">
                             <label class="d-block mb-2">Class</label>
-                            <select class="form-control select1 " data-placeholder="Class" name="classroom_id" id="select1" style="width: 100%;">
-                               @if($classrooms_data && $questionData)
-                                <option value="{{$questionData->classroom_id}}">{{$classrooms_data->class_name}} {{$classrooms_data->section_name}}
-                                    , {{$classrooms_data->studentSubject->subject_name}}</option>
-                                 @else
+                            <select class="form-control select1 " data-placeholder="Class" name="classroom_id" id="select1" style="width: 100%;">                            
                                 <option value="">Select Classroom</option>
-                                @endif
+
                                 @foreach($classrooms as $classroom)
-                                <option value="{{$classroom->id}}">{{$classroom->class_name}} {{$classroom->section_name}}
+                                <option value="{{$classroom->id}}"
+                                    <?php
+                                        if(isset($classrooms_data->id) && $classrooms_data->id == $classroom->id)
+                                            echo "selected";
+                                    ?>
+                                >{{$classroom->class_name}} {{$classroom->section_name}}
                                     , {{$classroom->studentSubject->subject_name}}</option>
                                 @endforeach
                             </select>
