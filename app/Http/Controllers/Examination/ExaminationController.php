@@ -211,11 +211,7 @@ class ExaminationController extends Controller
         $examinationlist = ClassroomExaminationMapping::with('examination', 'classroom', 'classroom.studentSubject')
             ->where('classroom_id', $request->classroom_id)
             ->get();
-        //  $classrooms = StudentClass::with('studentSubject')->get();
-        //   $classroom = StudentClass::with('studentSubject')->get();
-        // $assignments = ExaminationQuestionMapping::with('examinationss', 'questionss')->where('examination_id', $request->examination_id)
-        //     ->where('classroom_id', $request->classroom_id)->get();
-        // dd($request->classroom_id);
+
         return json_encode(array('status' => 'success', 'data' => $examinationlist));
     }
 
