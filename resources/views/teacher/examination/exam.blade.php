@@ -191,6 +191,7 @@
                  $("#step04").addClass("show");
              },
              error: function() {
+                $('.loader').hide();
                  $.fn.notifyMe('error', 4, 'There is some error while searching for assignment!');
              }
          });
