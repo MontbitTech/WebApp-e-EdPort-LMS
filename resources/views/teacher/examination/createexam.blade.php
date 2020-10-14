@@ -111,7 +111,7 @@
                         <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamName"> Exam Name</h3>
                         @if($questionData!='')
                          <input type="hidden" id="ques" name="questions[]" value="{{$questionData->question_id}}">
-                        <p>{{$questionData->questions->question}}</p>
+                        <p>{{$questionData->question->question}}</p>
                         @endif
                     </div>
 
@@ -142,7 +142,7 @@
                             <div class="row mb-2">
                                 @if($questionData!="")
                                 <div class="col-md-10">
-                                <p class='bg-light mb-2 font-weight-bold'>{{$questionData->questions->question}}</p>
+                                <p class='bg-light mb-2 font-weight-bold'>{{$questionData->question->question}}</p>
                                 </div>
                                 <div class="col-md-2">
                                     @if($questionData!="")
