@@ -419,7 +419,6 @@ class ClassWorkController extends Controller
             }
             $count++;
         }
-        Log::info('cron finished');
 
         return back()->with('success', "Time table for today's class reloaded successfully.");
     }
