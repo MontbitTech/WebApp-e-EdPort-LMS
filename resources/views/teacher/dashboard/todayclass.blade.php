@@ -51,11 +51,11 @@
                     <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3 p-0 font-size-tab display-none-tab"> Class: {{ $class_name }} Std</div>
                     <div class="col-md-1 col-1 col-lg-1 col-sm-1 font-weight-bold pt-3 p-0 font-size-tab display-none-tab"> Section:{{$section_name}}</div>
                     <div class="col-md-5 col-5 col-lg-5 col-sm-5 font-weight-bold text-center  m-0 pt-3 p-0 font-size-tab display-none-tab"> Subject: {{$subject_name}}</div>
-                    <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-1 pr-0 text-center">
+                    <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-1 px-0 text-center">
                         <div class="row">
                             <div class="col-md-6 col-6 col-lg-6 p-0 m-0">
                                 @if($t->cancelled)
-                                <button class="btn btn-md bg-danger text-white  mb-0 ml-2 font-weight-bold mt-1 font-size-tab">Cancelled</button>
+                                <button class="btn btn-md bg-danger text-white btn-sm-size mr-left  mb-0 ml-2 font-weight-bold mt-1 font-size-tab">Cancelled</button>
                                 @else
                                 <button type="button" data-editModal="{{$i}}" class="btn text-right  btn-md pb-0 mb-0 pt-2 border-0 text-white font-size-tab mr-0 pr-0" title="Edit">
                                     <i class="fas fa-edit mr-1"></i>Edit
@@ -276,23 +276,23 @@
                     <div class="m-auto">
                         @if($t->cancelled)
                         @else
-                        <a href="javascript:void(0);" data-LiveLink="{{ $teacherData->g_meet_url }}" id="live_c_link_{{$i}}" class="btn btn-md btn-outline-danger mb-1 mr-2 border-0 btn-shadow">
+                        <a href="javascript:void(0);" data-LiveLink="{{ $teacherData->g_meet_url }}" id="live_c_link_{{$i}}" class="btn btn-md btn-outline-danger mb-1 mr-2 border-0 btn-shadow btn-sm-size">
                             <svg class="icon font-10 mr-1">
                                 <use xlink:href="../images/icons.svg#icon_dot"></use>
                             </svg>
                             Join Live
                         </a>
-                        <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-dateclass="{{$t->id}}" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
+                        <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-dateclass="{{$t->id}}" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow btn-sm-size" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
                         @endif
 
 
-                        <a href="#" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notify="{{$i}}">
+                        <a href="#" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow btn-sm-size" data-notify="{{$i}}">
                             <svg class="icon mr-1">
                                 <use xlink:href="../images/icons.svg#icon_bell"></use>
                             </svg>
                             <span>Announcement</span>
                         </a>
-                        <button type="button" data-classhelp="{{$i}}" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help">
+                        <button type="button" data-classhelp="{{$i}}" class="btn btn-md btn-outline-primary btn-sm-size mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help">
                             <svg class="icon mr-1">
                                 <use xlink:href="../images/icons.svg#icon_help"></use>
                             </svg>
@@ -304,7 +304,7 @@
                     <div class="m-auto">
                         @if($t->cancelled)
                         @else
-                        <a href=" #" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="new_a_link_{{$i}}" data-createModal='{{$i}}' data-class_modal="{{$t->class_id}}" data-subject_modal="{{$t->subject_id}}" data-teacher_modal="{{$t->teacher_id}}">
+                        <a href=" #" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow btn-sm-size" id="new_a_link_{{$i}}" data-createModal='{{$i}}' data-class_modal="{{$t->class_id}}" data-subject_modal="{{$t->subject_id}}" data-teacher_modal="{{$t->teacher_id}}">
                             <svg class="icon font-12 mr-1">
                                 <use xlink:href="../images/icons.svg#icon_plus"></use>
                             </svg>
@@ -316,9 +316,9 @@
                         ?>
 
                         @if (count($assignmentData) > 0)
-                        <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
+                        <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow btn-sm-size" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
                         @else
-                        <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="assignmentmodal" data-toggle="modal" data-target="#exampleModalLong" style="display:none">View Assigment</button>
+                        <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow btn-sm-size" id="assignmentmodal" data-toggle="modal" data-target="#exampleModalLong" style="display:none">View Assigment</button>
 
                         @endif
 
