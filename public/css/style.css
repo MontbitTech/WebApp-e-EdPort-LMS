@@ -987,15 +987,41 @@ body {
 
 /* end examination */
 @media (max-width: 991.98px) {
-  .futuer-m {
+  /* .futuer-m {
     margin-top: 10px;
-  }
+  } */
+/* .font-size-tab{
+  font-size: .855rem !important;
+} */
 
+.modal-dialog {
+  max-width: 90% !important;
+ 
+}
   body {
     line-height: 1;
   }
+  .display-none-tab{
+    display: none ;
+  }
+  .display-none-lp {
+    display: block !important;
+  }
 }
+@media (max-width: 575.98px) {
+   .font-size-tab {
+     font-size: .855rem !important;
+   }
+   .modal-dialog {
+     max-width: 95% !important;
 
+   }
+}
+@media (min-width: 992px) {
+.display-none-lp{
+  display: none !important;
+}
+}
 .card {
   border: none !important;
 }
