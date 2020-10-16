@@ -1021,5 +1021,7 @@ body {
   text-decoration: none;
   border: 2px #253372 solid;
 }
-
+textarea{
+  resize: none !important;
+}
 /*End*/
