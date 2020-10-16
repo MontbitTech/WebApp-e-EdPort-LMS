@@ -29,7 +29,7 @@
                      <!-- <label class="d-block mb-2">Class</label> -->
                      <select class="form-control select1 " id="examlist" style="width: 100%;">
                          <option value="">Select Classroom</option>
-                         @foreach($classroomlist->unique('classroom_id') as $classroom)
+                         @foreach($classroomList->unique('classroom_id') as $classroom)
 
                          <option value="{{$classroom->classroom_id}}">{{$classroom->classroom->class_name}} {{$classroom->classroom->section_name}}, {{$classroom->classroom->studentSubject->subject_name}}</option>
                          @endforeach
@@ -49,7 +49,7 @@
                      @php
                      $i=1;
                      @endphp
-                     @foreach ($examinationshow as $examinationshows)
+                     @foreach ($examinationShow as $examinationshows)
                      <input type="hidden" id="classroom_id{{$i}}" value="{{$examinationshows->classroom_id}}">
                      <input type="hidden" id="examination_id{{$i}}" value="{{$examinationshows->examination_id}}">
                      <input type="hidden" id="examDeleteId{{$i}}" value="{{$examinationshows->id}}">
