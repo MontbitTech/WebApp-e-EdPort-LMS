@@ -89,20 +89,17 @@ class ExaminationController extends Controller
      */
     public function createExamination (Request $request)
     {
-        $helpCategories = HelpTicketCategory::get();
-        $videos         = SupportVideo::all();
-        $classroomExaminationMapping = ClassroomExaminationMapping::with('examination','classroom')->get();
-        $questionClasses = Question::groupBy('class')->pluck('class');
+        $helpCategories  = HelpTicketCategory::get();
+        $videos          = SupportVideo::all();
         $classes         = StudentClass::groupBy('class_name')->pluck('class_name');
         $subjects        = StudentSubject::get();
         $classrooms      = StudentClass::with('studentSubject')->get();
         $examinationShow = ClassroomExaminationMapping::all();
-        $classroomList   = ClassroomExaminationMapping::all();
         $classrooms_data = "";
         $questionData    = "";
         $examDetail      = "";
 
-        return view('teacher.examination.index', compact('videos', 'classroomList', 'helpCategories', 'examinationShow', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms', 'classrooms_data', 'questionData', 'examDetail'));
+        return view('teacher.examination.index', compact('videos', 'helpCategories', 'examinationShow', 'classes', 'subjects', 'classrooms', 'classrooms_data', 'questionData', 'examDetail'));
     }
 
     /**
@@ -216,23 +213,21 @@ class ExaminationController extends Controller
 
     public function assignExamination (Request $request)
     {
-        $questionClasses = Question::groupBy('class')->pluck('class');
-        $classes = StudentClass::groupBy('class_name')->pluck('class_name');
-        $subjects = StudentSubject::get();
-        $classrooms = StudentClass::with('studentSubject')->get();
-        $examinationShow = ClassroomExaminationMapping::all();
-        $classroomList = ClassroomExaminationMapping::all();
-        $helpCategories = HelpTicketCategory::get();
-        $videos = SupportVideo::all();
-        $questionData = ExaminationQuestionMapping::with('examinations', 'question')
-            ->where('examination_id', $request->examination_id)
-            ->where('classroom_id', $request->classroom_id)->first();
-        $classroomExaminationMapping = ClassroomExaminationMapping::with('examination', 'classroom')->get();
-        $examDetail = ClassroomExaminationMapping::where('classroom_id', $request->classroom_id)->first();
-        $classrooms_data = StudentClass::with('studentSubject')
-            ->where('id', $request->classroom_id)->first();
+        
+        $helpCategories   = HelpTicketCategory::get();
+        $videos           = SupportVideo::all();
+        $classes          = StudentClass::groupBy('class_name')->pluck('class_name');
+        $subjects         = StudentSubject::get();
+        $classrooms       = StudentClass::with('studentSubject')->get();
+        $examinationShow  = ClassroomExaminationMapping::all();
+        $questionData     = ExaminationQuestionMapping::with('examinations', 'question')
+                            ->where('examination_id', $request->examination_id)
+                            ->where('classroom_id', $request->classroom_id)->first();
+        $examDetail       = ClassroomExaminationMapping::where('classroom_id', $request->classroom_id)->first();
+        $classrooms_data  = StudentClass::with('studentSubject')
+                            ->where('id', $request->classroom_id)->first();
 
-        return view('teacher.examination.index', compact('examDetail', 'videos', 'classrooms_data', 'classroomList', 'helpCategories', 'examinationShow', 'classroomExaminationMapping', 'questionClasses', 'classes', 'subjects', 'classrooms', 'questionData'));
+        return view('teacher.examination.index', compact('examDetail', 'videos', 'classrooms_data', 'helpCategories', 'examinationShow', 'classes', 'subjects', 'classrooms', 'questionData'));
     }
 
     public function examDelete (Request $request, $id)
