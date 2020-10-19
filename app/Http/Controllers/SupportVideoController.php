@@ -23,12 +23,7 @@ class SupportVideoController extends Controller
 
         return back()->with('success', 'Video Created successfully');
     }
-    // public function edit($id)
-    // {
-    //     $sid = decrypt($id);
-    //     return view('admin.video.add')
-    //         ->with('videos', SupportVideo::findorFail($sid));
-    // }
+
     public function update(Request $request, $id)
     {
         if ($request->isMethod('post')) {
@@ -46,6 +41,7 @@ class SupportVideoController extends Controller
                 ->with('videos', SupportVideo::findorFail($sid));
         }
     }
+    
     public function destroy(Request $request, $id)
     {
         if ($request->delete == 'delete') {

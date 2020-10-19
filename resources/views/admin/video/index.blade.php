@@ -26,7 +26,7 @@
 
                     <div class="card-header">
                         <span class="topic-heading">Videos</span>
-                        <a href="{{route('video.add')}}" class="float-right">Add Video</a>
+                        <a href="{{route('video.add')}}" class="btn btn-sm btn-color float-right">Add Video</a>
                     </div>
                     <div class="card-body pt-3">
                         <div class="col-sm-12">
