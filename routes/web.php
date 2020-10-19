@@ -221,6 +221,7 @@ Route::group(['middleware' => 'teachersession'], function () {
     Route::get('/getQuestions', 'Examination\QuestionController@index');
     Route::post('/saveQuestion', 'Examination\QuestionController@store');
     Route::post('/deleteQuestion/{id}', 'Examination\QuestionController@destroy');
+    Route::get('/teacher/examination/resultList','Examination\ExaminationResultController@get');
 });
 
 //Route::get('/student/takeExam/{id}', 'Examination\ExaminationController@takeExamination');
