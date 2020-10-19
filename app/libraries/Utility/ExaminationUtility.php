@@ -4,6 +4,7 @@ namespace App\libraries\Utility;
 
 use App\Models\Examination\ClassroomExaminationMapping;
 use App\Models\Examination\ExaminationQuestionMapping;
+use App\Models\Examination\ExaminationResult;
 use App\Models\Examination\StudentAnswer;
 
 /**
@@ -26,18 +27,29 @@ class ExaminationUtility
     }
 
 
-    public static function calculateResult ($classroomExaminationMappingId, $classroomId, $studentId)
+    public static function calculateResult ($classroomExaminationMappingId, $studentId)
     {
         $classroomExaminationMapping = ClassroomExaminationMapping::find($classroomExaminationMappingId);
 
         $examinationQuestionMapping = ExaminationQuestionMapping::with(['answers' => function ($query) use ($studentId) {
             $query->where('student_id', $studentId);
         }])->where('examination_id', $classroomExaminationMapping->examination_id)
-            ->where('classroom_id', $classroomId)->get();
+            ->where('classroom_id', $classroomExaminationMapping->classroom_id)->get();
 
         $totalMarks = $examinationQuestionMapping->sum('marks');
 
+        $obtainnedMarks = StudentAnswer::whereIn('examination_question_mapping_id', $examinationQuestionMapping)
+                        ->where('student_id', $studentId)->sum('marks');
 
+        $examinationResult = ExaminationResult::firstOrCreate([
+            'student_id'     => $studentId,
+            'examination_id' => $classroomExaminationMapping->examination_id,
+            'classroom_id'   => $classroomExaminationMapping->classroom_id
+        ]);
+
+        $examinationResult->total_marks = $totalMarks;
+        $examinationResult->marks_obtained = $obtainnedMarks;
+        $examinationResult->save();
     }
 
     public static function saveStudentAnswers ($request, $classroomExaminationMapping)
@@ -66,7 +78,7 @@ class ExaminationUtility
         $answers = self::getAnswers($examQuestionMapping->question, $answerIds);
 
         if ( $examQuestionMapping->question->type_of_question == 'multiple_choice' ) {
-            $rightAnswers = explode($examQuestionMapping->question->answer);
+            $rightAnswers = explode(',',$examQuestionMapping->question->answer);
             if ( count($rightAnswers) < $answers )
                 return 0;
             $studentCorrectResponses = array_intersect($answers, $rightAnswers);

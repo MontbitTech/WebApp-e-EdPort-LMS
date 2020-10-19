@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\HelpTicketCategory;
 use App\InvitationClass;
 use App\libraries\Utility\ReportUtility;
+use App\Models\Examination\ExaminationResult;
 use App\StudentClass;
 use App\SupportVideo;
 use Illuminate\Contracts\Foundation\Application;
@@ -34,7 +35,11 @@ class ReportController extends Controller
             ->get();
         $videos = SupportVideo::all();
 
-        return view('teacher.report.index', compact('helpCategories', 'inviteClassData', 'videos'));
+        $classroomIds = $inviteClassData->pluck('class_id')->toArray();
+
+        $examinationResults = ExaminationResult::with('examination', 'classroom', 'student')->whereIn('classroom_id', $classroomIds)->get();
+
+        return view('teacher.report.index', compact('helpCategories', 'inviteClassData', 'videos', 'examinationResults'));
     }
 
     public function studentAttendanceAverage(Request $request)

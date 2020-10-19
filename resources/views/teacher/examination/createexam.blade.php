@@ -37,7 +37,7 @@
         </ul>
         <!-- <hr> -->
         {{-- <form action="" method="post">--}}
-        <div class="card bg-data card-hiden-new b-0 show"  id="step01">
+        <div class="card bg-data card-hiden-new b-0 show" id="step01">
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-11">
 
@@ -45,469 +45,468 @@
                         <label class="form-control-label">Examination Name</label>
                         @if($examDetail!='')
                         <input type="text" id="examname" value="{{$examDetail->examination->title}}" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)"></div>
-                        @else
-                         <input type="text" id="examname"  name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)"></div>
-                         @endif
+                    @else
+                    <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)">
+                </div>
+                @endif
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <div class="circle">
+                <div class="fa-long-arrow-right next btn" id="next1" onclick="validate1(0)">Next</div>
+            </div>
+        </div>
+    </div>
+    <div class="card bg-data card-hiden b-0">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="row mb-3 px-3">
+                    <div class="col-md-3">
+                        <select class="form-control" id="class" onchange="getChapter()">
+                            @if($classrooms_data)
+                            <option value="{{$classrooms_data->class_name}}">{{$classrooms_data->class_name}}</option>
+                            @else
+                            <option value="">Select Classroom</option>
+                            @endif
+                            @foreach($classes as $class)
+                            <option value="{{$class}}">{{$class}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" id="subject" onchange="getChapter()">
+                            @if($classrooms_data)
+                            <option value="{{$classrooms_data->studentSubject->subject_name}}">{{$classrooms_data->studentSubject->subject_name}} </option>
+                            @else
+                            <option value="" selected>Select Subject</option>
+                            @endif
+                            @foreach($subjects as $subject)
+                            <option value="{{$subject->id}}">{{$subject->subject_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" id="chapter" onchange="getTopic()">
+                            <option value="" selected>Select Chapter</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-control" id="topic" onchange="getQuestion()">
+                            <option value="" selected>Select Topic</option>
+                        </select>
+                    </div>
+                    <div class="circle">
+                        <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right" title="Add Question">
+                        </button>
+                    </div>
                 </div>
             </div>
+            <div class="col-md-6 ">
+                <div class="createdata pr-2"></div>
+                <div class="row" id="question"></div>
+                <div class="row" id="validateCheckbox"></div>
+            </div>
+            <div class="col-md-6 border-left">
+                <div class="form-group" id="questionPaper">
+                    <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamName"> Exam Name</h3>
+                    @if($questionData!='')
+                    <input type="hidden" id="ques" name="questions[]" value="{{$questionData->question_id}}">
+                    <p>{{$questionData->question->question}}</p>
+                    @endif
+                </div>
 
-            <div class="row d-flex justify-content-center">
-                <div class="circle">
-                    <div class="fa-long-arrow-right next btn" id="next1" onclick="validate1(0)">Next</div>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center m-auto">
+            <div class="circle">
+                <div class="fa-long-arrow-left prev btn">Prev</div>
+            </div>
+            <div class="circle">
+                <div class=" fa-long-arrow-right next btn" id="next2" onclick="validate2(0)">Next
                 </div>
             </div>
         </div>
-        <div class="card bg-data card-hiden b-0">
-            <div class="row">
-                <div class="col-lg-12 col-md-12">
-                    <div class="row mb-3 px-3">
-                        <div class="col-md-3">
-                            <select class="form-control" id="class" onchange="getChapter()">
-                                 @if($classrooms_data)
-                                <option value="{{$classrooms_data->class_name}}">{{$classrooms_data->class_name}}</option>
-                                 @else
-                                <option value="">Select Classroom</option>
+    </div>
+    <div class="card bg-data card-hiden-new b-0">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-md-11">
+
+                <div class="form-group">
+                    <div class="form-group" id="questionPapershow">
+                        <h3 for="exampleInputQuestionname" class="text-center" id="displayExamNameshow"> Exam
+                            Name</h3>
+                        <div class="row">
+                            <div class="col-md-10">question</div>
+                            <div class="col-md-2"> marks</div>
+                        </div>
+                        <div class="row mb-2">
+                            @if($questionData!="")
+                            <div class="col-md-10">
+                                <p class='bg-light mb-2 font-weight-bold'>{{$questionData->question->question}}</p>
+                            </div>
+                            <div class="col-md-2">
+                                @if($questionData!="")
+                                <?php $marks = number_format($questionData->marks, 0);
+                                ?>
+                                <input type="number" name="marks[{{$questionData->question_id}}]" class="form-control" id="questionmarks' + {{$questionData->question_id}} + '" value="{{$marks}}" min="1">
                                 @endif
-                                @foreach($classes as $class)
-                                <option value="{{$class}}">{{$class}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select class="form-control" id="subject" onchange="getChapter()">
-                                 @if($classrooms_data)
-                                <option value="{{$classrooms_data->studentSubject->subject_name}}">{{$classrooms_data->studentSubject->subject_name}} </option>
-                                 @else
-                                <option value="" selected>Select Subject</option>
-                                @endif
-                                @foreach($subjects as $subject)
-                                <option value="{{$subject->id}}">{{$subject->subject_name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select class="form-control" id="chapter" onchange="getTopic()">
-                                <option value="" selected>Select Chapter</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3">
-                            <select class="form-control" id="topic" onchange="getQuestion()">
-                                <option value="" selected>Select Topic</option>
-                            </select>
-                        </div>
-                        <div class="circle">
-                            <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right" title="Add Question">
-                            </button>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 ">
-                    <div class="createdata pr-2"></div>
-                    <div class="row" id="question"></div>
-                    <div class="row" id="validateCheckbox"></div>
-                </div>
-                <div class="col-md-6 border-left">
-                    <div class="form-group" id="questionPaper">
-                        <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamName"> Exam Name</h3>
-                        @if($questionData!='')
-                         <input type="hidden" id="ques" name="questions[]" value="{{$questionData->question_id}}">
-                        <p>{{$questionData->question->question}}</p>
+            </div>
+        </div>
+        <div class="row d-flex justify-content-center">
+            <div class="circle ">
+                <div class="fa-long-arrow-left prev btn">Prev</div>
+            </div>
+            <div class="circle">
+                <div class="fa-long-arrow-right next btn" id="next3">Next</div>
+            </div>
+        </div>
+    </div>
+    <div class="card bg-data  card-hiden b-0" id="step04">
+        <div class="row d-flex justify-content-center text-center">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-4 my-2 ">
+                        <label class="d-block mb-2">Class</label>
+                        <select class="form-control select1 " data-placeholder="Class" name="classroom_id" id="select1" style="width: 100%;">
+                            <option value="">Select Classroom</option>
+
+                            @foreach($classrooms as $classroom)
+                            <option value="{{$classroom->id}}" <?php
+                                                                if (isset($classrooms_data->id) && $classrooms_data->id == $classroom->id)
+                                                                    echo "selected";
+                                                                ?>>{{$classroom->class_name}} {{$classroom->section_name}}
+                                , {{$classroom->studentSubject->subject_name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-4  my-2 ">
+                        <label for="times">Duration (In Minutes)</label>
+                        @if($examDetail!="")
+                        <?php $parsed  =  date_parse($examDetail->duration);
+                        $durations    =  $parsed['hour'] * 60 + $parsed['minute']; ?>
+                        <input type="number" class="form-control" id="hh" name="duration" value="{{$durations}}" placeholder="Duration in Miutes" min="1">
+                        @else
+                        <input type="number" class="form-control" id="hh" name="duration" placeholder="Duration in Miutes" min="1">
+                        @endif
+
+                    </div>
+                    <div class="col-md-4 my-2 ">
+                        <label for="times">Start Time</label>
+                        @if($examDetail!="")
+                        <input type="datetime-local" id="timestart" value="{{ date('Y-m-d\TH:i', strtotime($examDetail->start_time)) }}" class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
+                        @else
+                        <input type="datetime-local" id="timestart" class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
                         @endif
                     </div>
-
-                </div>
-            </div>
-            <div class="row d-flex justify-content-center m-auto">
-                <div class="circle">
-                    <div class="fa-long-arrow-left prev btn">Prev</div>
-                </div>
-                <div class="circle">
-                    <div class=" fa-long-arrow-right next btn" id="next2" onclick="validate2(0)">Next
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="card bg-data card-hiden-new b-0">
-            <div class="row justify-content-center">
-                <div class="col-lg-10 col-md-11">
-
-                    <div class="form-group">
-                        <div class="form-group" id="questionPapershow">
-                            <h3 for="exampleInputQuestionname" class="text-center" id="displayExamNameshow"> Exam
-                                Name</h3>
-                            <div class="row">
-                                <div class="col-md-10">question</div>
-                                <div class="col-md-2"> marks</div>
-                            </div>
-                            <div class="row mb-2">
-                                @if($questionData!="")
-                                <div class="col-md-10">
-                                <p class='bg-light mb-2 font-weight-bold'>{{$questionData->question->question}}</p>
-                                </div>
-                                <div class="col-md-2">
-                                    @if($questionData!="")
-                                    <?php $marks = number_format($questionData->marks,0);
-                                   ?>
-                                <input type="number" name="marks[{{$questionData->question_id}}]" class="form-control" id="questionmarks' + {{$questionData->question_id}} + '" value="{{$marks}}" min="1">
-                                    @endif
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row d-flex justify-content-center">
-                <div class="circle ">
-                    <div class="fa-long-arrow-left prev btn">Prev</div>
-                </div>
-                <div class="circle">
-                    <div class="fa-long-arrow-right next btn" id="next3">Next</div>
-                </div>
-            </div>
-        </div>
-        <div class="card bg-data  card-hiden b-0"  id="step04">
-            <div class="row d-flex justify-content-center text-center">
-                <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-md-4 my-2 ">
-                            <label class="d-block mb-2">Class</label>
-                            <select class="form-control select1 " data-placeholder="Class" name="classroom_id" id="select1" style="width: 100%;">                            
-                                <option value="">Select Classroom</option>
-
-                                @foreach($classrooms as $classroom)
-                                <option value="{{$classroom->id}}"
-                                    <?php
-                                        if(isset($classrooms_data->id) && $classrooms_data->id == $classroom->id)
-                                            echo "selected";
-                                    ?>
-                                >{{$classroom->class_name}} {{$classroom->section_name}}
-                                    , {{$classroom->studentSubject->subject_name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-4  my-2 ">
-                            <label for="times">Duration (In Minutes)</label>
-                             @if($examDetail!="")
-                            <?php   $parsed  =  date_parse($examDetail->duration);
-                            $durations    =  $parsed['hour'] * 60 +$parsed['minute'];?>
-                            <input type="number" class="form-control" id="hh" name="duration" value="{{$durations}}" placeholder="Duration in Miutes" min="1">
-                            @else
-                             <input type="number" class="form-control" id="hh" name="duration"  placeholder="Duration in Miutes" min="1">
-                            @endif
-
-                        </div>
-                        <div class="col-md-4 my-2 ">
-                            <label for="times">Start Time</label>
-                            @if($examDetail!="")
-                            <input type="datetime-local" id="timestart" value="{{ date('Y-m-d\TH:i', strtotime($examDetail->start_time)) }}" class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
-                            @else
-                            <input type="datetime-local" id="timestart"  class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
-                            @endif
-                        </div>
-                        {{-- <div class="col-md-6 my-2 ">
+                    {{-- <div class="col-md-6 my-2 ">
                             <label for="times">End Time</label>
                             <input type="datetime-local" id="timeend" class="form-control  input-xs" name="end_time">
                         </div>--}}
-                    </div>
                 </div>
             </div>
-            <div class="row d-flex justify-content-center m-auto">
-                <div class="circle ">
-                    <div class="fa-long-arrow-left prev btn">Prev</div>
-                </div>
-                <div class="circle">
-                    <div class="fa-long-arrow-right next btn" id="next4" onclick="validate4(0)">Next</div>
-                </div>
+        </div>
+        <div class="row d-flex justify-content-center m-auto">
+            <div class="circle ">
+                <div class="fa-long-arrow-left prev btn">Prev</div>
             </div>
-            <!-- <div class="row d-flex justify-content-center">
+            <div class="circle">
+                <div class="fa-long-arrow-right next btn" id="next4" onclick="validate4(0)">Next</div>
+            </div>
+        </div>
+        <!-- <div class="row d-flex justify-content-center">
                                    <div class="check"> <img src="https://i.imgur.com/g6KlBWR.gif" class="check-mark">
                                    </div>
                                </div> -->
+    </div>
+    <div class="card bg-data card-hiden-new b-0 ">
+        <div class="mb-3 text-center">
+            advanced setting
+            <label class="switch   ">
+                <!-- <input type="hidden" name="properties[keepFullScreen]" value="0"> -->
+                <input type="checkbox" name="setting" value="1" onchange="valueChanged()" class="data-show">
+                <span class="slider round"></span>
+            </label>
         </div>
-        <div class="card bg-data card-hiden-new b-0 ">
-            <div class="mb-3 text-center">
-                advanced setting
-                <label class="switch   ">
-                    <!-- <input type="hidden" name="properties[keepFullScreen]" value="0"> -->
-                    <input type="checkbox" name="setting" value="1" onchange="valueChanged()" class="data-show">
-                    <span class="slider round"></span>
-                </label>
+
+        <div class="row  hidden-data justify-content-around d-none m-0 p-0">
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                <div class="row m-0 p-0">
+                    <div class="col-md-12 p-0 m-0">
+                        <div class="test"> Full Screen while giving exam</div>
+                    </div>
+                    <div class="col-md-8 mt-2">keepFullScreen</div>
+                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                        <label class="switch  ">
+                            <input type="hidden" name="properties[keepFullScreen]" value="0">
+                            <input type="checkbox" name="properties[keepFullScreen]" checked>
+                            <span class="slider round"></span>
+                        </label>
+
+                    </div>
+                    <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
+                    <div class="col-md-4 p-0 my-2 m-0">
+                        <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5" class="form-control m-auto w-75  " value="3" min="1" max="5">
+
+                    </div>
+                </div>
             </div>
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                <div class="row m-0 p-0">
+                    <div class="col-md-12 p-0 m-0">
+                        <div class="test"> Multitasking while giving exam</div>
+                    </div>
+                    <div class="col-md-8 mt-2">blockMultitasking</div>
+                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                        <label class="switch  ">
+                            <input type="hidden" name="properties[blockMultitasking]" value="0">
+                            <input type="checkbox" name="properties[blockMultitasking]" checked>
+                            <span class="slider round"></span>
+                        </label>
 
-            <div class="row  hidden-data justify-content-around d-none m-0 p-0">
-                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                    <div class="row m-0 p-0">
-                        <div class="col-md-12 p-0 m-0">
-                            <div class="test"> Full Screen while giving exam</div>
-                        </div>
-                        <div class="col-md-8 mt-2">keepFullScreen</div>
-                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                            <label class="switch  ">
-                                <input type="hidden" name="properties[keepFullScreen]" value="0">
-                                <input type="checkbox" name="properties[keepFullScreen]" checked>
-                                <span class="slider round"></span>
-                            </label>
+                    </div>
+                    <div class="col-md-8 mt-2"> multitaskingAttempts</div>
+                    <div class="col-md-4 p-0 my-2 m-0">
+                        <input type="number" name="properties[multitaskingAttempts]" id="multitaskingAttempts" value="3" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
-                        </div>
-                        <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
-                        <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5" class="form-control m-auto w-75  " value="3" min="1" max="5">
-
-                        </div>
                     </div>
                 </div>
-                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                    <div class="row m-0 p-0">
-                        <div class="col-md-12 p-0 m-0">
-                            <div class="test"> Multitasking while giving exam</div>
-                        </div>
-                        <div class="col-md-8 mt-2">blockMultitasking</div>
-                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                            <label class="switch  ">
-                                <input type="hidden" name="properties[blockMultitasking]" value="0">
-                                <input type="checkbox" name="properties[blockMultitasking]" checked>
-                                <span class="slider round"></span>
-                            </label>
+            </div>
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                <div class="row m-0 p-0">
+                    <div class="col-md-12 p-0 m-0">
+                        <div class="test">User Audio Tracking while giving exam</div>
+                    </div>
+                    <div class="col-md-8 mt-2">userAudioTracking</div>
+                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                        <label class="switch  ">
+                            <input type="hidden" name="properties[userAudioTracking]" value="0">
+                            <input type="checkbox" name="properties[userAudioTracking]" checked>
+                            <span class="slider round"></span>
+                        </label>
 
-                        </div>
-                        <div class="col-md-8 mt-2"> multitaskingAttempts</div>
-                        <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[multitaskingAttempts]" id="multitaskingAttempts" value="3" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
+                    </div>
+                    <div class="col-md-8 mt-2">userAudioWarningCount</div>
+                    <div class="col-md-4 p-0 my-2 m-0">
+                        <input type="number" name="properties[userAudioWarningCount]" value="3" id="userAudioWarningCount" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
-                        </div>
                     </div>
                 </div>
-                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                    <div class="row m-0 p-0">
-                        <div class="col-md-12 p-0 m-0">
-                            <div class="test">User Audio Tracking while giving exam</div>
-                        </div>
-                        <div class="col-md-8 mt-2">userAudioTracking</div>
-                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                            <label class="switch  ">
-                                <input type="hidden" name="properties[userAudioTracking]" value="0">
-                                <input type="checkbox" name="properties[userAudioTracking]" checked>
-                                <span class="slider round"></span>
-                            </label>
+            </div>
+            {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
+            {{-- <div class="row m-0 p-0">--}}
+            {{-- <div class="col-md-12 p-0 m-0">--}}
+            {{-- <div class="test"> Full Screen while giving exam</div>--}}
+            {{-- </div>--}}
+            {{-- <div class="col-md-8 mt-2">keepFullScreen</div>--}}
+            {{-- <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">--}}
+            {{-- <label class="switch  ">--}}
+            {{-- <input type="hidden" name="properties[keepFullScreen]" value="0">--}}
+            {{-- <input type="checkbox" name="properties[keepFullScreen]" checked>--}}
+            {{-- <span class="slider round"></span>--}}
+            {{-- </label>--}}
 
-                        </div>
-                        <div class="col-md-8 mt-2">userAudioWarningCount</div>
-                        <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[userAudioWarningCount]" value="3" id="userAudioWarningCount" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
+            {{-- </div>--}}
+            {{-- <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>--}}
+            {{-- <div class="col-md-4 p-0 my-2 m-0">--}}
+            {{-- <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5"--}}
+            {{-- class="form-control m-auto w-75  " min="1" max="5">--}}
 
-                        </div>
+            {{-- </div>--}}
+            {{-- </div>--}}
+            {{-- </div>--}}
+            {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
+            {{-- <div class="row m-0 p-0">--}}
+            {{-- <div class="col-md-12 p-0 m-0">--}}
+            {{-- <div class="test">Examination URLs</div>--}}
+            {{-- </div>--}}
+
+            {{-- <div class="col-md-12 col-lg-12 col-12 my-3">--}}
+            {{-- <textarea cols="10" rows="1" class="form-control" style="resize: none;"--}}
+            {{-- placeholder="displayResultURL"></textarea>--}}
+            {{-- </div>--}}
+            {{-- <div class="col-md-12 col-lg-12 col-12 my-3">--}}
+            {{-- <textarea cols="10" rows="1" class="form-control" style="resize: none;"--}}
+            {{-- placeholder="errorPageURL"></textarea>--}}
+            {{-- </div>--}}
+
+            {{-- </div>--}}
+            {{-- </div>--}}
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                <div class="row m-0 p-0">
+                    <div class="col-md-12 p-0 m-0">
+                        <div class="test">User Video Tracking while giving exam</div>
+                    </div>
+                    <div class="col-md-8 mt-2">userVideoTracking</div>
+                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                        <label class="switch  ">
+                            <input type="hidden" name="properties[userVideoTracking]" value="0">
+                            <input type="checkbox" name="properties[userVideoTracking]" checked>
+                            <span class="slider round"></span>
+                        </label>
+
+                    </div>
+                    <div class="col-md-8 mt-2"> userNotAloneWarningCount</div>
+                    <div class="col-md-4 p-0 my-2 m-0">
+                        <input type="number" name="properties[userNotAloneWarningCo]" value="3" id="userNotAloneWarningCo" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
+
+                    </div>
+                    <div class="col-md-8 mt-2"> userNotVisibleWarning</div>
+                    <div class="col-md-4 p-0 my-2 m-0">
+                        <input type="number" name="properties[userNotVisibleWarning]" value="3" id="userNotVisibleWarning" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
+
                     </div>
                 </div>
-                {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
-                {{-- <div class="row m-0 p-0">--}}
-                {{-- <div class="col-md-12 p-0 m-0">--}}
-                {{-- <div class="test"> Full Screen while giving exam</div>--}}
-                {{-- </div>--}}
-                {{-- <div class="col-md-8 mt-2">keepFullScreen</div>--}}
-                {{-- <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">--}}
-                {{-- <label class="switch  ">--}}
-                {{-- <input type="hidden" name="properties[keepFullScreen]" value="0">--}}
-                {{-- <input type="checkbox" name="properties[keepFullScreen]" checked>--}}
-                {{-- <span class="slider round"></span>--}}
-                {{-- </label>--}}
-
-                {{-- </div>--}}
-                {{-- <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>--}}
-                {{-- <div class="col-md-4 p-0 my-2 m-0">--}}
-                {{-- <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5"--}}
-                {{-- class="form-control m-auto w-75  " min="1" max="5">--}}
-
-                {{-- </div>--}}
-                {{-- </div>--}}
-                {{-- </div>--}}
-                {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
-                {{-- <div class="row m-0 p-0">--}}
-                {{-- <div class="col-md-12 p-0 m-0">--}}
-                {{-- <div class="test">Examination URLs</div>--}}
-                {{-- </div>--}}
-
-                {{-- <div class="col-md-12 col-lg-12 col-12 my-3">--}}
-                {{-- <textarea cols="10" rows="1" class="form-control" style="resize: none;"--}}
-                {{-- placeholder="displayResultURL"></textarea>--}}
-                {{-- </div>--}}
-                {{-- <div class="col-md-12 col-lg-12 col-12 my-3">--}}
-                {{-- <textarea cols="10" rows="1" class="form-control" style="resize: none;"--}}
-                {{-- placeholder="errorPageURL"></textarea>--}}
-                {{-- </div>--}}
-
-                {{-- </div>--}}
-                {{-- </div>--}}
-                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                    <div class="row m-0 p-0">
-                        <div class="col-md-12 p-0 m-0">
-                            <div class="test">User Video Tracking while giving exam</div>
-                        </div>
-                        <div class="col-md-8 mt-2">userVideoTracking</div>
-                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                            <label class="switch  ">
-                                <input type="hidden" name="properties[userVideoTracking]" value="0">
-                                <input type="checkbox" name="properties[userVideoTracking]" checked>
-                                <span class="slider round"></span>
-                            </label>
-
-                        </div>
-                        <div class="col-md-8 mt-2"> userNotAloneWarningCount</div>
-                        <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[userNotAloneWarningCo]" value="3" id="userNotAloneWarningCo" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
-                        </div>
-                        <div class="col-md-8 mt-2"> userNotVisibleWarning</div>
-                        <div class="col-md-4 p-0 my-2 m-0">
-                            <input type="number" name="properties[userNotVisibleWarning]" value="3" id="userNotVisibleWarning" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
-                        </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                <div class="row m-0 p-0">
+                    <div class="col-md-12 p-0 m-0">
+                        <div class="test">Capture save user image while giving exam</div>
                     </div>
-                </div>
-                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                    <div class="row m-0 p-0">
-                        <div class="col-md-12 p-0 m-0">
-                            <div class="test">Capture save user image while giving exam</div>
-                        </div>
-                        <div class="col-md-8 my-3">userImageCapture</div>
-                        <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
-                            <label class="switch  ">
-                                <input type="hidden" name="properties[userImageCapture]" value="0">
-                                <input type="checkbox" name="properties[userImageCapture]" checked>
-                                <span class="slider round"></span>
-                            </label>
+                    <div class="col-md-8 my-3">userImageCapture</div>
+                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                        <label class="switch  ">
+                            <input type="hidden" name="properties[userImageCapture]" value="0">
+                            <input type="checkbox" name="properties[userImageCapture]" checked>
+                            <span class="slider round"></span>
+                        </label>
 
-                        </div>
-                        <!-- <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
+                    </div>
+                    <!-- <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
                             <div class="col-md-4 p-0 my-2 m-0">
                                 <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                             </div> -->
-                    </div>
                 </div>
-                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                    <div class="row m-0 p-0">
-                        <div class="col-md-12 p-0 m-0">
-                            <div class="test"> Keyboard usage while giving exam</div>
-                        </div>
-                        <div class="col-md-8 my-3">blockKeyboard</div>
-                        <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
-                            <label class="switch  ">
-                                <input type="hidden" name="properties[blockKeyboard]" value="0">
-                                <input type="checkbox" name="properties[blockKeyboard]" checked>
-                                <span class="slider round"></span>
-                            </label>
-
-                        </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                <div class="row m-0 p-0">
+                    <div class="col-md-12 p-0 m-0">
+                        <div class="test"> Keyboard usage while giving exam</div>
+                    </div>
+                    <div class="col-md-8 my-3">blockKeyboard</div>
+                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                        <label class="switch  ">
+                            <input type="hidden" name="properties[blockKeyboard]" value="0">
+                            <input type="checkbox" name="properties[blockKeyboard]" checked>
+                            <span class="slider round"></span>
+                        </label>
 
                     </div>
-                </div>
-                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                    <div class="row m-0 p-0">
-                        <div class="col-md-12 p-0 m-0">
-                            <div class="test">Right click usage while giving exam</div>
-                        </div>
-                        <div class="col-md-8 my-3">blockRightClick</div>
-                        <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
-                            <label class="switch  ">
-                                <input type="hidden" name="properties[blockRightClick]" value="0">
-                                <input type="checkbox" name="properties[blockRightClick]" checked>
-                                <span class="slider round"></span>
-                            </label>
 
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                <div class="row m-0 p-0">
+                    <div class="col-md-12 p-0 m-0">
+                        <div class="test">Right click usage while giving exam</div>
+                    </div>
+                    <div class="col-md-8 my-3">blockRightClick</div>
+                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                        <label class="switch  ">
+                            <input type="hidden" name="properties[blockRightClick]" value="0">
+                            <input type="checkbox" name="properties[blockRightClick]" checked>
+                            <span class="slider round"></span>
+                        </label>
 
                     </div>
-                </div>
-                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                    <div class="row m-0 p-0">
-                        <div class="col-md-12 p-0 m-0">
-                            <div class="test">Time bound exam</div>
-                        </div>
-                        <div class="col-md-8 my-3">timeBound</div>
-                        <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
-                            <label class="switch  ">
-                                <input type="hidden" name="properties[timeBound]" value="0">
-                                <input type="checkbox" name="properties[timeBound]" checked>
-                                <span class="slider round"></span>
-                            </label>
 
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                <div class="row m-0 p-0">
+                    <div class="col-md-12 p-0 m-0">
+                        <div class="test">Time bound exam</div>
+                    </div>
+                    <div class="col-md-8 my-3">timeBound</div>
+                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                        <label class="switch  ">
+                            <input type="hidden" name="properties[timeBound]" value="0">
+                            <input type="checkbox" name="properties[timeBound]" checked>
+                            <span class="slider round"></span>
+                        </label>
 
                     </div>
+
                 </div>
-                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                    <div class="row m-0 p-0">
-                        <div class="col-md-12 p-0 m-0">
-                            <div class="test"> Exam termination</div>
-                        </div>
-                        <div class="col-md-8 mt-2">examTerminated</div>
-                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                            <label class="switch  ">
-                                <input type="hidden" name="properties[examTerminated]" value="0">
-                                <input type="checkbox" name="properties[examTerminated]">
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                        <div class="col-md-12 col-lg-12 col-12 mb-2">
-                            <textarea cols="10" rows="1" name="properties[examTerminationReason]" class="form-control" style="resize: none;" placeholder="examTerminationReason"></textarea>
-                        </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                <div class="row m-0 p-0">
+                    <div class="col-md-12 p-0 m-0">
+                        <div class="test"> Exam termination</div>
+                    </div>
+                    <div class="col-md-8 mt-2">examTerminated</div>
+                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                        <label class="switch  ">
+                            <input type="hidden" name="properties[examTerminated]" value="0">
+                            <input type="checkbox" name="properties[examTerminated]">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="col-md-12 col-lg-12 col-12 mb-2">
+                        <textarea cols="10" rows="1" name="properties[examTerminationReason]" class="form-control" style="resize: none;" placeholder="examTerminationReason"></textarea>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                <div class="row m-0 p-0">
+                    <div class="col-md-12 p-0 m-0">
+                        <div class="test">Exam pause</div>
+                    </div>
+                    <div class="col-md-8 mt-2">examPaused</div>
+                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                        <label class="switch  ">
+                            <input type="hidden" name="properties[examPaused]" value="0">
+                            <input type="checkbox" name="properties[examPaused]">
+                            <span class="slider round"></span>
+                        </label>
 
                     </div>
-                </div>
-                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                    <div class="row m-0 p-0">
-                        <div class="col-md-12 p-0 m-0">
-                            <div class="test">Exam pause</div>
-                        </div>
-                        <div class="col-md-8 mt-2">examPaused</div>
-                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                            <label class="switch  ">
-                                <input type="hidden" name="properties[examPaused]" value="0">
-                                <input type="checkbox" name="properties[examPaused]">
-                                <span class="slider round"></span>
-                            </label>
+                    <div class="col-md-12 col-lg-12 col-12 mb-2">
+                        <textarea cols="10" rows="1" name="properties[examPausedReason]" class="form-control" style="resize: none;" placeholder="examPausedReason"></textarea>
+                    </div>
 
-                        </div>
-                        <div class="col-md-12 col-lg-12 col-12 mb-2">
-                            <textarea cols="10" rows="1" name="properties[examPausedReason]" class="form-control" style="resize: none;" placeholder="examPausedReason"></textarea>
-                        </div>
+                </div>
+            </div>
+            <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
+                <div class="row m-0 p-0">
+                    <div class="col-md-12 p-0 m-0">
+                        <div class="test">System compatibility test</div>
+                    </div>
+                    <div class="col-md-8 mt-2">systemIncompatible</div>
+                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                        <label class="switch  ">
+                            <input type="hidden" name="properties[systemIncompatible]" value="0">
+                            <input type="checkbox" name="properties[systemIncompatible]">
+                            <span class="slider round"></span>
+                        </label>
 
                     </div>
-                </div>
-                <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
-                    <div class="row m-0 p-0">
-                        <div class="col-md-12 p-0 m-0">
-                            <div class="test">System compatibility test</div>
-                        </div>
-                        <div class="col-md-8 mt-2">systemIncompatible</div>
-                        <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
-                            <label class="switch  ">
-                                <input type="hidden" name="properties[systemIncompatible]" value="0">
-                                <input type="checkbox" name="properties[systemIncompatible]">
-                                <span class="slider round"></span>
-                            </label>
-
-                        </div>
-                        <div class="col-md-12 col-lg-12 col-12 mb-2">
-                            <textarea cols="10" rows="1" name="properties[systemIncompatibleReason]" class="form-control" style="resize: none;" placeholder="systemIncompatibleReason"></textarea>
-                        </div>
-                        <!-- <div class="col-md-8 mt-2"> systemIncompatibleReason</div>
+                    <div class="col-md-12 col-lg-12 col-12 mb-2">
+                        <textarea cols="10" rows="1" name="properties[systemIncompatibleReason]" class="form-control" style="resize: none;" placeholder="systemIncompatibleReason"></textarea>
+                    </div>
+                    <!-- <div class="col-md-8 mt-2"> systemIncompatibleReason</div>
                             <div class="col-md-4 p-0 my-2 m-0">
                                 <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                             </div> -->
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 col-lg-12 col-12 text-center">
-                    <div class="last-prev prev btn mr-4">Prev</div>
-                    <input type="submit" class="btn last-prev" value="submit">
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-12 text-center">
+                <div class="last-prev prev btn mr-4">Prev</div>
+                <input type="submit" class="btn last-prev" value="submit">
+            </div>
+        </div>
+    </div>
     </div>
 </form>
 <script src="{{asset('js/createexam.js')}}"></script>
@@ -535,22 +534,22 @@
                                     <table class="table table-borderless">
                                         <thead>
                                             <tr>
-                                                <th scope="col" class="text-center pb-0 pt-0 mb-0 mt-0">Option </th>
-                                                <th scope="col" class="pb-0 pt-0 mb-0 mt-0">Answer</th>
-                                                <th scope="col" class="text-center pb-0 pt-0 mb-0 mt-0">Option </th>
-                                                <th scope="col" class="pb-0 pt-0 mb-0 mt-0">Answer</th>
+                                                <th scope="col" class="text-center py-1 mb-0 px-0 mt-0">Option </th>
+                                                <th scope="col" class="py-1 mb-0 mt-0 px-0">Answer</th>
+                                                <th scope="col" class="text-center py-1 px-0 mb-0 mt-0">Option </th>
+                                                <th scope="col" class="py-1 mb-0 mt-0 px-0">Answer</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
                                                 <td class="mb-0 mt-0 pt-0 pb-1">
-                                                    <input class="form-control options form-control-sm  " id="option1` + xx + `" type="text" placeholder="option 1">
+                                                    <input class="form-control options form-control-sm px-0 " id="option1` + xx + `" type="text" placeholder="option 1">
                                                 </td>
                                                 <td class="mb-0 mt-0 pt-0 pb-0">
                                                     <input type="checkbox" class=" form-control-sm answers  ml-4 0" id="checkbox1` + xx + `" value="0">
                                                 </td>
                                                  <td class="mb-0 mt-0 pt-0 pb-1">
-                                                    <input class="form-control form-control-sm  options" id="option2` + xx + `" type="text" placeholder="option 2">
+                                                    <input class="form-control form-control-sm  options px-0" id="option2` + xx + `" type="text" placeholder="option 2">
                                                 </td>
                                                 <td class="mb-0 mt-0 pt-0 pb-0">
                                                     <input type="checkbox" class=" form-control-sm  ml-4 1 answers" id="checkbox2` + xx + `" value="1">
@@ -558,13 +557,13 @@
                                             </tr>
                                             <tr>
                                                 <td class="mb-0 mt-0 pt-1 pb-0">
-                                                    <input class="form-control form-control-sm  options" id="option3` + xx + `" type="text" placeholder="option 3">
+                                                    <input class="form-control form-control-sm  options px-0" id="option3` + xx + `" type="text" placeholder="option 3">
                                                 </td>
                                                 <td class="mb-0 mt-0 pt-0 pb-0">
                                                     <input type="checkbox" class=" form-control-sm  ml-4 2 answers" id="checkbox3` + xx + `" value="2">
                                                 </td>
                                                 <td class="mb-0 mt-0 pt-0 pb-0">
-                                                    <input class="form-control form-control-sm  options " id="option4` + xx + `" type="text" placeholder="option 4">
+                                                    <input class="form-control form-control-sm  options px-0" id="option4` + xx + `" type="text" placeholder="option 4">
                                                 </td>
                                                 <td class="mb-0 mt-0 pt-1 pb-0">
                                                     <input type="checkbox" class=" form-control-sm  ml-4 answers" id="checkbox4` + xx + `"  value="3">

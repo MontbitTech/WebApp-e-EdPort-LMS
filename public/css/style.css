@@ -984,18 +984,90 @@ body {
 .btn-back:hover {
   background-color: red !important;
 }
-
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .padding-right{
+        padding-left: .25rem !important;
+        padding-right: .25rem !important;
+  }
+  .font-size-tab {
+    font-size: .855rem !important;
+  }
+  .btn-sm-size {
+    padding: .25rem .5rem;
+   
+  }
+}
+#exam thead tr th, 
+#exam tbody tr td {
+  text-align: center !important;
+}
 /* end examination */
 @media (max-width: 991.98px) {
-  .futuer-m {
+  /* .futuer-m {
     margin-top: 10px;
-  }
-
+  } */
+/* .font-size-tab{
+  font-size: .855rem !important;
+} */
+.btn-sm-size {
+  padding: .25rem .5rem;
+  /* font-size: .875rem;
+  line-height: 1.5;
+  border-radius: .2rem; */
+}
+.modal-dialog {
+  max-width: 90% !important;
+ 
+}
+#exam thead tr th,
+#exam tbody tr td
+{
+  text-align: center !important;
+  padding-left: 0% !important;
+  padding-right: 0% !important;
+}
+#exam tbody,
+#exam tbody tr td,
+#exam tbody tr td button
+ {
+font-size: .855rem !important;
+}
+#exam tbody tr td button{
+  margin: 0% !important;
+  padding: 0% !important;
+}
+.mr-left{
+  margin-left: 0 !important;
+  margin-right: 1rem !important;
+}
+.tab-nav{
+      padding-bottom: .75rem !important;
+      padding-top: .75rem !important;
+}
   body {
     line-height: 1;
   }
+  .display-none-tab{
+    display: none ;
+  }
+  .display-none-lp {
+    display: block !important;
+  }
 }
+@media (max-width: 575.98px) {
+   .font-size-tab {
+     font-size: .855rem !important;
+   }
+   .modal-dialog {
+     max-width: 95% !important;
 
+   }
+}
+@media (min-width: 992px) {
+.display-none-lp{
+  display: none !important;
+}
+}
 .card {
   border: none !important;
 }
@@ -1021,5 +1093,7 @@ body {
   text-decoration: none;
   border: 2px #253372 solid;
 }
-
+textarea{
+  resize: none !important;
+}
 /*End*/
