@@ -1001,6 +1001,92 @@ body {
 #exam tbody tr td {
   text-align: center !important;
 }
+#question div{
+  padding-left: 0% !important;
+  padding-right: 0% !important;
+}
+@media (max-width: 575.98px) {
+  .text-float-moblie{
+    padding-left: 0% !important;
+  }
+  .modal-dialog {
+    max-width: 97% !important;
+  }
+.moblie-show,
+.display-view-moblie {
+  margin-bottom: 10px !important;
+   padding-right: .5rem !important;
+   display: block !important;
+}
+.moblie-show-none{
+  display: block !important;
+}
+.fa-edit,
+.display-none-mobile { 
+  display: none !important;
+}
+.float-right-mobile1 {
+  /* margin-top: 10px !important; */
+  padding-left: 20px !important;
+  float: right !important;
+  margin-left: 70px !important;
+}
+.float-right-mobile1 svg{
+display: none !important;
+}
+.float-right-mobile{
+  float: right !important;
+  margin-right: 0% !important;
+  margin-left: 70px !important;
+}
+.btn-view-sm{
+  margin-left: 0% !important;
+  margin-right: 0% !important;
+  padding-left: 0% !important;
+  padding-right: 0% !important;
+}
+.btn-view-sm button {
+  float: left !important;
+}
+.btn-edit-view{
+  font-size: .88rem !important;
+  float: left !important;
+  margin-left: 0% !important; 
+  padding-left: 0% !important;  
+}
+.m-unset-moblie{
+margin-top: .08rem !important;
+margin-bottom: .5rem !important;
+  margin-right: unset !important;
+  margin-left: unset !important;
+  padding: unset !important;
+}
+
+
+.margin-notes-mobile{
+  margin-right: unset !important;
+  margin-left: unset !important;
+  padding: unset !important;
+  margin-top: .8rem !important;
+}
+.mobile-hide{
+  display: none !important;
+}
+.font-size-tab {
+  font-size: .755rem !important;
+}
+
+.mobile-screen-size-time{
+  width: 25% !important;
+}
+.mobile-screen-size-classroom {
+  width: 50% !important;
+}
+}
+.moblie-show-none,
+.moblie-show {
+  display: none ;
+}
 /* end examination */
 @media (max-width: 991.98px) {
   /* .futuer-m {
@@ -1016,7 +1102,7 @@ body {
   border-radius: .2rem; */
 }
 .modal-dialog {
-  max-width: 90% !important;
+  max-width: 95% !important;
  
 }
 #exam thead tr th,
@@ -1054,15 +1140,7 @@ font-size: .855rem !important;
     display: block !important;
   }
 }
-@media (max-width: 575.98px) {
-   .font-size-tab {
-     font-size: .855rem !important;
-   }
-   .modal-dialog {
-     max-width: 95% !important;
 
-   }
-}
 @media (min-width: 992px) {
 .display-none-lp{
   display: none !important;

@@ -35,12 +35,10 @@
             <li class="step0" id="step4">Assign Examination</li>
             <li class="step0" id="step5">Environment Settings</li>
         </ul>
-        <!-- <hr> -->
         {{-- <form action="" method="post">--}}
         <div class="card bg-data card-hiden-new b-0 show" id="step01">
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-11">
-
                     <div class="form-group">
                         <label class="form-control-label">Examination Name</label>
                         @if($examDetail!='')
@@ -61,8 +59,8 @@
     <div class="card bg-data card-hiden b-0">
         <div class="row">
             <div class="col-lg-12 col-md-12">
-                <div class="row mb-3 px-3">
-                    <div class="col-md-3">
+                <div class="row mb-3 pl-3">
+                    <div class="col-md-3 pr-0">
                         <select class="form-control" id="class" onchange="getChapter()">
                             @if($classrooms_data)
                             <option value="{{$classrooms_data->class_name}}">{{$classrooms_data->class_name}}</option>
@@ -74,7 +72,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 pr-0">
                         <select class="form-control" id="subject" onchange="getChapter()">
                             @if($classrooms_data)
                             <option value="{{$classrooms_data->studentSubject->subject_name}}">{{$classrooms_data->studentSubject->subject_name}} </option>
@@ -86,12 +84,12 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 pr-0">
                         <select class="form-control" id="chapter" onchange="getTopic()">
                             <option value="" selected>Select Chapter</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3 pr-0">
                         <select class="form-control" id="topic" onchange="getQuestion()">
                             <option value="" selected>Select Topic</option>
                         </select>
@@ -169,48 +167,42 @@
     </div>
     <div class="card bg-data  card-hiden b-0" id="step04">
         <div class="row d-flex justify-content-center text-center">
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="col-md-4 my-2 ">
-                        <label class="d-block mb-2">Class</label>
-                        <select class="form-control select1 " data-placeholder="Class" name="classroom_id" id="select1" style="width: 100%;">
-                            <option value="">Select Classroom</option>
+            <div class="col-md-4 my-2 ">
+                <label class="d-block mb-2">Class</label>
+                <select class="form-control select1 " data-placeholder="Class" name="classroom_id" id="select1" style="width: 100%;">
+                    <option value="">Select Classroom</option>
+                    @foreach($classrooms as $classroom)
+                    <option value="{{$classroom->id}}" <?php
+                                                        if (isset($classrooms_data->id) && $classrooms_data->id == $classroom->id)
+                                                            echo "selected";
+                                                        ?>>{{$classroom->class_name}} {{$classroom->section_name}}
+                        , {{$classroom->studentSubject->subject_name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-4  my-2 ">
+                <label for="times">Duration (In Minutes)</label>
+                @if($examDetail!="")
+                <?php $parsed  =  date_parse($examDetail->duration);
+                $durations    =  $parsed['hour'] * 60 + $parsed['minute']; ?>
+                <input type="number" class="form-control" id="hh" name="duration" value="{{$durations}}" placeholder="Duration in Miutes" min="1">
+                @else
+                <input type="number" class="form-control" id="hh" name="duration" placeholder="Duration in Miutes" min="1">
+                @endif
 
-                            @foreach($classrooms as $classroom)
-                            <option value="{{$classroom->id}}" <?php
-                                                                if (isset($classrooms_data->id) && $classrooms_data->id == $classroom->id)
-                                                                    echo "selected";
-                                                                ?>>{{$classroom->class_name}} {{$classroom->section_name}}
-                                , {{$classroom->studentSubject->subject_name}}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="col-md-4  my-2 ">
-                        <label for="times">Duration (In Minutes)</label>
-                        @if($examDetail!="")
-                        <?php $parsed  =  date_parse($examDetail->duration);
-                        $durations    =  $parsed['hour'] * 60 + $parsed['minute']; ?>
-                        <input type="number" class="form-control" id="hh" name="duration" value="{{$durations}}" placeholder="Duration in Miutes" min="1">
-                        @else
-                        <input type="number" class="form-control" id="hh" name="duration" placeholder="Duration in Miutes" min="1">
-                        @endif
-
-                    </div>
-                    <div class="col-md-4 my-2 ">
-                        <label for="times">Start Time</label>
-                        @if($examDetail!="")
-                        <input type="datetime-local" id="timestart" value="{{ date('Y-m-d\TH:i', strtotime($examDetail->start_time)) }}" class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
-                        @else
-                        <input type="datetime-local" id="timestart" class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
-                        @endif
-                    </div>
-                    {{-- <div class="col-md-6 my-2 ">
+            </div>
+            <div class="col-md-4 my-2 ">
+                <label for="times">Start Time</label>
+                @if($examDetail!="")
+                <input type="datetime-local" id="timestart" value="{{ date('Y-m-d\TH:i', strtotime($examDetail->start_time)) }}" class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
+                @else
+                <input type="datetime-local" id="timestart" class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
+                @endif
+            </div>
+            {{-- <div class="col-md-6 my-2 ">
                             <label for="times">End Time</label>
                             <input type="datetime-local" id="timeend" class="form-control  input-xs" name="end_time">
                         </div>--}}
-                </div>
-            </div>
         </div>
         <div class="row d-flex justify-content-center m-auto">
             <div class="circle ">
@@ -227,7 +219,7 @@
     </div>
     <div class="card bg-data card-hiden-new b-0 ">
         <div class="mb-3 text-center">
-            advanced setting
+            Advanced Setting
             <label class="switch   ">
                 <!-- <input type="hidden" name="properties[keepFullScreen]" value="0"> -->
                 <input type="checkbox" name="setting" value="1" onchange="valueChanged()" class="data-show">

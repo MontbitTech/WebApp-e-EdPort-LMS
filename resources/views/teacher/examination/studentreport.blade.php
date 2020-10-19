@@ -1,7 +1,7 @@
  <div class="col-md-12 col-lg-12 col-12 px-0 mb-3">
      <div class="card card-info  ">
          <div class="card-header pt-1 pb-0 border-transparent text-white" style="background-color: #373c8e;">
-             <h4 class="card-title d-inline">Student Reports</h4>
+             <h4 class="card-title d-inline">Examination Reports</h4>
              <div class="card-tools d-inline float-right">
                  <button type="button" class="btn border ml-2 btn-tool text-white " data-card-widget="collapse">
                      <i class="fas fa-minus"></i>
