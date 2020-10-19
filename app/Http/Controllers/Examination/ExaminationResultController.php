@@ -5,18 +5,19 @@ namespace App\Http\Controllers\Examination;
 use App\Http\Controllers\Controller;
 use App\Models\Examination\ExaminationResult;
 use Illuminate\Http\Request;
+use Response;
 
 class ExaminationResultController extends Controller
 {
     public function get (Request $request)
     {
-        $results = ExaminationResult::query();
+        $results = ExaminationResult::with('examination', 'student', 'classroom', 'classroom.studentSubject');
 
         foreach ( $request->all() as $key => $value ) {
             $results = $results->where($key, $value);
         }
 
-        return $results->get();
+        return Response::json(['success' => true, 'response' => $results->get()]);
     }
 
     public function post (Request $request)
@@ -30,10 +31,5 @@ class ExaminationResultController extends Controller
         $examinationResult->save();
 
         return $examinationResult;
-    }
-
-    public function calculateResult (Request $request)
-    {
-
     }
 }

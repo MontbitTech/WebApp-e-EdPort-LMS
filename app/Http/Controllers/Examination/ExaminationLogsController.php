@@ -8,8 +8,6 @@ use Response;
 use App\libraries\Utility\ExaminationUtility;
 use App\Models\Examination\ClassroomExaminationMapping;
 use App\Models\Examination\ExaminationLogs;
-use App\Models\Examination\ExaminationQuestionMapping;
-use App\Models\Examination\StudentAnswer;
 use Illuminate\Http\Request;
 
 class ExaminationLogsController extends Controller
@@ -49,6 +47,8 @@ class ExaminationLogsController extends Controller
 //        $logs = $this->post($request);
         if ( $request->questionResponses )
             ExaminationUtility::saveStudentAnswers($request, $classroomExaminationMapping);
+            
+        ExaminationUtility::calculateResult($request->classroom_examination_mapping_id, $request->student_id);
 
         return Response::json(['success' => true, 'response' => 'Response saved']);
     }

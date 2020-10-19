@@ -11,24 +11,13 @@
          <div class="card-body card-border-exam">
              <div class="row mb-3">
                  <div class="col-md-4">
-                     <select class="form-control">
-                         <option value="" selected>Select Class</option>
-                         <option value="">10 A</option>
-                         <option value=""> 11</option>
-                     </select>
-                 </div>
-                 <div class="col-md-4">
-                     <select class="form-control">
-                         <option value="" selected>Select Subject</option>
-                         <option value="">Hindi</option>
-                         <option value=""> English</option>
-                     </select>
-                 </div>
-                 <div class="col-md-4">
-                     <select class="form-control">
-                         <option value="" selected>Select Exam name</option>
-                         <option value="">exam 1</option>
-                         <option value="">exam 2</option>
+                     <select class="form-control" id="classroom" onchange="javascript:getResultOfClassroom()">
+                         <option value="" selected>Select Classroom</option>
+                            @foreach($inviteClassData as $classroom)
+                                <option value="{{$classroom->class_id}}" >
+                                    {{$classroom->studentClass->class_name}} {{$classroom->studentClass->section_name}}  {{$classroom->studentSubject->subject_name}}
+                                </option>
+                            @endforeach
                      </select>
                  </div>
              </div>
@@ -40,22 +29,24 @@
                          <th scope="col">Exam name</th>
                          <th scope="col">Marks</th>
                          <!-- <th scope="col">Percent</th> -->
-                         <th scope="col">Action</th>
+                         <!-- <th scope="col">Action</th> -->
                      </tr>
                  </thead>
-                 <tbody>
+                 <tbody id="resultTableBody"> 
+                     @foreach($examinationResults as $examinationResult)
                      <tr>
-                         <td>vikram singh</td>
-                         <td>10 A Hindi</td>
-                         <td>exam 1</td>
-                         <td>15/10</td>
+                         <td>{{$examinationResult->student->name}}</td>
+                         <td>{{$examinationResult->classroom->class_name}} {{$examinationResult->classroom->section_name}}  {{$examinationResult->classroom->studentSubject->subject_name}}</td>
+                         <td>{{$examinationResult->examination->title}}</td>
+                         <td>{{$examinationResult->marks_obtained}}/{{$examinationResult->total_marks}}</td>
                          <!-- <td>80% </td> -->
-                         <td>
+                         <!-- <td>
                              <a href="#" class="text-decoration-none" data-toggle="modal" data-target="#studentedit">Show</a>
                              ||
                              <a href="#" class="text-decoration-none" data-toggle="modal" data-target="#deletestudent">Delete</a>
-                         </td>
+                         </td> -->
                      </tr>
+                     @endforeach
                  </tbody>
              </table>
          </div>
@@ -144,3 +135,43 @@
      </div>
  </div>
  <!-- ********end  delete student reports ******* -->
+
+ <script>
+     function getResultOfClassroom(){
+
+        var classroom_id = $('#classroom').val();
+
+        $('.loader').show();
+         $.ajax({
+             url: "{{url('/teacher/examination/resultList')}}",
+             type: "GET",
+             data: {
+                 classroom_id: classroom_id,
+             },
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             success: function(result) {
+                $('#resultTableBody').empty();
+                $('.loader').fadeOut();
+                var data = '';
+                $.each(result.response , function(index, val) { 
+                    console.log(val);
+                    data += '<tr>';
+                    data += '<td>' + val.student.name + '</td>';
+                    data += '<td>' + val.classroom.class_name + ' ' + val.classroom.section_name + ' ' + val.classroom.student_subject.subject_name + '</td>';
+                    data += '<td>' + val.examination.title + '</td>';
+                    data += '<td>' + val.marks_obtained + '/' + val.total_marks + '</td>';
+                    data += '</tr>'
+                });
+
+              $('#resultTableBody').html(data);
+        
+             },
+             error: function(error_r) {
+                 $('.loader').fadeOut();
+                 console.log(error_r);
+             }
+         });
+     }
+ </script>
