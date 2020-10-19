@@ -29,7 +29,7 @@
                      <!-- <label class="d-block mb-2">Class</label> -->
                      <select class="form-control select1 " id="examlist" style="width: 100%;">
                          <option value="">Select Classroom</option>
-                         @foreach($classroomList->unique('classroom_id') as $classroom)
+                         @foreach($examinationShow->unique('classroom_id') as $classroom)
 
                          <option value="{{$classroom->classroom_id}}">{{$classroom->classroom->class_name}} {{$classroom->classroom->section_name}}, {{$classroom->classroom->studentSubject->subject_name}}</option>
                          @endforeach
