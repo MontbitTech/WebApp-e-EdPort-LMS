@@ -44,25 +44,29 @@
         <div class="card-header text-white p-0   @if(date('H:i',strtotime($t->to_timing)) <= date('H:i')) bg-secondary @endif" style="background:#253372;">
             <div class="container">
                 <div class="row ">
-                    <div class="col-md-3 col-3 col-lg-2 col-sm-3 font-weight-bold pr-0 pt-3 pl-1 font-size-tab ">
+                    <div class="col-md-3 col-3 col-lg-2 col-sm-3 font-weight-bold mobile-hide pr-0 pt-3 pl-1 font-size-tab ">
                         {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}
                     </div>
-                    <div class="col-md-7 col-7  col-sm-7 font-weight-bold pt-3 p-0 font-size-tab display-none-lp"> Classroom: {{ $class_name}} {{$section_name }} , {{$subject_name}}</div>
+                    <div class=" col-3   col-sm-3 font-weight-bold moblie-show mobile-screen-size-time  pr-0 pt-3 pl-1 font-size-tab ">
+                        {{ date('H:i ',strtotime($t->from_timing))}} - {{ date('H:i ',strtotime($t->to_timing))}}
+                    </div>
+                    <div class="col-md-7 col-7  col-sm-7 font-weight-bold pt-3 p-0 font-size-tab display-none-lp mobile-screen-size-classroom"> Classroom: {{ $class_name}} {{$section_name }} , {{$subject_name}}</div>
                     <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3 p-0 font-size-tab display-none-tab"> Class: {{ $class_name }} Std</div>
                     <div class="col-md-1 col-1 col-lg-1 col-sm-1 font-weight-bold pt-3 p-0 font-size-tab display-none-tab"> Section:{{$section_name}}</div>
                     <div class="col-md-5 col-5 col-lg-5 col-sm-5 font-weight-bold text-center  m-0 pt-3 p-0 font-size-tab display-none-tab"> Subject: {{$subject_name}}</div>
-                    <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-1 px-0 text-center">
+                    <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold mobile-screen-size-time  pt-1 px-0 text-center">
                         <div class="row">
-                            <div class="col-md-6 col-6 col-lg-6 p-0 m-0">
+                            <div class="col-md-6 col-5 col-lg-6 p-0 m-0">
                                 @if($t->cancelled)
-                                <button class="btn btn-md bg-danger text-white btn-sm-size mr-left  mb-0 ml-2 font-weight-bold mt-1 font-size-tab">Cancelled</button>
+                                <div class="btn text-danger moblie-show-none">X</div>
+                                <button class="btn  display-none-mobile btn-md bg-danger text-white btn-sm-size mr-left  mb-0 ml-2 font-weight-bold mt-1 font-size-tab">Cancelled</button>
                                 @else
-                                <button type="button" data-editModal="{{$i}}" class="btn text-right  btn-md pb-0 mb-0 pt-2 border-0 text-white font-size-tab mr-0 pr-0" title="Edit">
+                                <button type="button" data-editModal="{{$i}}" class="btn text-right btn-edit-view   btn-md pb-0 mb-0 pt-2 border-0 text-white  mr-0 pr-0" title="Edit">
                                     <i class="fas fa-edit mr-1"></i>Edit
                                 </button>
                                 @endif
                             </div>
-                            <div class="col-md-6 col-6 col-lg-6">
+                            <div class="col-md-6 col-7 col-lg-6 btn-view-sm">
                                 <button type="button" class="btn btn-collapse text-white mb-1 mt-1 pl-2 pr-2 pt-1 pb-1 font-size-tab" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" toggle-class  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
                                 </button>
                             </div>
@@ -70,8 +74,6 @@
 
 
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -79,8 +81,8 @@
             <div class="card-body p-0">
                 <div class="row m-2">
                     <div class="col-md-6 mt-1 px-0">
-                        <div class="row m-0 p-0">
-                            <div class="col-md-6 ml-0 pl-0">
+                        <div class="row m-0 p-0 ">
+                            <div class="col-md-6 ml-0 pl-0 m-unset-moblie">
                                 <select class="form-control custom-select-sm border-0 btn-shadow chapter" id="chapter" name="chap" data-chapter="{{$i}}" @if($t->cancelled)disabled @endif>
                                     <option value="Select Chapter">Select Chapter</option>
                                     @if(count($chapters)>0)
@@ -93,7 +95,7 @@
                                     @endif
                                 </select>
                             </div>
-                            <div class="col-md-6 ml-0 pr-0">
+                            <div class="col-md-6 ml-0 pr-0 m-unset-moblie">
                                 <?php
                                 $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
                                 //if($t->subject_id == 2)
@@ -115,8 +117,6 @@
 
                             </div>
                             <div class="col-md-12">
-
-
                                 <?php
                                 $cms_link = '';
                                 $youtube = '';
@@ -264,7 +264,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 margin-notes-mobile">
                         <div class="input-group text-editwrapper mt-1 mb-1">
                             <textarea class="form-control text-edit1" rows="4" placeholder="Add a note" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
                         </div>

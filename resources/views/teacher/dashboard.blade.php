@@ -19,10 +19,11 @@ $cls = 0;
             <div class="col-sm-12">
                 <ul class="nav nav-tabs1 nav-pills" id="myTab" role="tablist">
                     <li class="nav-item mb-1">
-                        <a class="nav-link shadow-sm active tab-nav" data-toggle="tab" href="#ulclasses" role="tab" aria-selected="true">Today's Live Classes</a>
+                        <!-- <a class="nav-link shadow-sm active tab-nav display-view-moblie" data-toggle="tab" href="#ulclasses" role="tab" aria-selected="true">Today's Classes</a> -->
+                        <a class="nav-link shadow-sm active tab-nav display-view-moblie" data-toggle="tab" href="#ulclasses" role="tab" aria-selected="true">Today's <b class="display-none-mobile">Live</b> Classes</a>
                     </li>
                     <li class="nav-item mb-1">
-                        <a class="nav-link shadow-sm tab-nav" data-toggle="tab" href="#plclasses" role="tab">Past Classes</a>
+                        <a class="nav-link shadow-sm tab-nav float-right-mobile" data-toggle="tab" href="#plclasses" role="tab">Past Classes</a>
                     </li>
                     <!-- <li class="nav-item mb-1">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assignment Submission Summary</a>
@@ -32,7 +33,7 @@ $cls = 0;
                             Classes</a>
                     </li>
                     <li class="nav-item mb-1 ml-md-auto ">
-                        <a class="nav-link shadow-sm mr-0 tab-nav" data-toggle="modal" href="#addClassModal" role="modal">
+                        <a class="nav-link shadow-sm mr-0 tab-nav float-right-mobile1" data-toggle="modal" href="#addClassModal" role="modal">
                             <svg class="icon mr-1">
                                 <use xlink:href="../images/icons.svg#icon_plus"></use>
                             </svg>

@@ -35,8 +35,8 @@
 
 
 
-            <div class="form-group row">
-                <label class="col-md-12 text-danger text-center" style="font-size: 12px;padding-left: 130px;">*Extra
+            <div class="form-group row px-2">
+                <label class="col-md-12 text-danger text-center text-float-moblie" style="font-size: 12px;padding-left: 130px;">*Extra
                     classes for regular assigned classes can be created here</label>
                 <label for="addclassChoose" class="col-md-4 col-form-label text-md-right">Class:</label>
                 <div class="col-md-6">
@@ -63,7 +63,7 @@
                         </div>
                       </div> -->
 
-            <div class="form-group row">
+            <div class="form-group row px-2">
                 <label for="inputNotifystd" class="col-md-4 col-form-label text-md-right">Notify
                     Students:</label>
                 <div class="col-md-6">
@@ -72,7 +72,7 @@
 
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row px-2">
                 <div class="col-md-8 offset-md-4">
                     <button type="submit" id="submit" class="btn btn-primary px-4">Save Class</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
