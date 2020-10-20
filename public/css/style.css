@@ -1011,6 +1011,18 @@ body {
   .text-float-moblie{
     padding-left: 0% !important;
   }
+  .upcoming-date-mobile{
+    padding-right: 0 !important;
+  }
+.upcoming-mobile div.container-fluid
+ {
+ padding-left: 0 !important;
+ padding-right: 0 !important;
+}
+  .upcoming-mobile{
+    padding-left: .25rem !important;
+    padding-right: .25rem !important;
+  }
   #questionPapershow .row{
         padding-left: .5rem !important;
         padding-right: .5rem !important;
