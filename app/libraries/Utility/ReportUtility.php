@@ -26,6 +26,13 @@ class ReportUtility
         return ClassWorkUtility::calculateGrade($classWorks);
     }
 
+    public static function getClassAssignmentSubmissionGrades()
+    {
+        $classWorks = ClassWork::with('studentClass', 'studentClass.dateClass')->get();
+
+        return ClassWorkUtility::calculateGrade($classWorks);
+    }
+
     /**
      * @param $teacherId
      * @return array
@@ -35,6 +42,13 @@ class ReportUtility
         $classrooms = StudentClass::with('dateClass')->whereHas('dateClass', function ($q) use ($teacherId) {
             $q->where('teacher_id', $teacherId);
         })->get();
+
+        return ClassWorkUtility::calculateAttedance($classrooms);
+    }
+
+    public static function getClassAttedanceAverage ()
+    {
+        $classrooms = StudentClass::with('dateClass')->get();
 
         return ClassWorkUtility::calculateAttedance($classrooms);
     }
