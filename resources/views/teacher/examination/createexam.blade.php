@@ -42,6 +42,7 @@
                     <div class="form-group">
                         <label class="form-control-label">Examination Name</label>
                         @if($examDetail!='')
+
                         <input type="text" id="examname" value="{{$examDetail->examination->title}}" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)"></div>
                     @else
                     <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)">
@@ -59,7 +60,7 @@
     <div class="card bg-data card-hiden b-0">
         <div class="row">
             <div class="col-lg-12 col-md-12">
-                <div class="row mb-3 pl-3">
+                <div class="row mb-3 pl-3 moblie-view">
                     <div class="col-md-3 pr-0">
                         <select class="form-control" id="class" onchange="getChapter()">
                             @if($classrooms_data)
@@ -105,7 +106,7 @@
                 <div class="row" id="question"></div>
                 <div class="row" id="validateCheckbox"></div>
             </div>
-            <div class="col-md-6 border-left">
+            <div class="col-md-6 border-left border-top-mobile">
                 <div class="form-group" id="questionPaper">
                     <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamName"> Exam Name</h3>
                     @if($questionData!='')
@@ -135,15 +136,15 @@
                         <h3 for="exampleInputQuestionname" class="text-center" id="displayExamNameshow"> Exam
                             Name</h3>
                         <div class="row">
-                            <div class="col-md-10">question</div>
-                            <div class="col-md-2"> marks</div>
+                            <div class="col-md-10 col-10">question</div>
+                            <div class="col-md-2 col-2"> marks</div>
                         </div>
                         <div class="row mb-2">
                             @if($questionData!="")
-                            <div class="col-md-10">
+                            <div class="col-md-10 col-10 ">
                                 <p class='bg-light mb-2 font-weight-bold'>{{$questionData->question->question}}</p>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-2">
                                 @if($questionData!="")
                                 <?php $marks = number_format($questionData->marks, 0);
                                 ?>
@@ -500,9 +501,96 @@
         </div>
     </div>
     </div>
+    <!-- <div class="row px-0 mx-0">
+        <div class="col-md-6 col-12">
+            <div class="row">
+                <div class="col-md-11 col-8 offset-col-2 px-0 mr-0 pl-3">option</div>
+                <div class="col-md-1 col-2 px-0 mr-0 ml-0">Answer</div>
+                <div class="input-group mb-3 col-md-12 col-12">
+                    <input class="form-control options  px-0 " id="option1` + xx + `" type="text" placeholder="option 1" aria-label="Text input with checkbox">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox" class=" answers  ml-4 0" id="checkbox1` + xx + `" value="0" aria-label="Checkbox for following text input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="row">
+                <div class="col-md-11 col-8 offset-col-2 pl-3 mx-0">option</div>
+                <div class="col-md-1 col-2 px-0 mx-0">Answer</div>
+                <div class="input-group mb-3 col-md-12 col-12">
+                    <input class="form-control   options px-0" id="option2` + xx + `" type="text" placeholder="option 2" aria-label="Text input with checkbox">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox" class="   ml-4 1 answers" id="checkbox2` + xx + `" value="1" aria-label="Checkbox for following text input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=" col-md-6 col-12">
+            <div class="row">
+                <div class="col-md-11 col-8 offset-col-2 pl-3 mx-0">option</div>
+                <div class="col-md-1 col-2 px-0 mx-0">Answer</div>
+                <div class="input-group mb-3 col-md-12 col-12">
+                    <input class="form-control   options px-0" id="option3` + xx + `" type="text" placeholder="option 3" aria-label="Text input with checkbox">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox" class="   ml-4 1 answers" id="checkbox3` + xx + `" value="1" aria-label="Checkbox for following text input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-12">
+            <div class="row">
+                <div class="col-md-11 col-8 offset-col-2 pl-3 mx-0">option</div>
+                <div class="col-md-1 col-2 px-0 mx-0">Answer</div>
+                <div class="input-group mb-3 col-md-12 col-12">
+                    <input class="form-control   options px-0" id="option2` + xx + `" type="text" placeholder="option 4" aria-label="Text input with checkbox">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">
+                            <input type="checkbox" class="   ml-4 1 answers" id="checkbox4` + xx + `" value="1" aria-label="Checkbox for following text input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
 </form>
 <script src="{{asset('js/createexam.js')}}"></script>
 <script src="{{asset('js/datepicker.js')}}"></script>
+<script>
+    // var a = $(window).width();
+    // if (a <= 450) {
+    //     // document.getElementsByClassName('td.remove-moblie').remove();
+    //     var data = $('td.remove-moblie').addClass('d-none');
+    //     // console.log(data);
+    // }
+    // else {
+    //     var y = a / 2.45;
+    // }
+
+    // var height = $('.slide').css("height", y);
+
+
+
+    // $(window).bind("resize", function() {
+    var size = $(window).width()
+    console.log(size);
+    if (size <= 450) {
+        var data = $('.remove-moblie').remove();
+
+
+    }
+    console.log(data);
+    // else {
+    //     $('div').removeClass('red').addClass('yellow')
+    // }
+    // })
+</script>
 <script>
     var max_fieldss = 100000; //maximum input boxes allowed
     var wrappers = $(".createdata"); //Fields wrapper
@@ -513,56 +601,68 @@
         if (xx < max_fieldss) { //max input box allowed
             xx++; //text box increment
             $(wrappers).append(`<div class="row">
-            <div class="col-md-1 mt-2">
+            <div class="col-md-1 col-1 mt-2 px-0">
                                             <input type="checkbox" id="check" onclick="addQuestionToPaper(xx,$(this), null, null)" value="">
                                         </div>
-                         <div class=" col-md-11 p-0  mx-0">
-                                                   
-                                
-                                    <a href="#" style="float:right;" class="remove_field"><i class="fas fa-times"></i></a>
+                         <div class=" col-md- col-11 p-0  mx-0">
+                                   <a href="#" style="float:right;" class="remove_field"><i class="fas fa-times"></i></a>
                                    <div class="form-group mb-0 pb-1">                                   
                                       <textarea  id="exampleInputQuestion` + xx + `" class="w-100 newQuestion form-control" rows="3" placeholder="Insert your question" style="resize: none;" ></textarea>
                                     </div>
-                                    <table class="table table-borderless">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" class="text-center py-1 mb-0 px-0 mt-0">Option </th>
-                                                <th scope="col" class="py-1 mb-0 mt-0 px-0">Answer</th>
-                                                <th scope="col" class="text-center py-1 px-0 mb-0 mt-0">Option </th>
-                                                <th scope="col" class="py-1 mb-0 mt-0 px-0">Answer</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="mb-0 mt-0 pt-0 pb-1">
-                                                    <input class="form-control options form-control-sm px-0 " id="option1` + xx + `" type="text" placeholder="option 1">
-                                                </td>
-                                                <td class="mb-0 mt-0 pt-0 pb-0">
-                                                    <input type="checkbox" class=" form-control-sm answers  ml-4 0" id="checkbox1` + xx + `" value="0">
-                                                </td>
-                                                 <td class="mb-0 mt-0 pt-0 pb-1">
-                                                    <input class="form-control form-control-sm  options px-0" id="option2` + xx + `" type="text" placeholder="option 2">
-                                                </td>
-                                                <td class="mb-0 mt-0 pt-0 pb-0">
-                                                    <input type="checkbox" class=" form-control-sm  ml-4 1 answers" id="checkbox2` + xx + `" value="1">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="mb-0 mt-0 pt-1 pb-0">
-                                                    <input class="form-control form-control-sm  options px-0" id="option3` + xx + `" type="text" placeholder="option 3">
-                                                </td>
-                                                <td class="mb-0 mt-0 pt-0 pb-0">
-                                                    <input type="checkbox" class=" form-control-sm  ml-4 2 answers" id="checkbox3` + xx + `" value="2">
-                                                </td>
-                                                <td class="mb-0 mt-0 pt-0 pb-0">
-                                                    <input class="form-control form-control-sm  options px-0" id="option4` + xx + `" type="text" placeholder="option 4">
-                                                </td>
-                                                <td class="mb-0 mt-0 pt-1 pb-0">
-                                                    <input type="checkbox" class=" form-control-sm  ml-4 answers" id="checkbox4` + xx + `"  value="3">
-                                                </td>
-                                            </tr>                     
-                                        </tbody>
-                                   </table>                                    
+                                     <div class="row px-0 mx-0">
+                                        <div class="col-md-6 col-12">
+                                            <div class="row">
+                                                <div class="col-md-9 col-8 offset-col-2 px-0 mr-0 pl-3">option</div>
+                                                <div class="col-md-3 col-2  mr-0 ml-0 px-0 margine-left-key">Answer</div>
+                                                <div class="input-group mb-3 col-md-12 col-12">
+                                                    <input class="form-control options  px-0 " id="option1` + xx + `" type="text" placeholder="option 1" aria-label="Text input with checkbox">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text rounded-right">
+                                                            <input type="checkbox" class="answers  ml-2 0" id="checkbox1` + xx + `" value="0" aria-label="Checkbox for following text input">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="row">
+                                                <div class="col-md-9 col-8 offset-col-2 pl-3 mx-0 mobile-hide">option</div>
+                                                <div class="col-md-3 col-2  mx-0 px-0 mobile-hide">Answer</div>
+                                                <div class="input-group mb-3 col-md-12 col-12">
+                                                    <input class="form-control   options px-0" id="option2` + xx + `" type="text" placeholder="option 2" aria-label="Text input with checkbox">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text rounded-right">
+                                                            <input type="checkbox" class="   ml-2 1 answers" id="checkbox2` + xx + `" value="1" aria-label="Checkbox for following text input">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class=" col-md-6 col-12">
+                                            <div class="row">                                              
+                                                <div class="input-group mb-3 col-md-12 col-12">
+                                                    <input class="form-control   options px-0" id="option3` + xx + `" type="text" placeholder="option 3" aria-label="Text input with checkbox">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text rounded-right">
+                                                            <input type="checkbox" class="   ml-2 1 answers" id="checkbox3` + xx + `" value="1" aria-label="Checkbox for following text input">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="row">                                         
+                                                <div class="input-group mb-3 col-md-12 col-12">
+                                                    <input class="form-control   options px-0" id="option2` + xx + `" type="text" placeholder="option 4" aria-label="Text input with checkbox">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text rounded-right">
+                                                            <input type="checkbox" class="   ml-2 1 answers" id="checkbox4` + xx + `" value="1" aria-label="Checkbox for following text input">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+    </div>                              
                             </div>
                             </div>`); //add input box
         }
@@ -683,9 +783,9 @@
                     let count = 1;
                     let data = "";
                     $.each(result.response, function(key, value) {
-                        data += '<div class="col-md-1 mt-2">';
+                        data += '<div class="col-md-1 col-1  mt-2">';
                         data += '<input type="checkbox" class="questionCheckbox" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" value="' + value.id + '"> </div>';
-                        data += '<div class="col-md-11  mt-2"> ';
+                        data += '<div class="col-md-11 col-11 mt-2"> ';
                         data += '<p class=" font-weight-bold questionText">' + value.question + '</p>';
                         data += '</div>';
                         count++;
@@ -730,10 +830,10 @@
             }
             let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question;
             data += '<input type="hidden" id="ques" name="questions[]" value="' + questionId + '"></p>';
-            let show = '<div class="row mb-2"><div class="col-md-10">';
+            let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
             show += "<p class='bg-light font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
             show += '</div>';
-            show += '<div class="col-md-2">';
+            show += '<div class="col-md-2 col-2">';
             show += '<input type="number" name="marks[' + questionId + ']" class="form-control" id="questionmarks' + questionId + '" value="1" min="1">';
             show += '</div></div>';
             $('#questionPaper').append(data);
@@ -775,10 +875,10 @@
                         obj.attr('data-questionId', result.response.id);
                         let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + result.response.id + "'>" + result.response.question;
                         data += '<input type="hidden" id="ques" name="questions[]" value="' + result.response.id + '"></p>';
-                        let show = '<div class="row mb-2"><div class="col-md-10">';
+                        let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
                         show += "<p class='bg-light mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
                         show += '</div>';
-                        show += '<div class="col-md-2">';
+                        show += '<div class="col-md-2 col-2">';
                         show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control" id="questionmarks' + result.response.question + '" value="1" min="1">';
                         show += '</div></div>';
                         $('#questionPaper').append(data);

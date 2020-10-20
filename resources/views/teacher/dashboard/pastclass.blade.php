@@ -65,8 +65,15 @@
           <div class="card-header text-white p-0 " style="background:#253372;">
               <div class="container-fluid padding-right">
                   <div class="row p-0 m-0 ">
-                      <div class="col-md-1 col-lg-1 col-2 text-left px-0 pt-3 mx-0 font-weight-bold">{{ $class_date }}</div>
-                      <div class="col-md-3 col-3 col-lg-2 col-sm-3 font-weight-bold px-0 pt-3 mx-0 font-size-tab ">
+                      <div class="col-md-3 col-4 col-lg-2 col-sm-3 font-weight-bold moblie-show px-0 pt-3 mx-0 font-size-tab ">
+                          {{ $class_date }}
+                          {{ date('H:i ',strtotime($t->from_timing))}} - {{ date('H:i ',strtotime($t->to_timing))}}
+                      </div>
+                      <div class="col-md-1 col-lg-1 col-2 text-left px-0 pt-3 mx-0 font-weight-bold mobile-hide font-size-tab">{{ $class_date }}</div>
+                      <div class="col-md-3 col-3 col-lg-2 col-sm-3 font-weight-bold mobile-hide px-0 pt-3 mx-0 font-size-tab ">
+                          {{ date('H:i ',strtotime($t->from_timing))}} - {{ date('H:i ',strtotime($t->to_timing))}}
+                      </div>
+                      <div class="col-md-3 col-3 col-lg-2 col-sm-3 mobile-hide font-weight-bold px-0 pt-3 mx-0 font-size-tab ">
                           {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}
                       </div>
                       <div class="col-md-6 col-7 col-sm-7 font-weight-bold pt-3 px-0 font-size-tab display-none-lp"> Classroom: {{ $class_name}} {{$section_name }} , {{$subject_name}}</div>

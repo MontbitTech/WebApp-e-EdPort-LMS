@@ -3,6 +3,7 @@
          <div class="card-header pt-1 pb-0 border-transparent text-white" style="background-color: #373c8e;">
              <h4 class="card-title d-inline">Exam List</h4>
              <div class="card-tools d-inline float-right">
+
                  <!-- <a href="#" class="btn bg-white text-succes " data-toggle="modal" data-target="#addexam">Add Exam</a> -->
                  <button type="button" class="btn border ml-2 btn-tool text-white " data-card-widget="collapse">
                      <i class="fas fa-minus"></i>
@@ -36,46 +37,44 @@
                      </select>
                  </div>
              </div>
-             <table id="exam" class="table table-bordered">
-                 <thead>
-                     <tr>
-                         <th scope="col">Classroom</th>
-                         <th scope="col">Exam name</th>
-                         <th scope="col">Exam Link</th>
-                         <th scope="col">Action</th>
-                     </tr>
-                 </thead>
-                 <tbody id="test">
-                     @php
-                     $i=1;
-                     @endphp
-                     @foreach ($examinationShow as $examinationshows)
-                     <input type="hidden" id="classroom_id{{$i}}" value="{{$examinationshows->classroom_id}}">
-                     <input type="hidden" id="examination_id{{$i}}" value="{{$examinationshows->examination_id}}">
-                     <input type="hidden" id="examDeleteId{{$i}}" value="{{$examinationshows->id}}">
-                     <input type="hidden" id="examname{{$i}}" value="{{$examinationshows->examination->title}}">
-                     <input type="hidden" id="classroomname{{$i}}" value="{{$examinationshows->classroom->class_name}} {{$examinationshows->classroom->section_name}} {{$examinationshows->classroom->studentSubject->subject_name}}">
-                     <input type="hidden" id="examtime{{$i}}" value="{{date('i',strtotime($examinationshows->duration))}}">
-                     <tr>
-                         <td>{{$examinationshows->classroom->class_name}} {{$examinationshows->classroom->section_name}} {{$examinationshows->classroom->studentSubject->subject_name}}</td>
-                         <td>{{$examinationshows->examination->title}}</td>
-                         <td>{{env('APP_URL') . '/student/exam?examID=' . $examinationshows->id}}</td>
-                         <td>
-                             <button type="button" data-Examination="{{$i}}" class="btn" data-toggle="modal" data-target="#showexam">Show</button>
-                             ||
-                             <button class="btn" data-toggle="modal" data-examdelete="{{$examinationshows->id}}">Delete</button>
-                             ||
-                             <button type="button" data-Exam="{{$i}}" class="btn" data-toggle="modal">Assign</button>
-                         </td>
+             <div class="table-responsive-sm">
+                 <table id="exam" class="table table-bordered ">
+                     <thead>
+                         <tr>
+                             <th scope="col">Classroom</th>
+                             <th scope="col">Exam name</th>
+                             <th scope="col">Exam Link</th>
+                             <th scope="col">Action</th>
+                         </tr>
+                     </thead>
+                     <tbody id="test">
+                         @php
+                         $i=1;
+                         @endphp
+                         @foreach ($examinationShow as $examinationshows)
+                         <input type="hidden" id="classroom_id{{$i}}" value="{{$examinationshows->classroom_id}}">
+                         <input type="hidden" id="examination_id{{$i}}" value="{{$examinationshows->examination_id}}">
+                         <input type="hidden" id="examDeleteId{{$i}}" value="{{$examinationshows->id}}">
+                         <input type="hidden" id="examname{{$i}}" value="{{$examinationshows->examination->title}}">
+                         <input type="hidden" id="classroomname{{$i}}" value="{{$examinationshows->classroom->class_name}} {{$examinationshows->classroom->section_name}} {{$examinationshows->classroom->studentSubject->subject_name}}">
+                         <input type="hidden" id="examtime{{$i}}" value="{{date('i',strtotime($examinationshows->duration))}}">
+                         <tr>
+                             <td>{{$examinationshows->classroom->class_name}} {{$examinationshows->classroom->section_name}} {{$examinationshows->classroom->studentSubject->subject_name}}</td>
+                             <td>{{$examinationshows->examination->title}}</td>
+                             <td>{{env('APP_URL') . '/student/exam?examID=' . $examinationshows->id}}</td>
+                             <td>
+                                 <button type="button" data-Examination="{{$i}}" class="btn" data-toggle="modal" data-target="#showexam">Show</button>||<button class="btn" data-toggle="modal" data-examdelete="{{$examinationshows->id}}">Delete</button>||<button type="button" data-Exam="{{$i}}" class="btn" data-toggle="modal">Assign</button>
+                             </td>
 
-                     </tr>
-                     @php
-                     $i++;
-                     @endphp
-                     @endforeach
+                         </tr>
+                         @php
+                         $i++;
+                         @endphp
+                         @endforeach
 
-                 </tbody>
-             </table>
+                     </tbody>
+                 </table>
+             </div>
          </div>
      </div>
  </div>
@@ -112,6 +111,11 @@
          </div>
      </div>
  </div> -->
+ <!-- <script>
+     $('#exam').DataTable({
+         responsive: true
+     });
+ </script> -->
  <script>
      $(document).on('click', '[data-Examination]', function() {
          var val = $(this).data('examination');

@@ -190,7 +190,7 @@ $cls = 0;
                     </svg>
                 </button>
             </div>
-            <div class="modal-body pt-4">
+            <div class="modal-body pt-4 notify-student-mobile">
 
                 {!! Form::open(array('route' => ['student-notify'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_class_notify')) !!}
 
@@ -205,7 +205,7 @@ $cls = 0;
 
                 <div class="container-fluid">
                     <div class="form-group row">
-                        <nav class="nav flex-column">
+                        <nav class="nav flex-column col-3">
                             <div class=" nav-link active btn btn-md btn-primary " id="notify">
                                 Class Invitation
                             </div>
@@ -217,7 +217,7 @@ $cls = 0;
                             </div>
 
                         </nav>
-                        <div class="col-md-9 col-lg-9 col-9">
+                        <div class="col-md-9 col-lg-9 col-9 pr-0">
                             <div class="mt-2">
                                 {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3','style'=>'resize: none')) !!}
                             </div>
