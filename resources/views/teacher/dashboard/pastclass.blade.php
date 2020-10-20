@@ -65,7 +65,7 @@
           <div class="card-header text-white p-0 " style="background:#253372;">
               <div class="container-fluid padding-right">
                   <div class="row p-0 m-0 ">
-                      <div class="col-md-3 col-4 col-lg-2 col-sm-3 font-weight-bold moblie-show px-0 pt-3 mx-0 font-size-tab ">
+                      <div class="col-md-3 col-3 col-lg-2 col-sm-3 font-weight-bold moblie-show-past-calss px-0 pt-3 mx-0 past-class-font-size">
                           {{ $class_date }}
                           {{ date('H:i ',strtotime($t->from_timing))}} - {{ date('H:i ',strtotime($t->to_timing))}}
                       </div>
@@ -82,8 +82,9 @@
                       <div class="col-md-5 col-5 col-lg-5 col-sm-5 font-weight-bold   m-auto pt-1 px-0 font-size-tab display-none-tab"> Subject: {{$subject_name}}</div>
                       <div class="col-md-2 col-2 col-lg-2 mx-0 px-0 pt-1">
                           <div class="row mx-0 px-0">
-                              <div class="col-7 col-md-9 col-lg-7  px-0 mx-0">@if($t->cancelled)
-                                  <h2 class="btn btn-md bg-danger text-white mx-0 px-2 my-1 font-weight-bold font-size-tab btn-sm-size">Cancelled</h2>
+                              <div class="col-6 col-md-9 col-lg-7  px-0 mx-0">@if($t->cancelled)
+                                  <div class="btn text-danger moblie-show-none">X</div>
+                                  <h2 class="btn display-none-mobile btn-md bg-danger text-white mx-0 px-2 my-1 font-weight-bold font-size-tab btn-sm-size">Cancelled</h2>
                                   @endif
                               </div>
                               <div class="col-5 col-md-3 col-lg-5 pr-0 mr-0"> <button type="button" class="float-right btn  btn-collapse font-size-tab text-white collapse-btn px-2 py-1 my-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="toggle-class  fas fa-plus"></i>
@@ -98,10 +99,10 @@
                   <div class="row m-2">
                       <div class="col-md-6">
                           <div class="row">
-                              <div class="col-md-6">
+                              <div class="col-md-6 col-6">
                                   {{$chapter}}
                               </div>
-                              <div class="col-md-6">
+                              <div class="col-md-6 col-6">
                                   <?php
                                     $x = $t->cmsLink;
                                     ?>

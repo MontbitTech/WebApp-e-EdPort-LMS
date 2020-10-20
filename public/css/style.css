@@ -1014,6 +1014,9 @@ body {
   .upcoming-date-mobile{
     padding-right: 0 !important;
   }
+  .past-class-font-size{
+    font-size: .6rem !important;
+  }
 .upcoming-mobile div.container-fluid
  {
  padding-left: 0 !important;
@@ -1084,11 +1087,15 @@ padding-right: 0% !important;
    padding-right: .5rem !important;
    display: block !important;
 }
+.moblie-show-past-calss{
+   margin-bottom: 10px !important;
+   display: block !important;
+}
 .moblie-show-none{
   display: block !important;
 }
 .padding-right{
-  padding-left: .3rem !important;
+  padding-left: .18rem !important;
   padding-right: 0% !important;
   margin-right: 0% !important;
   margin-left: 0% !important;
