@@ -34,7 +34,7 @@ class QuestionController extends Controller
         $validator = Validator::make($request->all(), [
             'question'   => 'required',
             'answer'     => 'required',
-            'options.*'  => 'required',
+            // 'options.*'  => 'required',
             'class'      => 'required',
             'subject_id' => 'required',
             'chapter'    => 'nullable',

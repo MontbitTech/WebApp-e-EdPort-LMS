@@ -465,7 +465,7 @@
     var wrappers = $(".createdata"); //Fields wrapper
     var add_buttons = $(".data"); //Add button ID
     var xx = 2; //initlal text box count
-    var randomQuestions = array();
+    var randomQuestions = Array();
     $(add_buttons).click(function(e) { //on add input button click
         e.preventDefault();
         if (xx < max_fieldss) { //max input box allowed
@@ -692,9 +692,11 @@
                 for (var i = 0; i < optionsHtml.length; i++) {
                     options.push(optionsHtml[i].value);
                 }
-                for (var i = 0; i < answersHtml.length; i++) {
-                    if (answersHtml[i].checked)
-                        answer.push(options[answersHtml[i].value]);
+                 for (var i = 0; i < answersHtml.length; i++) {
+                    if (options[i]!="" && answersHtml[i].checked)
+                    answer.push(options[answersHtml[i].value]);
+                    else
+                     answersHtml[i].checked = false;
                 }
 
                 return insertQuestion(val, obj, questionText, options, answer, className, subject, );
@@ -723,8 +725,27 @@
         }
     }
 
+    function hasDuplicates(array) {
+    var valuesSoFar = [];
+    for (var i = 0; i < array.length; ++i) {
+        var value = array[i];
+        if (value!="" && valuesSoFar.indexOf(value) !== -1) {
+            return true;
+        }
+        valuesSoFar.push(value);
+    }
+    return false;
+    }
+
     function insertQuestion(val, obj, questionText, options, answer, className, subject) {
-        if (questionText && options[0] && options[1] && options[2] && options[3] && answer.length >= 1 && className && subject) {
+        var isDuplicateOption =hasDuplicates(options);
+        let optionsLength = [];
+        for(var i = 0; i < options.length; ++i){
+            if(options[i]!="")
+             optionsLength.push(options[i]);   
+        }
+
+         if (questionText && optionsLength.length>=2 && !isDuplicateOption && answer.length >= 1 && className && subject ) {
             $('.loader').show();
             $.ajax({
                 url: "{{url('/saveQuestion')}}",
@@ -779,15 +800,21 @@
                 $(obj).prop("checked", false);
             } else obj.parent().next().find('.newQuestion').css('borderColor', '#ced4da');
 
-            if (options[0] == "" || options[1] == "" || options[2] == "" || options[3] == "") {
+             if (optionsLength.length<2) {
                 obj.parent().next().find('.options').css('borderColor', 'red');
                 $(obj).prop("checked", false);
             } else obj.parent().next().find('.options').css('borderColor', '#ced4da');
 
+            if(isDuplicateOption){
+             alert("option cannot be same");
+             $(obj).prop("checked", false);
+            }
+            
             if (answer.length == 0) {
-                alert("select atleast one answer");
+                alert("select atleast one answer having option");
                 $(obj).prop("checked", false);
             }
+
             if (!className) {
                 $('#class').css('borderColor', 'red');
                 $(obj).prop("checked", false);
