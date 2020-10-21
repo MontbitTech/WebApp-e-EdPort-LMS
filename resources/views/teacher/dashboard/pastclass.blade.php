@@ -70,7 +70,7 @@
                           {{ date('H:i ',strtotime($t->from_timing))}} - {{ date('H:i ',strtotime($t->to_timing))}}
                       </div>
                       <div class="col-md-1 col-lg-1 col-2 text-left px-0 pt-3 mx-0 font-weight-bold mobile-hide font-size-tab">{{ $class_date }}</div>
-                      <div class="col-md-3 col-3 col-lg-2 col-sm-3 font-weight-bold mobile-hide px-0 pt-3 mx-0 font-size-tab ">
+                      <div class="col-md-3 col-3 col-lg-2 col-sm-3 font-weight-bold lep-date-hide mobile-hide px-0 pt-3 mx-0 font-size-tab ">
                           {{ date('H:i ',strtotime($t->from_timing))}} - {{ date('H:i ',strtotime($t->to_timing))}}
                       </div>
                       <div class="col-md-3 col-3 col-lg-2 col-sm-3 mobile-hide font-weight-bold px-0 pt-3 mx-0 font-size-tab ">
