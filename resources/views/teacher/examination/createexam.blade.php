@@ -99,7 +99,7 @@
                         </button>
                     </div>
                     <div class="circle" style="margin-left: 51%;">
-                        <button class="fa fa-random py-1" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random">
+                        <button class="fa fa-random data py-1" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random">
                         </button>
                     </div>
                 </div>
