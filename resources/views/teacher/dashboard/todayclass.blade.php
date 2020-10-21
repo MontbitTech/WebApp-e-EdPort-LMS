@@ -411,7 +411,7 @@
                     <div class="form-group col-md-4">
                         <label for="txt_aTitle" class="col-form-label text-md-left"> Point:</label>
                         <div>
-                            <input type="number" class="form-control" name="txt_point" id="txt_point" placeholder="Point">
+                            <input type="number" class="form-control" min="0" name="txt_point" id="txt_point" placeholder="Point">
                         </div>
                     </div>
                 </div>
