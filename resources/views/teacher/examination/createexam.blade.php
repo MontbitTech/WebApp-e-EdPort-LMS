@@ -35,7 +35,6 @@
             <li class="step0" id="step4">Assign Examination</li>
             <li class="step0" id="step5">Environment Settings</li>
         </ul>
-        {{-- <form action="" method="post">--}}
         <div class="card bg-data card-hiden-new b-0 show" id="step01">
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-11">
@@ -97,6 +96,10 @@
                     </div>
                     <div class="circle">
                         <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right" title="Add Question">
+                        </button>
+                    </div>
+                    <div class="circle" style="margin-left: 51%;">
+                        <button class="fa fa-random py-1" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random">
                         </button>
                     </div>
                 </div>
@@ -200,10 +203,6 @@
                 <input type="datetime-local" id="timestart" class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
                 @endif
             </div>
-            {{-- <div class="col-md-6 my-2 ">
-                            <label for="times">End Time</label>
-                            <input type="datetime-local" id="timeend" class="form-control  input-xs" name="end_time">
-                        </div>--}}
         </div>
         <div class="row d-flex justify-content-center m-auto">
             <div class="circle ">
@@ -213,16 +212,12 @@
                 <div class="fa-long-arrow-right next btn" id="next4" onclick="validate4(0)">Next</div>
             </div>
         </div>
-        <!-- <div class="row d-flex justify-content-center">
-                                   <div class="check"> <img src="https://i.imgur.com/g6KlBWR.gif" class="check-mark">
-                                   </div>
-                               </div> -->
+
     </div>
     <div class="card bg-data card-hiden-new b-0 ">
         <div class="mb-3 text-center">
             Advanced Setting
             <label class="switch   ">
-                <!-- <input type="hidden" name="properties[keepFullScreen]" value="0"> -->
                 <input type="checkbox" name="setting" value="1" onchange="valueChanged()" class="data-show">
                 <span class="slider round"></span>
             </label>
@@ -292,45 +287,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
-            {{-- <div class="row m-0 p-0">--}}
-            {{-- <div class="col-md-12 p-0 m-0">--}}
-            {{-- <div class="test"> Full Screen while giving exam</div>--}}
-            {{-- </div>--}}
-            {{-- <div class="col-md-8 mt-2">keepFullScreen</div>--}}
-            {{-- <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">--}}
-            {{-- <label class="switch  ">--}}
-            {{-- <input type="hidden" name="properties[keepFullScreen]" value="0">--}}
-            {{-- <input type="checkbox" name="properties[keepFullScreen]" checked>--}}
-            {{-- <span class="slider round"></span>--}}
-            {{-- </label>--}}
-
-            {{-- </div>--}}
-            {{-- <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>--}}
-            {{-- <div class="col-md-4 p-0 my-2 m-0">--}}
-            {{-- <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5"--}}
-            {{-- class="form-control m-auto w-75  " min="1" max="5">--}}
-
-            {{-- </div>--}}
-            {{-- </div>--}}
-            {{-- </div>--}}
-            {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
-            {{-- <div class="row m-0 p-0">--}}
-            {{-- <div class="col-md-12 p-0 m-0">--}}
-            {{-- <div class="test">Examination URLs</div>--}}
-            {{-- </div>--}}
-
-            {{-- <div class="col-md-12 col-lg-12 col-12 my-3">--}}
-            {{-- <textarea cols="10" rows="1" class="form-control" style="resize: none;"--}}
-            {{-- placeholder="displayResultURL"></textarea>--}}
-            {{-- </div>--}}
-            {{-- <div class="col-md-12 col-lg-12 col-12 my-3">--}}
-            {{-- <textarea cols="10" rows="1" class="form-control" style="resize: none;"--}}
-            {{-- placeholder="errorPageURL"></textarea>--}}
-            {{-- </div>--}}
-
-            {{-- </div>--}}
-            {{-- </div>--}}
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
@@ -371,11 +327,6 @@
                         </label>
 
                     </div>
-                    <!-- <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
-                            <div class="col-md-4 p-0 my-2 m-0">
-                                <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
-                            </div> -->
                 </div>
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
@@ -485,11 +436,6 @@
                     <div class="col-md-12 col-lg-12 col-12 mb-2">
                         <textarea cols="10" rows="1" name="properties[systemIncompatibleReason]" class="form-control" style="resize: none;" placeholder="systemIncompatibleReason"></textarea>
                     </div>
-                    <!-- <div class="col-md-8 mt-2"> systemIncompatibleReason</div>
-                            <div class="col-md-4 p-0 my-2 m-0">
-                                <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
-                            </div> -->
                 </div>
             </div>
         </div>
@@ -501,101 +447,25 @@
         </div>
     </div>
     </div>
-    <!-- <div class="row px-0 mx-0">
-        <div class="col-md-6 col-12">
-            <div class="row">
-                <div class="col-md-11 col-8 offset-col-2 px-0 mr-0 pl-3">option</div>
-                <div class="col-md-1 col-2 px-0 mr-0 ml-0">Answer</div>
-                <div class="input-group mb-3 col-md-12 col-12">
-                    <input class="form-control options  px-0 " id="option1` + xx + `" type="text" placeholder="option 1" aria-label="Text input with checkbox">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <input type="checkbox" class=" answers  ml-4 0" id="checkbox1` + xx + `" value="0" aria-label="Checkbox for following text input">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-12">
-            <div class="row">
-                <div class="col-md-11 col-8 offset-col-2 pl-3 mx-0">option</div>
-                <div class="col-md-1 col-2 px-0 mx-0">Answer</div>
-                <div class="input-group mb-3 col-md-12 col-12">
-                    <input class="form-control   options px-0" id="option2` + xx + `" type="text" placeholder="option 2" aria-label="Text input with checkbox">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <input type="checkbox" class="   ml-4 1 answers" id="checkbox2` + xx + `" value="1" aria-label="Checkbox for following text input">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class=" col-md-6 col-12">
-            <div class="row">
-                <div class="col-md-11 col-8 offset-col-2 pl-3 mx-0">option</div>
-                <div class="col-md-1 col-2 px-0 mx-0">Answer</div>
-                <div class="input-group mb-3 col-md-12 col-12">
-                    <input class="form-control   options px-0" id="option3` + xx + `" type="text" placeholder="option 3" aria-label="Text input with checkbox">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <input type="checkbox" class="   ml-4 1 answers" id="checkbox3` + xx + `" value="1" aria-label="Checkbox for following text input">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6 col-12">
-            <div class="row">
-                <div class="col-md-11 col-8 offset-col-2 pl-3 mx-0">option</div>
-                <div class="col-md-1 col-2 px-0 mx-0">Answer</div>
-                <div class="input-group mb-3 col-md-12 col-12">
-                    <input class="form-control   options px-0" id="option2` + xx + `" type="text" placeholder="option 4" aria-label="Text input with checkbox">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text">
-                            <input type="checkbox" class="   ml-4 1 answers" id="checkbox4` + xx + `" value="1" aria-label="Checkbox for following text input">
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> -->
 </form>
 <script src="{{asset('js/createexam.js')}}"></script>
 <script src="{{asset('js/datepicker.js')}}"></script>
 <script>
-    // var a = $(window).width();
-    // if (a <= 450) {
-    //     // document.getElementsByClassName('td.remove-moblie').remove();
-    //     var data = $('td.remove-moblie').addClass('d-none');
-    //     // console.log(data);
-    // }
-    // else {
-    //     var y = a / 2.45;
-    // }
-
-    // var height = $('.slide').css("height", y);
-
-
-
     // $(window).bind("resize", function() {
     var size = $(window).width()
     console.log(size);
     if (size <= 450) {
         var data = $('.remove-moblie').remove();
-
-
     }
+
     console.log(data);
-    // else {
-    //     $('div').removeClass('red').addClass('yellow')
-    // }
-    // })
 </script>
 <script>
     var max_fieldss = 100000; //maximum input boxes allowed
     var wrappers = $(".createdata"); //Fields wrapper
     var add_buttons = $(".data"); //Add button ID
     var xx = 2; //initlal text box count
+    var randomQuestions = array();
     $(add_buttons).click(function(e) { //on add input button click
         e.preventDefault();
         if (xx < max_fieldss) { //max input box allowed
@@ -782,15 +652,17 @@
                     $('#question').empty();
                     let count = 1;
                     let data = "";
+                    randomQuestions = result.response.sort(() => Math.random() - Math.random()).slice(0, 2);
                     $.each(result.response, function(key, value) {
                         data += '<div class="col-md-1 col-1  mt-2">';
-                        data += '<input type="checkbox" class="questionCheckbox" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" value="' + value.id + '"> </div>';
+                        data += '<input type="checkbox" class="questionCheckbox" id="listQuestion'+ value.id +'" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" value="' + value.id + '"> </div>';
                         data += '<div class="col-md-11 col-11 mt-2"> ';
                         data += '<p class=" font-weight-bold questionText">' + value.question + '</p>';
                         data += '</div>';
                         count++;
                     });
                     $('#question').append(data);
+
 
                 } else {
                     $.fn.notifyMe('error', 5, result.response);
@@ -863,8 +735,6 @@
                     answer: answer,
                     class: className,
                     subject_id: subject
-                    // chapter: chapter,
-                    // topic: topic
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -960,6 +830,17 @@
                 $('.loader').fadeOut();
             }
         });
+    }
+
+    function addRandomQuestionsToPaper(){
+        if(randomQuestions.length > 0){
+            $.each(randomQuestions, function(key, value){
+                addQuestionToPaper(null,null, value.question, value.id);
+                $('#listQuestion'+value.id).prop('checked', true);
+            });
+        }else{
+            alert('there is no question to choose ranndom from');
+        }
     }
 </script>
 <script>
