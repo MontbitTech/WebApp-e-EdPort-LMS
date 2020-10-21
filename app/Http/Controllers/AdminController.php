@@ -9,6 +9,9 @@ use Google_Client;
 use Session;
 use App\Admin;
 use App\Teacher;
+use App\StudentClass;
+use App\InvitationClass;
+use App\libraries\Utility\ReportUtility;
 use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
@@ -238,5 +241,25 @@ class AdminController extends Controller
                 return 101;
             }
         }
+    }
+
+     public function reports(Request $request)
+    {
+
+        $totalClassesOfClassrooms = StudentClass::with('dateClass')->get()->pluck('dateClass.*', 'id');
+
+        $cancelledClassesOfClassrooms = StudentClass::with(['dateClass' => function ($q) {
+            $q->where('cancelled', 1);
+        }])->get()->pluck('dateClass.*', 'id');
+
+
+        $inviteClassData = InvitationClass::with('studentClass', 'studentSubject')
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        $attendanceAverage = ReportUtility::getClassAttedanceAverage();
+        // $gradeAverage = ReportUtility::getAssignmentSubmissionGrades($loggedTeacher['teacher_id']);
+
+        return view('admin.reports.index', compact('inviteClassData', 'totalClassesOfClassrooms', 'cancelledClassesOfClassrooms', 'attendanceAverage'));
     }
 }

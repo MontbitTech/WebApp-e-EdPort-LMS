@@ -38,4 +38,11 @@ class ReportUtility
 
         return ClassWorkUtility::calculateAttedance($classrooms);
     }
+
+    public static function getClassAttedanceAverage ()
+    {
+        $classrooms = StudentClass::with('dateClass')->get();
+
+        return ClassWorkUtility::calculateAttedance($classrooms);
+    }
 }
