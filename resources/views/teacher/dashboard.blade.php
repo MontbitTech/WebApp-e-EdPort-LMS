@@ -22,7 +22,7 @@ $cls = 0;
                         <!-- <a class="nav-link shadow-sm active tab-nav display-view-moblie" data-toggle="tab" href="#ulclasses" role="tab" aria-selected="true">Today's Classes</a> -->
                         <a class="nav-link shadow-sm active tab-nav display-view-moblie" data-toggle="tab" href="#ulclasses" role="tab" aria-selected="true">Today's <b class="display-none-mobile">Live</b> Classes</a>
                     </li>
-                    <li class="nav-item mb-1">
+                    <li class="nav-item mb-1 margin-left-mobile">
                         <a class="nav-link shadow-sm tab-nav float-right-mobile" data-toggle="tab" href="#plclasses" role="tab">Past Classes</a>
                     </li>
                     <!-- <li class="nav-item mb-1">
@@ -32,7 +32,7 @@ $cls = 0;
                         <a class="nav-link shadow-sm tab-nav" data-toggle="tab" href="#upcomingclasses" role="tab">Future
                             Classes</a>
                     </li>
-                    <li class="nav-item mb-1 ml-md-auto ">
+                    <li class="nav-item mb-1 ml-md-auto margin-left-mobile">
                         <a class="nav-link shadow-sm mr-0 tab-nav float-right-mobile1" data-toggle="modal" href="#addClassModal" role="modal">
                             <svg class="icon mr-1">
                                 <use xlink:href="../images/icons.svg#icon_plus"></use>

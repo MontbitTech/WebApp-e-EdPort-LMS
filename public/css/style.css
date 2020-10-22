@@ -1011,6 +1011,9 @@ body {
   .text-float-moblie{
     padding-left: 0% !important;
   }
+  .margin-left-mobile{
+    margin-left: auto !important;
+  }
   .upcoming-date-mobile{
     padding-right: 0 !important;
   }
@@ -1108,7 +1111,7 @@ padding-right: 0% !important;
   /* margin-top: 10px !important; */
   padding-left: 20px !important;
   float: right !important;
-  margin-left: 9.125rem !important;
+  /* margin-left: 9.125rem !important; */
 }
 .float-right-mobile1 svg{
 display: none !important;
@@ -1116,7 +1119,7 @@ display: none !important;
 .float-right-mobile{
   float: right !important;
   margin-right: 0% !important;
-  margin-left: 9.125rem !important;
+  /* margin-left: 9.125rem !important; */
 }
 .btn-view-sm{
   margin-left: 0% !important;
