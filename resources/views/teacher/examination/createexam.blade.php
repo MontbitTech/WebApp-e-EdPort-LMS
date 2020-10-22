@@ -99,9 +99,9 @@
                         </button>
                     </div>
                     <div class="circle" style="margin-left: 51%;">
-                        <button class="fa fa-random random py-1" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random">
-                        </button>
-                        <input type="hidden" checked="checked" id="randomQuestionCheckbox">
+                        <div class="fa fa-random random py-1" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random">
+                        </div>
+                        <input type="checkbox" checked="checked"  style="opacity:0; position:absolute; left:9999px;" id="randomQuestionCheckbox">
                     </div>
                 </div>
             </div>
@@ -466,7 +466,7 @@
     var wrappers = $(".createdata"); //Fields wrapper
     var add_buttons = $(".data"); //Add button ID
     var xx = 2; //initlal text box count
-    var randomQuestions = Array();
+    var allQuestions = Array();
     $(add_buttons).click(function(e) { //on add input button click
         e.preventDefault();
         if (xx < max_fieldss) { //max input box allowed
@@ -653,7 +653,7 @@
                     $('#question').empty();
                     let count = 1;
                     let data = "";
-                    randomQuestions = result.response.sort(() => Math.random() - Math.random()).slice(0, 2);
+                    allQuestions = result.response;
                     $.each(result.response, function(key, value) {
                         data += '<div class="col-md-1 col-1  mt-2">';
                         data += '<input type="checkbox" class="questionCheckbox" id="listQuestion'+ value.id +'" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" value="' + value.id + '"> </div>';
@@ -677,9 +677,8 @@
     }
 
     function addQuestionToPaper(val, obj, question, questionId) {
-
         if (obj.is(":checked")) {
-            alert(questionId);
+            
             if (questionId == null) {
                 let className = $('#class').val();
                 let subject = $('#subject').val();
@@ -704,8 +703,12 @@
                 return insertQuestion(val, obj, questionText, options, answer, className, subject, );
 
             }
+
+            if($('#ques'+ questionId).length > 0)
+                return;
+
             let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question;
-            data += '<input type="hidden" id="ques" name="questions[]" value="' + questionId + '"></p>';
+            data += '<input type="hidden" id="ques'+ questionId +'" name="questions[]" value="' + questionId + '"></p>';
             let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
             show += "<p class='bg-light font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
             show += '</div>';
@@ -721,7 +724,6 @@
                 deleteQuestion(questionId);
             }
 
-            console.log(obj.attr('data-questionId'), questionId);
             $("#addedQuestion" + questionId).remove();
             $("#addedQuestionInMarks" + questionId).parent().parent().remove();
         }
@@ -767,7 +769,7 @@
                     if (result.success) {
                         obj.attr('data-questionId', result.response.id);
                         let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + result.response.id + "'>" + result.response.question;
-                        data += '<input type="hidden" id="ques" name="questions[]" value="' + result.response.id + '"></p>';
+                        data += '<input type="hidden" id="ques'+ questionId +'" name="questions[]" value="' + result.response.id + '"></p>';
                         let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
                         show += "<p class='bg-light mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
                         show += '</div>';
@@ -825,14 +827,6 @@
                 $('#subject').css('borderColor', 'red');
                 $(obj).prop("checked", false);
             } else $('#subject').css('borderColor', '#ced4da');
-            // if (!topic) {
-            //     $('#topic').css('borderColor', 'red');
-            //     $(obj).prop("checked", false);
-            // } else $('#topic').css('borderColor', '#ced4da');
-            // if (!chapter) {
-            //     $('#chapter').css('borderColor', 'red');
-            //     $(obj).prop("checked", false);
-            // } else $('#chapter').css('borderColor', '#ced4da');
         }
 
     }
@@ -862,13 +856,20 @@
     }
 
     function addRandomQuestionsToPaper(){
+        if(allQuestions.length == 0){
+            alert('there is no questions to choose random from');
+            return;
+        }
+        const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+        randomQuestions = shuffled.slice(0, 2);
+
         if(randomQuestions.length > 0){
             $.each(randomQuestions, function(key, value){
                 addQuestionToPaper(null,$('#randomQuestionCheckbox'), value.question, value.id);
                 $('#listQuestion' + value.id).prop('checked', true);
             });
         }else{
-            alert('there is no question to choose ranndom from');
+            alert('there is no question to choose random from');
         }
     }
 </script>
