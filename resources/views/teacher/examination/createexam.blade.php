@@ -99,8 +99,9 @@
                         </button>
                     </div>
                     <div class="circle" style="margin-left: 51%;">
-                        <div class="fa fa-random random  py-1" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random">
-                        </div>
+                        <button class="fa fa-random random py-1" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random">
+                        </button>
+                        <input type="hidden" checked="checked" id="randomQuestionCheckbox">
                     </div>
                 </div>
             </div>
@@ -655,7 +656,7 @@
                     randomQuestions = result.response.sort(() => Math.random() - Math.random()).slice(0, 2);
                     $.each(result.response, function(key, value) {
                         data += '<div class="col-md-1 col-1  mt-2">';
-                        data += '<input type="checkbox" class="questionCheckbox" id="listQuestion' + value.id + '" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" value="' + value.id + '"> </div>';
+                        data += '<input type="checkbox" class="questionCheckbox" id="listQuestion'+ value.id +'" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" value="' + value.id + '"> </div>';
                         data += '<div class="col-md-11 col-11 mt-2"> ';
                         data += '<p class=" font-weight-bold questionText">' + value.question + '</p>';
                         data += '</div>';
@@ -678,6 +679,7 @@
     function addQuestionToPaper(val, obj, question, questionId) {
 
         if (obj.is(":checked")) {
+            alert(questionId);
             if (questionId == null) {
                 let className = $('#class').val();
                 let subject = $('#subject').val();
@@ -692,11 +694,11 @@
                 for (var i = 0; i < optionsHtml.length; i++) {
                     options.push(optionsHtml[i].value);
                 }
-                for (var i = 0; i < answersHtml.length; i++) {
-                    if (options[i] != "" && answersHtml[i].checked)
-                        answer.push(options[answersHtml[i].value]);
+                 for (var i = 0; i < answersHtml.length; i++) {
+                    if (options[i]!="" && answersHtml[i].checked)
+                    answer.push(options[answersHtml[i].value]);
                     else
-                        answersHtml[i].checked = false;
+                     answersHtml[i].checked = false;
                 }
 
                 return insertQuestion(val, obj, questionText, options, answer, className, subject, );
@@ -726,26 +728,26 @@
     }
 
     function hasDuplicates(array) {
-        var valuesSoFar = [];
-        for (var i = 0; i < array.length; ++i) {
-            var value = array[i];
-            if (value != "" && valuesSoFar.indexOf(value) !== -1) {
-                return true;
-            }
-            valuesSoFar.push(value);
+    var valuesSoFar = [];
+    for (var i = 0; i < array.length; ++i) {
+        var value = array[i];
+        if (value!="" && valuesSoFar.indexOf(value) !== -1) {
+            return true;
         }
-        return false;
+        valuesSoFar.push(value);
+    }
+    return false;
     }
 
     function insertQuestion(val, obj, questionText, options, answer, className, subject) {
-        var isDuplicateOption = hasDuplicates(options);
+        var isDuplicateOption =hasDuplicates(options);
         let optionsLength = [];
-        for (var i = 0; i < options.length; ++i) {
-            if (options[i] != "")
-                optionsLength.push(options[i]);
+        for(var i = 0; i < options.length; ++i){
+            if(options[i]!="")
+             optionsLength.push(options[i]);   
         }
 
-        if (questionText && optionsLength.length >= 2 && !isDuplicateOption && answer.length >= 1 && className && subject) {
+         if (questionText && optionsLength.length>=2 && !isDuplicateOption && answer.length >= 1 && className && subject ) {
             $('.loader').show();
             $.ajax({
                 url: "{{url('/saveQuestion')}}",
@@ -800,16 +802,16 @@
                 $(obj).prop("checked", false);
             } else obj.parent().next().find('.newQuestion').css('borderColor', '#ced4da');
 
-            if (optionsLength.length < 2) {
+             if (optionsLength.length<2) {
                 obj.parent().next().find('.options').css('borderColor', 'red');
                 $(obj).prop("checked", false);
             } else obj.parent().next().find('.options').css('borderColor', '#ced4da');
 
-            if (isDuplicateOption) {
-                alert("option cannot be same");
-                $(obj).prop("checked", false);
+            if(isDuplicateOption){
+             alert("option cannot be same");
+             $(obj).prop("checked", false);
             }
-
+            
             if (answer.length == 0) {
                 alert("select atleast one answer having option");
                 $(obj).prop("checked", false);
@@ -859,13 +861,13 @@
         });
     }
 
-    function addRandomQuestionsToPaper() {
-        if (randomQuestions.length > 0) {
-            $.each(randomQuestions, function(key, value) {
-                addQuestionToPaper(null, null, value.question, value.id);
+    function addRandomQuestionsToPaper(){
+        if(randomQuestions.length > 0){
+            $.each(randomQuestions, function(key, value){
+                addQuestionToPaper(null,$('#randomQuestionCheckbox'), value.question, value.id);
                 $('#listQuestion' + value.id).prop('checked', true);
             });
-        } else {
+        }else{
             alert('there is no question to choose ranndom from');
         }
     }
