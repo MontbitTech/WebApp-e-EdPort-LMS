@@ -94,15 +94,28 @@
                             <option value="" selected>Select Topic</option>
                         </select>
                     </div>
-                    <div class="circle">
+                    <div class="mr-auto">
+                        <div class="input-group mt-3 pl-3">
+                            <input type="number" min="0" class="form-control" placeholder="Random question select input" value="2" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <div class="btn btn-outline-secondary " id="button-addon2" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random" style="border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;">Random</div>
+
+                            </div>
+                            <input type="checkbox" checked="checked" style="opacity:0; position:absolute; left:9px;" id="randomQuestionCheckbox">
+                        </div>
+                        <!-- <div>
+                            <input type="number" name="" class="form-control mt-2" min="0" id="" style="margin-bottom: -27px;" value="2">
+                            <i class="fa fa-random random  py-1" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random">
+                            </i>
+                            <input type="checkbox" checked="checked" style="opacity:0; position:absolute; left:9999px;" id="randomQuestionCheckbox">
+                        </div> -->
+                    </div>
+                    <div class="mr-auto mt-3" style="margin-left: -21%;">
                         <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right" title="Add Question">
                         </button>
                     </div>
-                    <div class="circle" style="margin-left: 51%;">
-                        <div class="fa fa-random random py-1" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random">
-                        </div>
-                        <input type="checkbox" checked="checked"  style="opacity:0; position:absolute; left:9999px;" id="randomQuestionCheckbox">
-                    </div>
+
                 </div>
             </div>
             <div class="col-md-6 ">
@@ -533,7 +546,10 @@
                                                 </div>
                                             </div>
                                         </div>
-    </div>                              
+                                   </div>  
+                                   <div class="form-group mb-0 pb-1">                                   
+                                      <textarea  id="regions` + xx + `" class="w-100 newQuestion form-control" rows="3" placeholder="regions " style="resize: none;" ></textarea>
+                                    </div>                            
                             </div>
                             </div>`); //add input box
         }
@@ -656,7 +672,7 @@
                     allQuestions = result.response;
                     $.each(result.response, function(key, value) {
                         data += '<div class="col-md-1 col-1  mt-2">';
-                        data += '<input type="checkbox" class="questionCheckbox" id="listQuestion'+ value.id +'" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" value="' + value.id + '"> </div>';
+                        data += '<input type="checkbox" class="questionCheckbox" id="listQuestion' + value.id + '" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" value="' + value.id + '"> </div>';
                         data += '<div class="col-md-11 col-11 mt-2"> ';
                         data += '<p class=" font-weight-bold questionText">' + value.question + '</p>';
                         data += '</div>';
@@ -678,7 +694,7 @@
 
     function addQuestionToPaper(val, obj, question, questionId) {
         if (obj.is(":checked")) {
-            
+
             if (questionId == null) {
                 let className = $('#class').val();
                 let subject = $('#subject').val();
@@ -693,22 +709,22 @@
                 for (var i = 0; i < optionsHtml.length; i++) {
                     options.push(optionsHtml[i].value);
                 }
-                 for (var i = 0; i < answersHtml.length; i++) {
-                    if (options[i]!="" && answersHtml[i].checked)
-                    answer.push(options[answersHtml[i].value]);
+                for (var i = 0; i < answersHtml.length; i++) {
+                    if (options[i] != "" && answersHtml[i].checked)
+                        answer.push(options[answersHtml[i].value]);
                     else
-                     answersHtml[i].checked = false;
+                        answersHtml[i].checked = false;
                 }
 
                 return insertQuestion(val, obj, questionText, options, answer, className, subject, );
 
             }
 
-            if($('#ques'+ questionId).length > 0)
+            if ($('#ques' + questionId).length > 0)
                 return;
 
             let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question;
-            data += '<input type="hidden" id="ques'+ questionId +'" name="questions[]" value="' + questionId + '"></p>';
+            data += '<input type="hidden" id="ques' + questionId + '" name="questions[]" value="' + questionId + '"></p>';
             let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
             show += "<p class='bg-light font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
             show += '</div>';
@@ -730,26 +746,26 @@
     }
 
     function hasDuplicates(array) {
-    var valuesSoFar = [];
-    for (var i = 0; i < array.length; ++i) {
-        var value = array[i];
-        if (value!="" && valuesSoFar.indexOf(value) !== -1) {
-            return true;
+        var valuesSoFar = [];
+        for (var i = 0; i < array.length; ++i) {
+            var value = array[i];
+            if (value != "" && valuesSoFar.indexOf(value) !== -1) {
+                return true;
+            }
+            valuesSoFar.push(value);
         }
-        valuesSoFar.push(value);
-    }
-    return false;
+        return false;
     }
 
     function insertQuestion(val, obj, questionText, options, answer, className, subject) {
-        var isDuplicateOption =hasDuplicates(options);
+        var isDuplicateOption = hasDuplicates(options);
         let optionsLength = [];
-        for(var i = 0; i < options.length; ++i){
-            if(options[i]!="")
-             optionsLength.push(options[i]);   
+        for (var i = 0; i < options.length; ++i) {
+            if (options[i] != "")
+                optionsLength.push(options[i]);
         }
 
-         if (questionText && optionsLength.length>=2 && !isDuplicateOption && answer.length >= 1 && className && subject ) {
+        if (questionText && optionsLength.length >= 2 && !isDuplicateOption && answer.length >= 1 && className && subject) {
             $('.loader').show();
             $.ajax({
                 url: "{{url('/saveQuestion')}}",
@@ -769,7 +785,7 @@
                     if (result.success) {
                         obj.attr('data-questionId', result.response.id);
                         let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + result.response.id + "'>" + result.response.question;
-                        data += '<input type="hidden" id="ques'+ questionId +'" name="questions[]" value="' + result.response.id + '"></p>';
+                        data += '<input type="hidden" id="ques' + questionId + '" name="questions[]" value="' + result.response.id + '"></p>';
                         let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
                         show += "<p class='bg-light mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
                         show += '</div>';
@@ -804,16 +820,16 @@
                 $(obj).prop("checked", false);
             } else obj.parent().next().find('.newQuestion').css('borderColor', '#ced4da');
 
-             if (optionsLength.length<2) {
+            if (optionsLength.length < 2) {
                 obj.parent().next().find('.options').css('borderColor', 'red');
                 $(obj).prop("checked", false);
             } else obj.parent().next().find('.options').css('borderColor', '#ced4da');
 
-            if(isDuplicateOption){
-             alert("option cannot be same");
-             $(obj).prop("checked", false);
+            if (isDuplicateOption) {
+                alert("option cannot be same");
+                $(obj).prop("checked", false);
             }
-            
+
             if (answer.length == 0) {
                 alert("select atleast one answer having option");
                 $(obj).prop("checked", false);
@@ -855,20 +871,20 @@
         });
     }
 
-    function addRandomQuestionsToPaper(){
-        if(allQuestions.length == 0){
+    function addRandomQuestionsToPaper() {
+        if (allQuestions.length == 0) {
             alert('there is no questions to choose random from');
             return;
         }
         const shuffled = allQuestions.sort(() => 0.5 - Math.random());
         randomQuestions = shuffled.slice(0, 2);
 
-        if(randomQuestions.length > 0){
-            $.each(randomQuestions, function(key, value){
-                addQuestionToPaper(null,$('#randomQuestionCheckbox'), value.question, value.id);
+        if (randomQuestions.length > 0) {
+            $.each(randomQuestions, function(key, value) {
+                addQuestionToPaper(null, $('#randomQuestionCheckbox'), value.question, value.id);
                 $('#listQuestion' + value.id).prop('checked', true);
             });
-        }else{
+        } else {
             alert('there is no question to choose random from');
         }
     }
