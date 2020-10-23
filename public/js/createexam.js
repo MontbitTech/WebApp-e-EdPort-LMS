@@ -19,7 +19,7 @@ function validate1(val) {
 function validate2(val) {
     v1 = document.getElementById("class");
     v2 = document.getElementById("subject");
-    question  = document.getElementById("ques");
+    question  = document.getElementsByClassName("ques");
 
     flag1 = true;
     flag2 = true;
@@ -53,7 +53,7 @@ function validate2(val) {
         }
     }
 
-    if(!(document.getElementById("questionPaper").contains(question))){
+    if(!(document.getElementById("questionPaper").contains(question[0]))){
         if(document.getElementById("validateCheckbox").innerHTML.indexOf("select/add atleast one question")==-1){
         document.getElementById("validateCheckbox").append("select/add atleast one question");
         }

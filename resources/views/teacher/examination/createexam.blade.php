@@ -96,10 +96,10 @@
                     </div>
                     <div class="mr-auto">
                         <div class="input-group mt-3 pl-3">
-                            <input type="number" min="0" class="form-control" placeholder="Random question select input" value="2" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <input type="number" min="1" id="randomQuestionCount" class="form-control" placeholder="Random question select input" value="20" aria-label="Recipient's username" aria-describedby="button-addon2">
                             <div class="input-group-append">
                                 <div class="btn btn-outline-secondary " id="button-addon2" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random" style="border-top-right-radius: 0.25rem;
-    border-bottom-right-radius: 0.25rem;">Random</div>
+                                    border-bottom-right-radius: 0.25rem;">Random</div>
 
                             </div>
                             <input type="checkbox" checked="checked" style="opacity:0; position:absolute; left:9px;" id="randomQuestionCheckbox">
@@ -724,7 +724,7 @@
                 return;
 
             let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question;
-            data += '<input type="hidden" id="ques' + questionId + '" name="questions[]" value="' + questionId + '"></p>';
+            data += '<input type="hidden" class="ques" id="ques' + questionId + '" name="questions[]" value="' + questionId + '"></p>';
             let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
             show += "<p class='bg-light font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
             show += '</div>';
@@ -785,7 +785,7 @@
                     if (result.success) {
                         obj.attr('data-questionId', result.response.id);
                         let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + result.response.id + "'>" + result.response.question;
-                        data += '<input type="hidden" id="ques' + questionId + '" name="questions[]" value="' + result.response.id + '"></p>';
+                        data += '<input type="hidden" class="ques" id="ques' + result.response.id + '" name="questions[]" value="' + result.response.id + '"></p>';
                         let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
                         show += "<p class='bg-light mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
                         show += '</div>';
@@ -876,8 +876,16 @@
             alert('there is no questions to choose random from');
             return;
         }
+
+        clearAllQuestionSelection(allQuestions);
+        randomQuestionCount = $('#randomQuestionCount').val();
+        if(!randomQuestionCount || randomQuestionCount == 0){
+            alert('please input no of question you want to select randomly');
+            return;
+        }
+
         const shuffled = allQuestions.sort(() => 0.5 - Math.random());
-        randomQuestions = shuffled.slice(0, 2);
+        randomQuestions = shuffled.slice(0, randomQuestionCount);
 
         if (randomQuestions.length > 0) {
             $.each(randomQuestions, function(key, value) {
@@ -887,6 +895,14 @@
         } else {
             alert('there is no question to choose random from');
         }
+    }
+
+    function clearAllQuestionSelection(allQuestions){
+        $('.questionCheckbox').prop('checked',false);
+        $.each(allQuestions, function(key, value) {
+            $("#addedQuestion" + value.id).remove();
+            $("#addedQuestionInMarks" + value.id).parent().parent().remove();
+        });
     }
 </script>
 <script>
