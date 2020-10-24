@@ -63,7 +63,7 @@
                              <td>{{$examinationshows->examination->title}}</td>
                              <td>{{env('APP_URL') . '/student/exam?examID=' . $examinationshows->id}}</td>
                              <td>
-                                 <button type="button" data-Examination="{{$i}}" class="btn" data-toggle="modal" data-target="#showexam">Show</button>||<button class="btn" data-toggle="modal" data-examdelete="{{$examinationshows->id}}">Delete</button>||<button type="button" data-Exam="{{$i}}" class="btn" data-toggle="modal">Assign</button>
+                                 <button type="button" data-Examination="{{$i}}" class="btn btn-primary mr-2 btn-sm" data-toggle="modal" data-target="#showexam">Show</button><button class="btn btn-danger mr-2 btn-sm" data-toggle="modal" data-examdelete="{{$examinationshows->id}}">Delete</button><button type="button" data-Exam="{{$i}}" class="btn btn-primary btn-sm" data-toggle="modal">Assign</button>
                              </td>
 
                          </tr>
