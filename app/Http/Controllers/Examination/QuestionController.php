@@ -63,6 +63,7 @@ class QuestionController extends Controller
             $question->subject_id = $request->subject_id;
             $question->chapter = $request->chapter;
             $question->topic = $request->topic;
+            $question->explanation = $request->explanation;
             // if (!empty($request->chapter)) {
             //     $question->chapter = $request->chapter;
             // }

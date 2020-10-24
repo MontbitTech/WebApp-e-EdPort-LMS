@@ -548,7 +548,7 @@
                                         </div>
                                    </div>  
                                    <div class="form-group mb-0 pb-1">                                   
-                                      <textarea  id="regions` + xx + `" class="w-100 newQuestion form-control" rows="3" placeholder="regions " style="resize: none;" ></textarea>
+                                      <textarea  id="explanation` + xx + `" class="w-100 newQuestion explanation form-control" rows="3" placeholder="explanation" style="resize: none;" ></textarea>
                                     </div>                            
                             </div>
                             </div>`); //add input box
@@ -703,6 +703,8 @@
                 let questionText = obj.parent().next().find('.newQuestion').val();
                 let optionsHtml = obj.parent().next().find('.options');
                 let answersHtml = obj.parent().next().find('.answers');
+                let explanation = obj.parent().next().find('.explanation').val();
+
                 let options = [];
                 let answer = [];
 
@@ -716,7 +718,7 @@
                         answersHtml[i].checked = false;
                 }
 
-                return insertQuestion(val, obj, questionText, options, answer, className, subject, );
+                return insertQuestion(val, obj, questionText, options, answer, className, subject, explanation);
 
             }
 
@@ -757,7 +759,7 @@
         return false;
     }
 
-    function insertQuestion(val, obj, questionText, options, answer, className, subject) {
+    function insertQuestion(val, obj, questionText, options, answer, className, subject, explanation) {
         var isDuplicateOption = hasDuplicates(options);
         let optionsLength = [];
         for (var i = 0; i < options.length; ++i) {
@@ -775,7 +777,8 @@
                     options: options,
                     answer: answer,
                     class: className,
-                    subject_id: subject
+                    subject_id: subject,
+                    explanation : explanation
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
