@@ -85,12 +85,12 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
       <div class="modal-header bg-light d-flex align-items-center mb-0 pb-0">
         <!-- <h5 class="modal-title font-weight-bold">Help Message</h5> -->
         <ul class="nav  nav-tabs  color-change" id="myTab" role="tablist">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link   active" data-toggle="tab" href="#fqa" role="tab" aria-selected="true">FAQs</a>
-          </li>
-          <li class="nav-item">
+          </li> -->
+          <!-- <li class="nav-item">
             <a class="nav-link " data-toggle="tab" href="#video" role="tab">Videos</a>
-          </li>
+          </li> -->
           <li class="nav-item  ">
             <a class="nav-link " data-toggle="tab" href="#message" role="tab">Contact Admin</a>
           </li>
@@ -103,7 +103,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
       </div>
       <div class="modal-body  pt-4">
         <div class="tab-content ">
-          <div class="tab-pane fade show active" id="fqa">
+          <!-- <div class="tab-pane fade show active" id="fqa">
             <h2>Popular Questions</h2>
             <ul>
               <li>Lorem ipsum dolor sit amet.</li>
@@ -136,8 +136,8 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
               </div>
             </div>
 
-          </div>
-          <div class="tab-pane fade" id="message">
+          </div> -->
+          <div class="tab-pane fade show active" id="message">
             <form>
               <div class="form-group">
                 <select name="help_ticket_category" id="helpCategory" class="form-control" required>

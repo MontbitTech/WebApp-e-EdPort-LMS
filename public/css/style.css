@@ -753,7 +753,9 @@ body {
     padding-left: 240px;
     padding-right: 20px;
   }
-
+.key-lep-view{
+  padding-right: 0% ;
+}
   body.menu-open {
     padding-left: 20px;
   }
@@ -1009,6 +1011,76 @@ body {
   .text-float-moblie{
     padding-left: 0% !important;
   }
+  .margin-left-mobile{
+    margin-left: auto !important;
+  }
+  .upcoming-date-mobile{
+    padding-right: 0 !important;
+  }
+  .past-class-font-size{
+    font-size: .6rem !important;
+  }
+.upcoming-mobile div.container-fluid
+ {
+ padding-left: 0 !important;
+ padding-right: 0 !important;
+}
+  .upcoming-mobile{
+    padding-left: .25rem !important;
+    padding-right: .25rem !important;
+  }
+  #questionPapershow .row{
+        padding-left: .5rem !important;
+        padding-right: .5rem !important;
+  }
+  #questionPapershow .row .mb-2{
+    padding-left: .5rem !important;
+    padding-right: .5rem !important;
+  }
+  #questionPapershow .row .col-md-2.col-2{
+        padding-left: unset;
+        /* padding-right: 0 !important; */
+
+  }
+  #questionPapershow .row.mb-2 .col-md-2.col-2{
+padding-left: 0% !important;
+  }
+  #progressbar li {
+    font-size: 10px !important;
+  }
+  .border-top-mobile {
+    border-left: unset !important;
+    border-top: 1px solid #dee2e6 !important;
+  }
+  .moblie-view div select{
+    margin-bottom: 10px !important;
+  }
+  .moblie-view{
+    padding-left: unset !important;
+  }
+  .mobile-view-table thead tr th,
+  .mobile-view-table tbody tr td {
+padding-left: 0% !important;
+padding-right: 0% !important;
+  }
+  .data {
+    margin-left: -17px !important;
+  }
+  .moblie-view div{
+    padding-left:0% !important;
+    margin-left:0% !important;
+  }
+   #progressbar li::before {
+    width: 33px !important;
+    height: 34px !important;
+    line-height: 37px !important;
+    display: block;
+    font-size: 20px;
+    background: #455a64;
+    border-radius: 50%;
+    margin: auto;
+    padding: 0px;
+  }
   .modal-dialog {
     max-width: 97% !important;
   }
@@ -1018,8 +1090,18 @@ body {
    padding-right: .5rem !important;
    display: block !important;
 }
+.moblie-show-past-calss{
+   margin-bottom: 10px !important;
+   display: block !important;
+}
 .moblie-show-none{
   display: block !important;
+}
+.padding-right{
+  padding-left: .18rem !important;
+  padding-right: 0% !important;
+  margin-right: 0% !important;
+  margin-left: 0% !important;
 }
 .fa-edit,
 .display-none-mobile { 
@@ -1029,7 +1111,7 @@ body {
   /* margin-top: 10px !important; */
   padding-left: 20px !important;
   float: right !important;
-  margin-left: 70px !important;
+  /* margin-left: 9.125rem !important; */
 }
 .float-right-mobile1 svg{
 display: none !important;
@@ -1037,7 +1119,7 @@ display: none !important;
 .float-right-mobile{
   float: right !important;
   margin-right: 0% !important;
-  margin-left: 70px !important;
+  /* margin-left: 9.125rem !important; */
 }
 .btn-view-sm{
   margin-left: 0% !important;
@@ -1069,8 +1151,44 @@ margin-bottom: .5rem !important;
   padding: unset !important;
   margin-top: .8rem !important;
 }
+.margine-left-key{
+  /* padding-left: 0%;
+   padding-right: 0%; */
+      margin-left: 2.6rem !important;
+}
 .mobile-hide{
   display: none !important;
+}
+.notify-student-mobile{
+  padding-left: .5rem !important;
+}
+.notify-student-mobile div.container-fluid{
+  padding-left: 0% !important;
+}
+.notify-student-mobile div.container-fluid div.form-group.row {
+margin-left: 0 !important;
+padding-right: 0 !important;
+padding-left: 0 !important;
+}
+.notify-student-mobile div.container-fluid div.form-group.row nav{
+  margin-left: 0 !important;
+  padding-right: 0 !important;
+  padding-left: 0 !important;
+  margin-right: 0 !important;
+}
+#cancel {
+  padding-left: 0% !important;
+  padding-right: 0% !important;
+  font-size: 11px;
+}
+#custom{
+  padding-top: .25rem !important;
+  padding-bottom: .25rem !important;
+}
+#notify {
+  padding-left: 0% !important;
+  padding-right: 0% !important;
+  font-size: 13px;
 }
 .font-size-tab {
   font-size: .755rem !important;
@@ -1084,7 +1202,9 @@ margin-bottom: .5rem !important;
 }
 }
 .moblie-show-none,
-.moblie-show {
+.moblie-show,
+.moblie-show-past-calss,
+.lep-date-hide {
   display: none ;
 }
 /* end examination */

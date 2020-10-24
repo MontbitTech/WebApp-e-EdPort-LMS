@@ -58,13 +58,16 @@
             <?php
             $class_date = date("d M", strtotime($t->class_date));
             ?>
-            <div class="card-header text-white   pt-2 pb-2 " style="background:#253372;">
+            <div class="card-header text-white upcoming-mobile   pt-2 pb-2 " style="background:#253372;">
                 <div class="container-fluid">
 
                     <div class="row ">
-                        <div class="col-md-2 col-lg-2 col-2 text-left pl-3 pt-1 pb-2 m-0 font-weight-bold ">{{ $class_date }}</div>
-                        <div class=" col-md-3 col-3 col-lg-2 col-sm-3 font-weight-bold pr-0 pt-1 pb-2 pl-1 font-size-tab ">
+                        <div class="col-md-2 col-lg-2 col-2 text-left pl-3 pt-1 pb-2 m-0 font-weight-bold upcoming-date-mobile font-size-tab">{{ $class_date }}</div>
+                        <div class=" col-md-3 col-3 col-lg-2 col-sm-3 font-weight-bold pr-0 pt-1 pb-2 pl-1 font-size-tab mobile-hide">
                             {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}
+                        </div>
+                        <div class=" col-3   col-sm-3 font-weight-bold moblie-show mobile-screen-size-time  pr-0 pt-1 pl-1 font-size-tab ">
+                            {{ date('H:i ',strtotime($t->from_timing))}} - {{ date('H:i ',strtotime($t->to_timing))}}
                         </div>
                         <div class=" col-md-7 col-7 col-sm-7 font-weight-bold pt-1 pb-2 p-0 font-size-tab display-none-lp"> Classroom: {{ $class_name}} {{$section_name }} , {{$subject_name}}</div>
                         <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-1 pb-2 p-0 font-size-tab display-none-tab"> Class: {{ $class_name }} Std</div>

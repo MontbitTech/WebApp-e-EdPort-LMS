@@ -411,15 +411,15 @@
                     <div class="form-group col-md-4">
                         <label for="txt_aTitle" class="col-form-label text-md-left"> Point:</label>
                         <div>
-                            <input type="number" class="form-control" name="txt_point" id="txt_point" placeholder="Point">
+                            <input type="number" class="form-control" min="0" name="txt_point" id="txt_point" placeholder="Point">
                         </div>
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-md-12" style="text-align: center;">
-                        <button type="button" id="assignment_create" class="btn btn-primary px-4">Create</button>
-                        <button type="button" id="attach_file" class="btn btn-primary px-4">Create and Attach File</button>
-                        <button type="button" id="cancel_assignment" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" id="assignment_create" class="btn btn-primary btn-sm-size px-4">Create</button>
+                        <button type="button" id="attach_file" class="btn btn-primary btn-sm-size px-4">Create and Attach File</button>
+                        <button type="button" id="cancel_assignment" class="btn btn-secondary btn-sm-size" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
                 <p style="font-size: smaller;color: red;text-align: center;">Note: Please allow popup for the assignment functionality.</p>

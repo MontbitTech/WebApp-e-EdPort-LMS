@@ -128,7 +128,7 @@ Refer https://www.youtube.com/watch?v=CVClHLwv-4I for face-api tutorial.
         <div id="guidelines" class="container-fluid">
           <div class="row mb-2">
             <div class="col-sm-6">
-              <h1 class="m-0 text-dark">Welcome, {User}</h1>
+              <h1 class="m-0 text-dark">Welcome</h1>
             </div><!-- /.col -->
             <div class="col-sm-6">
               <ol class="breadcrumb float-sm-right text-dark">

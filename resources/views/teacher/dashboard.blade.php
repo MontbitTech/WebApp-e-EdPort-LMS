@@ -22,7 +22,7 @@ $cls = 0;
                         <!-- <a class="nav-link shadow-sm active tab-nav display-view-moblie" data-toggle="tab" href="#ulclasses" role="tab" aria-selected="true">Today's Classes</a> -->
                         <a class="nav-link shadow-sm active tab-nav display-view-moblie" data-toggle="tab" href="#ulclasses" role="tab" aria-selected="true">Today's <b class="display-none-mobile">Live</b> Classes</a>
                     </li>
-                    <li class="nav-item mb-1">
+                    <li class="nav-item mb-1 margin-left-mobile">
                         <a class="nav-link shadow-sm tab-nav float-right-mobile" data-toggle="tab" href="#plclasses" role="tab">Past Classes</a>
                     </li>
                     <!-- <li class="nav-item mb-1">
@@ -32,7 +32,7 @@ $cls = 0;
                         <a class="nav-link shadow-sm tab-nav" data-toggle="tab" href="#upcomingclasses" role="tab">Future
                             Classes</a>
                     </li>
-                    <li class="nav-item mb-1 ml-md-auto ">
+                    <li class="nav-item mb-1 ml-md-auto margin-left-mobile">
                         <a class="nav-link shadow-sm mr-0 tab-nav float-right-mobile1" data-toggle="modal" href="#addClassModal" role="modal">
                             <svg class="icon mr-1">
                                 <use xlink:href="../images/icons.svg#icon_plus"></use>
@@ -190,7 +190,7 @@ $cls = 0;
                     </svg>
                 </button>
             </div>
-            <div class="modal-body pt-4">
+            <div class="modal-body pt-4 notify-student-mobile">
 
                 {!! Form::open(array('route' => ['student-notify'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_class_notify')) !!}
 
@@ -205,7 +205,7 @@ $cls = 0;
 
                 <div class="container-fluid">
                     <div class="form-group row">
-                        <nav class="nav flex-column">
+                        <nav class="nav flex-column col-3">
                             <div class=" nav-link active btn btn-md btn-primary " id="notify">
                                 Class Invitation
                             </div>
@@ -217,7 +217,7 @@ $cls = 0;
                             </div>
 
                         </nav>
-                        <div class="col-md-9 col-lg-9 col-9">
+                        <div class="col-md-9 col-lg-9 col-9 pr-0">
                             <div class="mt-2">
                                 {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3','style'=>'resize: none')) !!}
                             </div>
