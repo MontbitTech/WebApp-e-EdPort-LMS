@@ -238,7 +238,8 @@ button:focus {
     background-color: #373c8e;
 }
 
-.data {
+.data,
+.random {
     margin-left: -29px;
     color: #373c8e;
     background-color: white;

@@ -35,13 +35,13 @@
             <li class="step0" id="step4">Assign Examination</li>
             <li class="step0" id="step5">Environment Settings</li>
         </ul>
-        {{-- <form action="" method="post">--}}
         <div class="card bg-data card-hiden-new b-0 show" id="step01">
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-11">
                     <div class="form-group">
                         <label class="form-control-label">Examination Name</label>
                         @if($examDetail!='')
+
                         <input type="text" id="examname" value="{{$examDetail->examination->title}}" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)"></div>
                     @else
                     <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)">
@@ -59,7 +59,7 @@
     <div class="card bg-data card-hiden b-0">
         <div class="row">
             <div class="col-lg-12 col-md-12">
-                <div class="row mb-3 pl-3">
+                <div class="row mb-3 pl-3 moblie-view">
                     <div class="col-md-3 pr-0">
                         <select class="form-control" id="class" onchange="getChapter()">
                             @if($classrooms_data)
@@ -94,10 +94,28 @@
                             <option value="" selected>Select Topic</option>
                         </select>
                     </div>
-                    <div class="circle">
+                    <div class="mr-auto">
+                        <div class="input-group mt-3 pl-3">
+                            <input type="number" min="1" id="randomQuestionCount" class="form-control" placeholder="Random question select input" value="20" aria-label="Recipient's username" aria-describedby="button-addon2">
+                            <div class="input-group-append">
+                                <div class="btn btn-outline-secondary " id="button-addon2" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random" style="border-top-right-radius: 0.25rem;
+                                    border-bottom-right-radius: 0.25rem;">Random</div>
+
+                            </div>
+                            <input type="checkbox" checked="checked" style="opacity:0; position:absolute; left:9px;" id="randomQuestionCheckbox">
+                        </div>
+                        <!-- <div>
+                            <input type="number" name="" class="form-control mt-2" min="0" id="" style="margin-bottom: -27px;" value="2">
+                            <i class="fa fa-random random  py-1" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random">
+                            </i>
+                            <input type="checkbox" checked="checked" style="opacity:0; position:absolute; left:9999px;" id="randomQuestionCheckbox">
+                        </div> -->
+                    </div>
+                    <div class="mr-auto mt-3" style="margin-left: -21%;">
                         <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right" title="Add Question">
                         </button>
                     </div>
+
                 </div>
             </div>
             <div class="col-md-6 ">
@@ -105,7 +123,7 @@
                 <div class="row" id="question"></div>
                 <div class="row" id="validateCheckbox"></div>
             </div>
-            <div class="col-md-6 border-left">
+            <div class="col-md-6 border-left border-top-mobile">
                 <div class="form-group" id="questionPaper">
                     <h3 for="exampleInputQuestionname" class=" text-center" id="displayExamName"> Exam Name</h3>
                     @if($questionData!='')
@@ -135,15 +153,15 @@
                         <h3 for="exampleInputQuestionname" class="text-center" id="displayExamNameshow"> Exam
                             Name</h3>
                         <div class="row">
-                            <div class="col-md-10">question</div>
-                            <div class="col-md-2"> marks</div>
+                            <div class="col-md-10 col-10">question</div>
+                            <div class="col-md-2 col-2"> marks</div>
                         </div>
                         <div class="row mb-2">
                             @if($questionData!="")
-                            <div class="col-md-10">
+                            <div class="col-md-10 col-10 ">
                                 <p class='bg-light mb-2 font-weight-bold'>{{$questionData->question->question}}</p>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-2">
                                 @if($questionData!="")
                                 <?php $marks = number_format($questionData->marks, 0);
                                 ?>
@@ -199,10 +217,6 @@
                 <input type="datetime-local" id="timestart" class="form-control bg-white input-xs" name="start_time" placeholder="20/05/2020 20:10 AM">
                 @endif
             </div>
-            {{-- <div class="col-md-6 my-2 ">
-                            <label for="times">End Time</label>
-                            <input type="datetime-local" id="timeend" class="form-control  input-xs" name="end_time">
-                        </div>--}}
         </div>
         <div class="row d-flex justify-content-center m-auto">
             <div class="circle ">
@@ -212,16 +226,12 @@
                 <div class="fa-long-arrow-right next btn" id="next4" onclick="validate4(0)">Next</div>
             </div>
         </div>
-        <!-- <div class="row d-flex justify-content-center">
-                                   <div class="check"> <img src="https://i.imgur.com/g6KlBWR.gif" class="check-mark">
-                                   </div>
-                               </div> -->
+
     </div>
     <div class="card bg-data card-hiden-new b-0 ">
         <div class="mb-3 text-center">
             Advanced Setting
             <label class="switch   ">
-                <!-- <input type="hidden" name="properties[keepFullScreen]" value="0"> -->
                 <input type="checkbox" name="setting" value="1" onchange="valueChanged()" class="data-show">
                 <span class="slider round"></span>
             </label>
@@ -291,45 +301,6 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
-            {{-- <div class="row m-0 p-0">--}}
-            {{-- <div class="col-md-12 p-0 m-0">--}}
-            {{-- <div class="test"> Full Screen while giving exam</div>--}}
-            {{-- </div>--}}
-            {{-- <div class="col-md-8 mt-2">keepFullScreen</div>--}}
-            {{-- <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">--}}
-            {{-- <label class="switch  ">--}}
-            {{-- <input type="hidden" name="properties[keepFullScreen]" value="0">--}}
-            {{-- <input type="checkbox" name="properties[keepFullScreen]" checked>--}}
-            {{-- <span class="slider round"></span>--}}
-            {{-- </label>--}}
-
-            {{-- </div>--}}
-            {{-- <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>--}}
-            {{-- <div class="col-md-4 p-0 my-2 m-0">--}}
-            {{-- <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5"--}}
-            {{-- class="form-control m-auto w-75  " min="1" max="5">--}}
-
-            {{-- </div>--}}
-            {{-- </div>--}}
-            {{-- </div>--}}
-            {{-- <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">--}}
-            {{-- <div class="row m-0 p-0">--}}
-            {{-- <div class="col-md-12 p-0 m-0">--}}
-            {{-- <div class="test">Examination URLs</div>--}}
-            {{-- </div>--}}
-
-            {{-- <div class="col-md-12 col-lg-12 col-12 my-3">--}}
-            {{-- <textarea cols="10" rows="1" class="form-control" style="resize: none;"--}}
-            {{-- placeholder="displayResultURL"></textarea>--}}
-            {{-- </div>--}}
-            {{-- <div class="col-md-12 col-lg-12 col-12 my-3">--}}
-            {{-- <textarea cols="10" rows="1" class="form-control" style="resize: none;"--}}
-            {{-- placeholder="errorPageURL"></textarea>--}}
-            {{-- </div>--}}
-
-            {{-- </div>--}}
-            {{-- </div>--}}
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
                     <div class="col-md-12 p-0 m-0">
@@ -370,11 +341,6 @@
                         </label>
 
                     </div>
-                    <!-- <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
-                            <div class="col-md-4 p-0 my-2 m-0">
-                                <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
-                            </div> -->
                 </div>
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
@@ -484,11 +450,6 @@
                     <div class="col-md-12 col-lg-12 col-12 mb-2">
                         <textarea cols="10" rows="1" name="properties[systemIncompatibleReason]" class="form-control" style="resize: none;" placeholder="systemIncompatibleReason"></textarea>
                     </div>
-                    <!-- <div class="col-md-8 mt-2"> systemIncompatibleReason</div>
-                            <div class="col-md-4 p-0 my-2 m-0">
-                                <input type="number" name="name" id="name" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
-                            </div> -->
                 </div>
             </div>
         </div>
@@ -504,65 +465,91 @@
 <script src="{{asset('js/createexam.js')}}"></script>
 <script src="{{asset('js/datepicker.js')}}"></script>
 <script>
+    // $(window).bind("resize", function() {
+    var size = $(window).width()
+    console.log(size);
+    if (size <= 450) {
+        var data = $('.remove-moblie').remove();
+    }
+
+    console.log(data);
+</script>
+<script>
     var max_fieldss = 100000; //maximum input boxes allowed
     var wrappers = $(".createdata"); //Fields wrapper
     var add_buttons = $(".data"); //Add button ID
     var xx = 2; //initlal text box count
+    var allQuestions = Array();
     $(add_buttons).click(function(e) { //on add input button click
         e.preventDefault();
         if (xx < max_fieldss) { //max input box allowed
             xx++; //text box increment
             $(wrappers).append(`<div class="row">
-            <div class="col-md-1 mt-2">
+            <div class="col-md-1 col-1 mt-2 px-0">
                                             <input type="checkbox" id="check" onclick="addQuestionToPaper(xx,$(this), null, null)" value="">
                                         </div>
-                         <div class=" col-md-11 p-0  mx-0">
-                                                   
-                                
-                                    <a href="#" style="float:right;" class="remove_field"><i class="fas fa-times"></i></a>
+                         <div class=" col-md- col-11 p-0  mx-0">
+                                   <a href="#" style="float:right;" class="remove_field"><i class="fas fa-times"></i></a>
                                    <div class="form-group mb-0 pb-1">                                   
                                       <textarea  id="exampleInputQuestion` + xx + `" class="w-100 newQuestion form-control" rows="3" placeholder="Insert your question" style="resize: none;" ></textarea>
                                     </div>
-                                    <table class="table table-borderless">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col" class="text-center py-1 mb-0 px-0 mt-0">Option </th>
-                                                <th scope="col" class="py-1 mb-0 mt-0 px-0">Answer</th>
-                                                <th scope="col" class="text-center py-1 px-0 mb-0 mt-0">Option </th>
-                                                <th scope="col" class="py-1 mb-0 mt-0 px-0">Answer</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td class="mb-0 mt-0 pt-0 pb-1">
-                                                    <input class="form-control options form-control-sm px-0 " id="option1` + xx + `" type="text" placeholder="option 1">
-                                                </td>
-                                                <td class="mb-0 mt-0 pt-0 pb-0">
-                                                    <input type="checkbox" class=" form-control-sm answers  ml-4 0" id="checkbox1` + xx + `" value="0">
-                                                </td>
-                                                 <td class="mb-0 mt-0 pt-0 pb-1">
-                                                    <input class="form-control form-control-sm  options px-0" id="option2` + xx + `" type="text" placeholder="option 2">
-                                                </td>
-                                                <td class="mb-0 mt-0 pt-0 pb-0">
-                                                    <input type="checkbox" class=" form-control-sm  ml-4 1 answers" id="checkbox2` + xx + `" value="1">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="mb-0 mt-0 pt-1 pb-0">
-                                                    <input class="form-control form-control-sm  options px-0" id="option3` + xx + `" type="text" placeholder="option 3">
-                                                </td>
-                                                <td class="mb-0 mt-0 pt-0 pb-0">
-                                                    <input type="checkbox" class=" form-control-sm  ml-4 2 answers" id="checkbox3` + xx + `" value="2">
-                                                </td>
-                                                <td class="mb-0 mt-0 pt-0 pb-0">
-                                                    <input class="form-control form-control-sm  options px-0" id="option4` + xx + `" type="text" placeholder="option 4">
-                                                </td>
-                                                <td class="mb-0 mt-0 pt-1 pb-0">
-                                                    <input type="checkbox" class=" form-control-sm  ml-4 answers" id="checkbox4` + xx + `"  value="3">
-                                                </td>
-                                            </tr>                     
-                                        </tbody>
-                                   </table>                                    
+                                     <div class="row px-0 mx-0">
+                                        <div class="col-md-6 col-12">
+                                            <div class="row">
+                                                <div class="col-md-9 col-8 offset-col-2 px-0 mr-0 pl-3">option</div>
+                                                <div class="col-md-3 col-2  mr-0 ml-0 px-0 margine-left-key">Answer</div>
+                                                <div class="input-group mb-3 col-md-12 col-12">
+                                                    <input class="form-control options  px-0 " id="option1` + xx + `" type="text" placeholder="option 1" aria-label="Text input with checkbox">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text rounded-right">
+                                                            <input type="checkbox" class="answers  ml-2 0" id="checkbox1` + xx + `" value="0" aria-label="Checkbox for following text input">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="row">
+                                                <div class="col-md-9 col-8 offset-col-2 pl-3 mx-0 mobile-hide">option</div>
+                                                <div class="col-md-3 col-2  mx-0 px-0 mobile-hide">Answer</div>
+                                                <div class="input-group mb-3 col-md-12 col-12">
+                                                    <input class="form-control   options px-0" id="option2` + xx + `" type="text" placeholder="option 2" aria-label="Text input with checkbox">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text rounded-right">
+                                                            <input type="checkbox" class="   ml-2 1 answers" id="checkbox2` + xx + `" value="1" aria-label="Checkbox for following text input">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class=" col-md-6 col-12">
+                                            <div class="row">                                              
+                                                <div class="input-group mb-3 col-md-12 col-12">
+                                                    <input class="form-control   options px-0" id="option3` + xx + `" type="text" placeholder="option 3" aria-label="Text input with checkbox">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text rounded-right">
+                                                            <input type="checkbox" class="   ml-2 1 answers" id="checkbox3` + xx + `" value="1" aria-label="Checkbox for following text input">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 col-12">
+                                            <div class="row">                                         
+                                                <div class="input-group mb-3 col-md-12 col-12">
+                                                    <input class="form-control   options px-0" id="option2` + xx + `" type="text" placeholder="option 4" aria-label="Text input with checkbox">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text rounded-right">
+                                                            <input type="checkbox" class="   ml-2 1 answers" id="checkbox4` + xx + `" value="1" aria-label="Checkbox for following text input">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                   </div>  
+                                   <div class="form-group mb-0 pb-1">                                   
+                                      <textarea  id="explanation` + xx + `" class="w-100 newQuestion explanation form-control" rows="3" placeholder="explanation" style="resize: none;" ></textarea>
+                                    </div>                            
                             </div>
                             </div>`); //add input box
         }
@@ -682,15 +669,17 @@
                     $('#question').empty();
                     let count = 1;
                     let data = "";
+                    allQuestions = result.response;
                     $.each(result.response, function(key, value) {
-                        data += '<div class="col-md-1 mt-2">';
-                        data += '<input type="checkbox" class="questionCheckbox" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" value="' + value.id + '"> </div>';
-                        data += '<div class="col-md-11  mt-2"> ';
+                        data += '<div class="col-md-1 col-1  mt-2">';
+                        data += '<input type="checkbox" class="questionCheckbox" id="listQuestion' + value.id + '" onclick="addQuestionToPaper(value.id,$(this),\'' + value.question + '\',' + value.id + ')" value="' + value.id + '"> </div>';
+                        data += '<div class="col-md-11 col-11 mt-2"> ';
                         data += '<p class=" font-weight-bold questionText">' + value.question + '</p>';
                         data += '</div>';
                         count++;
                     });
                     $('#question').append(data);
+
 
                 } else {
                     $.fn.notifyMe('error', 5, result.response);
@@ -704,8 +693,8 @@
     }
 
     function addQuestionToPaper(val, obj, question, questionId) {
-
         if (obj.is(":checked")) {
+
             if (questionId == null) {
                 let className = $('#class').val();
                 let subject = $('#subject').val();
@@ -714,6 +703,8 @@
                 let questionText = obj.parent().next().find('.newQuestion').val();
                 let optionsHtml = obj.parent().next().find('.options');
                 let answersHtml = obj.parent().next().find('.answers');
+                let explanation = obj.parent().next().find('.explanation').val();
+
                 let options = [];
                 let answer = [];
 
@@ -721,19 +712,25 @@
                     options.push(optionsHtml[i].value);
                 }
                 for (var i = 0; i < answersHtml.length; i++) {
-                    if (answersHtml[i].checked)
+                    if (options[i] != "" && answersHtml[i].checked)
                         answer.push(options[answersHtml[i].value]);
+                    else
+                        answersHtml[i].checked = false;
                 }
 
-                return insertQuestion(val, obj, questionText, options, answer, className, subject, );
+                return insertQuestion(val, obj, questionText, options, answer, className, subject, explanation);
 
             }
+
+            if ($('#ques' + questionId).length > 0)
+                return;
+
             let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question;
-            data += '<input type="hidden" id="ques" name="questions[]" value="' + questionId + '"></p>';
-            let show = '<div class="row mb-2"><div class="col-md-10">';
+            data += '<input type="hidden" class="ques" id="ques' + questionId + '" name="questions[]" value="' + questionId + '"></p>';
+            let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
             show += "<p class='bg-light font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
             show += '</div>';
-            show += '<div class="col-md-2">';
+            show += '<div class="col-md-2 col-2">';
             show += '<input type="number" name="marks[' + questionId + ']" class="form-control" id="questionmarks' + questionId + '" value="1" min="1">';
             show += '</div></div>';
             $('#questionPaper').append(data);
@@ -745,14 +742,32 @@
                 deleteQuestion(questionId);
             }
 
-            console.log(obj.attr('data-questionId'), questionId);
             $("#addedQuestion" + questionId).remove();
             $("#addedQuestionInMarks" + questionId).parent().parent().remove();
         }
     }
 
-    function insertQuestion(val, obj, questionText, options, answer, className, subject) {
-        if (questionText && options[0] && options[1] && options[2] && options[3] && answer.length >= 1 && className && subject) {
+    function hasDuplicates(array) {
+        var valuesSoFar = [];
+        for (var i = 0; i < array.length; ++i) {
+            var value = array[i];
+            if (value != "" && valuesSoFar.indexOf(value) !== -1) {
+                return true;
+            }
+            valuesSoFar.push(value);
+        }
+        return false;
+    }
+
+    function insertQuestion(val, obj, questionText, options, answer, className, subject, explanation) {
+        var isDuplicateOption = hasDuplicates(options);
+        let optionsLength = [];
+        for (var i = 0; i < options.length; ++i) {
+            if (options[i] != "")
+                optionsLength.push(options[i]);
+        }
+
+        if (questionText && optionsLength.length >= 2 && !isDuplicateOption && answer.length >= 1 && className && subject) {
             $('.loader').show();
             $.ajax({
                 url: "{{url('/saveQuestion')}}",
@@ -762,9 +777,8 @@
                     options: options,
                     answer: answer,
                     class: className,
-                    subject_id: subject
-                    // chapter: chapter,
-                    // topic: topic
+                    subject_id: subject,
+                    explanation : explanation
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -774,11 +788,11 @@
                     if (result.success) {
                         obj.attr('data-questionId', result.response.id);
                         let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + result.response.id + "'>" + result.response.question;
-                        data += '<input type="hidden" id="ques" name="questions[]" value="' + result.response.id + '"></p>';
-                        let show = '<div class="row mb-2"><div class="col-md-10">';
+                        data += '<input type="hidden" class="ques" id="ques' + result.response.id + '" name="questions[]" value="' + result.response.id + '"></p>';
+                        let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
                         show += "<p class='bg-light mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
                         show += '</div>';
-                        show += '<div class="col-md-2">';
+                        show += '<div class="col-md-2 col-2">';
                         show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control" id="questionmarks' + result.response.question + '" value="1" min="1">';
                         show += '</div></div>';
                         $('#questionPaper').append(data);
@@ -809,15 +823,21 @@
                 $(obj).prop("checked", false);
             } else obj.parent().next().find('.newQuestion').css('borderColor', '#ced4da');
 
-            if (options[0] == "" || options[1] == "" || options[2] == "" || options[3] == "") {
+            if (optionsLength.length < 2) {
                 obj.parent().next().find('.options').css('borderColor', 'red');
                 $(obj).prop("checked", false);
             } else obj.parent().next().find('.options').css('borderColor', '#ced4da');
 
-            if (answer.length == 0) {
-                alert("select atleast one answer");
+            if (isDuplicateOption) {
+                alert("option cannot be same");
                 $(obj).prop("checked", false);
             }
+
+            if (answer.length == 0) {
+                alert("select atleast one answer having option");
+                $(obj).prop("checked", false);
+            }
+
             if (!className) {
                 $('#class').css('borderColor', 'red');
                 $(obj).prop("checked", false);
@@ -826,14 +846,6 @@
                 $('#subject').css('borderColor', 'red');
                 $(obj).prop("checked", false);
             } else $('#subject').css('borderColor', '#ced4da');
-            // if (!topic) {
-            //     $('#topic').css('borderColor', 'red');
-            //     $(obj).prop("checked", false);
-            // } else $('#topic').css('borderColor', '#ced4da');
-            // if (!chapter) {
-            //     $('#chapter').css('borderColor', 'red');
-            //     $(obj).prop("checked", false);
-            // } else $('#chapter').css('borderColor', '#ced4da');
         }
 
     }
@@ -859,6 +871,40 @@
             error: function(error_r) {
                 $('.loader').fadeOut();
             }
+        });
+    }
+
+    function addRandomQuestionsToPaper() {
+        if (allQuestions.length == 0) {
+            alert('there is no questions to choose random from');
+            return;
+        }
+
+        clearAllQuestionSelection(allQuestions);
+        randomQuestionCount = $('#randomQuestionCount').val();
+        if(!randomQuestionCount || randomQuestionCount == 0){
+            alert('please input no of question you want to select randomly');
+            return;
+        }
+
+        const shuffled = allQuestions.sort(() => 0.5 - Math.random());
+        randomQuestions = shuffled.slice(0, randomQuestionCount);
+
+        if (randomQuestions.length > 0) {
+            $.each(randomQuestions, function(key, value) {
+                addQuestionToPaper(null, $('#randomQuestionCheckbox'), value.question, value.id);
+                $('#listQuestion' + value.id).prop('checked', true);
+            });
+        } else {
+            alert('there is no question to choose random from');
+        }
+    }
+
+    function clearAllQuestionSelection(allQuestions){
+        $('.questionCheckbox').prop('checked',false);
+        $.each(allQuestions, function(key, value) {
+            $("#addedQuestion" + value.id).remove();
+            $("#addedQuestionInMarks" + value.id).parent().parent().remove();
         });
     }
 </script>
