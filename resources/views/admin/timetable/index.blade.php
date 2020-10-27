@@ -163,7 +163,7 @@ $timing=$ar["timing"];
                                 <td><label id='subject_name'></label></td>
                                 <td><input type="radio" name="radio" id="sradio" value="sub" /></td>
                                 <td>
-                                    <select id="sel_subject" name="sel_subject" class="form-control form-control-sm" disabled required>
+                                    <select id="sel_subject" name="sel_subject" class="form-control form-control-sm"  required>
                                         <option value=''>Select Subject</option>
                                         @if(count($subn)>0)
                                         @foreach($subn as $sn)
@@ -201,7 +201,9 @@ $timing=$ar["timing"];
 
     }
 
-    $("input[type='radio']").on("click", function() {
+   $("input[type='radio']").on("click", function() {
+        var tn = document.getElementById('tname');
+        if(tn.innerHTML){
         var option = this.value;
         if (option == "sub") {
             $("#sel_subject").attr('disabled', false);
@@ -210,6 +212,11 @@ $timing=$ar["timing"];
             $("#sel_subject").attr('disabled', true);
             $("#sel_teacher").attr('disabled', false);
         }
+       }
+        else{
+            $("#sel_subject").attr('disabled', false);
+            $("#sel_teacher").attr('disabled', false);
+       }
 
 
     });
@@ -224,6 +231,7 @@ $timing=$ar["timing"];
         var timings = $(this).data('timing');
         var day = $(this).data('class_day');
         var classSection = $(this).data('')
+         $("#sel_subject").attr('disabled', true);
 
         td.value = tid;
         tn.innerHTML = tname;
