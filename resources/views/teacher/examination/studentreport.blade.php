@@ -28,25 +28,10 @@
                          <th scope="col">Classroom</th>
                          <th scope="col">Exam name</th>
                          <th scope="col">Marks</th>
-                         <!-- <th scope="col">Percent</th> -->
-                         <!-- <th scope="col">Action</th> -->
                      </tr>
                  </thead>
                  <tbody id="resultTableBody"> 
-                     @foreach($examinationResults as $examinationResult)
-                     <tr>
-                         <td>{{$examinationResult->student->name}}</td>
-                         <td>{{$examinationResult->classroom->class_name}} {{$examinationResult->classroom->section_name}}  {{$examinationResult->classroom->studentSubject->subject_name}}</td>
-                         <td>{{$examinationResult->examination->title}}</td>
-                         <td>{{$examinationResult->marks_obtained}}/{{$examinationResult->total_marks}}</td>
-                         <!-- <td>80% </td> -->
-                         <!-- <td>
-                             <a href="#" class="text-decoration-none" data-toggle="modal" data-target="#studentedit">Show</a>
-                             ||
-                             <a href="#" class="text-decoration-none" data-toggle="modal" data-target="#deletestudent">Delete</a>
-                         </td> -->
-                     </tr>
-                     @endforeach
+            
                  </tbody>
              </table>
          </div>
@@ -156,7 +141,6 @@
                 $('.loader').fadeOut();
                 var data = '';
                 $.each(result.response , function(index, val) { 
-                    console.log(val);
                     data += '<tr>';
                     data += '<td>' + val.student.name + '</td>';
                     data += '<td>' + val.classroom.class_name + ' ' + val.classroom.section_name + ' ' + val.classroom.student_subject.subject_name + '</td>';
