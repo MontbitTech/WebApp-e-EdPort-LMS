@@ -64,15 +64,8 @@ class QuestionController extends Controller
             $question->chapter = $request->chapter;
             $question->topic = $request->topic;
             $question->explanation = $request->explanation;
-            // if (!empty($request->chapter)) {
-            //     $question->chapter = $request->chapter;
-            // }
-            // if (!empty($request->topic)) {
-            //     $question->topic = $request->topic;
-            // }
-
             $question->save();
-            // dd($question);
+
             return Response::json(['success' => true, 'response' => $question]);
         } else {
             return response()->json(['error' => true, 'response' => $validator->errors()]);
