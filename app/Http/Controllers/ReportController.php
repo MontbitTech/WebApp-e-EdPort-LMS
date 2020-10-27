@@ -37,9 +37,7 @@ class ReportController extends Controller
 
         $classroomIds = $inviteClassData->pluck('class_id')->toArray();
 
-        $examinationResults = ExaminationResult::with('examination', 'classroom', 'student')->whereIn('classroom_id', $classroomIds)->get();
-
-        return view('teacher.report.index', compact('helpCategories', 'inviteClassData', 'videos', 'examinationResults'));
+        return view('teacher.report.index', compact('helpCategories', 'inviteClassData', 'videos'));
     }
 
     public function studentAttendanceAverage(Request $request)
