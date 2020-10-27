@@ -97,13 +97,6 @@ class ImportTimetableController extends Controller
             if ($teacherTimeExist) {
                 return back()->with('error', "Teacher have already assigned lecture at selected time.");
             }  else {
-                // $invitationExist = InvitationClass::where('class_id',$cur_class_ID)->where('subject_id',$subject_id)
-                //                     ->where('teacher_id',$teacher_id)->get();
-
-                //                                     dd($cur_class_ID);
-
-
-                // if(count($invitationExist)){
 
                     $lunch = 0;
                     $classTiming = ClassTiming::find($request->tid);
@@ -746,11 +739,11 @@ class ImportTimetableController extends Controller
                                             if ($inv_resData['error']['status'] == 'UNAUTHENTICATED') {
                                                 return redirect()->route('admin.logout');
                                             } 
-                                            // else {
-                                            //     $error = "found";
-                                            //     $rows_period .= $period_name . ",";
-                                            //     $error_msg = 'Invitation has not send to teacher for class, ' . $inv_resData['error']['message'] . ' Error In ROW - ' . $period_name;
-                                            // }
+                                            else {
+                                                $error = "found";
+                                                $rows_period .= $period_name . ",";
+                                                $error_msg = 'Invitation has not send to teacher for class, ' . $inv_resData['error']['message'] . ' Error In ROW - ' . $period_name;
+                                            }
                                         } else {
                                             $inv_res_code = $inv_resData['id'];
                                             $obj_inv = new InvitationClass;
