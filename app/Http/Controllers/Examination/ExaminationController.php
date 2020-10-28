@@ -145,7 +145,7 @@ class ExaminationController extends Controller
             $q->where('classroom_id', $examinationData['classroomExaminationMapping']->classroom_id);
         })->where('student_id', $examinationData['student']->id)->get();
 
-        $examinationData['questions'] = Question::whereHas('examinationQuestionMappings', function ($q) use ($examinationData) {
+        $examinationData['questions'] = Question::with('examinationQuestionMappings')->whereHas('examinationQuestionMappings', function ($q) use ($examinationData) {
             $q->where('examination_id', $examinationData['classroomExaminationMapping']->examination_id);
             $q->where('classroom_id', $examinationData['classroomExaminationMapping']->classroom_id);
         })->get(['id', 'question', 'options', 'type_of_question', 'topic']);

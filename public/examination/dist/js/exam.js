@@ -419,7 +419,7 @@ function displayQuestion(q) {
         $('#q' + q.id + '_body').append('<div class="form-check"><input class= "form-check-input" type="checkbox" id="o_' + q.id + '_' + oc + '" ><label class="form-check-label">' + o + '</label></div >')
     }
     $('#questionList').append('<li class="nav-item"><a href="#question' + q.id + '" class="nav-link"><i id="question' + q.id + '_button" class="far fa-circle text-warning fa-sm nav-icon"></i><p>&nbsp;Question ' + qc + '</p></a></li>')
-    $('#q' + q.id).append('<div class="card-footer text-secondary"><span class="font-italic font-weight-light">' + q.topic + '</span><span class="float-right font-weight-normal">Marks: ' + q.marks + '</span></div>')
+    $('#q' + q.id).append('<div class="card-footer text-secondary"><span class="font-italic font-weight-light">' + q.topic + '</span><span class="float-right font-weight-normal">Marks: ' + q.examination_question_mappings[0].marks + '</span></div>')
 }
 
 // Add user response if present
