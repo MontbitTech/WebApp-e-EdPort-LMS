@@ -537,7 +537,7 @@
                                         <div class="col-md-6 col-12">
                                             <div class="row">                                         
                                                 <div class="input-group mb-3 col-md-12 col-12">
-                                                    <input class="form-control   options px-0" id="option2` + xx + `" type="text" placeholder="option 4" aria-label="Text input with checkbox">
+                                                    <input class="form-control   options px-0" id="option4` + xx + `" type="text" placeholder="option 4" aria-label="Text input with checkbox">
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text rounded-right">
                                                             <input type="checkbox" class="   ml-2 1 answers" id="checkbox4` + xx + `" value="1" aria-label="Checkbox for following text input">
