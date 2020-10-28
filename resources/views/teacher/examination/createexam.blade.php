@@ -152,9 +152,9 @@
                     <div class="form-group" id="questionPapershow">
                         <h3 for="exampleInputQuestionname" class="text-center" id="displayExamNameshow"> Exam
                             Name</h3>
-                        <div class="row">
-                            <div class="col-md-10 col-10">question</div>
-                            <div class="col-md-2 col-2"> marks</div>
+                        <div class="row bg-light">
+                            <div class="col-md-10 py-2  col-10 ">questions</div>
+                            <div class="col-md-2 py-2 pl-4 col-2"> marks</div>
                         </div>
                         <div class="row mb-2">
                             @if($questionData!="")
@@ -778,7 +778,7 @@
                     answer: answer,
                     class: className,
                     subject_id: subject,
-                    explanation : explanation
+                    explanation: explanation
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -882,7 +882,7 @@
 
         clearAllQuestionSelection(allQuestions);
         randomQuestionCount = $('#randomQuestionCount').val();
-        if(!randomQuestionCount || randomQuestionCount == 0){
+        if (!randomQuestionCount || randomQuestionCount == 0) {
             alert('please input no of question you want to select randomly');
             return;
         }
@@ -900,8 +900,8 @@
         }
     }
 
-    function clearAllQuestionSelection(allQuestions){
-        $('.questionCheckbox').prop('checked',false);
+    function clearAllQuestionSelection(allQuestions) {
+        $('.questionCheckbox').prop('checked', false);
         $.each(allQuestions, function(key, value) {
             $("#addedQuestion" + value.id).remove();
             $("#addedQuestionInMarks" + value.id).parent().parent().remove();
