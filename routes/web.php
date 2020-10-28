@@ -210,4 +210,6 @@ Route::group(['middleware' => 'teachersession'], function () {
 
 Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass')->name('reload-timetable');
 Route::get('/timeTable/{class}/{section}', 'ImportTimetableController@download_Timetable');
+Route::get('/admin/weekleyEmails', 'UtilityController@weekleyMailsToStudents');
+Route::get('/admin/weekleyMailsToTeachers', 'UtilityController@weekleyMailsToTeachers');
 //Reload Timetable URL - http://<domain>/addData_pastClass

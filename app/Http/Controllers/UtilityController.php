@@ -6,6 +6,7 @@ use App\DateClass;
 use App\Http\Helpers\CustomHelper;
 use App\libraries\Utility\DateUtility;
 use App\Models\ClassSection;
+use App\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -39,5 +40,27 @@ class UtilityController extends Controller
         }
 
         return $classes;
+    }
+
+    public function weekleyMailsToTeachers(Request $request)
+    {
+        $teachers = Teacher::with(['dateClass' => function($q){
+                $q->where('class_date','>=',DateUtility::getDate());
+                $q->where('class_date','<=',DateUtility::getFutureDate(7));
+            },'dateClass.studentSubject','dateClass.studentClass'])->get();
+        $from = CustomHelper::getFromMail();
+
+        foreach($teachers as $teacher){
+            if(!$teacher->dateClass)
+                continue;
+
+            Mail::send('mail.teacherWeekleySchedule',  ['weeksClasses' => $teacher->dateClass, 'joinLive' => $teacher->g_meet_url], function ($message) use ($teacher, $from) {
+                $message->to($teacher->email);
+                $message->subject("This week's schdule");
+                $message->from($from->value, 'MontBIt');
+            });
+        }
+        
+        return $teachers;
     }
 }
