@@ -237,14 +237,14 @@
             </label>
         </div>
 
-        <div class="row  hidden-data justify-content-around d-none m-0 p-0">
+        <div class="row mobile-setting hidden-data justify-content-around d-none m-0 p-0">
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12  col-12 p-0 m-0">
                         <div class="test"> Full Screen while giving exam</div>
                     </div>
-                    <div class="col-md-8 mt-2">keepFullScreen</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 mt-2">keepFullScreen</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[keepFullScreen]" value="0">
                             <input type="checkbox" name="properties[keepFullScreen]" checked>
@@ -252,50 +252,46 @@
                         </label>
 
                     </div>
-                    <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
+                    <div class="col-md-8 col-8 mt-2"> fullScreenExitAttempts</div>
+                    <div class="col-md-4 col-4 p-0 my-2 m-0">
                         <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5" class="form-control m-auto w-75  " value="3" min="1" max="5">
-
                     </div>
                 </div>
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12  col-12 p-0 m-0">
                         <div class="test"> Multitasking while giving exam</div>
                     </div>
-                    <div class="col-md-8 mt-2">blockMultitasking</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 mt-2">blockMultitasking</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[blockMultitasking]" value="0">
                             <input type="checkbox" name="properties[blockMultitasking]" checked>
                             <span class="slider round"></span>
                         </label>
-
                     </div>
-                    <div class="col-md-8 mt-2"> multitaskingAttempts</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
+                    <div class="col-md-8 col-8 mt-2"> multitaskingAttempts</div>
+                    <div class="col-md-4 col-4 p-0 my-2 m-0">
                         <input type="number" name="properties[multitaskingAttempts]" id="multitaskingAttempts" value="3" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
                     </div>
                 </div>
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">User Audio Tracking while giving exam</div>
                     </div>
-                    <div class="col-md-8 mt-2">userAudioTracking</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 mt-2">userAudioTracking</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[userAudioTracking]" value="0">
                             <input type="checkbox" name="properties[userAudioTracking]" checked>
                             <span class="slider round"></span>
                         </label>
-
                     </div>
-                    <div class="col-md-8 mt-2">userAudioWarningCount</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
+                    <div class="col-md-8 col-8 mt-2">userAudioWarningCount</div>
+                    <div class="col-md-4 col-4 p-0 my-2 m-0">
                         <input type="number" name="properties[userAudioWarningCount]" value="3" id="userAudioWarningCount" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                     </div>
@@ -303,11 +299,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">User Video Tracking while giving exam</div>
                     </div>
-                    <div class="col-md-8 mt-2">userVideoTracking</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 mt-2">userVideoTracking</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[userVideoTracking]" value="0">
                             <input type="checkbox" name="properties[userVideoTracking]" checked>
@@ -315,13 +311,13 @@
                         </label>
 
                     </div>
-                    <div class="col-md-8 mt-2"> userNotAloneWarningCount</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
+                    <div class="col-md-8 col-8 mt-2"> userNotAloneWarningCount</div>
+                    <div class="col-md-4 col-4 p-0 my-2 m-0">
                         <input type="number" name="properties[userNotAloneWarningCo]" value="3" id="userNotAloneWarningCo" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                     </div>
-                    <div class="col-md-8 mt-2"> userNotVisibleWarning</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
+                    <div class="col-md-8 col-8 mt-2"> userNotVisibleWarning</div>
+                    <div class="col-md-4 col-4 p-0 my-2 m-0">
                         <input type="number" name="properties[userNotVisibleWarning]" value="3" id="userNotVisibleWarning" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                     </div>
@@ -329,11 +325,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">Capture save user image while giving exam</div>
                     </div>
-                    <div class="col-md-8 my-3">userImageCapture</div>
-                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 my-3">userImageCapture</div>
+                    <div class="col-md-4 col-4 p-0 my-3 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[userImageCapture]" value="0">
                             <input type="checkbox" name="properties[userImageCapture]" checked>
@@ -345,11 +341,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test"> Keyboard usage while giving exam</div>
                     </div>
-                    <div class="col-md-8 my-3">blockKeyboard</div>
-                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 my-3">blockKeyboard</div>
+                    <div class="col-md-4 col-4 p-0 my-3 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[blockKeyboard]" value="0">
                             <input type="checkbox" name="properties[blockKeyboard]" checked>
@@ -362,11 +358,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">Right click usage while giving exam</div>
                     </div>
-                    <div class="col-md-8 my-3">blockRightClick</div>
-                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 my-3">blockRightClick</div>
+                    <div class="col-md-4 col-4 p-0 my-3 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[blockRightClick]" value="0">
                             <input type="checkbox" name="properties[blockRightClick]" checked>
@@ -379,11 +375,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">Time bound exam</div>
                     </div>
-                    <div class="col-md-8 my-3">timeBound</div>
-                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 my-3">timeBound</div>
+                    <div class="col-md-4 col-4 p-0 my-3 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[timeBound]" value="0">
                             <input type="checkbox" name="properties[timeBound]" checked>
@@ -396,11 +392,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test"> Exam termination</div>
                     </div>
-                    <div class="col-md-8 mt-2">examTerminated</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8  col-8 mt-2">examTerminated</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[examTerminated]" value="0">
                             <input type="checkbox" name="properties[examTerminated]">
@@ -415,17 +411,16 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">Exam pause</div>
                     </div>
-                    <div class="col-md-8 mt-2">examPaused</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 mt-2">examPaused</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[examPaused]" value="0">
                             <input type="checkbox" name="properties[examPaused]">
                             <span class="slider round"></span>
                         </label>
-
                     </div>
                     <div class="col-md-12 col-lg-12 col-12 mb-2">
                         <textarea cols="10" rows="1" name="properties[examPausedReason]" class="form-control" style="resize: none;" placeholder="examPausedReason"></textarea>
@@ -435,11 +430,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">System compatibility test</div>
                     </div>
-                    <div class="col-md-8 mt-2">systemIncompatible</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8  col-8 mt-2">systemIncompatible</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[systemIncompatible]" value="0">
                             <input type="checkbox" name="properties[systemIncompatible]">

@@ -759,7 +759,7 @@ body {
   .marks-heading-questions,
   .marks-heading-marks {
     font-weight: bold;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
   }
 .key-lep-view{
   padding-right: 0% ;
@@ -1019,6 +1019,14 @@ body {
 @media (max-width: 575.98px) {
   .text-float-moblie{
     padding-left: 0% !important;
+  }
+  .test {
+  
+    margin-top: -.8rem !important;
+  }
+  .mobile-setting{
+    padding-left: .25rem !important;
+    padding-right: .25rem !important;
   }
   .add-question-show {
     margin-right: 0% !important;
@@ -1295,11 +1303,11 @@ font-size: .855rem !important;
 .display-none-lp{
   display: none !important;
 }
-.marks-heading-questions,
+/* .marks-heading-questions,
 .marks-heading-marks {
   font-weight: bold;
   font-size: 1.4rem;
-}
+} */
 }
 
 .card {
