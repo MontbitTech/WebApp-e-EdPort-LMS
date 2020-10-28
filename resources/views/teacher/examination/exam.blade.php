@@ -236,9 +236,9 @@
                      data += '<tr class=""><td>' + exam.classroom.class_name + ' ' + exam.classroom.section_name + ' ' + exam.classroom.student_subject.subject_name + '</td>';
                      data += '<td>' + exam.examination.title + '</td>';
                      data += '<td> {{env("APP_URL")}}/student/exam?examID=' + exam.id + '</td>';
-                     data += '<td><button type="button" data-Examination="' + count + '"  class="btn" data-toggle="modal" data-target ="#showexam"> Show </button> ||';
-                     data += '<button class="btn" data-toggle="modal"  data-examdelete="' + exam.id + '"> Delete </button> ||';
-                     data += '<button type="button" data-Exam="' + count + '" class="btn"  data-toggle="modal"> Assign </button> </td></tr>';
+                     data += '<td><button type="button" data-Examination="' + count + '"  class="btn btn-primary btn-sm" data-toggle="modal" data-target ="#showexam"> Show </button> ';
+                     data += '<button class="btn btn-danger btn-sm" data-toggle="modal"  data-examdelete="' + exam.id + '"> Delete </button> ';
+                     data += '<button type="button" data-Exam="' + count + '" class="btn btn-primary btn-sm"  data-toggle="modal"> Assign </button> </td></tr>';
                      data += '</tbody>';
                      count++;
                  });

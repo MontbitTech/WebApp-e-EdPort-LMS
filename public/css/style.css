@@ -1239,8 +1239,10 @@ padding-left: 0 !important;
 font-size: .855rem !important;
 }
 #exam tbody tr td button{
-  margin: 0% !important;
-  padding: 0% !important;
+ margin-bottom: 4px !important;
+ margin-right: 2px !important;
+ margin-left: 2px !important;
+
 }
 .mr-left{
   margin-left: 0 !important;
