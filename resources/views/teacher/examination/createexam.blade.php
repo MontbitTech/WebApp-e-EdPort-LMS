@@ -111,7 +111,7 @@
                             <input type="checkbox" checked="checked" style="opacity:0; position:absolute; left:9999px;" id="randomQuestionCheckbox">
                         </div> -->
                     </div>
-                    <div class="mr-auto mt-3" style="margin-left: -21%;">
+                    <div class="mr-auto mt-3 add-question-show">
                         <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right" title="Add Question">
                         </button>
                     </div>
@@ -152,16 +152,16 @@
                     <div class="form-group" id="questionPapershow">
                         <h3 for="exampleInputQuestionname" class="text-center" id="displayExamNameshow"> Exam
                             Name</h3>
-                        <div class="row bg-light">
-                            <div class="col-md-10 py-2  col-10 ">questions</div>
-                            <div class="col-md-2 py-2 pl-4 col-2"> marks</div>
+                        <div class="row bg-light marks-heading">
+                            <div class="col-md-11 py-2  col-10 marks-heading-questions ">questions</div>
+                            <div class="col-md-1 py-2 pl-4 col-2 marks-heading-marks"> marks</div>
                         </div>
                         <div class="row mb-2">
                             @if($questionData!="")
-                            <div class="col-md-10 col-10 ">
-                                <p class='bg-light mb-2 font-weight-bold'>{{$questionData->question->question}}</p>
+                            <div class="col-md-11 col-10 ">
+                                <p class=' mb-2 font-weight-bold'>{{$questionData->question->question}}</p>
                             </div>
-                            <div class="col-md-2 col-2">
+                            <div class="col-md-1 col-2">
                                 @if($questionData!="")
                                 <?php $marks = number_format($questionData->marks, 0);
                                 ?>
@@ -727,10 +727,10 @@
 
             let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question;
             data += '<input type="hidden" class="ques" id="ques' + questionId + '" name="questions[]" value="' + questionId + '"></p>';
-            let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
-            show += "<p class='bg-light font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
+            let show = '<div class="row mb-2"><div class="col-md-11 col-10">';
+            show += "<p class='t font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
             show += '</div>';
-            show += '<div class="col-md-2 col-2">';
+            show += '<div class="col-md-1 col-2">';
             show += '<input type="number" name="marks[' + questionId + ']" class="form-control" id="questionmarks' + questionId + '" value="1" min="1">';
             show += '</div></div>';
             $('#questionPaper').append(data);
@@ -789,10 +789,10 @@
                         obj.attr('data-questionId', result.response.id);
                         let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + result.response.id + "'>" + result.response.question;
                         data += '<input type="hidden" class="ques" id="ques' + result.response.id + '" name="questions[]" value="' + result.response.id + '"></p>';
-                        let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
-                        show += "<p class='bg-light mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
+                        let show = '<div class="row mb-2"><div class="col-md-11 col-10">';
+                        show += "<p class=' mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
                         show += '</div>';
-                        show += '<div class="col-md-2 col-2">';
+                        show += '<div class="col-md-1 col-2">';
                         show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control" id="questionmarks' + result.response.question + '" value="1" min="1">';
                         show += '</div></div>';
                         $('#questionPaper').append(data);

@@ -753,6 +753,14 @@ body {
     padding-left: 240px;
     padding-right: 20px;
   }
+  .add-question-show{
+    margin-left: -21%;
+  }
+  .marks-heading-questions,
+  .marks-heading-marks {
+    font-weight: bold;
+    font-size: 1.4rem;
+  }
 .key-lep-view{
   padding-right: 0% ;
 }
@@ -1003,11 +1011,7 @@ body {
 #exam tbody tr td {
   text-align: center !important;
 }
-#questionPapershow div.row.bg-light div.col-md-10.py-2.col-10,
-#questionPapershow div.row.bg-light div.col-md-2.py-2.col-2 {
-  font-weight: bold;
-  font-size: 1.4rem;
-}
+
 #question div{
   padding-left: 0% !important;
   padding-right: 0% !important;
@@ -1015,6 +1019,25 @@ body {
 @media (max-width: 575.98px) {
   .text-float-moblie{
     padding-left: 0% !important;
+  }
+  .add-question-show {
+    margin-right: 0% !important;
+  }
+  .marks-heading-questions{
+    padding-right: 0% !important;
+    padding-right: 0% !important;
+  }
+  .marks-heading-marks{
+      font-weight: bold;
+      font-size: 1rem;
+    padding-right: 0% !important;
+    padding-left: 1rem !important;
+  }
+  .marks-heading{
+      font-weight: bold;
+      font-size: 1rem;
+    margin-left: 0% !important;
+    margin-right: 0% !important;
   }
   .margin-left-mobile{
     margin-left: auto !important;
@@ -1272,7 +1295,13 @@ font-size: .855rem !important;
 .display-none-lp{
   display: none !important;
 }
+.marks-heading-questions,
+.marks-heading-marks {
+  font-weight: bold;
+  font-size: 1.4rem;
 }
+}
+
 .card {
   border: none !important;
 }
