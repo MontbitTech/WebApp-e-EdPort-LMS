@@ -58,49 +58,51 @@
           <div class="card-body   card-border p-2 pb-0 border">
 
             <?php if (count($inviteClassData) > 0) { ?>
-              <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
-                <thead>
-                  <tr>
-                    <th>Class/Section Subject</th>
-                    <!-- <th>Subject</th> -->
-                    <th>Submissions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php
-
-                  $i = 0;
-                  foreach ($inviteClassData as $row) {
-                    $section_name = '';
-                    $subject_name = '';
-                    $cls = '';
-                    $g_link = '';
-                    if ($row->studentClass) {
-                      $cls = $row->studentClass->class_name;
-                      $section_name = $row->studentClass->section_name;
-                      $g_link = $row->studentClass->g_link;
-                    }
-                    if ($row->studentSubject) {
-                      $subject_name = $row->studentSubject->subject_name;
-                    }
-                  ?>
+              <div class="table-responsive-sm">
+                <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
+                  <thead>
                     <tr>
-                      <td>{{ $cls }} {{ $section_name }} Std {{ $subject_name }} </td>
-   
-                      <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
-                          <svg class="icon font-10 mr-1">
-                            <use xlink:href="../images/icons.svg#icon_dot"></use>
-                          </svg>
-                          Check Submissions
-                        </a></td>
+                      <th>Class/Section Subject</th>
+                      <!-- <th>Subject</th> -->
+                      <th>Submissions</th>
                     </tr>
+                  </thead>
+                  <tbody>
+                    <?php
+
+                    $i = 0;
+                    foreach ($inviteClassData as $row) {
+                      $section_name = '';
+                      $subject_name = '';
+                      $cls = '';
+                      $g_link = '';
+                      if ($row->studentClass) {
+                        $cls = $row->studentClass->class_name;
+                        $section_name = $row->studentClass->section_name;
+                        $g_link = $row->studentClass->g_link;
+                      }
+                      if ($row->studentSubject) {
+                        $subject_name = $row->studentSubject->subject_name;
+                      }
+                    ?>
+                      <tr>
+                        <td>{{ $cls }} {{ $section_name }} Std {{ $subject_name }} </td>
+
+                        <td><a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}" class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
+                            <svg class="icon font-10 mr-1">
+                              <use xlink:href="../images/icons.svg#icon_dot"></use>
+                            </svg>
+                            Check Submissions
+                          </a></td>
+                      </tr>
 
 
-                  <?php
-                  } ?>
+                    <?php
+                    } ?>
 
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </div>
             <?php
               $i++;
             } else {
