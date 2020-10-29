@@ -161,11 +161,11 @@
                             <div class="col-md-11 col-10 ">
                                 <p class=' mb-2 font-weight-bold'>{{$questionData->question->question}}</p>
                             </div>
-                            <div class="col-md-1 col-2">
+                            <div class="col-md-1 col-2 pl-0">
                                 @if($questionData!="")
                                 <?php $marks = number_format($questionData->marks, 0);
                                 ?>
-                                <input type="number" name="marks[{{$questionData->question_id}}]" class="form-control" id="questionmarks' + {{$questionData->question_id}} + '" value="{{$marks}}" min="1">
+                                <input type="number" name="marks[{{$questionData->question_id}}]" class="form-control text-center px-0" id="questionmarks' + {{$questionData->question_id}} + '" value="{{$marks}}" min="1">
                                 @endif
                             </div>
                             @endif
@@ -725,8 +725,8 @@
             let show = '<div class="row mb-2"><div class="col-md-11 col-10">';
             show += "<p class='t font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
             show += '</div>';
-            show += '<div class="col-md-1 col-2">';
-            show += '<input type="number" name="marks[' + questionId + ']" class="form-control" id="questionmarks' + questionId + '" value="1" min="1">';
+            show += '<div class="col-md-1 col-2 pl-0">';
+            show += '<input type="number" name="marks[' + questionId + ']" class="form-control text-center px-0" id="questionmarks' + questionId + '" value="1" min="1">';
             show += '</div></div>';
             $('#questionPaper').append(data);
             $('#questionPapershow').append(show);
@@ -787,8 +787,8 @@
                         let show = '<div class="row mb-2"><div class="col-md-11 col-10">';
                         show += "<p class=' mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
                         show += '</div>';
-                        show += '<div class="col-md-1 col-2">';
-                        show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control" id="questionmarks' + result.response.question + '" value="1" min="1">';
+                        show += '<div class="col-md-1 col-2 pl-0">';
+                        show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control text-center px-0" id="questionmarks' + result.response.question + '" value="1" min="1">';
                         show += '</div></div>';
                         $('#questionPaper').append(data);
                         $('#questionPapershow').append(show);
