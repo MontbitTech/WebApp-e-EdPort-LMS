@@ -111,7 +111,7 @@
                             <input type="checkbox" checked="checked" style="opacity:0; position:absolute; left:9999px;" id="randomQuestionCheckbox">
                         </div> -->
                     </div>
-                    <div class="mr-auto mt-3" style="margin-left: -21%;">
+                    <div class="mr-auto mt-3 add-question-show">
                         <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right" title="Add Question">
                         </button>
                     </div>
@@ -152,20 +152,20 @@
                     <div class="form-group" id="questionPapershow">
                         <h3 for="exampleInputQuestionname" class="text-center" id="displayExamNameshow"> Exam
                             Name</h3>
-                        <div class="row">
-                            <div class="col-md-10 col-10">question</div>
-                            <div class="col-md-2 col-2"> marks</div>
+                        <div class="row bg-light marks-heading">
+                            <div class="col-md-11 py-2  col-10 marks-heading-questions ">questions</div>
+                            <div class="col-md-1 py-2 pl-4 col-2 marks-heading-marks"> marks</div>
                         </div>
                         <div class="row mb-2">
                             @if($questionData!="")
-                            <div class="col-md-10 col-10 ">
-                                <p class='bg-light mb-2 font-weight-bold'>{{$questionData->question->question}}</p>
+                            <div class="col-md-11 col-10 ">
+                                <p class=' mb-2 font-weight-bold'>{{$questionData->question->question}}</p>
                             </div>
-                            <div class="col-md-2 col-2">
+                            <div class="col-md-1 col-2 pl-0">
                                 @if($questionData!="")
                                 <?php $marks = number_format($questionData->marks, 0);
                                 ?>
-                                <input type="number" name="marks[{{$questionData->question_id}}]" class="form-control" id="questionmarks' + {{$questionData->question_id}} + '" value="{{$marks}}" min="1">
+                                <input type="number" name="marks[{{$questionData->question_id}}]" class="form-control text-center px-0" id="questionmarks' + {{$questionData->question_id}} + '" value="{{$marks}}" min="1">
                                 @endif
                             </div>
                             @endif
@@ -237,14 +237,14 @@
             </label>
         </div>
 
-        <div class="row  hidden-data justify-content-around d-none m-0 p-0">
+        <div class="row mobile-setting hidden-data justify-content-around d-none m-0 p-0">
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12  col-12 p-0 m-0">
                         <div class="test"> Full Screen while giving exam</div>
                     </div>
-                    <div class="col-md-8 mt-2">keepFullScreen</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 mt-2">keepFullScreen</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[keepFullScreen]" value="0">
                             <input type="checkbox" name="properties[keepFullScreen]" checked>
@@ -252,50 +252,46 @@
                         </label>
 
                     </div>
-                    <div class="col-md-8 mt-2"> fullScreenExitAttempts</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
+                    <div class="col-md-8 col-8 mt-2"> fullScreenExitAttempts</div>
+                    <div class="col-md-4 col-4 p-0 my-2 m-0">
                         <input type="number" name="properties[fullScreenExitAttempts]" id="fullScreenExitAttempts" placeholder="1-5" class="form-control m-auto w-75  " value="3" min="1" max="5">
-
                     </div>
                 </div>
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12  col-12 p-0 m-0">
                         <div class="test"> Multitasking while giving exam</div>
                     </div>
-                    <div class="col-md-8 mt-2">blockMultitasking</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 mt-2">blockMultitasking</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[blockMultitasking]" value="0">
                             <input type="checkbox" name="properties[blockMultitasking]" checked>
                             <span class="slider round"></span>
                         </label>
-
                     </div>
-                    <div class="col-md-8 mt-2"> multitaskingAttempts</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
+                    <div class="col-md-8 col-8 mt-2"> multitaskingAttempts</div>
+                    <div class="col-md-4 col-4 p-0 my-2 m-0">
                         <input type="number" name="properties[multitaskingAttempts]" id="multitaskingAttempts" value="3" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
-
                     </div>
                 </div>
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">User Audio Tracking while giving exam</div>
                     </div>
-                    <div class="col-md-8 mt-2">userAudioTracking</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 mt-2">userAudioTracking</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[userAudioTracking]" value="0">
                             <input type="checkbox" name="properties[userAudioTracking]" checked>
                             <span class="slider round"></span>
                         </label>
-
                     </div>
-                    <div class="col-md-8 mt-2">userAudioWarningCount</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
+                    <div class="col-md-8 col-8 mt-2">userAudioWarningCount</div>
+                    <div class="col-md-4 col-4 p-0 my-2 m-0">
                         <input type="number" name="properties[userAudioWarningCount]" value="3" id="userAudioWarningCount" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                     </div>
@@ -303,11 +299,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">User Video Tracking while giving exam</div>
                     </div>
-                    <div class="col-md-8 mt-2">userVideoTracking</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 mt-2">userVideoTracking</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[userVideoTracking]" value="0">
                             <input type="checkbox" name="properties[userVideoTracking]" checked>
@@ -315,13 +311,13 @@
                         </label>
 
                     </div>
-                    <div class="col-md-8 mt-2"> userNotAloneWarningCount</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
+                    <div class="col-md-8 col-8 mt-2"> userNotAloneWarningCount</div>
+                    <div class="col-md-4 col-4 p-0 my-2 m-0">
                         <input type="number" name="properties[userNotAloneWarningCo]" value="3" id="userNotAloneWarningCo" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                     </div>
-                    <div class="col-md-8 mt-2"> userNotVisibleWarning</div>
-                    <div class="col-md-4 p-0 my-2 m-0">
+                    <div class="col-md-8 col-8 mt-2"> userNotVisibleWarning</div>
+                    <div class="col-md-4 col-4 p-0 my-2 m-0">
                         <input type="number" name="properties[userNotVisibleWarning]" value="3" id="userNotVisibleWarning" placeholder="1-5" class="form-control m-auto w-75  " min="1" max="5">
 
                     </div>
@@ -329,11 +325,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">Capture save user image while giving exam</div>
                     </div>
-                    <div class="col-md-8 my-3">userImageCapture</div>
-                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 my-3">userImageCapture</div>
+                    <div class="col-md-4 col-4 p-0 my-3 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[userImageCapture]" value="0">
                             <input type="checkbox" name="properties[userImageCapture]" checked>
@@ -345,11 +341,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test"> Keyboard usage while giving exam</div>
                     </div>
-                    <div class="col-md-8 my-3">blockKeyboard</div>
-                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 my-3">blockKeyboard</div>
+                    <div class="col-md-4 col-4 p-0 my-3 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[blockKeyboard]" value="0">
                             <input type="checkbox" name="properties[blockKeyboard]" checked>
@@ -362,11 +358,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">Right click usage while giving exam</div>
                     </div>
-                    <div class="col-md-8 my-3">blockRightClick</div>
-                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 my-3">blockRightClick</div>
+                    <div class="col-md-4 col-4 p-0 my-3 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[blockRightClick]" value="0">
                             <input type="checkbox" name="properties[blockRightClick]" checked>
@@ -379,11 +375,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">Time bound exam</div>
                     </div>
-                    <div class="col-md-8 my-3">timeBound</div>
-                    <div class="col-md-4 p-0 my-3 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 my-3">timeBound</div>
+                    <div class="col-md-4 col-4 p-0 my-3 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[timeBound]" value="0">
                             <input type="checkbox" name="properties[timeBound]" checked>
@@ -396,11 +392,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test"> Exam termination</div>
                     </div>
-                    <div class="col-md-8 mt-2">examTerminated</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8  col-8 mt-2">examTerminated</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[examTerminated]" value="0">
                             <input type="checkbox" name="properties[examTerminated]">
@@ -415,17 +411,16 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">Exam pause</div>
                     </div>
-                    <div class="col-md-8 mt-2">examPaused</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8 col-8 mt-2">examPaused</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[examPaused]" value="0">
                             <input type="checkbox" name="properties[examPaused]">
                             <span class="slider round"></span>
                         </label>
-
                     </div>
                     <div class="col-md-12 col-lg-12 col-12 mb-2">
                         <textarea cols="10" rows="1" name="properties[examPausedReason]" class="form-control" style="resize: none;" placeholder="examPausedReason"></textarea>
@@ -435,11 +430,11 @@
             </div>
             <div class="col-lg-5 col-md-5 col-12 mb-3 p-0 m-0 border">
                 <div class="row m-0 p-0">
-                    <div class="col-md-12 p-0 m-0">
+                    <div class="col-md-12 col-12 p-0 m-0">
                         <div class="test">System compatibility test</div>
                     </div>
-                    <div class="col-md-8 mt-2">systemIncompatible</div>
-                    <div class="col-md-4 p-0 mt-2 m-0 justify-content-center text-center">
+                    <div class="col-md-8  col-8 mt-2">systemIncompatible</div>
+                    <div class="col-md-4 col-4 p-0 mt-2 m-0 justify-content-center text-center">
                         <label class="switch  ">
                             <input type="hidden" name="properties[systemIncompatible]" value="0">
                             <input type="checkbox" name="properties[systemIncompatible]">
@@ -537,7 +532,7 @@
                                         <div class="col-md-6 col-12">
                                             <div class="row">                                         
                                                 <div class="input-group mb-3 col-md-12 col-12">
-                                                    <input class="form-control   options px-0" id="option2` + xx + `" type="text" placeholder="option 4" aria-label="Text input with checkbox">
+                                                    <input class="form-control   options px-0" id="option4` + xx + `" type="text" placeholder="option 4" aria-label="Text input with checkbox">
                                                     <div class="input-group-prepend">
                                                         <div class="input-group-text rounded-right">
                                                             <input type="checkbox" class="   ml-2 1 answers" id="checkbox4` + xx + `" value="1" aria-label="Checkbox for following text input">
@@ -727,11 +722,11 @@
 
             let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + questionId + "'>" + question;
             data += '<input type="hidden" class="ques" id="ques' + questionId + '" name="questions[]" value="' + questionId + '"></p>';
-            let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
-            show += "<p class='bg-light font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
+            let show = '<div class="row mb-2"><div class="col-md-11 col-10">';
+            show += "<p class='t font-weight-bold' id='addedQuestionInMarks" + questionId + "'>" + question + "</p>";
             show += '</div>';
-            show += '<div class="col-md-2 col-2">';
-            show += '<input type="number" name="marks[' + questionId + ']" class="form-control" id="questionmarks' + questionId + '" value="1" min="1">';
+            show += '<div class="col-md-1 col-2 pl-0">';
+            show += '<input type="number" name="marks[' + questionId + ']" class="form-control text-center px-0" id="questionmarks' + questionId + '" value="1" min="1">';
             show += '</div></div>';
             $('#questionPaper').append(data);
             $('#questionPapershow').append(show);
@@ -778,7 +773,7 @@
                     answer: answer,
                     class: className,
                     subject_id: subject,
-                    explanation : explanation
+                    explanation: explanation
                 },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -789,11 +784,11 @@
                         obj.attr('data-questionId', result.response.id);
                         let data = "<p class='bg-light mb-2 font-weight-bold' id='addedQuestion" + result.response.id + "'>" + result.response.question;
                         data += '<input type="hidden" class="ques" id="ques' + result.response.id + '" name="questions[]" value="' + result.response.id + '"></p>';
-                        let show = '<div class="row mb-2"><div class="col-md-10 col-10">';
-                        show += "<p class='bg-light mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
+                        let show = '<div class="row mb-2"><div class="col-md-11 col-10">';
+                        show += "<p class=' mb-2 font-weight-bold' id='addedQuestionInMarks" + result.response.id + "'>" + result.response.question + "</p>";
                         show += '</div>';
-                        show += '<div class="col-md-2 col-2">';
-                        show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control" id="questionmarks' + result.response.question + '" value="1" min="1">';
+                        show += '<div class="col-md-1 col-2 pl-0">';
+                        show += '<input type="number" name="marks[' + result.response.id + ']" class="form-control text-center px-0" id="questionmarks' + result.response.question + '" value="1" min="1">';
                         show += '</div></div>';
                         $('#questionPaper').append(data);
                         $('#questionPapershow').append(show);
@@ -882,7 +877,7 @@
 
         clearAllQuestionSelection(allQuestions);
         randomQuestionCount = $('#randomQuestionCount').val();
-        if(!randomQuestionCount || randomQuestionCount == 0){
+        if (!randomQuestionCount || randomQuestionCount == 0) {
             alert('please input no of question you want to select randomly');
             return;
         }
@@ -900,8 +895,8 @@
         }
     }
 
-    function clearAllQuestionSelection(allQuestions){
-        $('.questionCheckbox').prop('checked',false);
+    function clearAllQuestionSelection(allQuestions) {
+        $('.questionCheckbox').prop('checked', false);
         $.each(allQuestions, function(key, value) {
             $("#addedQuestion" + value.id).remove();
             $("#addedQuestionInMarks" + value.id).parent().parent().remove();
