@@ -13,9 +13,9 @@ use App\Models\Attendance;
 class ClassWorkUtility
 {
 
-    public static function listCourseWorkSubmissions ($classroomId, $courseWorkId)
+    public static function listCourseWorkSubmissions ($classroomId, $courseWorkId,$token, $refreshToken)
     {
-        $token = CommonHelper::varify_Teachertoken();
+        // $token = CommonHelper::varify_Teachertoken();
         $url = "https://classroom.googleapis.com/v1/courses/" . $classroomId . "/courseWork/" . $courseWorkId . "/studentSubmissions";
 
         $headers = array(
@@ -26,9 +26,9 @@ class ClassWorkUtility
         $response = RemoteRequest::getJsonRequest($url, $headers);
         if ( !$response['success'] && isset($response['data']->status) ) {
             if ( $response['data']->status == 'UNAUTHENTICATED' ) {
-                $token = CustomHelper::get_refresh_teacher_token();
+                // $token = CustomHelper::get_refresh_teacher_token();
                 $headers = array(
-                    "Authorization: Bearer " . $token['access_token'],
+                    "Authorization: Bearer " . $refreshToken['access_token'],
                     "Content-Type: application/json",
                 );
                 $response = RemoteRequest::getJsonRequest($url, $headers);
@@ -39,10 +39,9 @@ class ClassWorkUtility
         return $response;
     }
 
-    public static function calculateGrade ($classWorks)
-    {
+    public static function calculateGrade ($classWorks, $verifyToken, $refreshToken){    
         foreach ( $classWorks as $classWork ) {
-            $response = ClassWorkUtility::listCourseWorkSubmissions($classWork->g_class_id, $classWork->google_classwork_id);
+            $response = ClassWorkUtility::listCourseWorkSubmissions($classWork->g_class_id, $classWork->google_classwork_id,$verifyToken, $refreshToken);
             if ( isset($response['data']->studentSubmissions) ) {
                 foreach ( $response['data']->studentSubmissions as $submission ) {
                     if ( isset($submission->draftGrade) ) {

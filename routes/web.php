@@ -69,7 +69,7 @@ Route::group(['middleware' => 'adminsession'], function () {
     Route::get('admin/csv-uploads', 'EventDetailController@index')->name('csvuploads.index');
 
     /* reports */
-    Route::get('admin/reports', 'AdminController@reports')->name('reports.index');
+    Route::get('admin/reports', 'ReportController@reports')->name('reports.index');
 
     /*Support Help*/
 

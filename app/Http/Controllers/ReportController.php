@@ -72,4 +72,24 @@ class ReportController extends Controller
 
         return view('teacher.report.report', compact('inviteClassData', 'gradeAverage', 'totalClassesOfClassrooms', 'cancelledClassesOfClassrooms', 'attendanceAverage'));
     }
+
+     public function reports(Request $request)
+    {
+        set_time_limit(0);
+        $totalClassesOfClassrooms = StudentClass::with('dateClass')->get()->pluck('dateClass.*', 'id');
+
+        $cancelledClassesOfClassrooms = StudentClass::with(['dateClass' => function ($q) {
+            $q->where('cancelled', 1);
+        }])->get()->pluck('dateClass.*', 'id');
+
+        $inviteClassData = StudentClass::with('studentSubject')
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        $attendanceAverage = ReportUtility::getClassAttedanceAverage();
+
+        $gradeAverage = ReportUtility::getAssignmentSubmissionGradesAdmin();
+
+        return view('admin.reports.index', compact('inviteClassData', 'totalClassesOfClassrooms', 'cancelledClassesOfClassrooms', 'attendanceAverage'));
+    }
 }

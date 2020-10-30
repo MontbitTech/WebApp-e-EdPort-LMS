@@ -45,10 +45,10 @@
                 $subject_name = '';
                 $cls = '';
                 $g_link = '';
-                if ( $inviteClass->studentClass ) {
-                    $cls = $inviteClass->studentClass->class_name;
-                    $section_name = $inviteClass->studentClass->section_name;
-                    $g_link = $inviteClass->studentClass->g_link;
+                if ( $inviteClass ) {
+                    $cls = $inviteClass->class_name;
+                    $section_name = $inviteClass->section_name;
+                    $g_link = $inviteClass->g_link;
                 }
                 if ( $inviteClass->studentSubject ) {
                     $subject_name = $inviteClass->studentSubject->subject_name;
@@ -64,14 +64,14 @@
                         <!-- 111 -->
                     </td>
                     <td>
-                        @if(isset($attendanceAverage[$inviteClass->class_id]))
-                            {{$attendanceAverage[$inviteClass->class_id]}}
+                        @if(isset($attendanceAverage[$inviteClass->id]))
+                            {{$attendanceAverage[$inviteClass->id]}}
                         @endif
                     </td>
                     <td>
-                        @if(isset($totalClassesOfClassrooms[$inviteClass->class_id]) && isset($cancelledClassesOfClassrooms[$inviteClass->class_id]))
-                            {{count($totalClassesOfClassrooms[$inviteClass->class_id]) - count($cancelledClassesOfClassrooms[$inviteClass->class_id])}}
-                            / {{count($totalClassesOfClassrooms[$inviteClass->class_id])}}
+                        @if(isset($totalClassesOfClassrooms[$inviteClass->id]) && isset($cancelledClassesOfClassrooms[$inviteClass->id]))
+                            {{count($totalClassesOfClassrooms[$inviteClass->id]) - count($cancelledClassesOfClassrooms[$inviteClass->id])}}
+                            / {{count($totalClassesOfClassrooms[$inviteClass->id])}}
                         @endif
                     </td>
                     <!-- <td>
