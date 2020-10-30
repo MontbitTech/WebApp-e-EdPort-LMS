@@ -61,7 +61,7 @@
             <div class="col-lg-12 col-md-12">
                 <div class="row mb-3 pl-3 moblie-view">
                     <div class="col-md-3 pr-0">
-                        <select class="form-control" id="class" onchange="getChapter()">
+                        <select class="form-control px-0" id="class" onchange="getChapter()">
                             @if($classrooms_data)
                             <option value="{{$classrooms_data->class_name}}">{{$classrooms_data->class_name}}</option>
                             @else
@@ -73,7 +73,7 @@
                         </select>
                     </div>
                     <div class="col-md-3 pr-0">
-                        <select class="form-control" id="subject" onchange="getChapter()">
+                        <select class="form-control px-0" id="subject" onchange="getChapter()">
                             @if($classrooms_data)
                             <option value="{{$classrooms_data->studentSubject->subject_name}}">{{$classrooms_data->studentSubject->subject_name}} </option>
                             @else
@@ -85,37 +85,29 @@
                         </select>
                     </div>
                     <div class="col-md-3 pr-0">
-                        <select class="form-control" id="chapter" onchange="getTopic()">
+                        <select class="form-control px-0" id="chapter" onchange="getTopic()">
                             <option value="" selected>Select Chapter</option>
                         </select>
                     </div>
                     <div class="col-md-3 pr-0">
-                        <select class="form-control" id="topic" onchange="getQuestion()">
+                        <select class="form-control px-0" id="topic" onchange="getQuestion()">
                             <option value="" selected>Select Topic</option>
                         </select>
                     </div>
-                    <div class="mr-auto">
-                        <div class="input-group mt-3 pl-3">
+                    <div class="col-md-3 col-9 pr-0">
+                        <div class="input-group mt-3 ">
                             <input type="number" min="1" id="randomQuestionCount" class="form-control" placeholder="Random question select input" value="20" aria-label="Recipient's username" aria-describedby="button-addon2">
                             <div class="input-group-append">
                                 <div class="btn btn-outline-secondary " id="button-addon2" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random" style="border-top-right-radius: 0.25rem;
                                     border-bottom-right-radius: 0.25rem;">Random</div>
-
                             </div>
                             <input type="checkbox" checked="checked" style="opacity:0; position:absolute; left:9px;" id="randomQuestionCheckbox">
                         </div>
-                        <!-- <div>
-                            <input type="number" name="" class="form-control mt-2" min="0" id="" style="margin-bottom: -27px;" value="2">
-                            <i class="fa fa-random random  py-1" onclick="addRandomQuestionsToPaper()" data-toggle="tooltip" data-placement="right" title="choose random">
-                            </i>
-                            <input type="checkbox" checked="checked" style="opacity:0; position:absolute; left:9999px;" id="randomQuestionCheckbox">
-                        </div> -->
                     </div>
-                    <div class="mr-auto mt-3 add-question-show">
+                    <div class="col-md-6 col-2 ml-3 mt-3 add-question-show">
                         <button class="fas fa-plus data py-1" data-toggle="tooltip" data-placement="right" title="Add Question">
                         </button>
                     </div>
-
                 </div>
             </div>
             <div class="col-md-6 ">
@@ -131,7 +123,6 @@
                     <p>{{$questionData->question->question}}</p>
                     @endif
                 </div>
-
             </div>
         </div>
         <div class="row d-flex justify-content-center m-auto">
@@ -491,8 +482,8 @@
                                      <div class="row px-0 mx-0">
                                         <div class="col-md-6 col-12">
                                             <div class="row">
-                                                <div class="col-md-9 col-8 offset-col-2 px-0 mr-0 pl-3">option</div>
-                                                <div class="col-md-3 col-2  mr-0 ml-0 px-0 margine-left-key">Answer</div>
+                                                <div class="col-md-8 col-9  px-0 mr-0 pl-3">option</div>
+                                                <div class="col-md-4 col-3  mx-0 text-right pl-0 ">Answer</div>
                                                 <div class="input-group mb-3 col-md-12 col-12">
                                                     <input class="form-control options  px-0 " id="option1` + xx + `" type="text" placeholder="option 1" aria-label="Text input with checkbox">
                                                     <div class="input-group-prepend">
@@ -505,8 +496,8 @@
                                         </div>
                                         <div class="col-md-6 col-12">
                                             <div class="row">
-                                                <div class="col-md-9 col-8 offset-col-2 pl-3 mx-0 mobile-hide">option</div>
-                                                <div class="col-md-3 col-2  mx-0 px-0 mobile-hide">Answer</div>
+                                                <div class="col-md-8 col-9 pl-3 mx-0 mobile-hide">option</div>
+                                                <div class="col-md-4 col-3  mx-0 pl-0 text-right mobile-hide">Answer</div>
                                                 <div class="input-group mb-3 col-md-12 col-12">
                                                     <input class="form-control   options px-0" id="option2` + xx + `" type="text" placeholder="option 2" aria-label="Text input with checkbox">
                                                     <div class="input-group-prepend">
