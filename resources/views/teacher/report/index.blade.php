@@ -45,11 +45,11 @@
       <a href="javascript:getReport()" class="btn btn-ui float-right m-0  btn-gen">Generate Report</a>
     </div>
     <div class="container">
-      <div class="row">
+      <div class="row" style="display: none;" id="examinationReport">
         @include('teacher.examination.studentreport')
       </div>
     </div>
-    <div class="row" style="display: none;" id="reportTable">
+    <div class="row" style="display: none;" id="classroomReport">
       <div class="col-sm-12">
         <div class="card">
           <div class="card-header btn-ui">Assignment Submission Summary
@@ -204,8 +204,9 @@
       },
       success: function(result) {
         $('.loader').fadeOut();
-        $('#reportTable').html(result);
-        $('#reportTable').show();
+        $('#classroomReport').html(result);
+        $('#classroomReport').show();
+        $('#examinationReport').show();
       }
     });
   }
