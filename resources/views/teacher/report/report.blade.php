@@ -1,10 +1,14 @@
 <div class="col-sm-12">
-    <div class="card">
-        <div class="card-header btn-ui">Classroom Reports
-            {{-- <a href="#" class="btn bg-white float-right m-0 ">Report</a>--}}
+    <div class="card collapsed-card">
+        <div class=" card-header pt-1 pb-0 btn-ui text-white">
+            <h6 class="card-title d-inline align-bottom">Classroom Reports</h6>
+            <div class="card-tools d-inline float-right">
+                <button type="button" class="btn border mb-1 ml-2 btn-tool text-white " data-card-widget="collapse">
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
         </div>
-        <div class="card-body card-border p-2 pb-0 border">
-
+        <div class="card-body card-border p-2 pb-0 border" style="display: none;">
             <?php if (count($inviteClassData) > 0) { ?>
                 <div class="table-responsive-sm">
                     <table id="teacherlist" class="table table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">

@@ -1,23 +1,29 @@
  <div class="col-md-12 col-lg-12 col-12 px-0 mb-3">
-     <div class="card card-info  ">
-         <div class="card-header pt-1 pb-0 border-transparent text-white" style="background-color: #373c8e;">
-             <h4 class="card-title d-inline">Examination Reports</h4>
+     <div class="card card-info  collapsed-card">
+         <div class="card-header py-1 pb-0 border-transparent text-white btn-ui">
+             <h6 class="card-title d-inline align-bottom">Examination Reports</h6>
              <div class="card-tools d-inline float-right">
                  <button type="button" class="btn border ml-2 btn-tool text-white " data-card-widget="collapse">
-                     <i class="fas fa-minus"></i>
+                     <i class="fas fa-plus"></i>
                  </button>
              </div>
          </div>
-         <div class="card-body card-border-exam">
+         <div class="card-body card-border-exam" style="display: none;">
              <div class="row mb-3">
                  <div class="col-md-4">
-                     <select class="form-control" id="classroom" onchange="javascript:getResultOfClassroom()">
+                     <select class="form-control" id="classroom" onchange="javascript:getExamination()">
                          <option value="" selected>Select Classroom</option>
-                            @foreach($inviteClassData as $classroom)
-                                <option value="{{$classroom->class_id}}" >
-                                    {{$classroom->studentClass->class_name}} {{$classroom->studentClass->section_name}}  {{$classroom->studentSubject->subject_name}}
-                                </option>
-                            @endforeach
+                         @foreach($inviteClassData as $classroom)
+                         <option value="{{$classroom->class_id}}">
+                             {{$classroom->studentClass->class_name}} {{$classroom->studentClass->section_name}} {{$classroom->studentSubject->subject_name}}
+                         </option>
+                         @endforeach
+                     </select>
+                 </div>
+                 <div class="col-md-4">
+                     <select class="form-control" id="examination" onchange="javascript:getResultOfClassroom()">
+                         <option value="" selected>Select Examination</option>
+                         
                      </select>
                  </div>
              </div>
@@ -30,8 +36,8 @@
                          <th scope="col">Marks</th>
                      </tr>
                  </thead>
-                 <tbody id="resultTableBody"> 
-            
+                 <tbody id="resultTableBody">
+
                  </tbody>
              </table>
          </div>
@@ -122,35 +128,66 @@
  <!-- ********end  delete student reports ******* -->
 
  <script>
-     function getResultOfClassroom(){
 
+     function getExamination(){
         var classroom_id = $('#classroom').val();
-
+        
         $('.loader').show();
          $.ajax({
-             url: "{{url('/teacher/examination/resultList')}}",
+             url: "{{url('/teacher/examination/getExamsList')}}",
              type: "GET",
              data: {
-                 classroom_id: classroom_id,
+                 classroom_id   : classroom_id,
              },
              headers: {
                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
              },
              success: function(result) {
-                $('#resultTableBody').empty();
                 $('.loader').fadeOut();
-                var data = '';
-                $.each(result.response , function(index, val) { 
-                    data += '<tr>';
-                    data += '<td>' + val.student.name + '</td>';
-                    data += '<td>' + val.classroom.class_name + ' ' + val.classroom.section_name + ' ' + val.classroom.student_subject.subject_name + '</td>';
-                    data += '<td>' + val.examination.title + '</td>';
-                    data += '<td>' + val.marks_obtained + '/' + val.total_marks + '</td>';
-                    data += '</tr>'
+                let response = JSON.parse(result);
+                $('#examination').empty();
+                $('#examination').append('<option value="">Select Examination </option>');
+                $.each(response.data, function(key, value) {
+                    $('#examination').append('<option value="' + value.examination_id + '">' + value.examination.title + '</option>');
                 });
+             },
+             error: function(error_r) {
+                 $('.loader').fadeOut();
+                 console.log(error_r);
+             }
+         });
+     }
+     function getResultOfClassroom() {
 
-              $('#resultTableBody').html(data);
-        
+         var classroom_id = $('#classroom').val();
+         var examination_id = $('#examination').val();
+
+         $('.loader').show();
+         $.ajax({
+             url: "{{url('/teacher/examination/resultList')}}",
+             type: "GET",
+             data: {
+                 classroom_id   : classroom_id,
+                 examination_id : examination_id
+             },
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             success: function(result) {
+                 $('#resultTableBody').empty();
+                 $('.loader').fadeOut();
+                 var data = '';
+                 $.each(result.response, function(index, val) {
+                     data += '<tr>';
+                     data += '<td>' + val.student.name + '</td>';
+                     data += '<td>' + val.classroom.class_name + ' ' + val.classroom.section_name + ' ' + val.classroom.student_subject.subject_name + '</td>';
+                     data += '<td>' + val.examination.title + '</td>';
+                     data += '<td>' + val.marks_obtained + '/' + val.total_marks + '</td>';
+                     data += '</tr>'
+                 });
+
+                 $('#resultTableBody').html(data);
+
              },
              error: function(error_r) {
                  $('.loader').fadeOut();
