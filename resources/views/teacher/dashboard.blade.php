@@ -5,6 +5,10 @@
     .top-padding {
         padding-top: 0.625rem !important;
     }
+
+    .btn-primary:not(:disabled):not(.disabled).active{
+        background-color: #373c8e;
+    }
 </style>
 <?php
 $cls = 0;
@@ -206,13 +210,13 @@ $cls = 0;
                 <div class="container-fluid">
                     <div class="form-group row">
                         <nav class="nav flex-column col-3">
-                            <div class=" nav-link active btn btn-md btn-primary " id="notify">
+                            <div class="nav-link active btn btn-md btn-primary announcement" id="notify">
                                 Class Invitation
                             </div>
-                            <div class=" nav-link btn btn-md btn-primary mt-2 " id="cancel">
+                            <div class="nav-link btn btn-md btn-primary mt-2 announcement" id="cancel">
                                 Class Cancellation
                             </div>
-                            <div class=" nav-link btn btn-xs btn-primary mt-2" id="custom">
+                            <div class="nav-link btn btn-xs btn-primary mt-2 announcement" id="custom">
                                 Custom
                             </div>
 
@@ -962,17 +966,23 @@ $cls = 0;
             let vale = "The class will start from " + to_timing + ". Please Join " + gmeet_url
             $('#notificationMsg').val(vale);
             $('#data_cancelled').val(0);
+            $('.announcement').removeClass('active');
+            $(this).addClass('active');
         });
         $('#cancel').click(function() {
             let vale = "Dear " + class_w + section + " Students Please note that the " + s_name + " Class scheduled on " + today + " at " + from_timing + " is Cancelled"
             // let vale = "Dear  Student Subject '" + s_name + " Class" + +d + " scheduled on dd/mm/yyyy at 00:00 AM/PM is Cancelled "
             $('#notificationMsg').val(vale);
             $('#data_cancelled').val(1);
+            $('.announcement').removeClass('active');
+            $(this).addClass('active');
         });
         $('#custom').click(function() {
             let vale = ""
             $('#notificationMsg').val(vale);
             $('#data_cancelled').val(0);
+            $('.announcement').removeClass('active');
+            $(this).addClass('active');
         });
 
         $('#notificationMsg').val("The class will start from " + from_timing + ". Please Join " + gmeet_url);
