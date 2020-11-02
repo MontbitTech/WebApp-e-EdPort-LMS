@@ -11,13 +11,19 @@
          <div class="card-body card-border-exam" style="display: none;">
              <div class="row mb-3">
                  <div class="col-md-4">
-                     <select class="form-control" id="classroom" onchange="javascript:getResultOfClassroom()">
+                     <select class="form-control" id="classroom" onchange="javascript:getExamination()">
                          <option value="" selected>Select Classroom</option>
                          @foreach($inviteClassData as $classroom)
                          <option value="{{$classroom->class_id}}">
                              {{$classroom->studentClass->class_name}} {{$classroom->studentClass->section_name}} {{$classroom->studentSubject->subject_name}}
                          </option>
                          @endforeach
+                     </select>
+                 </div>
+                 <div class="col-md-4">
+                     <select class="form-control" id="examination" onchange="javascript:getResultOfClassroom()">
+                         <option value="" selected>Select Examination</option>
+                         
                      </select>
                  </div>
              </div>
@@ -122,16 +128,47 @@
  <!-- ********end  delete student reports ******* -->
 
  <script>
+
+     function getExamination(){
+        var classroom_id = $('#classroom').val();
+        
+        $('.loader').show();
+         $.ajax({
+             url: "{{url('/teacher/examination/getExamsList')}}",
+             type: "GET",
+             data: {
+                 classroom_id   : classroom_id,
+             },
+             headers: {
+                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+             },
+             success: function(result) {
+                $('.loader').fadeOut();
+                let response = JSON.parse(result);
+                $('#examination').empty();
+                $('#examination').append('<option value="">Select Examination </option>');
+                $.each(response.data, function(key, value) {
+                    $('#examination').append('<option value="' + value.examination_id + '">' + value.examination.title + '</option>');
+                });
+             },
+             error: function(error_r) {
+                 $('.loader').fadeOut();
+                 console.log(error_r);
+             }
+         });
+     }
      function getResultOfClassroom() {
 
          var classroom_id = $('#classroom').val();
+         var examination_id = $('#examination').val();
 
          $('.loader').show();
          $.ajax({
              url: "{{url('/teacher/examination/resultList')}}",
              type: "GET",
              data: {
-                 classroom_id: classroom_id,
+                 classroom_id   : classroom_id,
+                 examination_id : examination_id
              },
              headers: {
                  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
