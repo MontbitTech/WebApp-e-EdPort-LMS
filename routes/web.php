@@ -211,3 +211,18 @@ Route::group(['middleware' => 'teachersession'], function () {
 Route::get('/addData_pastClass', 'ClassWorkController@addData_DateClass')->name('reload-timetable');
 Route::get('/timeTable/{class}/{section}', 'ImportTimetableController@download_Timetable');
 //Reload Timetable URL - http://<domain>/addData_pastClass
+
+//*********************************
+// *********** Student ************
+// **********************************
+
+// Dashboard
+Route::get('student/dashboard', 'Student\DashboardController@index')->name('student.dashboard');
+// Lecture
+Route::get('student/lecture', 'Student\LectureController@index')->name('student.lecture');
+// Examination
+Route::get('student/examination', 'Student\ExaminationController@index')->name('student.examination');
+// Profile
+Route::get('student/profile', 'Student\ProfileController@index')->name('student.profile');
+// Register
+Route::get('student/register', 'Student\RegisterController@index')->name('student.register');
