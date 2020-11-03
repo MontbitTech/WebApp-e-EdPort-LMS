@@ -42,7 +42,11 @@
 <section class="main-section">
   <div class="container">
     <div class="row" style="padding: inherit;padding-bottom: 2%;">
-      <a href="javascript:getReport()" class="btn btn-ui float-right m-0  btn-gen">Generate Report</a>
+
+      <a href="javascript:getReport()" class="btn btn-ui float-right m-0  btn-gen">
+        <svg class="icon mr-1">
+          <use xlink:href="{{asset('images/icons.svg#gert_reports')}}"></use>
+        </svg>Generate Report</a>
     </div>
     <div class="container">
       <div class="row" style="display: none;" id="examinationReport">
