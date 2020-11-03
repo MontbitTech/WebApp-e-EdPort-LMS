@@ -41,20 +41,20 @@
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.js"></script>
 <section class="main-section">
   <div class="container">
-    <div class="row" style="padding: inherit;padding-bottom: 2%;">
+    <!-- <div class="row" style="padding: inherit;padding-bottom: 2%;">
 
       <a href="javascript:getReport()" class="btn btn-ui float-right m-0  btn-gen">
         <svg class="icon mr-1">
           <use xlink:href="{{asset('images/icons.svg#gert_reports')}}"></use>
         </svg>Generate Report</a>
-    </div>
+    </div> -->
     <div class="container">
-      <div class="row" style="display: none;" id="examinationReport">
+      <div class="row mt-5">
         @include('teacher.examination.studentreport')
       </div>
     </div>
-    <div class="row" style="display: none;" id="classroomReport">
-      <div class="col-sm-12">
+    <div class="row d-none">
+      <div class="col-sm-12 ">
         <div class="card">
           <div class="card-header btn-ui">Assignment Submission Summary
             <!-- <a href="#" class="btn bg-white float-right m-0 ">Report</a> -->
@@ -124,6 +124,25 @@
         </div>
       </div>
 
+    </div>
+    <div class="row " id="classroomReport">
+      <div class="col-sm-12">
+        <div class="card collapsed-card">
+          <div class=" card-header pt-1 pb-0 btn-ui text-white">
+            <h6 class="card-title d-inline align-bottom">Classroom Reports</h6>
+            <div class="card-tools d-inline float-right pb-1">
+              <!-- <button type="button" class="btn border mb-1 ml-2 btn-tool text-white " data-card-widget="collapse">
+                <i class="fas fa-plus"></i>
+              </button> -->
+              <a href="javascript:getReport()" class="btn btn-ui border float-right m-0  btn-gen">
+                <svg class="icon mr-1">
+                  <use xlink:href="{{asset('images/icons.svg#gert_reports')}}"></use>
+                </svg>Generate Report</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -210,7 +229,7 @@
         $('.loader').fadeOut();
         $('#classroomReport').html(result);
         $('#classroomReport').show();
-        $('#examinationReport').show();
+        // $('#examinationReport').show();
       }
     });
   }
