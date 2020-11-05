@@ -44,7 +44,7 @@
 
                         <input type="text" id="examname" value="{{$examDetail->examination->title}}" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)"></div>
                     @else
-                    <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)">
+                    <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..." class="color-btn pl-0" onblur="validate1(0)">
                 </div>
                 @endif
             </div>
