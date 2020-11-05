@@ -41,7 +41,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
         <li class="nav-item">
           <a class="nav-link {{ (request()->routeIs('examination')) ? 'active' : '' }}" href="{{route('examination')}}">
             <svg class="icon mr-1">
-              <use xlink:href="{{asset('images/icons.svg#icon_edit')}}"></use>
+              <use xlink:href="{{asset('images/icons.svg#examination')}}"></use>
             </svg> Examination
           </a>
         </li>
