@@ -6,7 +6,7 @@
         padding-top: 0.625rem !important;
     }
 
-    .btn-primary:not(:disabled):not(.disabled).active{
+    .btn-primary:not(:disabled):not(.disabled).active {
         background-color: #373c8e;
     }
 </style>
@@ -14,7 +14,16 @@
 $cls = 0;
 ?>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.css" />
+<script>
+    var a = $(window).width();
+    if (a <= 500) {
+        $('body').addClass('menu-open')
+    }
 
+    //  var height = $('.slide').css("height", y);
+    //console.log(height);
+    // console.log(y, x);
+</script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.js"></script>
 
 <section class="main-section">

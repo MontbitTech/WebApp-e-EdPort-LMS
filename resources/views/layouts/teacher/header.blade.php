@@ -37,7 +37,6 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
             </svg> Class
           </a>
         </li>
-
         <li class="nav-item">
           <a class="nav-link {{ (request()->routeIs('examination')) ? 'active' : '' }}" href="{{route('examination')}}">
             <svg class="icon mr-1">
@@ -56,7 +55,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
         </li>
 
       </ul>
-      <ul class="navbar-nav ml-auto">
+      <ul class="navbar-nav ml-auto pt-0">
         <li class="nav-item">
           <a class="nav-link" href="{{ route('teacher.logout') }}"><svg class="icon mmb-2 mr-1">
               <use xlink:href="{{asset('images/icons.svg#icon_logout')}}"></use>
