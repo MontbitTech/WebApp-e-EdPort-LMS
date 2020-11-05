@@ -39,12 +39,12 @@
             <div class="row justify-content-center">
                 <div class="col-lg-10 col-md-11">
                     <div class="form-group">
-                        <label class="form-control-label">Examination Name</label>
+                        <label class="form-control-label pl-3">Examination Name</label>
                         @if($examDetail!='')
 
                         <input type="text" id="examname" value="{{$examDetail->examination->title}}" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)"></div>
                     @else
-                    <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..." class="color-btn pl-0" onblur="validate1(0)">
+                    <input type="text" id="examname" name="title" placeholder="Please enter exam name here ..." class="color-btn" onblur="validate1(0)">
                 </div>
                 @endif
             </div>
@@ -482,8 +482,8 @@
                                      <div class="row px-0 mx-0">
                                         <div class="col-md-6 col-12">
                                             <div class="row">
-                                                <div class="col-md-8 col-9  px-0 mr-0 pl-3">options</div>
-                                                <div class="col-md-4 col-3  mx-0 text-right pl-0 ">Answer</div>
+                                                <div class="col-md-8 col-8  px-0 mr-0 pl-3">options</div>
+                                                <div class="col-md-4 col-4  mx-0 text-right pl-0 ">Answer</div>
                                                 <div class="input-group mb-3 col-md-12 col-12">
                                                     <input class="form-control options  px-0 " id="option1` + xx + `" type="text" placeholder="option 1" aria-label="Text input with checkbox">
                                                     <div class="input-group-prepend">
