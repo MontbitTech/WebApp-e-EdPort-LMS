@@ -37,7 +37,9 @@
   }
 </style>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.css" />
-
+<script>
+  $('.menu-open').removeClass();
+</script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.js"></script>
 <section class="main-section">
   <div class="container">
@@ -134,8 +136,8 @@
               <!-- <button type="button" class="btn border mb-1 ml-2 btn-tool text-white " data-card-widget="collapse">
                 <i class="fas fa-plus"></i>
               </button> -->
-              <a href="javascript:getReport()" class="btn btn-ui border float-right m-0  btn-gen">
-                <svg class="icon mr-1">
+              <a href="javascript:getReport()" class="btn btn-ui border float-right m-0  btn-gen ">
+                <svg class="icon mr-1 mobile-hide">
                   <use xlink:href="{{asset('images/icons.svg#gert_reports')}}"></use>
                 </svg>Generate Report</a>
             </div>

@@ -32,15 +32,6 @@
      @include('layouts.teacher.footer')
 
  </body>
- <script>
-     var a = $(window).width();
-     if (a <= 500) {
-         $('body').addClass('menu-open')
-     }
 
-     //  var height = $('.slide').css("height", y);
-     //console.log(height);
-     // console.log(y, x);
- </script>
 
  </html>
