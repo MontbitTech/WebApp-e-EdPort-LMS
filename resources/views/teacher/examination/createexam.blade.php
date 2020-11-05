@@ -482,7 +482,7 @@
                                      <div class="row px-0 mx-0">
                                         <div class="col-md-6 col-12">
                                             <div class="row">
-                                                <div class="col-md-8 col-9  px-0 mr-0 pl-3">option</div>
+                                                <div class="col-md-8 col-9  px-0 mr-0 pl-3">options</div>
                                                 <div class="col-md-4 col-3  mx-0 text-right pl-0 ">Answer</div>
                                                 <div class="input-group mb-3 col-md-12 col-12">
                                                     <input class="form-control options  px-0 " id="option1` + xx + `" type="text" placeholder="option 1" aria-label="Text input with checkbox">
@@ -496,7 +496,7 @@
                                         </div>
                                         <div class="col-md-6 col-12">
                                             <div class="row">
-                                                <div class="col-md-8 col-9 pl-3 mx-0 mobile-hide">option</div>
+                                                <div class="col-md-8 col-9 pl-3 mx-0 mobile-hide">options</div>
                                                 <div class="col-md-4 col-3  mx-0 pl-0 text-right mobile-hide">Answer</div>
                                                 <div class="input-group mb-3 col-md-12 col-12">
                                                     <input class="form-control   options px-0" id="option2` + xx + `" type="text" placeholder="option 2" aria-label="Text input with checkbox">
