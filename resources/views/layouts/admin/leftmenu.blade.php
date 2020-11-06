@@ -4,7 +4,11 @@
 			<animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.8s" repeatCount="indefinite" />
 		</path>
 	</svg>
+	@if(Request::segment(2) == 'reports')
+	Please wait...
+	@endif
 </div>
+
 <style>
 	a.disabled {
 		pointer-events: none;

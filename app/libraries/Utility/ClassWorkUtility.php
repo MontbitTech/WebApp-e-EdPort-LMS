@@ -35,36 +35,53 @@ class ClassWorkUtility
 
             }
         }
-
         return $response;
     }
 
-    public static function calculateGrade ($classWorks, $verifyToken, $refreshToken){    
+    public static function calculateGrade ($classWorks,$isStudentGrade, $verifyToken, $refreshToken){
         foreach ( $classWorks as $classWork ) {
             $response = ClassWorkUtility::listCourseWorkSubmissions($classWork->g_class_id, $classWork->google_classwork_id,$verifyToken, $refreshToken);
             if ( isset($response['data']->studentSubmissions) ) {
                 foreach ( $response['data']->studentSubmissions as $submission ) {
-                    if ( isset($submission->draftGrade) ) {
+                    if ( isset($submission->draftGrade) && !$isStudentGrade ) {
                         $maxPoints = $classWork->g_points ? $classWork->g_points :
                             $submission->submissionHistory[ count($submission->submissionHistory) - 1 ]->gradeHistory->maxPoints;
                         $grades[ $classWork->studentClass->id ][] = number_format(( $submission->draftGrade / $maxPoints ) * 100, 2);
                     }
+                    else{
+                        if(isset($submission->draftGrade)  && $submission->userId == $classWork->student->email){
+                            $maxPoints = $classWork->g_points ? $classWork->g_points :
+                            $submission->submissionHistory[ count($submission->submissionHistory) - 1 ]->gradeHistory->maxPoints;
+                            $grades[ $classWork->student->id ][] = number_format(( $submission->draftGrade / $maxPoints ) * 100, 2); 
+                        }
+                    }
                 }
             }
         }
-
-        $averageOfClasses = array();
-        if ( isset($grades) ) {
+        $averageGrade = array();
+        if ( isset($grades) && !$isStudentGrade ) {
             foreach ( $grades as $classId => $classGrades ) {
                 $averageOf = array();
                 foreach ( $classGrades as $classGrade ) {
                     $averageOf[] = $classGrade;
                 }
-                $averageOfClasses[ $classId ] = array_sum($averageOf) / count($averageOf);
+                $averageGrade[ $classId ] = array_sum($averageOf) / count($averageOf);
             }
-        }
+             return $averageGrade;
+         }
 
-        return $averageOfClasses;
+        else{
+        if ( isset($grades) ) {
+            foreach ( $grades as $studentId => $studentGrades ) {
+                $averageOf = array();
+                foreach ( $studentGrades as $studentGrade ) {
+                    $averageOf[] = $studentGrade;
+                }
+                $averageGrade[ $studentId ] = array_sum($averageOf) / count($averageOf);
+            }
+         }
+                return $averageGrade;
+        }
     }
 
     public static function calculateAttedance ($classrooms)
@@ -77,7 +94,7 @@ class ClassWorkUtility
                 $totalAttendance += Attendance::where('dateclass_id', $dateClass->id)->count();
                 $presentStudent += Attendance::present()->where('dateclass_id', $dateClass->id)->count();
             }
-
+            
             if ( $totalAttendance ) {
                 $attendanceAverage[ $classroom->id ] = number_format(( $presentStudent / $totalAttendance ) * 100, 2);
             } else {
@@ -87,4 +104,5 @@ class ClassWorkUtility
 
         return $attendanceAverage;
     }
+
 }

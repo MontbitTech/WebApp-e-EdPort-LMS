@@ -18,14 +18,33 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @if(count($inviteClassData) > 0)
+                @if(count($studentClassData) > 0)
                 <div class="card card-common mb-3">
 
                     <div class="card-header">
                         <span class="topic-heading">Reports</span>
                     </div>
                     <div class="card-body pt-3">
-                        <div class="col-sm-12">
+
+                    <div class="col-md-6 col-lg-6 text-md-left text-center mb-1">
+                    <span data-dtfilter="" class="mb-1">
+                    <!-- <div class="spinner-border spinner-border-sm text-secondary" role="status" ></div> 
+                    <input type="text"  id="txtSerachByClass" class="form-control form-control-sm" placeholder="Search By Class..." />-->
+
+                    <select id="getreports" name="getreports" class="form-control form-control-sm" onchange="getReports()">
+                    <option value=''>Select Classroom</option>
+                    @if(count($studentClassData)>0)
+                    <option value='allReports'>All</option>
+                    @foreach($studentClassData as $cl)
+                    <option value='{{$cl->class_name}},{{$cl->section_name}},{{ $cl->subject_id }}'>{{$cl->class_name}} {{$cl->section_name}}</option>
+                    @endforeach
+                    @endif
+                  </select>
+
+                    </span>
+
+                    </div>
+                    <div class="col-sm-12" id="getData">
                     <table id="reports" class="table table-sm table-bordered display" style="width:100%"
                    data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120"
                    data-filterplaceholder="Search Records ...">
@@ -37,59 +56,6 @@
                     <th style="width:20%">Classes Conducted</th>
                 </tr>
                 </thead>
-                <tbody>
-                <?php
-                $i = 0;
-                foreach ($inviteClassData as $inviteClass) {
-                $section_name = '';
-                $subject_name = '';
-                $cls = '';
-                $g_link = '';
-                if ( $inviteClass ) {
-                    $cls = $inviteClass->class_name;
-                    $section_name = $inviteClass->section_name;
-                    $g_link = $inviteClass->g_link;
-                }
-                if ( $inviteClass->studentSubject ) {
-                    $subject_name = $inviteClass->studentSubject->subject_name;
-                }
-                ?>
-                <tr>
-                    <td>{{ $cls }} {{ $section_name }} Std {{ $subject_name }} </td>
-                    <td>
-                        <!-- @if(isset($gradeAverage[$inviteClass->class_id]))
-                            {{$gradeAverage[$inviteClass->class_id]}}
-                        @endif -->
-
-                        <!-- 111 -->
-                    </td>
-                    <td>
-                        @if(isset($attendanceAverage[$inviteClass->id]))
-                            {{$attendanceAverage[$inviteClass->id]}}
-                        @endif
-                    </td>
-                    <td>
-                        @if(isset($totalClassesOfClassrooms[$inviteClass->id]) && isset($cancelledClassesOfClassrooms[$inviteClass->id]))
-                            {{count($totalClassesOfClassrooms[$inviteClass->id]) - count($cancelledClassesOfClassrooms[$inviteClass->id])}}
-                            / {{count($totalClassesOfClassrooms[$inviteClass->id])}}
-                        @endif
-                    </td>
-                    <!-- <td>
-                        <a href="javascript:void(0);" data-INVLiveLink="{{ $g_link.'/gb' }}" id="Inv_live_c_link_{{$i}}"
-                           class="btn btn-sm btn-outline-success mb-1 mr-2 border-0 btn-shadow">
-                            <svg class="icon font-10 mr-1">
-                                <use xlink:href="../images/icons.svg#icon_dot"></use>
-                            </svg>
-                            Check Submissions
-                        </a>
-                    </td> -->
-                </tr>
-
-
-                <?php
-                } ?>
-
-                </tbody>
             </table>
                         </div>
                     </div>
@@ -120,5 +86,38 @@
             ]
         });
     });
+</script>
+
+<script>
+  function getReports() {
+    $("#getData").hide();
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    var getreports = $("#getreports").val();
+    var data = getreports.split(',');
+    var class_name = data[0];
+    var section = data[1];
+    // var subject = data[2];
+    // var allReports = allReports;
+    $('.loading').show();
+    $.ajax({
+      url: "{{url('admin/filter-reports')}}",
+      type: 'POST',
+      data: {
+        class   : class_name,
+        section : section,
+        // subject : subject,
+        // allReports : allReports
+      },
+      success: function(info) {
+        $('#getData').html(info);
+        $('.loading').fadeOut();
+        $('#getData').show();
+      }
+    });
+  }
 </script>
 @endsection

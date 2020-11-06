@@ -20,4 +20,9 @@ class Student extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function classwork()
+    {
+        return $this->hasMany(ClassWork::class,'class_id','class_id');
+    }
 }

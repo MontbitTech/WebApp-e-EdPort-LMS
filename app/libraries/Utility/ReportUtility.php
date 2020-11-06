@@ -6,6 +6,7 @@ use App\ClassWork;
 use App\StudentClass;
 use App\Http\Helpers\CommonHelper;
 use App\Http\Helpers\CustomHelper;
+use App\Models\ClassSection;
 
 /**
  * Class ReportUtility
@@ -27,17 +28,18 @@ class ReportUtility
                 $q->where('teacher_id', $teacherId);
             })
             ->get();
+        $isStudentGrade = false;
 
-        return ClassWorkUtility::calculateGrade($classWorks, $verifyToken , $refreshToken);
+        return ClassWorkUtility::calculateGrade($classWorks,$isStudentGrade, $verifyToken , $refreshToken);
     }
 
-    public static function getAssignmentSubmissionGradesAdmin ()
+    public static function getAssignmentSubmissionGradesAdmin ($isStudentGrade)
     {
         $verifyToken = CommonHelper::varify_Admintoken();
         $refreshToken = CustomHelper::get_refresh_token();
+        $classWorks = ClassWork::with('studentClass', 'studentClass.dateClass','student')->get();
 
-        $classWorks = ClassWork::with('studentClass', 'studentClass.dateClass')->get();
-        return ClassWorkUtility::calculateGrade($classWorks, $verifyToken , $refreshToken);
+        return ClassWorkUtility::calculateGrade($classWorks, $isStudentGrade,$verifyToken , $refreshToken);
     }
 
     /**
@@ -56,7 +58,6 @@ class ReportUtility
     public static function getClassAttedanceAverage ()
     {
         $classrooms = StudentClass::with('dateClass')->get();
-
         return ClassWorkUtility::calculateAttedance($classrooms);
     }
 }

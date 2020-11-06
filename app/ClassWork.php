@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class ClassWork extends Model
 {
   protected $table = 'tbl_classwork';
@@ -31,4 +32,9 @@ class ClassWork extends Model
 	{
 		return $this->belongsTo('App\ClassTopic','topic_id','id');
 	}
+
+   public function student()
+    {
+      return $this->belongsTo('App\Models\Student','class_id','class_id');
+    }
 }

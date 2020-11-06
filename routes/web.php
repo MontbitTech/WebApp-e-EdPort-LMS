@@ -70,6 +70,7 @@ Route::group(['middleware' => 'adminsession'], function () {
 
     /* reports */
     Route::get('admin/reports', 'ReportController@reports')->name('reports.index');
+    Route::post('admin/filter-reports', 'ReportController@filterReports')->name('filter-reports');
 
     /*Support Help*/
 
