@@ -22,19 +22,19 @@ class LectureController extends Controller
         $student = Student::find($student_id);
         // dd($class_id_data->class_name);
         $class_id_data = Classes::find($student->class_id);
-
-        // dd($class_id_data->class_name);
-        $stundent_aa = StudentClass::where('id', $class_id_data->id);
-        // ->where('section_name', $class_id_data->section_name);
-        dd($stundent_aa);
-        $TodayLiveData = DateClass::with('studentClass', 'studentSubject', 'teacher')->where('class_id', $student->class_id)
+        //dd($class_id_data->id);
+        $stundent_data = StudentClass::where('class_name', $class_id_data->class_name)
+            ->where('section_name', $class_id_data->section_name)
+            ->get();
+        dd($stundent_data);
+        $TodayLiveData = DateClass::with('studentClass', 'studentSubject', 'teacher')->where('class_id', $stundent_data)
             ->where(function ($query) use ($currentTime, $currentDay) {
                 //$query->where('to_timing','>',$currentTime);
                 $query->where('class_date', '=', $currentDay);
             })
             ->orderBy('from_timing', 'desc')
             ->get();
-        // dd($TodayLiveData);
+        dd($TodayLiveData);
         // $pastClassData = DateClass::with('studentClass', 'studentSubject', 'teacher')->where('class_id', $student->class_id)
         //     ->where('class_date', '>', DateUtility::getPastDate(2))
         //     ->Where('class_date', '<', DateUtility::getDate())
