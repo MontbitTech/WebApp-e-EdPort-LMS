@@ -65,10 +65,9 @@
 </td>
 
 <td>
-@if(isset($gradeAverage[$studentClass->id]))
-{{$gradeAverage[$studentClass->id]}}
-@endif
-
+    @if(isset($gradeAverage[$studentClass->id]))
+    {{$gradeAverage[$studentClass->id]}}
+    @endif
 </td>
 
 <!-- <td>
@@ -99,7 +98,7 @@ Check Submissions
             <th style="width:20%">Students</th>
             <th style="width:20%">Email</th>
             <th style="width:20%">Attendance %</th>
-            <th style="width:20%">Grade Average</th>
+            <!-- <th style="width:20%">Grade Average</th> -->
             <!-- <th style="width:20%">Classes Conducted</th> -->
         </tr>
     </thead>
@@ -129,11 +128,11 @@ Check Submissions
                } } }?> 
                 <td>{{$attendancePercentage}}</td>  
 
-                <td>
-                @if(isset($studentGradeAverage[$student->id]))
+               <!--  <td>
+                @if(isset($gradeAverage[$student->id]))
                 {{$gradeAverage[$student->id]}}
                 @endif
-               </td>
+               </td> -->
 
             </tr>
        <?php

@@ -5,6 +5,8 @@ namespace App\libraries\Utility;
 use App\Http\Helpers\CommonHelper;
 use App\Http\Helpers\CustomHelper;
 use App\Models\Attendance;
+use Illuminate\Support\Facades\Session;
+
 
 /**
  * Class ClassWorkUtility
@@ -13,9 +15,14 @@ use App\Models\Attendance;
 class ClassWorkUtility
 {
 
-    public static function listCourseWorkSubmissions ($classroomId, $courseWorkId,$token, $refreshToken)
+    public static function listCourseWorkSubmissions ($classroomId, $courseWorkId,$token)
     {
-        // $token = CommonHelper::varify_Teachertoken();
+        if(Session::get('teacher_session'))
+        $refreshToken = CustomHelper::get_refresh_teacher_token();
+
+        if(Session::get('admin_session'))
+        $refreshToken = CustomHelper::get_refresh_token();
+
         $url = "https://classroom.googleapis.com/v1/courses/" . $classroomId . "/courseWork/" . $courseWorkId . "/studentSubmissions";
 
         $headers = array(
@@ -38,51 +45,33 @@ class ClassWorkUtility
         return $response;
     }
 
-    public static function calculateGrade ($classWorks,$isStudentGrade, $verifyToken, $refreshToken){
+    public static function calculateGrade ($classWorks, $verifyToken){
         foreach ( $classWorks as $classWork ) {
-            $response = ClassWorkUtility::listCourseWorkSubmissions($classWork->g_class_id, $classWork->google_classwork_id,$verifyToken, $refreshToken);
+            $response = ClassWorkUtility::listCourseWorkSubmissions($classWork->g_class_id, $classWork->google_classwork_id,$verifyToken);
             if ( isset($response['data']->studentSubmissions) ) {
                 foreach ( $response['data']->studentSubmissions as $submission ) {
-                    if ( isset($submission->draftGrade) && !$isStudentGrade ) {
+                    if ( isset($submission->draftGrade) ) {
                         $maxPoints = $classWork->g_points ? $classWork->g_points :
                             $submission->submissionHistory[ count($submission->submissionHistory) - 1 ]->gradeHistory->maxPoints;
                         $grades[ $classWork->studentClass->id ][] = number_format(( $submission->draftGrade / $maxPoints ) * 100, 2);
-                    }
-                    else{
-                        if(isset($submission->draftGrade)  && $submission->userId == $classWork->student->email){
-                            $maxPoints = $classWork->g_points ? $classWork->g_points :
-                            $submission->submissionHistory[ count($submission->submissionHistory) - 1 ]->gradeHistory->maxPoints;
-                            $grades[ $classWork->student->id ][] = number_format(( $submission->draftGrade / $maxPoints ) * 100, 2); 
-                        }
+
                     }
                 }
             }
         }
         $averageGrade = array();
-        if ( isset($grades) && !$isStudentGrade ) {
+        $averageGradeStudent = array();
+        if ( isset($grades) ) {
             foreach ( $grades as $classId => $classGrades ) {
                 $averageOf = array();
                 foreach ( $classGrades as $classGrade ) {
                     $averageOf[] = $classGrade;
                 }
                 $averageGrade[ $classId ] = array_sum($averageOf) / count($averageOf);
-            }
+            }  
              return $averageGrade;
          }
-
-        else{
-        if ( isset($grades) ) {
-            foreach ( $grades as $studentId => $studentGrades ) {
-                $averageOf = array();
-                foreach ( $studentGrades as $studentGrade ) {
-                    $averageOf[] = $studentGrade;
-                }
-                $averageGrade[ $studentId ] = array_sum($averageOf) / count($averageOf);
-            }
-         }
-                return $averageGrade;
-        }
-    }
+   }
 
     public static function calculateAttedance ($classrooms)
     {
