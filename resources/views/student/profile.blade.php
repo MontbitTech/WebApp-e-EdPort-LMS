@@ -43,7 +43,7 @@
                                     <img class="profile-user-img img-fluid img-circle" src="{{asset('student/assets/img/student.png')}}" alt="User profile picture">
                                 </div>
 
-                                <h3 class="profile-username text-center">Nina Mcintire</h3>
+                                <h3 class="profile-username text-center">{{Auth::user()}}</h3>
 
                                 <p class="text-muted text-center">Student</p>
 
@@ -51,15 +51,15 @@
 
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Email address</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" readonly>
                                     </div>
 
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Contact no</label>
-                                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter phone">
+                                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter phone" readonly>
                                     </div>
 
-                                    <div class="form-group">
+                                    <!-- <div class="form-group">
                                         <label for="exampleInputFile">Choose Profile</label>
                                         <div class="input-group">
                                             <div class="custom-file">
@@ -67,7 +67,7 @@
                                                 <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </form>
 
                                 <button type="submit" class="btn btn-info btn-block"><b>Update</b></button>
@@ -76,7 +76,7 @@
                         <!--./ Profile- student -->
 
                         <!-- Profile-About me -->
-                        <div class="card card-info">
+                        <!-- <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">About Me</h3>
                             </div>
@@ -93,7 +93,7 @@
 
                                 <p class="text-muted">Malibu, California</p>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- /.Profile-About me -->
 
                     </div>
@@ -101,14 +101,13 @@
                     <div class="col-md-8">
 
                         <!-- Profile-Performance card -->
-                        <div class="card card-info collapsed-card">
+                        <!-- <div class="card card-info collapsed-card">
                             <div class="card-header border-transparent">
                                 <h3 class="card-title">Performance Card</h3>
                                 <div class="card-tools">
                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                         <i class="fas fa-plus"></i>
                                     </button>
-
                                 </div>
                             </div>
 
@@ -118,11 +117,11 @@
                                     <option value="english">English</option>
                                     <option value="hindi">Hindi</option>
                                     <option value="math">Math</option>
-                                </select>
+                                </select> -->
 
-                                <!-- English -->
+                        <!-- English -->
 
-                                <div class="table-responsive subj english mt-1 p-2">
+                        <!-- <div class="table-responsive subj english mt-1 p-2">
                                     <label for="select_dob">English</label>
                                     <table id="example1" class="table table-bordered table-striped table-sm">
                                         <thead>
@@ -142,13 +141,13 @@
 
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> -->
 
-                                <!-- ./English -->
+                        <!-- ./English -->
 
-                                <!-- Hindi -->
+                        <!-- Hindi -->
 
-                                <div class="table-responsive subj hindi mt-1 p-2">
+                        <!-- <div class="table-responsive subj hindi mt-1 p-2">
                                     <label for="select_dob">Hindi</label>
                                     <table id="example2" class="table table-bordered table-striped table-sm">
                                         <thead>
@@ -168,13 +167,13 @@
 
                                         </tbody>
                                     </table>
-                                </div>
+                                </div> -->
 
-                                <!-- ./Hindi -->
+                        <!-- ./Hindi -->
 
-                            </div>
+                        <!-- </div>
 
-                        </div>
+                        </div> -->
                         <!-- /.Profile-Performance card -->
 
                         <!-- Profile-Attendance -->
@@ -195,28 +194,30 @@
                                             <tr>
                                                 <th>Date</th>
                                                 <th>Status</th>
+                                                <th>Subject's</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-
+                                            @foreach($attendances as $persent)
                                             <tr>
-                                                <td>1 July 2020</td>
+                                                <td>{{$persent->dateclass->class_date}}</td>
+                                                @if($persent->status==1)
                                                 <td>Present</td>
+                                                @else
+                                                <td>Absent</td>
+                                                @endif
+                                                <td>{{$persent->dateclass->studentSubject->subject_name}}</td>
                                             </tr>
-
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
-                                <!-- /.table-responsive -->
                             </div>
                         </div>
                         <!-- /.Profile-Attendance -->
 
                     </div>
-
                 </div>
-                <!-- /.container-fluid -->
-
         </section>
     </div>
 

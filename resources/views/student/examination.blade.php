@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="{{route('teacher.examination')}}">Student</a></li>
+                        <li class="breadcrumb-item"><a href="">Student</a></li>
                         <li class="breadcrumb-item active">Examination</li>
                     </ol>
                 </div>
@@ -141,7 +141,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="row">
+                    <!-- <div class="row">
                         <div class="col-md-6">
                             <div class="small-box bg-info ">
                                 <div class="inner">
@@ -186,7 +186,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- Profile-Performance card -->
                     <div class="card card-info collapsed-card">
                         <div class="card-header border-transparent">
@@ -195,7 +195,6 @@
                                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                     <i class="fas fa-plus"></i>
                                 </button>
-
                             </div>
                         </div>
 
