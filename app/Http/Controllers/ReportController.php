@@ -7,6 +7,10 @@ use App\InvitationClass;
 use App\libraries\Utility\ReportUtility;
 use App\StudentClass;
 use App\SupportVideo;
+use App\Models\ClassSection;
+use App\Models\Student;
+use App\Models\Attendance;
+use App\Teacher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
@@ -73,7 +77,17 @@ class ReportController extends Controller
         return view('teacher.report.report', compact('inviteClassData', 'gradeAverage', 'totalClassesOfClassrooms', 'cancelledClassesOfClassrooms', 'attendanceAverage'));
     }
 
-     public function reports(Request $request)
+    public function reports()
+    {
+        $studentClassData = StudentClass::with('studentSubject','ClassTiming','dateClass')
+        ->orderBy('id', 'DESC')
+        ->distinct()
+        ->get(['class_name','section_name']);
+
+        return view('admin.reports.index', compact('studentClassData'));
+    }
+
+    public function filterReports(Request $request)
     {
         set_time_limit(0);
         $totalClassesOfClassrooms = StudentClass::with('dateClass')->get()->pluck('dateClass.*', 'id');
@@ -82,14 +96,33 @@ class ReportController extends Controller
             $q->where('cancelled', 1);
         }])->get()->pluck('dateClass.*', 'id');
 
-        $inviteClassData = StudentClass::with('studentSubject')
+        if($request->class && $request->section ){
+            $studentClassData = StudentClass::with('studentSubject','dateClass','classtiming')
+            ->where('class_name', $request->class)
+            ->where('section_name', $request->section)
             ->orderBy('id', 'DESC')
             ->get();
+        }
+        else
+        {
+            $studentClassData = StudentClass::with('studentSubject','dateClass')
+            ->orderBy('id', 'DESC')
+            ->get();
+        }
+        $teacherData   = Teacher::get();
+        $getAttendance = Attendance::with('student')->get();
 
-        $attendanceAverage = ReportUtility::getClassAttedanceAverage();
+        if($request->class && $request->section ){
+            $getStudents = ClassSection::with('students')->where('class_name', $request->class)->where('section_name', $request->section)->get();
+        }
+        else
+        {
+            $getStudents = ClassSection::with('students')->get();
+        }
 
-        $gradeAverage = ReportUtility::getAssignmentSubmissionGradesAdmin();
+        $attendanceAverage     = ReportUtility::getClassAttedanceAverage();
+        $gradeAverage          = ReportUtility::getAssignmentSubmissionGradesAdmin();
 
-        return view('admin.reports.index', compact('inviteClassData', 'totalClassesOfClassrooms', 'cancelledClassesOfClassrooms', 'attendanceAverage'));
+        return view('admin.reports.filter-reports', compact('studentClassData', 'totalClassesOfClassrooms', 'cancelledClassesOfClassrooms', 'attendanceAverage','getStudents','gradeAverage','teacherData','getAttendance'));
     }
 }
