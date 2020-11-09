@@ -17,11 +17,6 @@ class ClassWorkUtility
 
     public static function listCourseWorkSubmissions ($classroomId, $courseWorkId,$token)
     {
-        if(Session::get('teacher_session'))
-        $refreshToken = CustomHelper::get_refresh_teacher_token();
-
-        if(Session::get('admin_session'))
-        $refreshToken = CustomHelper::get_refresh_token();
 
         $url = "https://classroom.googleapis.com/v1/courses/" . $classroomId . "/courseWork/" . $courseWorkId . "/studentSubmissions";
 
@@ -33,7 +28,14 @@ class ClassWorkUtility
         $response = RemoteRequest::getJsonRequest($url, $headers);
         if ( !$response['success'] && isset($response['data']->status) ) {
             if ( $response['data']->status == 'UNAUTHENTICATED' ) {
-                // $token = CustomHelper::get_refresh_teacher_token();
+                if(Session::get('teacher_session')){
+                  $refreshToken = CustomHelper::get_refresh_teacher_token();
+                }
+
+                if(Session::get('admin_session')){
+                  $refreshToken = CustomHelper::get_refresh_token();
+                }
+
                 $headers = array(
                     "Authorization: Bearer " . $refreshToken['access_token'],
                     "Content-Type: application/json",
