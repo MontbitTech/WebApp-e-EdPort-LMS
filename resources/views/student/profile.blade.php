@@ -8,10 +8,8 @@
 </style>
 <!-- Wrapper-->
 <div class="wrapper">
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
-
         <!-- Content Header (Page header) -->
         <section class="content-header">
             <div class="container-fluid">
@@ -29,36 +27,27 @@
             </div>
         </section>
         <!-- /.content-header--->
-
         <section class="content">
             <div class="container-fluid">
-
                 <div class="row">
                     <div class="col-md-4">
-
                         <!-- Profile-student -->
                         <div class="card card-info card-outline">
                             <div class="card-body box-profile">
                                 <div class="text-center">
                                     <img class="profile-user-img img-fluid img-circle" src="{{asset('student/assets/img/student.png')}}" alt="User profile picture">
                                 </div>
-
-                                <h3 class="profile-username text-center">{{Auth::user()}}</h3>
-
+                                <h3 class="profile-username text-center">{{--Auth::user()->name--}}</h3>
                                 <p class="text-muted text-center">Student</p>
-
                                 <form class="form-horizontal">
-
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Email address</label>
                                         <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email" readonly>
                                     </div>
-
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Contact no</label>
                                         <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter phone" readonly>
                                     </div>
-
                                     <!-- <div class="form-group">
                                         <label for="exampleInputFile">Choose Profile</label>
                                         <div class="input-group">
@@ -69,7 +58,6 @@
                                         </div>
                                     </div> -->
                                 </form>
-
                                 <button type="submit" class="btn btn-info btn-block"><b>Update</b></button>
                             </div>
                         </div>

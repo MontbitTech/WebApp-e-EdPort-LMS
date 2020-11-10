@@ -45,7 +45,16 @@
                     </tr>
                   </thead>
                   <tbody>
-
+                    @foreach($pastClassData as $pastClass)
+                    <tr>
+                      <td class="text-center">{{$pastClass->studentSubject->subject_name}}</td>
+                      <td class="text-left">{{$pastClass->teacher->name}}</td>
+                      <td class="text-center"><span class="badge badge-info"> {{ date('h:i a',strtotime($pastClass->from_timing))}} to {{ date('h:i a',strtotime($pastClass->to_timing))}}</span></td>
+                      <td class="text-right">
+                        {{date("d M", strtotime($pastClass->class_date))}}
+                      </td>
+                    </tr>
+                    @endforeach
                   </tbody>
                 </table>
               </div>
@@ -78,7 +87,7 @@
                     <tr>
                       <td class="text-center">{{$todayClass->studentSubject->subject_name}}</td>
                       <td class="text-left">{{$todayClass->teacher->name}}</td>
-                      <td class="text-center"><span class="badge badge-info"> {{ date('h:i a',strtotime($todayClass->from_timing))}} to {{ date('h:i a',strtotime($todayClass->to_timing))}}</span></td>
+                      <td class="text-center"><span class="badge badge-info"> {{ date('h:i a',strtotime($todayClass->from_timing))}} </br> {{ date('h:i a',strtotime($todayClass->to_timing))}}</span></td>
                       <td class="text-right">
                         <a href="{{$todayClass->teacher->g_meet_url}}" target="_blank">
                           <span>
@@ -109,20 +118,23 @@
                   <thead>
                     <tr>
                       <th class="text-center">Subject</th>
-                      <th class="text-left">Teacher</th>
-                      <th class="text-right">Time</th>
+                      <th class="text-center">Teacher</th>
+                      <th class="text-center">Time</th>
+                      <th class="text-center">Date</th>
+
                     </tr>
                   </thead>
                   <tbody>
+                    @foreach($futureClassData as $upcoming)
                     <tr>
-                      <td class="text-center">English</td>
-                      <td class="text-left"> Teacher Name</td>
+                      <td class="text-center">{{$upcoming->studentSubject->subject_name}}</td>
+                      <td class="text-left">{{$upcoming->teacher->name}}</td>
+                      <td class="text-center"><span class="badge badge-info"> {{ date('h:i a',strtotime($upcoming->from_timing))}} </br> {{ date('h:i a',strtotime($upcoming->to_timing))}}</span></td>
                       <td class="text-right">
-                        <span class="badge badge-info"> 9:00 AM
-                          </br> 10:00 AM
-                        </span>
+                        {{date("d M", strtotime($upcoming->class_date))}}
                       </td>
                     </tr>
+                    @endforeach
                   </tbody>
                 </table>
               </div>
