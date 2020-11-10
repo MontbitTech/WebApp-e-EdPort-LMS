@@ -174,7 +174,7 @@
                         </div>
                         <div class="card-body pt-2 pb-2">
                             <select class="form-control">
-                                <option value="" id="performance" data-perfomance="{{$i}}">Select subject Name</option>
+                                <option value="" id="performance">Select subject Name</option>
                                 <option value="english">English</option>
                                 <option value="hindi">Hindi</option>
                                 <option value="math">Math</option>
@@ -227,6 +227,7 @@
 <script>
     $('#performance').change('[data-performance]', function() {
         var getChapter = $(this).val();
+        console.log(getChapter);
         var id = $(this).attr('data-performance');
         var class_name = $("#txt_class_name" + id).val();
         var subject_id = $("#txt_subject_id" + id).val();

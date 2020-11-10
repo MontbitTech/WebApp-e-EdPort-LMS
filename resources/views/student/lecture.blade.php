@@ -49,7 +49,7 @@
                     <tr>
                       <td class="text-center">{{$pastClass->studentSubject->subject_name}}</td>
                       <td class="text-left">{{$pastClass->teacher->name}}</td>
-                      <td class="text-center"><span class="badge badge-info"> {{ date('h:i a',strtotime($pastClass->from_timing))}} to {{ date('h:i a',strtotime($pastClass->to_timing))}}</span></td>
+                      <td class="text-center"><span class="badge badge-info"> {{ date('h:i a',strtotime($pastClass->from_timing))}} </br> {{ date('h:i a',strtotime($pastClass->to_timing))}}</span></td>
                       <td class="text-right">
                         {{date("d M", strtotime($pastClass->class_date))}}
                       </td>
