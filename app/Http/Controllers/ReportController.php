@@ -10,12 +10,17 @@ use App\SupportVideo;
 use App\Models\ClassSection;
 use App\Models\Student;
 use App\Models\Attendance;
+use App\Models\Examination\ClassroomExaminationMapping;
+use App\Models\Examination\ExaminationQuestionMapping;
+use App\Models\Examination\ExaminationResult;
 use App\Teacher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\View\View;
+use Response;
+
 
 /**
  * Class ReportController
@@ -82,7 +87,7 @@ class ReportController extends Controller
         $studentClassData = StudentClass::with('studentSubject','ClassTiming','dateClass')
         ->orderBy('id', 'DESC')
         ->distinct()
-        ->get(['class_name','section_name']);
+        ->get(['id','class_name','section_name','subject_id']);
 
         return view('admin.reports.index', compact('studentClassData'));
     }
@@ -124,5 +129,26 @@ class ReportController extends Controller
         $gradeAverage          = ReportUtility::getAssignmentSubmissionGradesAdmin();
 
         return view('admin.reports.filter-reports', compact('studentClassData', 'totalClassesOfClassrooms', 'cancelledClassesOfClassrooms', 'attendanceAverage','getStudents','gradeAverage','teacherData','getAttendance'));
+    }
+
+
+   public function getExaminationList (Request $request)
+    {
+        $examinationList = ClassroomExaminationMapping::with('examination', 'classroom', 'classroom.studentSubject')
+            ->where('classroom_id', $request->classroom_id)
+            ->get();
+
+        return json_encode(array('status' => 'success', 'data' => $examinationList));
+    }
+
+    public function get (Request $request)
+    {
+        $results = ExaminationResult::with('examination', 'student', 'classroom', 'classroom.studentSubject');
+
+        foreach ( $request->all() as $key => $value ) {
+            $results = $results->where($key, $value);
+        }
+
+        return Response::json(['success' => true, 'response' => $results->get()]);
     }
 }

@@ -71,6 +71,8 @@ Route::group(['middleware' => 'adminsession'], function () {
     /* reports */
     Route::get('admin/reports', 'ReportController@reports')->name('reports.index');
     Route::post('admin/filter-reports', 'ReportController@filterReports')->name('filter-reports');
+    Route::get('/admin/examination/getExamsList','ReportController@getExaminationList');
+    Route::get('/admin/examination/resultList','ReportController@get');
 
     /*Support Help*/
 
