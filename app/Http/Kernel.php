@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\AuthCheck;
+use App\Http\Middleware\CheckStudentSession;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -67,5 +68,6 @@ class Kernel extends HttpKernel
         'adminsession'     => \App\Http\Middleware\CheckAdminSession::class,
         'CheckUserToken'   => \App\Http\Middleware\CheckUserToken::class,
         'AuthCheck'        => AuthCheck::class,
+        'studentsession'   => CheckStudentSession::class
     ];
 }
