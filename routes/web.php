@@ -221,13 +221,17 @@ Route::get('/student', 'Student\LoginController@index')->name('student.index');
 
 Route::post('/student/login', 'Student\LoginController@studentLoginPost')->name('student.login.post');
 Route::get('/student/login', 'Student\LoginController@studentLoginGet')->name('student.login');
-// Dashboard
-Route::get('student/dashboard', 'Student\DashboardController@index')->name('student.dashboard');
-// Lecture
-Route::get('student/lecture', 'Student\LectureController@index')->name('student.lecture');
-// Examination
-Route::get('student/examination', 'Student\ExaminationController@index')->name('student.examination');
-// Profile
-Route::get('student/profile', 'Student\ProfileController@index')->name('student.profile');
-// Register
-Route::get('student/register', 'Student\RegisterController@index')->name('student.register');
+
+Route::group(['middleware' => 'studentsession'], function () {
+
+});
+    // Dashboard
+    Route::get('student/dashboard', 'Student\DashboardController@index')->name('student.dashboard');
+    // Lecture
+    Route::get('student/lecture', 'Student\LectureController@index')->name('student.lecture');
+    // Examination
+    Route::get('student/examination', 'Student\ExaminationController@index')->name('student.examination');
+    // Profile
+    Route::get('student/profile', 'Student\ProfileController@index')->name('student.profile');
+    // Register
+    Route::get('student/register', 'Student\RegisterController@index')->name('student.register');
