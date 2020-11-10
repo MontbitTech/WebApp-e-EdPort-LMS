@@ -4,6 +4,11 @@ namespace App\libraries\Utility;
 
 use App\ClassWork;
 use App\StudentClass;
+use App\Models\Student;
+use App\Http\Helpers\CommonHelper;
+use App\Http\Helpers\CustomHelper;
+use App\Models\ClassSection;
+
 
 /**
  * Class ReportUtility
@@ -17,13 +22,21 @@ class ReportUtility
      */
     public static function getAssignmentSubmissionGrades ($teacherId)
     {
+        $verifyToken = CommonHelper::varify_Teachertoken();
         $classWorks = ClassWork::with('studentClass', 'studentClass.dateClass')
             ->whereHas('studentClass.dateClass', function ($q) use ($teacherId) {
                 $q->where('teacher_id', $teacherId);
             })
             ->get();
+        return ClassWorkUtility::calculateGrade($classWorks, $verifyToken);
+    }
 
-        return ClassWorkUtility::calculateGrade($classWorks);
+    public static function getAssignmentSubmissionGradesAdmin ()
+    {
+        $verifyToken = CommonHelper::varify_Admintoken();
+        $classWorks = ClassWork::with('studentClass', 'studentClass.dateClass')->get();
+
+        return ClassWorkUtility::calculateGrade($classWorks,$verifyToken);
     }
 
     public static function getClassAssignmentSubmissionGrades()
@@ -49,7 +62,6 @@ class ReportUtility
     public static function getClassAttedanceAverage ()
     {
         $classrooms = StudentClass::with('dateClass')->get();
-
         return ClassWorkUtility::calculateAttedance($classrooms);
     }
 }

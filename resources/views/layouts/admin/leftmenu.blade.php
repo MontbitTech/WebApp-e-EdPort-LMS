@@ -4,7 +4,11 @@
 			<animateTransform attributeType="xml" attributeName="transform" type="rotate" from="0 25 25" to="360 25 25" dur="0.8s" repeatCount="indefinite" />
 		</path>
 	</svg>
+	@if(Request::segment(2) == 'reports')
+	Please wait...
+	@endif
 </div>
+
 <style>
 	a.disabled {
 		pointer-events: none;
@@ -300,12 +304,11 @@ $slogo = $logo->value;
 					Csv Uploads</a></div>
 		</div>
 
-		<!-- <div class="left-card">
+		<div class="left-card">
 			<div class="left-link {{ Request::segment(2) == 'reports'?'active':''}}"><a href="{{route('reports.index')}}" class="{{$support}} pl-3">
 					<i class="fas fa-file-import icon icon-4x" aria-hidden="true"></i>
-
 					Reports</a></div>
-		</div> -->
+		</div>
 
 		<div class="text-center text-white w-100 " style="position:absolute;bottom:0;font-size: 10px;letter-spacing: 1px;">
 			<img src="{{asset('images/logo-1.png')}}" alt="e-edport" width="50px">
