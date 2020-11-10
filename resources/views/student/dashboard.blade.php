@@ -7,7 +7,7 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1 class="m-0 text-dark">Welcome [Student Name]</h1>
+          <h1 class="m-0 text-dark">Welcome {{Auth::user()->name}}</h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
@@ -21,20 +21,22 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
+        @if(!empty($LiveClass))
         <div class="col-md-6">
-          <!-- small box -->
           <div class="small-box bg-info ">
             <div class="inner">
-              <h4>[Subject]</h4>
-              <p>By [Teacher Name]</p>
-              <p>9:00 AM To 10:00 AM</p>
+              <h4>{{$LiveClass[0]->studentSubject->subject_name}}</h4>
+              <p>By {{$LiveClass[0]->teacher->name}}</p>
+              <p>{{ date('h:i a',strtotime($LiveClass[0]->from_timing))}} To {{ date('h:i a',strtotime($LiveClass[0]->to_timing))}}</p>
             </div>
             <div class="icon">
               <i class="fas fa-book-reader"></i>
             </div>
-            <a href="#" class="small-box-footer">Join Lecture <i class="fas fa-arrow-circle-right ml-2"></i></a>
+            <a href="{{$LiveClass[0]->teacher->g_meet_url}}" target="_blank" class="small-box-footer">Join Lecture <i class="fas fa-arrow-circle-right ml-2"></i></a>
           </div>
+
         </div>
+        @endif
         <div class="col-md-6">
           <div class="card card-info">
             <div class="card-header border-transparent">
@@ -58,17 +60,19 @@
                     </tr>
                   </thead>
                   <tbody>
+                    @foreach($TodayLiveData as $todayClass)
                     <tr>
-                      <td>[Subject Name]</td>
-                      <td>[Teacher Name]</td>
-                      <td><span class="badge badge-info"> 9:00 AM
-                          </br> 10:00 AM</span></td>
-                      <td>
-                        <a href="#">
-                          <span><i class="fas fa-lg icon-3x fa-arrow-circle-right text-info ml-2"></i></span>
+                      <td class="text-center">{{$todayClass->studentSubject->subject_name}}</td>
+                      <td class="text-left">{{$todayClass->teacher->name}}</td>
+                      <td class="text-center"><span class="badge badge-info"> {{ date('h:i a',strtotime($todayClass->from_timing))}} </br> {{ date('h:i a',strtotime($todayClass->to_timing))}}</span></td>
+                      <td class="text-right">
+                        <a href="{{$todayClass->teacher->g_meet_url}}" target="_blank">
+                          <span>
+                            <i class="fas fa-lg icon-3x fa-arrow-circle-right text-info"></i></span>
                         </a>
                       </td>
                     </tr>
+                    @endforeach
                   </tbody>
                 </table>
               </div>
