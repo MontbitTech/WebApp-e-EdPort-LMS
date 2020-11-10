@@ -23,6 +23,7 @@ Homestead.json
 
 credentials_teacher.json
 credentials.json
+credentials_student.json
 
 
 vendor/autoload.php

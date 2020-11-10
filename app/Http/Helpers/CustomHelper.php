@@ -203,7 +203,82 @@ class CustomHelper
         return $client->getAccessToken();
     }
 
+    public static function set_token_student()
+    {
+        $client = new Google_Client();
+        $client->setAuthConfigFile('../credentials_student.json');
+        $client->addScope('https://www.googleapis.com/auth/classroom.courses');
+        $client->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
+        $client->addScope('https://www.googleapis.com/auth/classroom.rosters');
+        $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.email');
+        $client->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
+        //$client->setRedirectUri('http://lms.schooltimes.ca/public/admin/login');
 
+        $auth_url = $client->createAuthUrl();
+
+        return $auth_url;
+    }
+
+    public static function get_token_student($code)
+    {
+        $c = new Google_Client();
+        $c->setAuthConfigFile('../credentials_student.json');
+
+
+        /*  $data = file_get_contents('../credentials_teacher.json');
+          echo  $data;
+         exit;  */
+        $c->addScope('https://www.googleapis.com/auth/classroom.courses');
+        $c->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
+        $c->addScope('https://www.googleapis.com/auth/classroom.rosters');
+        $c->addScope('https://www.googleapis.com/auth/admin.directory.user');
+        $c->addScope('https://www.googleapis.com/auth/userinfo.email');
+        $c->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $c->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $c->setAccessType('offline');
+        $c->setApprovalPrompt('force');
+
+        $c->authenticate($code);
+
+
+        Session::put('access_token_student', $c->getAccessToken());
+
+        return true; //redirect()->route('/');
+    }
+
+    public static function get_refresh_student_token($token = false)
+    {
+        $client = new Google_Client();
+        $client->setAuthConfig(base_path() . '/credentials_student.json');
+        $client->addScope('https://www.googleapis.com/auth/classroom.courses');
+        $client->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
+        $client->addScope('https://www.googleapis.com/auth/classroom.rosters');
+        $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.email');
+        $client->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
+
+        if ($token)
+            $client->setAccessToken($token);
+        else
+            $client->setAccessToken(Session::get('access_token_student'));
+
+        if ($client->isAccessTokenExpired()) {
+            if ($client->getRefreshToken()) {
+                $client->fetchAccessTokenWithRefreshToken($client->getRefreshToken());
+            }
+            Session::put('access_token_student', $client->getAccessToken());
+        }
+
+        return $client->getAccessToken();
+    }
+    
     public static function getCMSTopics($class_id, $subject_id)
     {
 

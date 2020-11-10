@@ -216,6 +216,11 @@ Route::get('/timeTable/{class}/{section}', 'ImportTimetableController@download_T
 // *********** Student ************
 // **********************************
 
+
+Route::get('/student', 'Student\LoginController@index')->name('student.index');
+
+Route::post('/student/login', 'Student\LoginController@studentLoginPost')->name('student.login.post');
+Route::get('/student/login', 'Student\LoginController@studentLoginGet')->name('student.login');
 // Dashboard
 Route::get('student/dashboard', 'Student\DashboardController@index')->name('student.dashboard');
 // Lecture
