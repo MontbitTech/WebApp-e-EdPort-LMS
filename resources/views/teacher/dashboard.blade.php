@@ -5,12 +5,25 @@
     .top-padding {
         padding-top: 0.625rem !important;
     }
+
+    .btn-primary:not(:disabled):not(.disabled).active {
+        background-color: #373c8e;
+    }
 </style>
 <?php
 $cls = 0;
 ?>
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.css" />
+<script>
+    var a = $(window).width();
+    if (a <= 500) {
+        $('body').addClass('menu-open')
+    }
 
+    //  var height = $('.slide').css("height", y);
+    //console.log(height);
+    // console.log(y, x);
+</script>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.21/af-2.3.5/datatables.min.js"></script>
 
 <section class="main-section">
@@ -19,20 +32,21 @@ $cls = 0;
             <div class="col-sm-12">
                 <ul class="nav nav-tabs1 nav-pills" id="myTab" role="tablist">
                     <li class="nav-item mb-1">
-                        <a class="nav-link shadow-sm active" data-toggle="tab" href="#ulclasses" role="tab" aria-selected="true">Today's Live Classes</a>
+                        <!-- <a class="nav-link shadow-sm active tab-nav display-view-moblie" data-toggle="tab" href="#ulclasses" role="tab" aria-selected="true">Today's Classes</a> -->
+                        <a class="nav-link shadow-sm active tab-nav display-view-moblie" data-toggle="tab" href="#ulclasses" role="tab" aria-selected="true">Today's <b class="display-none-mobile">Live</b> Classes</a>
                     </li>
-                    <li class="nav-item mb-1">
-                        <a class="nav-link shadow-sm" data-toggle="tab" href="#plclasses" role="tab">Past Classes</a>
+                    <li class="nav-item mb-1 margin-left-mobile">
+                        <a class="nav-link shadow-sm tab-nav float-right-mobile" data-toggle="tab" href="#plclasses" role="tab">Past Classes</a>
                     </li>
                     <!-- <li class="nav-item mb-1">
                         <a class="nav-link shadow-sm" data-toggle="tab" href="#newInvitationclasses" role="tab">Assignment Submission Summary</a>
                     </li> -->
-                    <li class="nav-item mb-1 futuer-m ">
-                        <a class="nav-link shadow-sm" data-toggle="tab" href="#upcomingclasses" role="tab">Future
+                    <li class="nav-item mb-1 ">
+                        <a class="nav-link shadow-sm tab-nav" data-toggle="tab" href="#upcomingclasses" role="tab">Future
                             Classes</a>
                     </li>
-                    <li class="nav-item mb-1 ml-md-auto futuer-m ">
-                        <a class="nav-link shadow-sm mr-0" data-toggle="modal" href="#addClassModal" role="modal">
+                    <li class="nav-item mb-1 ml-md-auto margin-left-mobile">
+                        <a class="nav-link shadow-sm mr-0 tab-nav float-right-mobile1" data-toggle="modal" href="#addClassModal" role="modal">
                             <svg class="icon mr-1">
                                 <use xlink:href="../images/icons.svg#icon_plus"></use>
                             </svg>
@@ -41,675 +55,11 @@ $cls = 0;
                     </li>
                 </ul>
                 <div class="tab-content pt-3">
-                    <div class="tab-pane fade show active" id="ulclasses">
-
-                        @if(count($TodayLiveData) > 0)
-
-                        @php
-                        $i=1;
-                        @endphp
-                        @foreach ($TodayLiveData as $t)
-
-                        <?php
-                        $cls = 0;
-                        $class_name = '';
-                        $section_name = '';
-                        $g_class_id = '';
-                        $subject_name = '';
-                        if ($t->studentClass) {
-                            $class_name = $t->studentClass->class_name;
-                            $cls = $t->studentClass->class_name;
-                            // $class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
-                            $section_name = $t->studentClass->section_name;
-                            $g_class_id = $t->studentClass->g_class_id;
-                        }
-                        if ($t->studentSubject) {
-                            $subject_name = $t->studentSubject->subject_name;
-                        }
-                        ?>
-
-                        <div class="card text-center mb-3">
-                            <input type="hidden" id="dateClass_id{{$i}}" value="{{$t->id}}">
-                            <input type="hidden" id="txt_class_id{{$i}}" value="{{$t->class_id}}">
-                            <input type="hidden" id="txt_class_name{{$i}}" value="{{$class_name}}">
-                            <input type="hidden" id="txt_section_id{{$i}}" value="{{$section_name}}">
-                            <input type="hidden" id="txt_from_timing{{$i}}" value="{{ date('h:i a',strtotime($t->from_timing))}}">
-                            <input type="hidden" id="txt_subject_id{{$i}}" value="{{$t->subject_id}}">
-                            <input type="hidden" id="txt_section_name{{$i}}" value="{{$section_name}}">
-                            <input type="hidden" id="txt_subject_name{{$i}}" value="{{$subject_name}}">
-                            <input type="hidden" id="txt_today_date{{$i}}" value="{{$todaysDate}}">
-                            <input type="hidden" id="txt_teacher_id{{$i}}" value="{{$t->teacher_id}}">
-                            <input type="hidden" id="txt_desc{{$i}}" value="{{$t->class_description}}">
-                            <input type="hidden" id="txt_gMeetURL{{$i}}" value="{{$teacherData->g_meet_url}}">
-                            <input type="hidden" id="txt_to_timing{{$i}}" value="{{ date('h:i a',strtotime($t->to_timing))}}">
-                            <input type="hidden" id="txt_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
-                            <input type="hidden" id="g_class_id_{{$i}}" value="{{ $g_class_id}}" />
-                            <div class="card-header text-white p-0   @if(date('H:i',strtotime($t->to_timing)) <= date('H:i')) bg-secondary @endif" style="background:#253372;">
-                                <div class="container">
-                                    <div class="row ">
-                                        <div class="d-flex align-items-center col-md-2  pr-0">
-                                            <div class=" pt-1 font-weight-bold">
-                                                {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
-                                        </div>
-                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-3 p-0"> Class: {{ $class_name }} Std</div>
-                                        <div class="col-md-1 col-1 col-lg-1 col-sm-1 font-weight-bold pt-3 p-0"> Section:{{$section_name}}</div>
-                                        <div class="col-md-5 col-5 col-lg-5 col-sm-5 font-weight-bold text-center  m-0 pt-3 p-0"> Subject: {{$subject_name}}</div>
-                                        <div class="col-md-2 col-2 col-lg-2 col-sm-2 font-weight-bold pt-1 pr-0 text-center">
-                                            <div class="row">
-                                                <div class="col-md-6 col-6 col-lg-6 p-0 m-0">
-                                                    @if($t->cancelled)
-                                                    <button class="btn btn-md bg-danger text-white  mb-0 ml-2 font-weight-bold mt-1">Cancelled</button>
-                                                    @else
-                                                    <button type="button" data-editModal="{{$i}}" class="btn mr-2 text-right  btn-md pb-0 mb-0 pt-2 border-0 text-white" title="Edit">
-                                                        <i class="fas fa-edit mr-1"></i>Edit
-                                                    </button>
-                                                    @endif
-                                                </div>
-                                                <div class="col-md-6 col-6 col-lg-6">
-                                                    <button type="button" class="btn btn-collapse text-white mb-1 mt-1 pl-2 pr-2 pt-1 pb-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="  @if((date('H:i',strtotime($t->from_timing))  <= date('H:i')) &(date('H:i') <= date('H:i',strtotime($t->to_timing))) )  fa fa-minus @else fas fa-plus  @endif "></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="collapse card-border @if((date('H:i',strtotime($t->from_timing)) <= date('H:i')) &(date('H:i') <=date('H:i',strtotime($t->to_timing))) ) show @endif " id="collapseExample{{$t->id}}">
-                                <div class="card-body p-0">
-                                    <div class="row m-2">
-
-                                        <div class="col-md-6 mt-1">
-                                            <div class="row">
-
-                                                <div class="col-md-6">
-
-                                                    <select class="form-control custom-select-sm border-0 btn-shadow chapter" id="chapter" name="chap" data-chapter="{{$i}}" @if($t->cancelled)disabled @endif>
-                                                        <option value="Select Chapter">Select Chapter</option>
-                                                        @if(count($chapters)>0)
-                                                        @foreach($chapters->unique('chapter') as $ch)
-                                                        @if($ch->class==$cls && $ch->subject==$t->subject_id)
-                                                        <?php $selected = ($ch->id == $t->topic_id) ? 'selected' : ''; ?>
-                                                        <option value="{{$ch->chapter}}" {{$selected}}>{{$ch->chapter}}</option>
-                                                        @endif
-                                                        @endforeach
-                                                        @endif
-
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <?php
-                                                    $topics = \DB::select('select * from tbl_student_subjects s, tbl_cmslinks c where c.subject = s.id and c.subject=? and c.class = ?', [$t->subject_id, $cls]);
-
-                                                    //if($t->subject_id == 2)
-                                                    //  dd($topics);
-
-                                                    //dd($topics);
-                                                    //App\Http\Helpers\CustomHelper::getCMSTopics($t->class_id,$t->subject_id);
-                                                    $x = $t->cmsLink;
-                                                    ?>
-                                                    <select class="form-control custom-select-sm border-0 btn-shadow" data-selecttopic="{{$t->id}}" id=chapterTopic{{$i}} @if($t->cancelled)disabled @endif>
-                                                        <option value="">Select Topic</option>
-                                                        @if(count($topics)>0)
-                                                        @foreach($topics as $topic)
-                                                        <?php $selected = ($topic->id == $t->topic_id) ? 'selected' : ''; ?>
-                                                        <option value="{{$topic->id}}" {{$selected}} style="display:none">{{$topic->topic}}</option>
-                                                        @endforeach
-                                                        @endif
-                                                    </select>
-
-                                                </div>
-                                                <div class="col-md-12">
-
-
-                                                    <?php
-                                                    $cms_link = '';
-                                                    $youtube = '';
-                                                    $academy = '';
-                                                    $book = '';
-                                                    $other = '';
-                                                    if (strlen($x) > 0) {
-                                                        $display_style = 'display: block;';
-                                                        $cms_link = $x->link;
-                                                        $youtube = $x->youtube;
-                                                        $academy = $x->khan_academy;
-                                                        $book    = $x->book_url;
-                                                        $other   = $x->others;
-                                                    } else
-                                                        $display_style = 'display: none;';
-
-
-                                                    if ($t->topic_id != '') {
-                                                        //  $display_style = 'display: block;';
-                                                    }
-                                                    if ($t->cmsLink) {
-                                                        // $cms_link = $t->cmsLink->link;
-                                                    }
-
-
-                                                    $cms_link = '';
-                                                    if (strlen($x) > 0) {
-                                                        $display_style = 'display: block;';
-                                                        $cms_link = $x->link;
-                                                    } else
-                                                        $display_style = 'display: none;';
-
-                                                    ?>
-                                                    <!--new changes -->
-                                                    <div class="m-auto mt-2 pt-2" id="icon{{$t->id}}">
-                                                        <div class="row">
-
-                                                            @if($cms_link!=null)
-                                                            <?php
-                                                            $parse = parse_url($cms_link);
-                                                            $cms_link_name = $parse['host'];
-
-                                                            $cms_link_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $cms_link_name);
-                                                            ?>
-                                                            <div class="col-md-6 mt-2">
-                                                                <div class="w-100 d-inline-flex row" style="letter-spacing:3px;">
-                                                                    <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="col-md-9 col-9 col-lg-9 btn btn-sm btn-outline-dark btn-shadow border-0 d-inline-flex d-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
-                                                                        <!-- Edport Content -->
-                                                                        <span class="m-auto font-weight-bolder text-capitalize">{{$cms_link_name}}</span>
-                                                                    </a>
-                                                                    <button class="col-md-3 col-3 col-lg-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$t->id}}')">
-                                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            @endif
-
-                                                            @if($academy!=null)
-                                                            <!-- My School -->
-                                                            <?php
-                                                            $parse = parse_url($academy);
-                                                            $academy_name = $parse['host'];
-                                                            $academy_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $academy_name);
-                                                            ?>
-
-                                                            <div class="col-md-6 mt-2">
-                                                                <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
-                                                                    <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" id="academy_{{$t->id}}" class="col-9 col-md-9 col-lg-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
-                                                                        <span class="m-auto font-weight-bolder text-capitalize">{{$academy_name}}</span>
-                                                                    </a>
-
-                                                                    <button class="col-3 col-md-3 col-lg-3  btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$t->id}}')">
-                                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            @endif
-                                                            @if($youtube!=null)
-
-                                                            <div class="col-md-6 mt-2">
-                                                                <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
-                                                                    <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" id="youtube_{{$t->id}}" class="col-9 btn btn-sm btn-outline-danger btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
-                                                                        <?php
-
-                                                                        $parse = parse_url($youtube);
-                                                                        $youtube_name = $parse['host'];
-
-                                                                        $youtube_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $youtube_name);
-
-                                                                        ?>
-                                                                        <span class="m-auto font-weight-bolder text-capitalize">{{$youtube_name}}</span>
-                                                                    </a>
-
-                                                                    <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0" onclick="shareContent('{{$youtube}}','{{$t->id}}')">
-                                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            @endif
-
-                                                            @if($other!=null)
-                                                            <div class="col-md-6 mt-2">
-                                                                <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
-                                                                    <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" id="wikipedia_{{$t->id}}" class="col-9 btn btn-sm btn-outline-secondary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
-                                                                        <?php
-                                                                        $parse = parse_url($other);
-                                                                        $other_name = $parse['host'];
-
-                                                                        $other_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $other_name);
-
-                                                                        ?>
-                                                                        <span class="m-auto font-weight-bolder text-capitalize">{{$other_name}}</span>
-                                                                    </a>
-
-                                                                    <button class="col-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$t->id}}')">
-                                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            @endif
-
-                                                            @if($book!=null)
-                                                            <div class="col-md-6 mt-2">
-                                                                <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
-                                                                    <a href="javascript:void(0);" data-book="{{ $book}}" data-topicid="{{$t->topic_id}}" id="book_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
-                                                                        <?php
-                                                                        $parse = parse_url($book);
-                                                                        $book_name = $parse['host'];
-
-                                                                        $book_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $book_name);
-                                                                        ?>
-                                                                        <span class="m-auto font-weight-bolder text-capitalize">{{$book_name}}</span>
-                                                                    </a>
-
-                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$book}}','{{$t->id}}')">
-                                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            @endif
-
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="input-group text-editwrapper mt-1 mb-1">
-                                                <textarea class="form-control text-edit1" rows="4" placeholder="Add a note" data-url="#" data-savedesc="{{$i}}" disabled contenteditable="true" id="class_description_{{$i}}" name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer p-1" style="background:#fff;">
-                                    <div class="d-flex justify-content-between flex-wrap">
-                                        <div class="m-auto">
-                                            @if($t->cancelled)
-                                            @else
-                                            <a href="javascript:void(0);" data-LiveLink="{{ $teacherData->g_meet_url }}" id="live_c_link_{{$i}}" class="btn btn-md btn-outline-danger mb-1 mr-2 border-0 btn-shadow">
-                                                <svg class="icon font-10 mr-1">
-                                                    <use xlink:href="../images/icons.svg#icon_dot"></use>
-                                                </svg>
-                                                Join Live
-                                            </a>
-                                            <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-dateclass="{{$t->id}}" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
-                                            @endif
-
-
-                                            <a href="#" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-notify="{{$i}}">
-                                                <svg class="icon mr-1">
-                                                    <use xlink:href="../images/icons.svg#icon_bell"></use>
-                                                </svg>
-                                                <span>Announcement</span>
-                                            </a>
-                                            <button type="button" data-classhelp="{{$i}}" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" title="Help" data-id="help">
-                                                <svg class="icon mr-1">
-                                                    <use xlink:href="../images/icons.svg#icon_help"></use>
-                                                </svg>
-                                                Help
-                                            </button>
-
-                                        </div>
-
-                                        <div class="m-auto">
-                                            @if($t->cancelled)
-                                            @else
-                                            <a href=" #" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="new_a_link_{{$i}}" data-createModal='{{$i}}' data-class_modal="{{$t->class_id}}" data-subject_modal="{{$t->subject_id}}" data-teacher_modal="{{$t->teacher_id}}">
-                                                <svg class="icon font-12 mr-1">
-                                                    <use xlink:href="../images/icons.svg#icon_plus"></use>
-                                                </svg>
-                                                New Assignment
-                                            </a>
-                                            @endif
-                                            <?php
-                                            $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
-                                            ?>
-
-                                            @if (count($assignmentData) > 0)
-                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
-                                            @else
-                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary mb-1 mr-2 border-0 btn-shadow" id="assignmentmodal" data-toggle="modal" data-target="#exampleModalLong" style="display:none">View Assigment</button>
-
-                                            @endif
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        @php
-                        $i++;
-                        @endphp
-                        @endforeach
-                        @else
-
-                        <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
-                            <svg class="icon icon-4x mr-3">
-                                <use xlink:href="../images/icons.svg#icon_nodate"></use>
-                            </svg>
-                            No Record Found! <a href="{{ route('reload-timetable') }}" target="_self"> Click Here </a> to reload today's timetable.
-                        </div>
-                        @endif
-                    </div>
-
+                    @include('teacher.dashboard.todayclass')
                     <!-- ///////////////// -->
                     <!-- Past Live Classes -->
                     <!-- ///////////////// -->
-                    <div class="tab-pane fade" id="plclasses">
-                        @if(count($pastDates) > 0)
-                        @php
-                        $i=1;
-                        @endphp
-
-                        <div class="form-group col-md-5">
-                            <select name="past_class" id="pastclassdata{{$i}}" style="margin-left: -14px;width:60%" class="form-control" onchange="viewPastClass({{$i}})">
-                                <option value="">Select Date</option>
-                                @foreach ($pastDates as $tt)
-                                <option value="{{$tt->class_date}}">{{ date("D, d M", strtotime($tt->class_date))}}</option>
-                                @php
-                                $i++;
-                                @endphp
-                                @endforeach
-                            </select>
-                        </div>
-                        @endif
-                        @if(count($pastClassData) > 0)
-
-                        @php
-                        $i=1;
-                        $new= $i;
-                        @endphp
-                        @foreach ($pastClassData as $t)
-                        <?php
-                        $cls = 0;
-                        $section_name = '';
-                        $g_class_id = '';
-                        $class_name = '';
-                        $subject_name = '';
-                        $chapter = '';
-                        $topic = '';
-                        if ($t->studentClass) {
-                            $class_name = $t->studentClass->class_name;
-                            //$class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
-                            $section_name = $t->studentClass->section_name;
-                            $g_class_id = $t->studentClass->g_class_id;
-                        }
-                        if ($t->studentSubject) {
-                            $subject_name = $t->studentSubject->subject_name;
-                        }
-                        if ($t->cmsLink) {
-                            $chapter = $t->cmsLink->chapter;
-                            $topic = $t->cmsLink->topic;
-                        }
-                        ?>
-
-
-                        <div class="card text-center mb-3">
-
-                            <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
-                            <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
-                            <input type="hidden" id="past_subject_id{{$i}}" value="{{$t->subject_id}}">
-
-                            <input type="hidden" id="past_desc{{$i}}" value="{{$t->class_description}}">
-                            <input type="hidden" id="past_gMeetURL{{$i}}" value="{{$t->g_meet_url}}">
-                            <input type="hidden" id="past_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
-                            <input type="hidden" id="past_recURL{{$i}}" value="{{$t->recording_url}}">
-                            <input type="hidden" id="pastg_class_id_{{$i}}" value="{{ $g_class_id}}" />
-                            <?php
-                            $class_date = date("d M", strtotime($t->class_date));
-                            ?>
-
-                            <div class="card-header text-white p-0  " style="background:#253372;">
-                                <div class="container-fluid">
-                                    <div class="row p-0 m-0 ">
-                                        <div class="col-md-3 col-3 col-lg-3 top-padding  p-0 m-0">
-                                            <div class="row ">
-                                                <div class="col-md-4 col-lg-4 col-4 p-0 m-0 font-weight-bold"> {{ $class_date }} </div>
-                                                <div class="col-md-8 col-lg-8 col-8 p-0 m-0 text-left"> {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 col-lg-2 col-2 font-weight-bold top-padding  p-0 m-0"> Class: {{ $class_name }} Std</div>
-                                        <div class="col-md-1 col-lg-1 col-1 font-weight-bold top-padding  p-0 m-0">Section:{{$section_name}}</div>
-                                        <div class="col-md-4 col-lg-4 col-4 font-weight-bold top-padding  p-0 m-0"> Subject: {{$subject_name}}</div>
-                                        <div class="col-md-2 col-2 col-lg-2">
-                                            <div class="row">
-                                                <div class="col-7 col-md-7 col-lg-7 pt-1"> @if($t->cancelled)
-                                                    <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
-                                                    @endif</div>
-                                                <div class="col-5 col-md-5 col-lg-5"> <button type="button" class="btn mt-1 mb-1 btn-collapse text-white collapse-btn pl-2 pr-2 pt-1 pb-1 mb-1 mt-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
-                                                    </button></div>
-                                            </div>
-
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="collapse card-border" id="collapseExample{{$t->id}}">
-                                <div class="card-body p-0">
-                                    <div class="row m-2">
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="col-md-6">
-
-                                                    {{$chapter}}
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <?php
-                                                    $x = $t->cmsLink;
-                                                    ?>
-                                                    {{$topic}}
-                                                </div>
-                                                @if($t->cancelled)
-                                                @else
-                                                <div class="col-md-12">
-
-
-                                                    <?php
-                                                    $cms_link = '';
-                                                    $youtube = '';
-                                                    $academy = '';
-                                                    $book = '';
-                                                    $other = '';
-                                                    if (strlen($x) > 0) {
-                                                        $display_style = 'display: block;';
-                                                        $cms_link = $x->link;
-                                                        $youtube = $x->youtube;
-                                                        $academy = $x->khan_academy;
-                                                        $book    = $x->book_url;
-                                                        $other   = $x->others;
-                                                    } else
-                                                        $display_style = 'display: none;';
-
-
-                                                    if ($t->topic_id != '') {
-                                                        //  $display_style = 'display: block;';
-                                                    }
-                                                    if ($t->cmsLink) {
-                                                        // $cms_link = $t->cmsLink->link;
-                                                    }
-
-
-                                                    $cms_link = '';
-                                                    if (strlen($x) > 0) {
-                                                        $display_style = 'display: block;';
-                                                        $cms_link = $x->link;
-                                                    } else
-                                                        $display_style = 'display: none;';
-
-                                                    ?>
-                                                    <!--new changes -->
-                                                    <div class="m-auto mt-2 pt-2" id="icon{{$t->id}}">
-                                                        <div class="row">
-
-                                                            @if($cms_link!=null)
-                                                            <div class="col-md-6 mt-2">
-                                                                <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
-                                                                    <a href="javascript:void(0);" data-topiclink="{{ $cms_link  }}" data-topicid="{{$t->topic_id}}" class="col-9 btn btn-sm btn-outline-dark btn-shadow border-0 d-inline-flex d-none" id="viewcontent_{{$t->id}}" style="{{$display_style}}">
-                                                                        <!-- Edport Content -->
-                                                                        <span class="m-auto font-weight-bolder">e-Edport</span>
-                                                                    </a>
-                                                                    <button class="col-3 btn btn-sm btn-outline-dark btn-shadow border-0" onclick="shareContent('{{$cms_link}}','{{$t->id}}')">
-                                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            @endif
-
-                                                            @if($academy!=null)
-                                                            <?php
-
-                                                            $parse = parse_url($academy);
-                                                            $academy_name = $parse['host'];
-
-                                                            $academy_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $academy_name);
-
-                                                            ?>
-                                                            <div class="col-md-6 mt-2">
-                                                                <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
-                                                                    <a href="javascript:void(0);" data-academylink="{{ $academy}}" data-topicid="{{$t->topic_id}}" id="academy_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
-
-
-                                                                        <span class="m-auto font-weight-bolder">{{$academy_name}}</span>
-                                                                    </a>
-
-                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$academy}}','{{$t->id}}')">
-                                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            @endif
-                                                            @if($youtube!=null)
-                                                            <?php
-
-                                                            $parse = parse_url($youtube);
-                                                            $youtube_name = $parse['host'];
-
-                                                            $youtube_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $youtube_name);
-
-                                                            ?>
-
-                                                            <div class="col-md-6 mt-2">
-                                                                <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
-                                                                    <a href="javascript:void(0);" data-youtubelink="{{ $youtube}}" data-topicid="{{$t->topic_id}}" id="youtube_{{$t->id}}" class="col-9 btn btn-sm btn-outline-danger btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
-                                                                        <span class="m-auto font-weight-bolder">{{$youtube_name}}</span>
-                                                                    </a>
-
-                                                                    <button class="col-3 btn btn-sm btn-outline-danger btn-shadow border-0" onclick="shareContent('{{$youtube}}','{{$t->id}}')">
-                                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            @endif
-
-                                                            @if($other!=null)
-                                                            <?php
-                                                            $parse = parse_url($other);
-                                                            $other_name = $parse['host'];
-
-                                                            $other_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $other_name);
-
-                                                            ?>
-                                                            <div class="col-md-6 mt-2">
-                                                                <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
-                                                                    <a href="javascript:void(0);" data-wikipedialink="{{ $other}}" data-topicid="{{$t->topic_id}}" id="wikipedia_{{$t->id}}" class="col-9 btn btn-sm btn-outline-secondary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
-
-                                                                        <span class="m-auto font-weight-bolder">{{$other_name}}</span>
-                                                                    </a>
-
-                                                                    <button class="col-3 btn btn-sm btn-outline-secondary btn-shadow border-0" onclick="shareContent('{{$other}}','{{$t->id}}')">
-                                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            @endif
-
-                                                            @if($book!=null) <?php
-                                                                                $parse = parse_url($book);
-                                                                                $book_name = $parse['host'];
-
-                                                                                $book_name = str_ireplace(['www.', '.com', '.ca', 'lms.', '-s', '.net', '.info', '.org', 'en.', '.tech', '.coop', '.int', '.co', '.uk', '.ac', '.io', '.github', 'about.'], '', $book_name);
-                                                                                ?>
-                                                            <div class="col-md-6 mt-2">
-                                                                <div class="w-100 d-inline-flex" style="letter-spacing:3px;">
-                                                                    <a href="javascript:void(0);" data-book="{{ $book}}" data-topicid="{{$t->topic_id}}" id="book_{{$t->id}}" class="col-9 btn btn-sm btn-outline-primary btn-shadow border-0 d-inline-flex d-none" style="{{$display_style}}">
-
-                                                                        <span class="m-auto font-weight-bolder">{{$book_name}}</span>
-                                                                    </a>
-
-                                                                    <button class="col-3 btn btn-sm btn-outline-primary btn-shadow border-0" onclick="shareContent('{{$book}}','{{$t->id}}')">
-                                                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                                                    </button>
-                                                                </div>
-                                                            </div>
-                                                            @endif
-
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 mt-1">
-                                            <div class=" mt-1 mb-1">
-                                                <textarea class="form-control " style="resize: none;" rows="4" placeholder="Empty Notes!" disabled name="class_description">@if($t->class_description!=''){{$t->class_description}}@else{{$t->class_description}}@endif</textarea>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                @if($t->cancelled)
-                                @else
-                                <div class="card-footer p-1" style="background:#fff;">
-                                    <div class="d-flex justify-content-between flex-wrap">
-
-                                        <div class="m-auto">
-                                            <button type="button" data-toggle="modal" data-target="#viewStudentModal" data-dateclass="{{$t->id}}" data-id="view_student" data-view="{{$i}}" id="purchaseshowdivid" class="btn btn-md btn-outline-primary mb-1 border-0 btn-shadow" href="javascript:;" data-tooltip="tooltip" data-placement="top" title="" data-original-title="View">View Students</button>
-                                            <?php
-                                            $assignmentData = App\Http\Helpers\CommonHelper::get_assignment_data($t->id);
-                                            ?>
-                                            @if (count($assignmentData) > 0)
-                                            <button onclick="viewAssignment({{$t->id}})" class="btn btn-md btn-outline-primary ml-2 mb-1 mr-2 border-0 btn-shadow" data-toggle="modal" data-target="#exampleModalLong">View Assigment</button>
-
-
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-
-                        @php
-                        $i++;
-                        @endphp
-                        @endforeach
-                        @else
-
-                        <!-- <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
-                                                        <svg class="icon icon-4x mr-3">
-                                                            <use xlink:href="../images/icons.svg#icon_nodate"></use>
-                                                        </svg>
-                                                        No Lectures found for {{ date("d/m/Y") }}.
-                                                        <br><br>
-                                                        <a href="{{ route('reload-timetable') }}" target="_blank">
-                                                            Click here to reload updated timetable again.
-                                                        </a>
-                                                        <script>
-                                                            function reload_timetable() {
-                                                                fetch("{{ route('reload-timetable') }}")
-                                                                    .then(function (response) {
-                                                                        location.reload();
-                                                                    })
-                                                            }
-                                                            reload_timetable()
-                                                        </script>
-                                                    </div> -->
-                        @endif
-                    </div>
-
-
-
+                    @include('teacher.dashboard.pastclass')
                     <!-- ///////////////// -->
                     <!-- Past Live Classes End -->
                     <!-- ///////////////// -->
@@ -718,102 +68,8 @@ $cls = 0;
                     <!-- ///////////////// -->
                     <!-- Upcoming  Classes -->
                     <!-- ///////////////// -->
-                    <div class="tab-pane fade" id="upcomingclasses">
 
-                        @if(count($futureDates) > 0)
-                        @php
-                        $i=1;
-                        @endphp
-                        <div class="form-group col-md-5">
-                            <select name="past_class" id="futureclassdata{{$i}}" style="margin-left: -14px;width:60%" class="form-control" onchange="viewFutureClass({{$i}})">
-                                <option value="">Select Date</option>
-                                @foreach ($futureDates as $tt)
-                                <option value="{{$tt->class_date}}">{{ date("D, d M", strtotime($tt->class_date))}}</option>
-                                @php
-                                $i++;
-                                @endphp
-                                @endforeach
-                            </select>
-                        </div>
-
-                        @endif
-                        @if(count($futureClassData) > 0)
-
-                        @php
-                        $i=1;
-                        @endphp
-                        @foreach ($futureClassData as $t)
-                        <?php
-                        $cls = 0;
-                        $section_name = '';
-                        $g_class_id = '';
-                        $class_name = '';
-                        $subject_name = '';
-                        if ($t->studentClass) {
-                            $class_name = $t->studentClass->class_name;
-                            //$class_name = App\Http\Helpers\CommonHelper::addOrdinalNumberSuffix($t->studentClass->class_name);
-                            $section_name = $t->studentClass->section_name;
-                            $g_class_id = $t->studentClass->g_class_id;
-                        }
-                        if ($t->studentSubject) {
-                            $subject_name = $t->studentSubject->subject_name;
-                        }
-                        ?>
-                        <div id="upcmoingclass">
-
-
-
-                            <div class="card text-center mb-3">
-
-                                <input type="hidden" id="pastdateClass_id{{$i}}" value="{{$t->id}}">
-                                <input type="hidden" id="past_class_id{{$i}}" value="{{$t->class_id}}">
-                                <input type="hidden" id="past_subject_id{{$i}}" value="{{$t->subject_id}}">
-
-
-                                <input type="hidden" id="past_desc{{$i}}" value="{{$t->class_description}}">
-                                <input type="hidden" id="past_gMeetURL{{$i}}" value="{{$t->g_meet_url}}">
-                                <input type="hidden" id="past_stdMessage{{$i}}" value="{{$t->class_student_msg}}">
-                                <input type="hidden" id="past_recURL{{$i}}" value="{{$t->recording_url}}">
-                                <input type="hidden" id="pastg_class_id_{{$i}}" value="{{ $g_class_id}}" />
-                                <?php
-                                $class_date = date("d M", strtotime($t->class_date));
-                                ?>
-                                <div class="card-header text-white p-0  pt-1 pb-2 " style="background:#253372;">
-                                    <div class="container-fluid">
-
-                                        <div class="row ">
-                                            <div class="col-md-3 col-3 col-lg-3 top-padding p-0 m-0">
-                                                <div class="row p-0 m-0">
-                                                    <div class="col-md-4 col-lg-4 col-4 p-0 m-0 font-weight-bold ">{{ $class_date }}</div>
-                                                    <div class="col-8 col-md-8 col-lg-8 m-0 p-0"> {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
-                                                </div>
-                                            </div>
-                                            <div class="col-2 col-md-2 col-lg-2 top-padding font-weight-bold tetx-right"> Class: {{ $class_name }} Std</div>
-                                            <div class="col-2 col-md-2 col-lg-2 top-padding font-weight-bold text-right"> Section:{{$section_name}}</div>
-                                            <div class="col-5 col-md-5 col-lg-5 top-padding font-weight-bold"> Subject: {{$subject_name}}</div>
-
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
-                        @php
-                        $i++;
-                        @endphp
-                        @endforeach
-                        @else
-
-                        <div class="classes-box min-height-auto py-4 p-4 text-danger text-center">
-                            <svg class="icon icon-4x mr-3">
-                                <use xlink:href="../images/icons.svg#icon_nodate"></use>
-                            </svg>
-                            No Record Found!
-                        </div>
-                        @endif
-                    </div>
-
+                    @include('teacher.dashboard.upcomingclass')
 
                     <!---
                         Invitation
@@ -898,126 +154,6 @@ $cls = 0;
     </div>
 </div>
 
-
-<!-- New Assignment Modal -->
-<div class="modal fade" id="createAssiModal" data-backdrop="static" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title font-weight-bold">New Assignment </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body pt-4">
-                <div class="form-group row">
-                </div>
-                <input type="hidden" id="row_id" value="">
-                <input type="hidden" id="new_assignment" value="">
-                <input type="hidden" id="g_class_id" value="">
-                <input type="hidden" id="ass_class_id" value="">
-                <input type="hidden" id="ass_subject_id" value="">
-                <input type="hidden" id="ass_teacher_id" value="">
-                <div class="row">
-                    <div class="form-group col-md-5">
-                        <input checked type="radio" id="t1radio" name="asgradio">
-                        <label for="t1radio" class="col-form-label text-md-left">Select Topic :</label>
-                        <div>
-                            <select name="sel_topic" id="sel_topic" class="form-control asg1">
-                                <option value="">Select Topic</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2 text-center">
-                        OR
-                    </div>
-                    <div class="form-group col-md-5">
-                        <input type="radio" id="t2radio" name="asgradio">
-                        <label for="t2radio" class="col-form-label text-md-left">Enter New Topic
-                            :</label>
-                        <div>
-                            <input disabled type="text" id="txt_topin_name" class="form-control asg2" placeholder="Topic Name" />
-                        </div>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label for="txt_aTitle" class="col-form-label text-md-left"> Assignment Title:</label>
-                        <div>
-                            <input type="text" class="form-control" name="txt_aTitle" id="txt_aTitle" placeholder="Assigment Title">
-                        </div>
-                    </div>
-                    <div class="form-group col-md-12">
-                        <label for="txt_aTitle" class="col-form-label text-md-left"> Assignment Instruction:</label>
-                        <div>
-                            <textarea class="form-control" name="txt_description" id="txt_description" placeholder="Assignment Instruction"></textarea>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="txt_aTitle" class="col-form-label text-md-left"> Due Date:</label>
-                        <div>
-                            <input type="date" class="form-control" name="txt_due_date" id="txt_due_date" placeholder="Due Date">
-                        </div>
-                    </div>
-                    <div class="form-group col-md-4">
-                        <label for="txt_aTitle" class="col-form-label text-md-left"> Due Time:</label>
-                        <div>
-                            <input type="text" class="form-control due-time" name="txt_due_time" id="txt_due_time" placeholder="Due Time">
-                        </div>
-                    </div>
-
-                    <div class="form-group col-md-4">
-                        <label for="txt_aTitle" class="col-form-label text-md-left"> Point:</label>
-                        <div>
-                            <input type="number" class="form-control" name="txt_point" id="txt_point" placeholder="Point">
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-12" style="text-align: center;">
-                        <button type="button" id="assignment_create" class="btn btn-primary px-4">Create</button>
-                        <button type="button" id="attach_file" class="btn btn-primary px-4">Create and Attach File</button>
-                        <button type="button" id="cancel_assignment" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-                <p style="font-size: smaller;color: red;text-align: center;">Note: Please allow popup for the assignment functionality.</p>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- ./New Assignment Modal -->
-<div class="modal fade" id="exampleModalLong" data-backdrop="static" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title font-weight-bold">View Assignment </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body pt-4">
-
-
-                <table id="assignmentList" class="table table-hover btn-shadow table-sm table-bordered display" style="width:100%" data-page-length="25" data-order="[[ 1, &quot;asc&quot; ]]" data-col1="60" data-collast="120" data-filterplaceholder="Search Records ...">
-                    <thead class="text-white" style="background:#253372;">
-                        <tr>
-
-                            <th>Assignment Name</th>
-                            <th>Link</th>
-                            <th>Submissions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
-
-
-
-            </div>
-        </div>
-    </div>
-</div>
-<!-- ./View Assignment Modal -->
-
 <!-- Class Box Help Modal -->
 <div class="modal fade" id="classhelpModal" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -1035,8 +171,6 @@ $cls = 0;
                     <div class="form-group">
                         <select name="help_ticket_category" class="form-control" required>
                             <option value="">Please select a category</option>
-
-
                         </select>
                     </div>
                     <div class="form-group">
@@ -1055,179 +189,9 @@ $cls = 0;
         </div>
     </div>
 </div>
-
-
-
 <!-- Add Class Modal -->
-<div class="modal fade" id="addClassModal" data-backdrop="static" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-light d-flex align-items-center">
-                <h5 class="modal-title font-weight-bold">Add Class</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <svg class="icon">
-                        <use xlink:href="../images/icons.svg#icon_times2"></use>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body pt-4">
-
-                {!! Form::open(array('route' => ['add.class'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_add_class')) !!}
-                <div class="form-group row">
-                    <label for="addinputDate" class="col-md-4 col-form-label text-md-right">Date:</label>
-                    <div class="col-md-6">
-                        {!! Form::text('class_date', null, array('id'=>'addClassDate','placeholder' => 'DD/MM/YYYY','class' => 'form-control ac-datepicker','required'=>'required',"onkeydown"=>"return false;")) !!}
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="addinputFtime" class="col-md-4 col-form-label text-md-right">Class From
-                        Time:</label>
-                    <div class="col-md-6">
-                        {!! Form::text('start_time', null, array('id'=>'addClassStartTime','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="addinputTtime" class="col-md-4 col-form-label text-md-right">Class To Time:</label>
-                    <div class="col-md-6">
-                        {!! Form::text('end_time', null, array('id'=>'addClassEndTime','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div class="form-group row">
-                <label class="col-md-12 text-danger text-center" style="font-size: 12px;padding-left: 130px;">*Extra
-                    classes for regular assigned classes can be created here</label>
-                <label for="addclassChoose" class="col-md-4 col-form-label text-md-right">Class:</label>
-                <div class="col-md-6">
-                    <select name="class_id" id="class_id" class="form-control" required>
-                        <option value=""> Select Class</option>
-                        <?php
-                        foreach ($data['classData'] as $row) {
-                        ?>
-
-                            <option value="<?= $row->id; ?>"> <?= 'Class ' . $row->class_name . ' - ' . $row->section_name . ' - ' . $row->subject_name; ?></option>
-                        <?php
-                        }
-                        ?>
-                    </select>
-
-                </div>
-            </div>
-
-
-            <!-- <div class="form-group row">
-                <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live <small>(Link)</small>:</label>
-                <div class="col-md-6">
-                  {!! Form::textarea('join_liveUrl', null, array('placeholder' => 'Enter Live class url','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
-                        </div>
-                      </div> -->
-
-            <div class="form-group row">
-                <label for="inputNotifystd" class="col-md-4 col-form-label text-md-right">Notify
-                    Students:</label>
-                <div class="col-md-6">
-
-                    {!! Form::textarea('notify_stdMessage', null, array('placeholder' => 'Enter Notify Message','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
-
-                </div>
-            </div>
-            <div class="form-group row">
-                <div class="col-md-8 offset-md-4">
-                    <button type="submit" id="submit" class="btn btn-primary px-4">Save Class</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
+@include('teacher.dashboard.addclass')
 <!-- End -->
-
-<!-- Edit Class Modal -->
-<div class="modal fade" id="editClassModal" data-backdrop="static" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-light d-flex align-items-center">
-                <h5 class="modal-title font-weight-bold">Edit Class Details</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <svg class="icon">
-                        <use xlink:href="../images/icons.svg#icon_times2"></use>
-                    </svg>
-                </button>
-            </div>
-            <div class="modal-body pt-4">
-
-                {!! Form::open(array('route' => ['edit.class'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_class_edit')) !!}
-
-
-                <input type="hidden" id="txt_datecalss_id" value="" name="txt_datecalss_id" />
-                <input type="hidden" id="txt_g_class_id" value="" name="txt_g_class_id" />
-                <input type="hidden" id="class_name" value="" name="class_name" />
-                <input type="hidden" id="section_name" value="" name="section_name" />
-                <input type="hidden" id="class_date" value="" name="class_date" />
-
-
-
-
-                <!-- <div class="form-group row">
-                    <label for="inputDesc" class="col-md-4 col-form-label text-md-right">Description:</label>
-                    <div class="col-md-6">
-                        {!! Form::textarea('edit_description', null, array('id'=>'edit_description','placeholder' => 'Class Description','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
-                    </div>
-                </div> -->
-
-                <!-- <div class="form-group row">
-                    <label for="inputNotifystd" class="col-md-4 col-form-label text-md-right">Notify
-                        Students:</label>
-                    <div class="col-md-6">
-
-                        {!! Form::textarea('edit_notify_stdMessage', null, array('id'=>'edit_notify_stdMessage','placeholder' => 'Enter Notify Message','class' => 'form-control','required'=>'required','rows'=>'3')) !!}
-
-                    </div>
-                </div> -->
-
-                <div class="form-group row">
-                    <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Start Time:
-                    </label>
-                    <div class="col-md-6">
-                        {!! Form::text('start_time', $teacherData->from_timing, array('id'=>'from_timing','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
-                    </div>
-
-                </div>
-
-                <div class="form-group row">
-                    <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">End Time:
-                    </label>
-                    <div class="col-md-6">
-                        {!! Form::text('end_time', $teacherData->to_timing, array('id'=>'end_timing','placeholder' => '00:00 AM/PM','class' => 'form-control ac-time','required'=>'required',"onkeydown"=>"return false;")) !!}
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="class_liveurl" class="col-md-4 col-form-label text-md-right">Join Live
-                        <small>(Link)</small>:</label>
-                    <div class="col-md-6">
-                        {!! Form::text('edit_join_liveUrl',$teacherData->g_meet_url, array('id'=>'edit_join_liveUrl','placeholder' => 'Enter Live class url','class' => 'form-control','readonly' )) !!}
-
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-md-8 offset-md-4">
-                        <button type="submit" class="btn btn-primary px-4">Save Class</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End -->
-
-
-
-
 <div class="modal fade" id="notifyModal" data-backdrop="static" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -1239,7 +203,7 @@ $cls = 0;
                     </svg>
                 </button>
             </div>
-            <div class="modal-body pt-4">
+            <div class="modal-body pt-4 notify-student-mobile">
 
                 {!! Form::open(array('route' => ['student-notify'],'method'=>'POST','autocomplete'=>'off','id'=>'frm_class_notify')) !!}
 
@@ -1254,19 +218,19 @@ $cls = 0;
 
                 <div class="container-fluid">
                     <div class="form-group row">
-                        <nav class="nav flex-column">
-                            <div class=" nav-link active btn btn-md btn-primary " id="notify">
+                        <nav class="nav flex-column col-3">
+                            <div class="nav-link active btn btn-md btn-primary announcement" id="notify">
                                 Class Invitation
                             </div>
-                            <div class=" nav-link btn btn-md btn-primary mt-2 " id="cancel">
+                            <div class="nav-link btn btn-md btn-primary mt-2 announcement" id="cancel">
                                 Class Cancellation
                             </div>
-                            <div class=" nav-link btn btn-xs btn-primary mt-2" id="custom">
+                            <div class="nav-link btn btn-xs btn-primary mt-2 announcement" id="custom">
                                 Custom
                             </div>
 
                         </nav>
-                        <div class="col-md-9 col-lg-9 col-9">
+                        <div class="col-md-9 col-lg-9 col-9 pr-0">
                             <div class="mt-2">
                                 {!! Form::textarea('notificationMsg', null, array('id'=>'notificationMsg','placeholder' => 'Notify Students','class' => 'form-control','required'=>'required','rows'=>'3','style'=>'resize: none')) !!}
                             </div>
@@ -1336,7 +300,7 @@ $cls = 0;
 
 <script>
     $('.btn-collapse').click(function() {
-        $(this).find('i').toggleClass('fas fa-plus fas fa-minus');
+        $(this).find('.toggle-class').toggleClass('fas fa-plus fas fa-minus');
     });
 </script>
 <script type="text/javascript">
@@ -2011,17 +975,23 @@ $cls = 0;
             let vale = "The class will start from " + to_timing + ". Please Join " + gmeet_url
             $('#notificationMsg').val(vale);
             $('#data_cancelled').val(0);
+            $('.announcement').removeClass('active');
+            $(this).addClass('active');
         });
         $('#cancel').click(function() {
             let vale = "Dear " + class_w + section + " Students Please note that the " + s_name + " Class scheduled on " + today + " at " + from_timing + " is Cancelled"
             // let vale = "Dear  Student Subject '" + s_name + " Class" + +d + " scheduled on dd/mm/yyyy at 00:00 AM/PM is Cancelled "
             $('#notificationMsg').val(vale);
             $('#data_cancelled').val(1);
+            $('.announcement').removeClass('active');
+            $(this).addClass('active');
         });
         $('#custom').click(function() {
             let vale = ""
             $('#notificationMsg').val(vale);
             $('#data_cancelled').val(0);
+            $('.announcement').removeClass('active');
+            $(this).addClass('active');
         });
 
         $('#notificationMsg').val("The class will start from " + from_timing + ". Please Join " + gmeet_url);

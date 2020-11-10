@@ -21,7 +21,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
   </div>
   <div class="container">
     <a class="navbar-brand" href="./home" title="E-Learning">{{$s[0]->value}}</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupport" aria-expanded="false">
+    <button class="navbar-toggler " type="button" data-toggle="collapse" data-target="#navbarSupport" aria-expanded="false">
       <span class="navbar-toggler-icon">
         <svg class="icon icon-2x">
           <use xlink:href="{{asset('images/icons.svg#icon_vdots')}}"></use>
@@ -37,14 +37,13 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
             </svg> Class
           </a>
         </li>
-
-        <!-- <li class="nav-item">
-          <a class="nav-link {{ Request::segment(2) == 'assignment'?'active':''}}" href="{{route('teacher.assignment')}}">
+        <li class="nav-item">
+          <a class="nav-link {{ (request()->routeIs('examination')) ? 'active' : '' }}" href="{{route('examination')}}">
             <svg class="icon mr-1">
-              <use xlink:href="{{asset('images/icons.svg#icon_edit')}}"></use>
+              <use xlink:href="{{asset('images/icons.svg#examination')}}"></use>
             </svg> Examination
           </a>
-        </li> -->
+        </li>
         <li class="nav-item">
           <a class="nav-link {{ Request::segment(2) == 'report'?'active':''}}" href="{{route('teacher.report')}}">
             <!-- <svg class="icon mr-1">
@@ -56,7 +55,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
         </li>
 
       </ul>
-      <ul class="navbar-nav ml-auto">
+      <ul class="navbar-nav ml-auto pt-0">
         <li class="nav-item">
           <a class="nav-link" href="{{ route('teacher.logout') }}"><svg class="icon mmb-2 mr-1">
               <use xlink:href="{{asset('images/icons.svg#icon_logout')}}"></use>
@@ -65,7 +64,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
           </a>
         </li>
         <li class="nav-item">
-          <button type="button" class="btn btn-ui header-help" data-toggle="modal" href="#classhelpModal" role="modal">
+          <button type="button" class="btn btn-ui header-help " data-toggle="modal" href="#classhelpModal" role="modal">
             <svg class="icon mr-1">
               <use xlink:href="{{asset('images/icons.svg#icon_help')}}"></use>
             </svg> Support!
@@ -85,12 +84,12 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
       <div class="modal-header bg-light d-flex align-items-center mb-0 pb-0">
         <!-- <h5 class="modal-title font-weight-bold">Help Message</h5> -->
         <ul class="nav  nav-tabs  color-change" id="myTab" role="tablist">
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a class="nav-link   active" data-toggle="tab" href="#fqa" role="tab" aria-selected="true">FAQs</a>
-          </li>
-          <li class="nav-item">
+          </li> -->
+          <!-- <li class="nav-item">
             <a class="nav-link " data-toggle="tab" href="#video" role="tab">Videos</a>
-          </li>
+          </li> -->
           <li class="nav-item  ">
             <a class="nav-link " data-toggle="tab" href="#message" role="tab">Contact Admin</a>
           </li>
@@ -103,7 +102,7 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
       </div>
       <div class="modal-body  pt-4">
         <div class="tab-content ">
-          <div class="tab-pane fade show active" id="fqa">
+          <!-- <div class="tab-pane fade show active" id="fqa">
             <h2>Popular Questions</h2>
             <ul>
               <li>Lorem ipsum dolor sit amet.</li>
@@ -136,8 +135,8 @@ $s = \App\Http\Helpers\CustomHelper::getSchool();
               </div>
             </div>
 
-          </div>
-          <div class="tab-pane fade" id="message">
+          </div> -->
+          <div class="tab-pane fade show active" id="message">
             <form>
               <div class="form-group">
                 <select name="help_ticket_category" id="helpCategory" class="form-control" required>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\HelpTicketCategory;
 use App\InvitationClass;
 use App\libraries\Utility\ReportUtility;
+use App\Models\Examination\ExaminationResult;
 use App\StudentClass;
 use App\SupportVideo;
 use Illuminate\Contracts\Foundation\Application;
@@ -33,6 +34,8 @@ class ReportController extends Controller
             ->orderBy('id', 'DESC')
             ->get();
         $videos = SupportVideo::all();
+
+        $classroomIds = $inviteClassData->pluck('class_id')->toArray();
 
         return view('teacher.report.index', compact('helpCategories', 'inviteClassData', 'videos'));
     }

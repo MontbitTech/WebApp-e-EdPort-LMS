@@ -95,7 +95,7 @@ class DateUtility
      * @return bool|string
      */
     public static function getFutureDateTime ($minutes, $date = false)
-    {
+    {    
         if ( $date ) {
             return self::getDateTime(strtotime($date) + $minutes * 60);
         } else {
@@ -194,4 +194,5 @@ class DateUtility
             return date('l');
         }
     }
+    
 }

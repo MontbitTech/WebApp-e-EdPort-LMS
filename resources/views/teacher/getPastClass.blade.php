@@ -65,29 +65,31 @@ if ($t->cmsLink) {
     ?>
 
     <div class="card-header text-white p-0  " style="background:#253372;">
-        <div class="container-fluid">
+        <div class="container-fluid padding-right">
             <div class="row p-0 m-0 ">
-                <div class="col-md-3 col-3 col-lg-3 top-padding  p-0 m-0">
-                    <div class="row ">
-                        <div class="col-md-4 col-lg-4 col-4 p-0 m-0 font-weight-bold"> {{ $class_date }} </div>
-                        <div class="col-md-8 col-lg-8 col-8 p-0 m-0 text-left"> {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}</div>
-                    </div>
+                <div class="col-md-3 col-3 col-lg-2 col-sm-3 font-weight-bold moblie-show-past-calss px-0 pt-3 mx-0 past-class-font-size">
+                    {{ $class_date }}
+                    {{ date('H:i ',strtotime($t->from_timing))}} - {{ date('H:i ',strtotime($t->to_timing))}}
                 </div>
-                <div class="col-md-2 col-lg-2 col-2 font-weight-bold top-padding  p-0 m-0"> Class: {{ $class_name }} Std</div>
-                <div class="col-md-1 col-lg-1 col-1 font-weight-bold top-padding  p-0 m-0">Section:{{$section_name}}</div>
-                <div class="col-md-4 col-lg-4 col-4 font-weight-bold top-padding  p-0 m-0"> Subject: {{$subject_name}}</div>
-                <div class="col-md-2 col-2 col-lg-2">
-                    <div class="row">
-                        <div class="col-7 col-md-7 col-lg-7 pt-1"> @if($t->cancelled)
-                            <h2 class="btn btn-md bg-danger text-white mr-4 mb-0 font-weight-bold">Cancelled</h2>
-                            @endif</div>
-                        <div class="col-5 col-md-5 col-lg-5"> <button type="button" class="btn mt-1 mb-1 btn-collapse text-white collapse-btn pl-2 pr-2 pt-1 pb-1 mb-1 mt-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class=" fas fa-plus"></i>
+                <div class="col-md-1 col-lg-1 col-2 text-left px-0 pt-3 mx-0 font-weight-bold mobile-hide">{{ $class_date }}</div>
+                <div class="col-md-3 col-3 col-lg-2 col-sm-3 font-weight-bold px-0 pt-3 mx-0 mobile-hide font-size-tab ">
+                    {{ date('h:i a',strtotime($t->from_timing))}} to {{ date('h:i a',strtotime($t->to_timing))}}
+                </div>
+                <div class="col-md-6 col-7 col-sm-7 font-weight-bold pt-3 px-0 font-size-tab display-none-lp"> Classroom: {{ $class_name}} {{$section_name }} , {{$subject_name}}</div>
+                <div class="col-md-2 col-2 col-lg-1 col-sm-2 font-weight-bold pt-3 px-0 font-size-tab display-none-tab"> Class: {{ $class_name }} Std</div>
+                <div class="col-md-1 col-1 col-lg-1 col-sm-1 font-weight-bold pt-3 px-0 font-size-tab display-none-tab"> Section:{{$section_name}}</div>
+                <div class="col-md-5 col-5 col-lg-5 col-sm-5 font-weight-bold   m-auto pt-1 px-0 font-size-tab display-none-tab"> Subject: {{$subject_name}}</div>
+                <div class="col-md-2 col-2 col-lg-2 mx-0 px-0 pt-1">
+                    <div class="row mx-0 px-0">
+                        <div class="col-6 col-md-9 col-lg-7  px-0 mx-0">@if($t->cancelled)
+                            <div class="btn text-danger moblie-show-none">X</div>
+                            <h2 class="btn btn-md display-none-mobile bg-danger text-white mx-0 px-2 my-1 font-weight-bold font-size-tab btn-sm-size">Cancelled</h2>
+                            @endif
+                        </div>
+                        <div class="col-5 col-md-3 col-lg-5 pr-0 mr-0"> <button type="button" class="float-right btn  btn-collapse font-size-tab text-white collapse-btn px-2 py-1 my-1" data-toggle="collapse" data-target="#collapseExample{{$t->id}}" aria-expanded="false" aria-controls="collapseExample{{$t->id}}"><i class="toggle-class  fas fa-plus"></i>
                             </button></div>
                     </div>
-
-
                 </div>
-
             </div>
         </div>
     </div>
@@ -96,11 +98,11 @@ if ($t->cmsLink) {
             <div class="row m-2">
                 <div class="col-md-6">
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-6">
 
                             {{$chapter}}
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-6 col-6">
                             <?php
                             $x = $t->cmsLink;
                             ?>

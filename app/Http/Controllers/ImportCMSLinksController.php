@@ -2,21 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Hash;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Auth;
 use Validator;
-use App\Http\Helpers\CommonHelper;
-use App\Teacher;
 use App\CmsLink;
-use App\StudentClass;
 use App\StudentSubject;
-use App\ClassTiming;
-use App\InvitationClass;
 use App\Models\ClassSection;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use App\Http\Helpers\CustomHelper;
 
@@ -323,5 +317,21 @@ class ImportCMSLinksController extends Controller
 	{
 		CmsLink::whereIn('id', explode(",", $request->ids))->delete();
 		return response()->json(['success' => "Deleted successfully."]);
-	}
+    }
+    
+    public function getChapter (Request $request)
+    {
+        $chapters = CmsLink::where('class', $request->class)->where('subject', $request->subject)->groupBy('chapter')->pluck('chapter');
+
+        return Response::json(['success' => true, 'response' => $chapters]);
+    }
+
+    public function getTopic (Request $request)
+    {
+        $topics = CmsLink::where('class', $request->class)->where('subject', $request->subject)
+            ->where('chapter', $request->chapter)
+            ->groupBy('topic')->pluck('topic');
+
+        return Response::json(['success' => true, 'response' => $topics]);
+    }
 }
