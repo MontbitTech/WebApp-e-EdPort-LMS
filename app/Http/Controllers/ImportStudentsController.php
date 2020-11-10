@@ -75,7 +75,7 @@ class ImportStudentsController extends Controller
                 foreach ($obj_class as $row) {
 
                     $g_class_id = $row->g_class_id;
-                    
+
                     $inv_data = array(
                         "courseId" => $g_class_id,
                         "role"     => "STUDENT",
@@ -109,7 +109,7 @@ class ImportStudentsController extends Controller
                     $courseInvitation->save();
                 }
 
-               $student = StudentUtility::createStudent([
+                $student = StudentUtility::createStudent([
                     'name'     => $request->fname,
                     'class_id' => $student[0],
                     'phone'    => $request->phone,
@@ -117,8 +117,8 @@ class ImportStudentsController extends Controller
                     'notify'   => $n,
                 ]);
 
-//                \DB::insert('insert into tbl_students (name, class_id, phone, email, notify) values (?, ?, ?, ?, ?)', [$request->fname, $student[0], $request->phone, $request->email, $n]);
-                
+                //                \DB::insert('insert into tbl_students (name, class_id, phone, email, notify) values (?, ?, ?, ?, ?)', [$request->fname, $student[0], $request->phone, $request->email, $n]);
+
                 StudentUtility::sendTimeTableToStudentEmail($request->class, $request->section, $student);
 
                 return redirect()->route('adminlist.students')->with('success', 'Added Successfully');
@@ -173,13 +173,13 @@ class ImportStudentsController extends Controller
                 return redirect()->route('adminlist.students')->with('error', 'Student does not exist');
 
             StudentUtility::removeStudentFromClassroom($student);
-            
+
             $classrooms = StudentClass::where('class_name', $request->class)->where('section_name', $request->section)->get();
 
             $response = StudentUtility::inviteStudentToClassroom($request->email, Session::get('access_token'), $classrooms);
-            if(!$response['success'])
+            if (!$response['success'])
                 return redirect()->route('adminlist.students')->with('error', $response['data']);
-            
+
             $student->email = $request->email;
             $student->phone = $request->phone;
             $student->notify = $n;
@@ -187,7 +187,7 @@ class ImportStudentsController extends Controller
             $student->refresh();
 
             StudentUtility::sendTimeTableToStudentEmail($request->class, $request->section, $student);
-            
+
             return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.112'));
         }
 
@@ -204,9 +204,9 @@ class ImportStudentsController extends Controller
             $student = Student::with('class')->find($request->txt_student_id);
 
             $response = StudentUtility::removeStudentFromClassroom($student);
-            if(!$response['success'])
+            if (!$response['success'])
                 return back()->with('error', $response['data']);
- 
+
             $student->delete();
 
             return redirect()->route('adminlist.students')->with('success', Config::get('constants.WebMessageCode.139'));
@@ -280,14 +280,14 @@ class ImportStudentsController extends Controller
 
                 $file = $request->file('file');
                 $destinationPath = public_path('student-excels');
-                
+
                 $filename = $file->getClientOriginalName();
 
                 if (file_exists($destinationPath . '/' . $filename))
                     unlink($destinationPath . '/' . $filename);
 
                 $file->move($destinationPath, $filename);
-                
+
                 $path = $destinationPath . '/' . $filename;
 
                 $headerMissing = array();
@@ -295,17 +295,17 @@ class ImportStudentsController extends Controller
                 $i = 1;
                 $collection = (new FastExcel)->import($path);
 
-                if ( !isset($collection[0]) ) {
-                    if ( file_exists($path) )
+                if (!isset($collection[0])) {
+                    if (file_exists($path))
                         @unlink($path);
                     return back()->with('error', Config::get('constants.WebMessageCode.104'));
                 }
                 $numbers = array();
-                
+
                 Log::info('Filename processing - ' . $filename);
                 foreach ($collection as $key => $reader) {
                     // $reader['name'] = trim($reader['name']);
-                    if ( !isset($reader["class"]) || !isset($reader["name"]) || !isset($reader["phone"]) || !isset($reader["email"]) || !isset($reader["section"]) ) {
+                    if (!isset($reader["class"]) || !isset($reader["name"]) || !isset($reader["phone"]) || !isset($reader["email"]) || !isset($reader["section"])) {
                         $error = "Header mismatch";
                         Log::error('Header mismatch!!');
                     } elseif ($reader["name"] == "" || $reader["class"] == "" || $reader["section"] == "" || $reader["email"] == "" || $reader["phone"] == "") {
@@ -334,7 +334,7 @@ class ImportStudentsController extends Controller
                         $error = 'found';
                         $rows .= $i . ",";
                     } else {
-                        
+
                         $studentClassExist = \DB::select('select id from tbl_classes where class_name="' . $reader["class"] . '" and section_name="' . $reader["section"] . '"');
 
                         $obj_class = StudentClass::where('class_name', $reader["class"])->where('section_name', $reader["section"])->get();
@@ -364,23 +364,22 @@ class ImportStudentsController extends Controller
                     $i += 1;
                 }
                 Log::info('File processing done ');
-                if ( file_exists($path) )
-                        @unlink($path);
-                if ( $error == "" )
-                {
+                if (file_exists($path))
+                    @unlink($path);
+                if ($error == "") {
                     $event = EventManager::createEvent([
-                        'event_name'=>'Student csv upload',
-                        'job_id'=>Utility::getNextJobId(),
-                        'payload'=>$collection,
+                        'event_name' => 'Student csv upload',
+                        'job_id' => Utility::getNextJobId(),
+                        'payload' => $collection,
                     ]);
                     dispatch(new CreateStudentJob($collection, encrypt(Session::get('access_token'))));
                     return back()->with('success', 'Student details uploaded successfully!!');
-                }else
+                } else
                     return back()->with('error', 'Student details processed, check logs, error in rows - ' . $rows);
-            } catch ( \Exception $e ) {
-                if ( file_exists($path) )
-                        @unlink($path);
-                if ( $error == "Header mismatch" ) {
+            } catch (\Exception $e) {
+                if (file_exists($path))
+                    @unlink($path);
+                if ($error == "Header mismatch") {
                     return back()->with('error', 'CSV file Header/(1st line) mismatch!!, check the file format!!');
                 } else {
                     Log::error($e);
@@ -400,7 +399,7 @@ class ImportStudentsController extends Controller
 
         foreach ($students as $student) {
             $response = StudentUtility::removeStudentFromClassroom($student);
-            if(!$response['success'])
+            if (!$response['success'])
                 return response()->json(['error' => $response['data']]);
             $student->delete();
         }

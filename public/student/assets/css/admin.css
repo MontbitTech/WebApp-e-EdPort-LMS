@@ -1,0 +1,15 @@
+.navbar {
+  position: fixed;
+  width: -webkit-fill-available;
+}
+.dashhead{
+  margin:auto;
+  font-weight:bold;
+  color:#6c757d;
+  font-size: 2.3rem; 
+}
+@media only screen and (max-width: 300px) {
+.dashhead{
+  font-size: 1.1rem; 
+}
+}
