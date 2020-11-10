@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\HelpTicketCategory;
 use App\InvitationClass;
 use App\libraries\Utility\ReportUtility;
-use App\Models\Examination\ExaminationResult;
 use App\StudentClass;
 use App\SupportVideo;
 use App\Models\ClassSection;
