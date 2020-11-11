@@ -21,7 +21,7 @@
   <section class="content">
     <div class="container-fluid">
       <div class="row">
-        @if(!empty($LiveClass))
+        @if(!empty($LiveClass[0]))
         <div class="col-md-6">
           <div class="small-box bg-info ">
             <div class="inner">
@@ -34,7 +34,6 @@
             </div>
             <a href="{{$LiveClass[0]->teacher->g_meet_url}}" target="_blank" class="small-box-footer">Join Lecture <i class="fas fa-arrow-circle-right ml-2"></i></a>
           </div>
-
         </div>
         @endif
         <div class="col-md-6">
@@ -47,8 +46,8 @@
                 </button>
               </div>
             </div>
-
             <div class="card-body p-0">
+              @if(!empty($TodayLiveData))
               <div class="table-responsive">
                 <table class="table m-0">
                   <thead>
@@ -76,6 +75,8 @@
                   </tbody>
                 </table>
               </div>
+              @else
+              @endif
             </div>
           </div>
           <!-- <div class="row">

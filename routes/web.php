@@ -261,6 +261,7 @@ Route::get('student/dashboard', 'Student\DashboardController@index')->name('stud
 Route::get('student/lecture', 'Student\LectureController@index')->name('student.lecture');
 // Examination
 Route::get('student/examination', 'Student\ExaminationController@index')->name('student.examination');
+Route::get('/student/examination/performance', 'Student\ExaminationController@performance')->name('student.performance');
 // Profile
 Route::get('student/profile', 'Student\ProfileController@index')->name('student.profile');
 // Register

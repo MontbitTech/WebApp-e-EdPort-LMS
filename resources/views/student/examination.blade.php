@@ -50,12 +50,39 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <select data-placeholder="Select Examination Name" class="form-control select1" style="width:100%">
+                            <select data-placeholder="Select Examination Name" id="examination" class="d-none form-control " style="width:100%">
                                 <option value="">Select Examination Name</option>
-                                <option value="english">English </option>
-                                <option value="hindi">Hindi</option>
-                                <option value="math">Math</option>
+                                @foreach($examination->unique('classroom_id') as $exam)
+                                <option value="{{$exam->classroom_id}}">{{$exam->classroom->studentSubject->subject_name}}</option>
+                                @endforeach
                             </select>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Exam Name</th>
+                                        <th scope="col">Subject</th>
+                                        <th scope="col" class="text-center">Date</th>
+                                        <th scope="col">Duration</th>
+                                        <th scope="col">Link</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($examination as $exam)
+                                    <tr>
+                                        <td>{{$exam->examination->title}}</td>
+                                        <td>{{$exam->classroom->studentSubject->subject_name}}</td>
+                                        <td>{{date('d M h:i a',strtotime($exam->start_time))}} To {{date('d M h:i a',strtotime($exam->end_time))}}</td>
+                                        <td>{{date('i',strtotime($exam->duration))}} min</td>
+                                        <td>
+                                            @if(date('d m H:i',strtotime($exam->start_time)) <= date('d m H:i'))<a href="{{env('APP_URL') . '/student/exam?examID='}}{{$exam->id}}">Start</a>
+                                                @else
+                                                Wait
+                                                @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                             <div class="english exam mt-3">
                                 <form role="form">
                                     <div class="form-group">
@@ -172,16 +199,16 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="card-body pt-2 pb-2">
-                            <select class="form-control">
-                                <option value="" id="performance">Select subject Name</option>
-                                <option value="english">English</option>
-                                <option value="hindi">Hindi</option>
-                                <option value="math">Math</option>
+                        <div class="card-body">
+                            <select data-placeholder="Select Subject Name" id="performance" class="form-control select1 " style="width:100%">
+                                <option value="">Select Subject Name</option>
+                                @foreach($performance->unique('classroom_id') as $exam)
+                                <option value="{{$exam->classroom_id}}">{{$exam->classroom->studentSubject->subject_name}}</option>
+                                @endforeach
                             </select>
                             <!-- English -->
-                            <div class="table-responsive subj english mt-1 p-2">
-                                <label for="select_dob">English</label>
+                            <div class="table-responsive  mt-1 p-2" id="performanceTable" style="display: none;">
+                                <!-- <label for="select_dob">English</label> -->
                                 <table id="example1" class="table table-bordered table-striped table-sm">
                                     <thead>
                                         <tr>
@@ -194,10 +221,8 @@
                                         <tr>
                                             <td>[Exam Name]</td>
                                             <td>[Marks]</td>
-                                            <td><span class="badge badge-info"> 90%
-                                                </span></td>
+                                            <td><span class="badge badge-info">90%</span></td>
                                         </tr>
-
                                     </tbody>
                                 </table>
                             </div>
@@ -210,60 +235,44 @@
     <!-- ./Examination-Body-Content -->
 </div>
 <script>
-    $(document).ready(function() {
-        $("#performance").change(function() {
-            $("#perfomance").find("option:selected").each(function() {
-                var optionValue = $(this).attr("value");
-                if (optionValue) {
-                    $(".subj").not("." + optionValue).hide();
-                    $("." + optionValue).show();
-                } else {
-                    $(".subj").hide();
-                }
-            });
-        }).change();
-    });
-</script>
-<script>
-    $('#performance').change('[data-performance]', function() {
-        var getChapter = $(this).val();
-        console.log(getChapter);
-        var id = $(this).attr('data-performance');
-        var class_name = $("#txt_class_name" + id).val();
-        var subject_id = $("#txt_subject_id" + id).val();
-        //alert(id);
-        if (getChapter != '') {
-            $('.loader').show();
-            $.ajax({
-                type: 'Get',
-                url: '{{ route("get-topic") }}',
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: {
-                    'Subject': getChapter,
-                },
-                success: function(result) {
-                    $('.loader').fadeOut();
-                    var response = JSON.parse(result);
-                    if (response || getChapter == "Select Chapter") {
-                        $("#chapterTopic" + id).empty();
-                        $("#chapterTopic" + id).append('<option>Select Topic</option>');
-                        $.each(response, function(key, value) {
-                            $('#chapterTopic' + id).append('<option value="' + key + '">' + value + '</option>').show();
-                        });
+    $('#performance').on('change', function() {
+        var classroom_id = $(this).val();
+        //console.log(classroom_id);
+        $('.loader').show();
+        $.ajax({
+            url: "{{url('/student/examination/performance')}}",
+            type: "GET",
+            data: {
+                classroom_id: classroom_id,
+            },
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(result) {
+                $('.loader').fadeOut();
+                let count = 1;
+                let data = "";
+                var response = JSON.parse(result);
+                response.data.forEach(function(exam) {
+                    $('#example1').find('tbody').remove();
+                    let percent = (exam.marks_obtained / exam.total_marks) * 100
+                    data += '<tbody>';
+                    data += '<tr>';
+                    data += '<td>' + exam.examination.title + '</td>';
+                    data += '<td>' + exam.marks_obtained + '</td>';
+                    data += '<td><span class="badge badge-info">' + percent + '%' + '</span></td>';
+                    data += '</tbody>';
+                    count++;
+                });
+                $('#example1').append(data);
+                $('#performanceTable').show();
 
-                    } else {
-                        $('.topics').empty();
-                    }
-                },
-                error: function() {
-                    $('.loader').fadeOut();
-                    $.fn.notifyMe('error', 4, 'There is some error while saving description text!');
-                }
-            });
-
-        }
+            },
+            error: function(error_r) {
+                $('.loader').fadeOut();
+                console.log(error_r);
+            }
+        });
     });
 </script>
 <script>
