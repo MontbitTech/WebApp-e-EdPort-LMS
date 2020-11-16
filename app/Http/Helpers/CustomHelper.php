@@ -33,7 +33,8 @@ class CustomHelper
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL            => "https://www.googleapis.com/oauth2/v1/tokeninfo?id_token=$id_token",
+            // CURLOPT_URL            => "https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=$id_token",
+            CURLOPT_URL            =>'https://www.googleapis.com/oauth2/v3/tokeninfo?id_token='.$id_token,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING       => "",
             CURLOPT_MAXREDIRS      => 10,
@@ -55,6 +56,7 @@ class CustomHelper
 
         $client = new Google_Client();
         $client->setAuthConfigFile('../credentials.json');
+        
         $client->addScope('https://www.googleapis.com/auth/classroom.courses');
         $client->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
         $client->addScope('https://www.googleapis.com/auth/classroom.rosters');
@@ -62,6 +64,8 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
         $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->addScope('https://www.googleapis.com/auth/classroom.profile.photos');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.profile');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
         //$client->setRedirectUri('http://lms.schooltimes.ca/public/admin/login');
@@ -83,6 +87,8 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
         $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->addScope('https://www.googleapis.com/auth/classroom.profile.photos');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.profile');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 
@@ -104,6 +110,8 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
         $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->addScope('https://www.googleapis.com/auth/classroom.profile.photos');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.profile');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 
@@ -135,6 +143,8 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
         $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->addScope('https://www.googleapis.com/auth/classroom.profile.photos');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.profile');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 
@@ -163,6 +173,8 @@ class CustomHelper
         $c->addScope('https://www.googleapis.com/auth/userinfo.email');
         $c->addScope('https://www.googleapis.com/auth/classroom.topics');
         $c->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->addScope('https://www.googleapis.com/auth/classroom.profile.photos');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.profile');
         $c->setAccessType('offline');
         $c->setApprovalPrompt('force');
 
@@ -185,6 +197,8 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
         $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->addScope('https://www.googleapis.com/auth/classroom.profile.photos');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.profile');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 
@@ -214,6 +228,8 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
         $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->addScope('https://www.googleapis.com/auth/classroom.profile.photos');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.profile');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
         //$client->setRedirectUri('http://lms.schooltimes.ca/public/admin/login');
@@ -239,6 +255,8 @@ class CustomHelper
         $c->addScope('https://www.googleapis.com/auth/userinfo.email');
         $c->addScope('https://www.googleapis.com/auth/classroom.topics');
         $c->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->addScope('https://www.googleapis.com/auth/classroom.profile.photos');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.profile');
         $c->setAccessType('offline');
         $c->setApprovalPrompt('force');
 
@@ -261,6 +279,8 @@ class CustomHelper
         $client->addScope('https://www.googleapis.com/auth/userinfo.email');
         $client->addScope('https://www.googleapis.com/auth/classroom.topics');
         $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->addScope('https://www.googleapis.com/auth/classroom.profile.photos');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.profile');
         $client->setAccessType('offline');
         $client->setApprovalPrompt('force');
 

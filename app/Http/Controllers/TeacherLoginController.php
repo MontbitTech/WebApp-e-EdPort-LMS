@@ -227,12 +227,6 @@ class TeacherLoginController extends Controller
     {
 
         $session_token = Session::get('access_token_teacher');
-
-
-        //print_r($session_token);	exit;
-        /*    $token = $session_token['id_token'];
-                dd($token);   */
-
         $array = array('error' => '');
 
         $responce = CustomHelper::get_user_from_token($session_token['id_token']);
@@ -245,6 +239,8 @@ class TeacherLoginController extends Controller
             $teacher = Teacher::where('email', $credentials)->first();;
             if (!empty($teacher)) {
                 $name = $teacher['name']; //.' '.$teacher['last_name'];
+                $teacher->profile_picture = $resData['picture'];
+                $teacher->save();
                 Session::put('teacher_session', array('teacher_id' => $teacher['id'], 'teacher_email' => $teacher['email'], 'teacher_name' => $name, 'teacher_phone' => $teacher['phone']));
 
                 return 100;

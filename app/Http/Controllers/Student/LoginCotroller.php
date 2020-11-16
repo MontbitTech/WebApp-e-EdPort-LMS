@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Student;
 
-use App\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\CustomHelper;
 use App\Models\Student;
@@ -82,6 +81,8 @@ class LoginCotroller extends Controller
         if (empty($student))
             return 101;
 
+        $student->profile_picture = $resData['picture'];
+        $student->save();
         Session::put('student_session', array('student_id' => $student['id'], 'student_email' => $student['email']));
         Auth::login($student);
 

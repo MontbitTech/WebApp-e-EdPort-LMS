@@ -234,8 +234,11 @@ class AdminController extends Controller
             $credentials = $resData['email'];
             $admin = Admin::where('email', $credentials)->first();
             if (!empty($admin)) {
+                $admin->profile_picture = $resData['picture'];
+                $admin->save();
                 Session::put('admin_session', array('admin_id' => $admin['id'], 'admin_email' => $admin['email']));
                 Auth::loginUsingId($admin->id);
+
                 return 100;
             } else {
                 return 101;
