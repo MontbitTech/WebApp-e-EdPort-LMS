@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 
-class LoginCotroller extends Controller
+class LoginController extends Controller
 {
     public function index()
     {
-        return view('student.welcome');
+        return view('student.register');
     }
 
     public function studentLoginPost(Request $request)

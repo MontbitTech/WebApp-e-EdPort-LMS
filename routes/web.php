@@ -248,10 +248,10 @@ Route::get('/student/result', function () {
 // **********************************
 
 
-Route::get('/student', 'Student\LoginController@index')->name('student.index');
+Route::get('student', 'Student\LoginController@index')->name('student.index');
 
-Route::post('/student/login', 'Student\LoginController@studentLoginPost')->name('student.login.post');
-Route::get('/student/login', 'Student\LoginController@studentLoginGet')->name('student.login');
+Route::post('student/login', 'Student\LoginController@studentLoginPost')->name('student.login.post');
+Route::get('student/login', 'Student\LoginController@studentLoginGet')->name('student.login');
 
 Route::group(['middleware' => 'studentsession'], function () {
 });
