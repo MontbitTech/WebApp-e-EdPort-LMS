@@ -80,6 +80,15 @@ $sname = $sch->value;
                 </div>
               </form>
  -->
+              <form method="POST" class="loginbox-section" action="{{ route('student.login.post') }}">
+                @csrf
+                <div class="form-group mb-4">
+                  <button type="submit" class="btn btn-lg  btn-block" style="background:#D1D6E5; color: #060911;">
+                    {{ __('I Am School Student') }}
+                  </button>
+                </div>
+                <iframe id="logoutframe" src="https://accounts.google.com/logout" style="display: none"></iframe>
+              </form>
             </div>
 
 
