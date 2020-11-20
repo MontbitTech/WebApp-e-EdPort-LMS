@@ -158,30 +158,25 @@ class CustomHelper
 
     public static function get_token_teacher($code)
     {
+        $client = new Google_Client();
+        $client->setAuthConfigFile('../credentials_teacher.json');
 
-        $c = new Google_Client();
-        $c->setAuthConfigFile('../credentials_teacher.json');
-
-
-        /*  $data = file_get_contents('../credentials_teacher.json');
-          echo  $data;
-         exit;  */
-        $c->addScope('https://www.googleapis.com/auth/classroom.courses');
-        $c->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
-        $c->addScope('https://www.googleapis.com/auth/classroom.rosters');
-        $c->addScope('https://www.googleapis.com/auth/admin.directory.user');
-        $c->addScope('https://www.googleapis.com/auth/userinfo.email');
-        $c->addScope('https://www.googleapis.com/auth/classroom.topics');
-        $c->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->addScope('https://www.googleapis.com/auth/classroom.courses');
+        $client->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
+        $client->addScope('https://www.googleapis.com/auth/classroom.rosters');
+        $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.email');
+        $client->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
         $client->addScope('https://www.googleapis.com/auth/classroom.profile.photos');
         $client->addScope('https://www.googleapis.com/auth/userinfo.profile');
-        $c->setAccessType('offline');
-        $c->setApprovalPrompt('force');
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
 
-        $c->authenticate($code);
+        $client->authenticate($code);
 
 
-        Session::put('access_token_teacher', $c->getAccessToken());
+        Session::put('access_token_teacher', $client->getAccessToken());
 
         return true; //redirect()->route('/');
     }
@@ -241,29 +236,25 @@ class CustomHelper
 
     public static function get_token_student($code)
     {
-        $c = new Google_Client();
-        $c->setAuthConfigFile('../credentials_student.json');
+        $client = new Google_Client();
+        $client->setAuthConfigFile('../credentials_student.json');
 
-
-        /*  $data = file_get_contents('../credentials_teacher.json');
-          echo  $data;
-         exit;  */
-        $c->addScope('https://www.googleapis.com/auth/classroom.courses');
-        $c->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
-        $c->addScope('https://www.googleapis.com/auth/classroom.rosters');
-        $c->addScope('https://www.googleapis.com/auth/admin.directory.user');
-        $c->addScope('https://www.googleapis.com/auth/userinfo.email');
-        $c->addScope('https://www.googleapis.com/auth/classroom.topics');
-        $c->addScope('https://www.googleapis.com/auth/classroom.announcements');
+        $client->addScope('https://www.googleapis.com/auth/classroom.courses');
+        $client->addScope('https://www.googleapis.com/auth/classroom.coursework.students');
+        $client->addScope('https://www.googleapis.com/auth/classroom.rosters');
+        $client->addScope('https://www.googleapis.com/auth/admin.directory.user');
+        $client->addScope('https://www.googleapis.com/auth/userinfo.email');
+        $client->addScope('https://www.googleapis.com/auth/classroom.topics');
+        $client->addScope('https://www.googleapis.com/auth/classroom.announcements');
         $client->addScope('https://www.googleapis.com/auth/classroom.profile.photos');
         $client->addScope('https://www.googleapis.com/auth/userinfo.profile');
-        $c->setAccessType('offline');
-        $c->setApprovalPrompt('force');
+        $client->setAccessType('offline');
+        $client->setApprovalPrompt('force');
 
-        $c->authenticate($code);
+        $client->authenticate($code);
 
 
-        Session::put('access_token_student', $c->getAccessToken());
+        Session::put('access_token_student', $client->getAccessToken());
 
         return true; //redirect()->route('/');
     }

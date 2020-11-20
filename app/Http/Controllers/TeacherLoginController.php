@@ -235,7 +235,7 @@ class TeacherLoginController extends Controller
         if ($resData['error'] != '') {
             return 102;
         } else {
-            $credentials = $resData['email'];;
+            $credentials = $resData['email'];
             $teacher = Teacher::where('email', $credentials)->first();;
             if (!empty($teacher)) {
                 $name = $teacher['name']; //.' '.$teacher['last_name'];

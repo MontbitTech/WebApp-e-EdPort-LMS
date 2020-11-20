@@ -19,17 +19,9 @@ $saddr = $sch->value;
 $logged_teacher = Session::get('teacher_session');
 $logged_teacher_name = $logged_teacher['teacher_name'];
 $logged_teacher_id = $logged_teacher['teacher_id'];
-$photo = asset('images/teacher-profile.jpg');
-$teacherData = App\Teacher::select('photo')->where('id',$logged_teacher_id)->get();
-@endphp
-@foreach($teacherData as $val)
-@if($val->photo)
-@php
-$photo = asset('images/teacher/'.$val->photo);
-@endphp
-@endif
-@endforeach
 
+$teacherPicture = App\Teacher::find($logged_teacher_id)->profile_picture;
+@endphp
 
 <!-- Start | Left Profile Section -->
 <div class="profile-box ">
@@ -42,11 +34,11 @@ $photo = asset('images/teacher/'.$val->photo);
   <form method="post" id="profile_form" action="{{route('teacher.profile_picture')}}" enctype="multipart/form-data">
     @csrf
     <label class="profile-picture">
-      <input type="file" name="profile_picture" id="uploadphoto" onchange="readURL(this);" accept=".jpg,.jpeg,.png,.gif">
+      <!-- <input type="file" name="profile_picture" id="uploadphoto" onchange="readURL(this);" accept=".jpg,.jpeg,.png,.gif">
       <span><svg class="icon">
           <use xlink:href="{{asset('images/icons.svg#icon_pen')}}"></use>
-        </svg></span>
-      <img src="{{ $photo }}" id="img-preview">
+        </svg></span> -->
+      <img src="{{ $teacherPicture }}" id="img-preview">
     </label>
   </form>
 

@@ -66,7 +66,7 @@ class LoginController extends Controller
 
     public function verify_email_DB(Request $request)
     {
-        $session_token = Session::get('access_token');
+        $session_token = Session::get('access_token_student');
 
         $array = array('error' => '');
 
@@ -83,8 +83,8 @@ class LoginController extends Controller
 
         $student->profile_picture = $resData['picture'];
         $student->save();
-        Session::put('student_session', array('student_id' => $student['id'], 'student_email' => $student['email']));
-        Auth::login($student);
+        Session::put('student_session', array('student' => $student));
+        // Auth::login($student);
 
         return 100;
     }

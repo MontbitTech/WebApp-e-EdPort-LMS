@@ -256,15 +256,16 @@ Route::post('student/login', 'Student\LoginController@studentLoginPost')->name('
 Route::get('student/login', 'Student\LoginController@studentLoginGet')->name('student.login');
 
 Route::group(['middleware' => 'studentsession'], function () {
-    // Dashboard
-    Route::get('student/dashboard', 'Student\DashboardController@index')->name('student.dashboard');
-    // Lecture
-    Route::get('student/lecture', 'Student\LectureController@index')->name('student.lecture');
-    // Examination
-    Route::get('student/examination', 'Student\ExaminationController@index')->name('student.examination');
-    Route::get('/student/examination/performance', 'Student\ExaminationController@performance')->name('student.performance');
-    // Profile
-    Route::get('student/profile', 'Student\ProfileController@index')->name('student.profile');
+  // Dashboard
+  Route::get('student/dashboard', 'Student\DashboardController@index')->name('student.dashboard');
+  // Lecture
+  Route::get('student/lecture', 'Student\LectureController@index')->name('student.lecture');
+  // Examination
+  Route::get('student/examination', 'Student\ExaminationController@index')->name('student.examination');
+  Route::get('/student/examination/performance', 'Student\ExaminationController@performance')->name('student.performance');
+  // Profile
+  Route::get('student/profile', 'Student\ProfileController@index')->name('student.profile');
+});
+  
     // Register
     Route::get('student/register', 'Student\RegisterController@index')->name('student.register');
-});
