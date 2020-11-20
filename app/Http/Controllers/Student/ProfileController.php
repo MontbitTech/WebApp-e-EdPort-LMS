@@ -10,13 +10,12 @@ use Session;
 
 class ProfileController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $student_id = 1;
         $attendances = Attendance::with('dateclass', 'dateclass.studentClass')
-            ->where('student_id', $student_id)
+            ->where('student_id', Session::get('student_session')['student']->id)
             ->get();
-        // dd($data);
+
         return view('student.profile', compact('attendances'));
     }
 }
